@@ -23,14 +23,14 @@ $$(g,g^\tau,g^{\tau^2},\dots,g^{\tau^\ell}) = (g^{\tau^i})_{i\in[0,\ell]}$$
 Here, $\tau$ is called the **trapdoor**.
 These parameters should be generated via a distributed protocol[^BCGplus15]$^,$[^BGG18]$^,$[^BGM17] that outputs just the $g^{\tau^i}$'s and **forgets the trapdoor** $\tau$.
 
-The public parameters are **updatable**: given $g^{\tau^i}$'s, anyone can update them to $g^{\alpha^i}$'s where $\alpha = \tau + \Delta$ by picking a random $\Delta$ and computing:
+The public parameters are **updatable**: given $g^{\tau^i}$'s, anyone can update them to $g^{\alpha^i}$'s where $\alpha = \tau \Delta$ by picking a random $\Delta$ and computing:
 $$g^{\alpha^i} = \left(g^{\tau^i}\right)^{\Delta^i}$$
 
 This is useful when you want to safely re-use a pre-generated set of public parameters, without trusting that nobody knows the trapdoor.
 
 ## Commitments
 
-Commitment to $\phi(X)=\prod_{i\in[0,d]} \phi_i X^i$ is $c=g^{\phi(\tau)}$ computed as:
+Commitment to $\phi(X)=\sum_{i\in[0,d]} \phi_i X^i$ is $c=g^{\phi(\tau)}$ computed as:
 
 $$c=\prod_{i\in[0,\deg{\phi}]} \left(g^{\tau^i}\right)^{\phi_i}$$
 
