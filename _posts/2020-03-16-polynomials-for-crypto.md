@@ -20,7 +20,7 @@ _"A list of numbers? That makes no sense!"_
 Don't panic!
 You are probably more familiar to polynomials expressed as function of a variable $X$:
 \begin{align}
-    \phi(X) &= \phi_0 + \phi_1\cdot X + \phi_2\cdot X^2 + \cdots + \phi_d\cdot X^d]\\\\\
+    \phi(X) &= \phi_0 + \phi_1\cdot X + \phi_2\cdot X^2 + \cdots + \phi_d\cdot X^d\\\\\
             &= \sum_{i=0}^{d+1} \phi_i X^i
 \end{align}
 
