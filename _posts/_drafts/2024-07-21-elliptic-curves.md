@@ -8,7 +8,7 @@ article_header:
   image:
     src: /pictures/cost12/plot-over-r.png
 #date: 2020-11-05 20:45:59
-published: false
+#published: false
 #sidebar:
 #    nav: cryptomat
 ---
@@ -34,7 +34,7 @@ $$</p>
     + TODO: Clarify the difference between $K$ and $\bar{K}$ (the algebraic closure of $K$), because points on the curve come from the latter.
     - example: for $\mathbb{Q}$, the full algebraic closure $\bar{\mathbb{Q}}$ includes $\sqrt{-2}$.
  - TODO: $\mathbb{A}^n(K)$ = affine $n$-spaces over field $K$
- - TODO: quadratic extensions
+ - TODO: quadratic extension $\F_{q^2} = \Fq(i)$ with $i^2 + 1 = 0$
 
 ## Scratchpad
 
@@ -53,7 +53,7 @@ E : y^2 = x^3 + a x + b
 
 How?
 Assume the field characteristic is not 2 or 3.
-(TODO: Why?)
+(TODO: Why? I think it's to allow for the few substitutions below to simplify into short Weierstrass...)
 Then, with [a few substitutions](/pictures/cost12/short-weierstrass.png), we arrive at Equation $\ref{eq:short-weierstrass}$.
 
 If $(a_1, \ldots, a_6)$ come from $K$, then $E$ is said to be **defined over** $K$, which is denoted as $E / K$.
@@ -68,7 +68,7 @@ Note that $\ecid$ is a "special case" point that is defined artificially; it doe
 
 TODO: note that we typically just have $(x,y)\in K^2$?
 
-TODO: $E = E(\bar{K})$ is typically used to refer to the same group defined over the full algebraic closure of $K$.
+TODO: $E = E(\bar{K})$ is typically used to refer to the same group defined over the **full** algebraic closure of $K$. (e.g., when $K = \mathbb{Q}$, $\bar{K}$ seems to be $\mathbb{R}$?
 
 We'll initially denote the elliptic curve group operation by $\oplus$ (and its inverse by $\ominus$), but at a later point we will replace it with $+$ (and $-$, respectively).
 
@@ -78,9 +78,21 @@ For any $P\in E(K)$, we denote $\underbrace{P \oplus P \oplus \cdots \oplus P}\_
 
 {: .info}
 A [note on **(non)singular** elliptic curves](/pictures/cost12/singular.png), whose future relevance I am unsure of.
+Q: Why are singular curves bad? 
 
- - TODO: group law explanation; plus, link to [picture](/pictures/cost12/group-law.png)
- - TODO: Why is the 3rd intersection point flipped over in the additional law?
+## TODOs
+
+ - explain group addition law; plus, link to [picture](/pictures/cost12/group-law.png)
+ - Why is the 3rd intersection point flipped over ("reflected") in the additional law? Would DL be easy w/o that?
+ - Affine vs. projective coordinates
+ - group axioms
+    + closure, by virtue of R being the third root of the cubic polynomial (whose first two roots were the points P and Q)
+    + associativity
+ - weirstrass model is not ideal for fast impl. of the group addition law
+    + projective coordinates avoid inversions (may be worth only mentioning it? cause lots of details to cover)
+    + jacobi quartic form (just mention it; too advanced for now)
+ - the order of E(F_q)
+ - hasse bound
 
 ## Acknowledgements
 
