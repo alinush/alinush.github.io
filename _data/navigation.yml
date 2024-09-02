@@ -133,6 +133,10 @@ cryptomat:
     children:
       - title: How to reshare a secret
         url: /2024/04/26/How-to-reshare-a-secret.html
+  - title: Prize-winning stuff
+    children:
+      - title: Bulletproofs IPA for multiexp
+        url: /2024/09/02/Bulletproofs-IPA-for-multiexp.html 
 
   #- title: (Zero-Knowledge) Proof Systems
   #  children:
