@@ -120,6 +120,10 @@ Weil writes:
 
 You can read all of this and more in his fascinating autobiography, written from his perspective as a mathematician[^Weil92].
 
+Also, you can see Dan Boneh's funny account of this story in his 2015 Simons talk:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/1RwkqZ6JNeo?si=_37rPSav99GpYbz0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 ### From breaking cryptography to building cryptography
 
 Weil's work was the foundation. 
@@ -372,7 +376,7 @@ Therefore, practitioners today, as far as I am aware, exclusively rely on **a**s
 
 ### BLS12-381 performance
 
-I will give a few key performance numbers for the BLS12-381 curve implemented in Filecoin's ([blstrs](https://github.com/filecoin-project/blstrs) Rust wrapper around the popular [blst](https://github.com/supranational/blst) library.
+I will give a few key performance numbers for the BLS12-381 curve implemented in Filecoin's [blstrs](https://github.com/filecoin-project/blstrs) Rust wrapper around the popular [blst](https://github.com/supranational/blst) library.
 These microbenchmarks were run on a 10-core 2021 Apple M1 Max using `cargo bench`.
 
 #### Pairing computation times

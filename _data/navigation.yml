@@ -42,7 +42,7 @@ header:
 
   - titles:
       en      : &EN       Please solve!
-    url: /please-solve.html
+    url: /please-solve
 
   - titles:
       en      : &EN       CV
@@ -81,10 +81,12 @@ header:
 # NOTE: For some reason, only depth-1 nesting works here.
 # I tried using subfolderitems and subsubfolderitems with 'page' rather than 'title' but no luck
 cryptomat:
-  - title: Number theory
+  - title: Basic math
     children:
-      - title: Basics
+      - title: Number theory
         url: /2021/04/15/basic-number-theory.html
+      - title: Linear algebra
+        url: /2025/01/20/Basics-of-linear-algebra.html
       - title: Linear Diophantine equations
         url: /2020/11/23/Linear-Diophantine-Equations.html
   - title: Group theory
@@ -141,10 +143,23 @@ cryptomat:
 
       - title: KZG polynomial commitments
         url: /2020/05/06/kzg-polynomial-commitments.html
+
+      - title: Differentiation tricks
+        url: /2025/01/24/Polynomial-differentiation-tricks.html
   - title: Secret sharing
     children:
       - title: How to reshare a secret
         url: /2024/04/26/How-to-reshare-a-secret.html
+  - title: (Zero knowledge) proofs
+    children:
+      - title: NP relations
+        url: /2025/01/21/NP-relations.html
+      - title: Definitions
+        url: /2025/01/22/Defining-zero-knowledge-proofs.html
+      - title: QAPs & R1CS
+        url: /2025/01/23/Quadratic-Arithmetic-Programs-QAPs-and-Rank-1-Constraint-Systems-R1CS.html
+      - title: Groth16
+        url: /2025/01/25/Groth16.html
   - title: Prize-winning stuff
     children:
       - title: Bulletproofs IPA for multiexp

@@ -4,6 +4,7 @@ title: Please solve!
 key: page-please-solve
 aside:
   toc: true
+permalink: /please-solve
 #article_header:
 #  type: cover
 #  image:

@@ -52,4 +52,30 @@
       margin-right: map-get($spacers, 1);
     }
   }
+
+  p.theorem {
+    padding: map-get($spacers, 2) map-get($spacers, 3);
+    background-color: rgba($yellow, .1);
+    border: 1px solid $yellow;
+    border-radius: map-get($base, border-radius);
+    &::before {
+      content: "Theorem: ";
+      font-weight: bold;
+      color: $yellow;
+      margin-right: map-get($spacers, 1);
+    }
+  }
+  
+  p.definition {
+    padding: map-get($spacers, 2) map-get($spacers, 3);
+    background-color: rgba($green, .1);
+    border: 1px solid $green;
+    border-radius: map-get($base, border-radius);
+    &::before {
+      content: "Definition";
+      font-weight: bold;
+      color: $green;
+      margin-right: map-get($spacers, 1);
+    }
+  }
 }

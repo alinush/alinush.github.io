@@ -58,7 +58,7 @@ I was always fascinated with computers: playing on them, fixing them & programmi
 I like to read and write.
 In fact, you can see some of my writing on [this website](/archive.html) and on [Decentralized Thoughts](https://decentralizedthoughts.github.io/about-alin).
 
-I am currently a _Research Scientist_ at [Aptos Labs](https://aptoslabs.com).
+I am currently the _Head of Cryptography_ at [Aptos Labs](https://aptoslabs.com).
 My broad [research interests](/papers.html) are in cryptography and its practical applications.
 My current interests are around:
  1. general-purpose and/or appliction-specific zero-knowledge proofs
@@ -66,25 +66,23 @@ My current interests are around:
  1. anonymous payments
  1. publicly-verifiable secret sharing
 
-In the past, I've led research on
-[anonymous cryptocurrencies](https://eprint.iacr.org/2022/452),
-[tree-based vector commitments](https://www.usenix.org/system/files/sec22fall_srinivasan.pdf),
-[constant-sized vector commitments](https://link.springer.com/chapter/10.1007/978-3-030-57990-6_3),
-[threshold cryptography](https://www.computer.org/csdl/proceedings-article/sp/2020/349700b367/1j2LgjE3Q6Q),
-[Verkle trees](https://math.mit.edu/research/highschool/primes/materials/2019/conf/12-5-Kuszmaul.pdf),
-[transparency logs](https://dl.acm.org/doi/10.1145/3319535.3345652),
-[append-only logs on top of Bitcoin](https://dl.acm.org/doi/10.1145/3319535.3345652).
-[keyless blockchain accounts](/2024/06/13/Keyless-blockchain-accounts-on-Aptos.html)
-zero-knowledge range proofs,
-and
-publicly-verifiable secret sharing.
+In the past, I've led research on:
+ 1. [anonymous cryptocurrencies](https://eprint.iacr.org/2022/452)
+ 1. [tree-based vector commitments](https://www.usenix.org/system/files/sec22fall_srinivasan.pdf)
+ 1. [constant-sized vector commitments](https://link.springer.com/chapter/10.1007/978-3-030-57990-6_3)
+ 1. [threshold cryptography](https://www.computer.org/csdl/proceedings-article/sp/2020/349700b367/1j2LgjE3Q6Q)
+ 1. [Verkle trees](https://math.mit.edu/research/highschool/primes/materials/2019/conf/12-5-Kuszmaul.pdf)
+ 1. [transparency logs](https://dl.acm.org/doi/10.1145/3319535.3345652)
+ 1. [append-only logs on top of Bitcoin](https://dl.acm.org/doi/10.1145/3319535.3345652)
+ 1. [keyless blockchain accounts](/2024/06/13/Keyless-blockchain-accounts-on-Aptos.html)
+ 1. zero-knowledge range proofs
+ 1. publicly-verifiable secret sharing
 
 I've also helped with, but not led, research on 
-[aggregatable distributed key generation](https://link.springer.com/chapter/10.1007/978-3-030-77870-5_6),
-[share recovery for verifiable secret sharing](https://dl.acm.org/doi/10.1145/3319535.3354207),
-[scalable Byzantine Fault Tolerance (BFT) protocols](https://ieeexplore.ieee.org/document/8809541),
-and
-[oblivious file systems](https://dl.acm.org/doi/10.1145/2382196.2382299).
+ - [aggregatable distributed key generation](https://link.springer.com/chapter/10.1007/978-3-030-77870-5_6)
+ - [share recovery for verifiable secret sharing](https://dl.acm.org/doi/10.1145/3319535.3354207)
+ - [scalable Byzantine Fault Tolerance (BFT) protocols](https://ieeexplore.ieee.org/document/8809541)
+ - [oblivious file systems](https://dl.acm.org/doi/10.1145/2382196.2382299)
 
 Before joining Aptos Labs, I was a Postdoctoral Researcher and then a Research Scientist at VMware Research.
 Before VMware, I was a PhD student at MIT, becoming an applied cryptography researcher with [Srini Devadas](https://people.csail.mit.edu/devadas/), my advisor.

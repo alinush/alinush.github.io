@@ -147,6 +147,10 @@ Here's a few we've blogged about in the past:
  - Vector Commitments (VC) schemes [with $O(\log{n})$-sized proofs](/2020/03/12/towards-scalable-vss-and-dkg.html) or [with $O(1)$-sized proofs](/2020/05/06/aggregatable-subvector-commitments-for-stateless-cryptocurrencies.html)
  - [Range proofs](/2020/03/03/range-proofs-from-polynomial-commitments-reexplained.html)
 
+## Appendix
+
+Recently, Cohen et al.[^CDKS22e] showed that an MPC ceremony for generating $g_1, g_1^\tau, \ldots, g_1^{\tau^q}$ "powers-of-$\tau$" tolerates bias and so does not need a final random beacon contribution.
+
 #### Acknowledgements
 
 Many thanks to [Shravan Srinivasan](http://sshravan.github.io/) and [Philipp Jovanovic](https://philipp.jovanovic.io/) for _really_ helping improve this post.
