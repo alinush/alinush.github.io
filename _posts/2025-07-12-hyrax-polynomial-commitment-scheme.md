@@ -251,7 +251,6 @@ Adding time complexities up, we get a **total verifier time** of $\Fmul{2(n + m)
 
 ### ZK performance
 
-{: .info}
 We use $\hyraxZknm$ to refer to the $\hyraxZk$ scheme set up with [$\hyraxZkSetup(1^\lambda, \log_2{n},\log_2{m})$](#).
 We use $\hyraxZkSqN$ to refer to $\hyraxZk^{\sqN,\sqN}$.
 
@@ -339,7 +338,7 @@ When $(\x,\y)$ are on the hypercube:
 (1) $\vec{a}$ and $\vec{b}$ are 0 everywhere except at location $x$ and $y$,
 and (2) $\A$ is just the $x$th row of $\mat{M}$.
 So opening time involves no computation.
-Also, the proof $\pi$ need only include $A_y$, rather than the full row $\A$.
+The proof remains the same size though.
 
 ### $\mathsf{Hyrax}.\mathsf{Verify}(\vk, \boldsymbol{C}, (\boldsymbol{x}, \boldsymbol{y}), z; \pi)\rightarrow \\{0,1\\}$
  
@@ -375,12 +374,12 @@ The **total non-ZK IPA verifier time** would be $\Fmul{2(n+m)} + \msm{n} + \ipa.
 {: .note}
 When $(\x,\y)$ are on the hypercube: 
 (1) $\vec{a}$ and $\vec{b}$ are 0 everywhere except at location $x$ and $y$,
-(2) $D$ is just $C_y$, where $y\in[m)$,
-(3) verifying $A_y$ against $D$ is $\Gmul{1}$ to check that $C_y \equals A_y \cdot G_y$.
+(2) $D$ is just the commitment $C_x$ to the $x$th row
+(3) $\A$ is verified directly against $C_x$ via an $\msm{m}$
+(4) $z$ is verified by checking if $z \equals A_y$
 
 ### Non-ZK performance
 
-{: .info}
 We use $\hyraxnm$ to refer to the $\hyrax$ scheme set up with [$\hyraxSetup(1^\lambda, \log_2{n},\log_2{m})$](#).
 We use $\hyraxSqN$ to refer to $\hyrax^{\sqN,\sqN}$.
 
@@ -409,8 +408,8 @@ Recall that $\emph{t}\le nm$ denotes the # of non-zero entries in the MLE $f$ or
 |----------------+-----------------------+---------------|
 | Scheme         | Open time (hypercube) | Verifier time |
 |----------------|-----------------------|---------------|
-| $\hyraxnm$     | $\bot$                | $\Gmul{1}$    |
-| $\hyraxSqN$    | $\bot$                | $\Gmul{1}$    |
+| $\hyraxnm$     | $\bot$                | $\msm{n}$     |
+| $\hyraxSqN$    | $\bot$                | $\msm{\sqN}$  |
 |----------------+-----------------------+---------------|
 
 

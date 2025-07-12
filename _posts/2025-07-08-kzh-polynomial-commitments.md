@@ -187,14 +187,14 @@ Parse the $\ck$ as:
 \end{align}
 
 Let $\term{\vec{f_i}\bydef(f(\i,\j))\_{\j \in\bin^\mu}}$ denote the $i$th row of the matrix encoded by $f$.
-Compute the **full commitment** to $f$ (via a single $\msm{N}_1$):
+Compute the **full commitment** to $f$ (via a single $\msm{N}\_1$):
 \begin{align}
 \term{C} 
     \gets \sum_{i \in [n)} \sum_{j\in [m)} f(\i, \j)\cdot H_{i,j}
     \bydef \emph{\sum_{i\in [n)} \vec{f_i} \cdot \mat{H}_i} \in \Gr_1
 \end{align}
 
-Compute the $n$ **row commitments** of $f$ (via $n$ $\msm{m}_1$):
+Compute the $n$ **row commitments** of $f$ (via $n$ $\msm{m}\_1$):
 \begin{align}
 \term{D_i} 
     \gets \sum_{j\in[m)} f(\i, \j) \cdot A_j
@@ -260,9 +260,9 @@ z\equals f_\x(\y)
 
 {: .note}
 Assuming $f_\x$ is received in Lagrange basis, computing all $f_\x(\j)$ is just fetching entries.
-Therefore, the LHS of the auxiliary check from Eq. \ref{eq:kzh2-verify-aux} **always** involves an $\msm{m}_1$.
+Therefore, the LHS of the auxiliary check from Eq. \ref{eq:kzh2-verify-aux} **always** involves an $\msm{m}\_1$.
 When $(\x,\y)$ are on the hypercube (1) the RHS is a single $\Gr_1$ scalar multiplication which can be absorbed into the MSM on the LHS and (2) the last check on $z$ involves simply fetching the $y$th entry in $f_\x$.
-When $(\x,\y)$ are arbitrary, the RHS involves $\Fmul{2n}$ to evaluate all $\eq(\x,\i)$ Lagrange polynomials (see [here](/mle#computing-all-lagrange-evaluations-fast)) and then an $\msm{n}_1$ which can be absorbed into the LHS.
+When $(\x,\y)$ are arbitrary, the RHS involves $\Fmul{2n}$ to evaluate all $\eq(\x,\i)$ Lagrange polynomials (see [here](/mle#computing-all-lagrange-evaluations-fast)) and then an $\msm{n}\_1$ which can be absorbed into the LHS.
 The final check involves evaluating the $f_\x$ MLE at an arbitrary $\y$.
 This involves evaluating all $\eq(\y,\j)$ Lagrange polynomials in $\Fmul{2m}$ time and then taking a dot product in $\Fmul{m} + \Fadd{m}$ time.
 
