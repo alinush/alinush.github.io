@@ -3,8 +3,6 @@
 \def\stmt{\mathbf{x}}
 \def\witn{\mathbf{w}}
 %
-\def\prk{\mathsf{prk}}
-\def\vk{\mathsf{vk}}
 \def\td{\mathsf{td}}
 %
 \def\zkpSetup{\mathsf{ZKP}.\mathsf{Setup}}

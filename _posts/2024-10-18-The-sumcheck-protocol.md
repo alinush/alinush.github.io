@@ -38,7 +38,7 @@ $</div> <!-- $ -->
  - $f(X_1,X_2,\ldots,X_\mu)$ denotes a $\mu$-variate polynomial with coefficients in $\F$.
  - $d_j\bydef \deg_j(f)$ is the highest degree of $f$ in the variable $X_j$
  - $f$ is said to be **multilinear** when $\deg_j(f) = 1$ for all $j\in[\mu]$
- - a **multilinear extensions (MLE)** of a vector $\vec{v} = [v_0,\ldots,v_{2^\mu -1}]$ is a multilinear polynomial $f$ such that $f(i_1,i_1,\dots,i_\mu) = v_i$ where $i= \sum_{j=1}^{\mu} i_j \cdot 2^{j-1}$
+ - a [multilinear extensions (MLE)](/mle) of a vector $\vec{v} = [v_0,\ldots,v_{2^\mu -1}]$ is a multilinear polynomial $f$ such that $f(i_1,i_1,\dots,i_\mu) = v_i$ where $i= \sum_{j=1}^{\mu} i_j \cdot 2^{j-1}$
     + this is the multivariate counterpart of [univariate polynomials interpolated from a vector](/2022/07/28/lagrange-interpolation.html)
  - we often work with the **boolean hypercube** $\binMu$
     + a fancy name for: _"all the bit-strings of size $\mu$"_

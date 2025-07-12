@@ -1,0 +1,2 @@
+- We use $a\fsget S$ to denote sampling from a set $S$ in a deterministic manner using the Fiat-Shamir transcript $\FS$ derived so far
+- We use $\mathcal{A}^\FSo$ to indicate that an algorithm $\mathcal{A}$ has oracle access to the Fiat-Shamir transcript $\FS$ and can read and append to it.

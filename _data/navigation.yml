@@ -184,8 +184,12 @@ cryptomat:
         url: /polynomials
       - title: Lagrange interpolation
         url: /lagrange-interpolation
+      - title: Multilinear extensions
+        url: /mle
       - title: KZG polynomial commitments
         url: /kzg
+      - title: Hyrax polynomial commitments
+        url: /hyrax
       - title: KZH polynomial commitments
         url: /kzh
       #- title: PST polynomial commitments

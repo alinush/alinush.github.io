@@ -23,15 +23,13 @@ sidebar:
 
 {% include zkp.md %}
 {% include mle.md %}
+{% include fiat-shamir.md %}
 
 <!-- Here you can define LaTeX macros -->
 <div style="display: none;">$
 %
 \def\oracle#1{\langle #1 \rangle}
 \def\prove{\mathsf{Prove}}
-\def\FS{\mathcal{FS}}
-\def\fsget{\stackrel{\FS}{\leftarrow}}
-\def\FSo{ { \FS(\cdot) } }
 %
 \def\b{\boldsymbol{b}}
 \def\btau{\boldsymbol{\tau}}
@@ -53,7 +51,6 @@ sidebar:
 \def\rowbits#1{\overrightarrow{\mathsf{row}_{#1}}}
 \def\colbits#1{\overrightarrow{\mathsf{col}_{#1}}}
 %
-\def\ck{\mathsf{ck}}
 \def\ok{\mathsf{ok}}
 \def\dense{\mathcal{\green{D}}}
 \def\sparse{\mathcal{\red{S}}}
@@ -108,78 +105,25 @@ Proving:
 
 ## Preliminaries
  
-We assume familiarity with the [multivariate sumcheck](#multivariate-sumcheck) protocol[^Thal20] and multilinear extension (MLE) polynomial commitment schemes (PCS) such as PST[^PST13e].
+We assume familiarity with:
+ - [Multilinear extensions (MLEs)](#multilinear-extensions-mles)
+ - [$\mathsf{eq}(\mathbf{X};\mathbf{b})$ Lagrange polynomials](/mle#lagrange-polynomials)
+ - multilinear extension (MLE) polynomial commitment schemes (PCS) such as PST[^PST13e].
+ - the [multivariate sumcheck](#multivariate-sumcheck) protocol[^Thal20]
 
 ### Notation
 
  - We use $[s) \bydef \\{0,1,\ldots,s-1\\}$
  <!-- $\mathbf{a} \concat \mathbf{b}$ denotes the concatenation of two vectors into one -->
  - We refer to a sumcheck that verifies a polynomial sums to 0 over the hypercube as a **0-sumcheck**
- - We assume all algorithms have oracle access to the same Fiat-Shamir transcript $\FS$
  - We typically denote the **boolean hypercube** of size $2^s$ as $\binS$
- - We use $a\fsget S$ to denote sampling from a set $S$ in a deterministic manner using the Fiat-Shamir transcript $\FS$ derived so far
  - We often use $\tilde{V}$ to refer the MLE of a vector or matrix $V$.
-
-### Binary vectors
-
-We often need to go from a number $b \in [0,2^s)$ to its binary representation as a vector $\b\in\binS$, and viceversa:
-\begin{align}
-\b = [b_0,\ldots,b_{s-1}],\ \text{s.t.}\ b = \sum_{i\in[s)} b_i 2^i
-\end{align}
-
-{: .note}
-When, clear from context, we switch between the number $b$ and its binary vector representation $\b$.
-
-### $\mathsf{eq}(\mathbf{X};\mathbf{b})$ Lagrange polynomials
-
-We want to define a polynomial $\eq$ such that that:
-\begin{align}
-\forall \X,\b\in\binS,
-\term{\eq(\X;\b)} &\bydef \begin{cases}
-1,\ \text{if}\ \X = \b\\\\\
-0,\ \text{if}\ \X \ne \b
-\end{cases}\\\\\
-\end{align}
-
-How?
-\begin{align}
-\label{eq:lagrange}
-\term{\eq(\X;\b)} &\bydef \prod_{i\in[s)}\left(b_i X_i + (1 - b_i) (1 - X_i)\right)\\\\\
-%&\bydef \term{\eq(X_1,\ldots, X_s; b_1,\ldots,b_s)}\\\\\
-&\bydef \term{\eq_\b(X_0,\ldots, X_{s-1})},\b\in\binS\\\\\
-&\bydef \term{\eq_b(X_0,\ldots, X_{s-1})},b\in[2^s)\\\\\
-\end{align}
-
-<!--It is useful to note that:
-\begin{align}
-\eq_\b(\X) = \eq_\X(\b)
-\end{align}-->
-
-{: .note}
-We use $b\in[2^s)$ and $\b\in\binS$ interchangeably, when clear from context.
-We mostly use $\eq_b(\X)$ and do not explicitly include the number of variables $s$, which is clear from context.
-
-{: .note}
-<details>
-<summary>
-<em>👇 Why does this work? 👇</em>
-</summary>
-Try and evaluate $\eq(X;\b)$ at $\X = \b$ by evaluating each product term $b_i X_i + (1-b_i)(1-X_i)$ at $X_i = b_i$!
-<br /><br/>
-
-It would yield $b_i^2 + (1-b_i)^2$, which is always equal to 1 for $b_i\in\{0,1\}$.
-So all product terms are 1 when $\X=\b$.
-<br /><br/>
-
-Next, try to evaluate at $X=\b'$ when $\b'\ne\b$.
-In this case, there will be an index $i\in [s)$ such that $b'_i \ne b_i \Rightarrow b_i' = (1-b_i)$.
-So, evaluating the $i$th product term at $(1-b_i)$ yields $b_i(1-b_i) + (1-b_i)(1-(1-b_i)) = b_i(1-b_i)+(1-b_i)b_i=2b_i(1-b_i)$ which is always 0.
-Therefore, the product is zero when $\X\ne \b$.
-</details>
+ - When, clear from context, we switch between the number $b$ and its binary vector representation $\b \bydef [b_0,\ldots,b_{s-1}]\in\binS$, such that $b = \sum_{i\in[s)} b_i 2^i$.
+{% include prelims-fiat-shamir.md %}
 
 ### Multilinear extensions (MLEs)
 
-Given a **vector** $V = [V_0, \ldots V_{n-1}]$, where $n = 2^\ell$, it can be represented as a degree-1 multivariate polynomial with $\ell$ variables, a.k.a. a **multilinear extension (MLE)**, by interpolation via the Lagrange polynomials from above:
+Recall that a **vector** $V = [V_0, \ldots V_{n-1}]$, where $n = 2^\ell$, can be represented as a degree-1 multivariate polynomial with $\ell$ variables, a.k.a. a [multilinear extension (MLE)](/mle) by interpolation using [$\eq_i(\cdot)$ Lagrange polynomials](/mle#lagrange-polynomials):
 \begin{align}
 \label{eq:mle}
 \tilde{V}(\X) \bydef \sum_{i\in [n)} V_i \cdot \eq_i(\X)
@@ -673,7 +617,7 @@ Prove the first [sumcheck](#scprovefsof-t-s-drightarrow-epir):
  - $\btau \fsget \F^s$
  - Let $Z \bydef (\stmt, 1, \witn)\in \F^m$
  - Let $F(\X) \bydef \sum_{\j\in\binS} \tilde{A}(\X,\j) \tilde{Z}(\j) \cdot \sum_{\j\in\binS} \tilde{B}(\X,\j) \tilde{Z}(\j) - \sum_{\j\in\binS} \tilde{C}(\X,\j) \tilde{Z}(\j)$
- - $(e_x, \pi_x; \r_x\in\F^s) \gets \SC.\prove(F\cdot \eq_\btau, 0, s, 3)$ (see Eq. \ref{eq:F})
+ - $(e_x, \pi_x; \r_x\in\F^s) \gets \SC.\prove^\FSo(F\cdot \eq_\btau, 0, s, 3)$ (see Eq. \ref{eq:F})
     + _ZK:_ Would need changes
 
 Prove the second [sumcheck](#scprovefsof-t-s-drightarrow-epir):
@@ -683,7 +627,7 @@ Prove the second [sumcheck](#scprovefsof-t-s-drightarrow-epir):
  - $v_B \gets \sum_{\j\in\binS} \tilde{B}(\r_x,\j) \tilde{Z}(\j)$
  - $v_C \gets \sum_{\j\in\binS} \tilde{C}(\r_x,\j) \tilde{Z}(\j)$
  - $T\gets r_A v_A + r_B v_B + r_C v_C$ 
- - $(e_y, \pi_y; \r_y) \gets \SC.\prove(M_{\r_x}, T, s, 2)$ (see Eq. \ref{eq:second-sumcheck})
+ - $(e_y, \pi_y; \r_y) \gets \SC.\prove^\FSo(M_{\r_x}, T, s, 2)$ (see Eq. \ref{eq:second-sumcheck})
     + _ZK:_ Would need changes
     + _Performance:_ This can be carefully implemented so as to only apply the random linear combination on the univariate polynomial sumcheck messages and work mostly over small field elements.
 
