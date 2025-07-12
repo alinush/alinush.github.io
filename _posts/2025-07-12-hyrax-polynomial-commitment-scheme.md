@@ -26,10 +26,17 @@ Hyrax has _information-theoretic hiding_ commitments and _honest verifier zero-k
 
 <!-- Here you can define LaTeX macros -->
 <div style="display: none;">$
+\def\A{\vect{A}}
 \def\C{\vect{C}}
 \def\G{\vect{G}}
 \def\hyrax{\mathsf{Hyrax}}
-\def\hyraxSetup{\mathsf{Hyrax}.\mathsf{Setup}}
+\def\hyraxnm{\hyrax^{n,m}}
+\def\hyraxSqN{\hyrax^{\sqN}}
+\def\hyraxSetup{\hyrax.\mathsf{Setup}}
+\def\hyraxZk{\hyrax_\mathsf{ZK}}
+\def\hyraxZknm{\hyraxZk^{n,m}}
+\def\hyraxZkSqN{\hyraxZk^{\sqN}}
+\def\hyraxZkSetup{\hyraxZk.\mathsf{Setup}}
 \def\ipa{\mathsf{IPA}}
 \def\r{\vect{r}}
 \def\sqN{\sqrt{N}}
@@ -159,9 +166,9 @@ The prover proves an inner-product of size only $m$!
 To commit to MLEs $f\in\MLE{N}$, Hyrax is typically used with $n=m=\sqrt{N}$, yielding sublinear-sized commitments & proofs and sublinear-time verifier.
 The prover time will be dominated by the $\sqrt{N}$-sized IPA proof
 
-## Construction
+## ZK construction
 
-### $\mathsf{Hyrax}.\mathsf{Setup}(1^\lambda, \nu,\mu) \rightarrow (\mathsf{vk},\mathsf{ck})$
+### $\mathsf{Hyrax}_\mathsf{ZK}.\mathsf{Setup}(1^\lambda, \nu,\mu) \rightarrow (\mathsf{vk},\mathsf{ck})$
 
 Notation:
  - $n \gets 2^\nu$ denotes the # of matrix rows
@@ -174,9 +181,12 @@ Pick random generators:
  - $\vk\gets (n, \G,H)$
  - $\ck\gets \vk$
 
-### $\mathsf{Hyrax}.\mathsf{Commit}(\mathsf{ck}, f(\boldsymbol{X},\boldsymbol{Y}); \r) \rightarrow (\boldsymbol{C},\aux)$
+### $\mathsf{Hyrax}_\mathsf{ZK}.\mathsf{Commit}(\mathsf{ck}, f(\boldsymbol{X},\boldsymbol{Y}); \r) \rightarrow (\boldsymbol{C},\aux)$
 
-Denote the matrix represention of the MLE $f$ as $\mat{M}\in\F^{n \times m}$.
+Let:
+ - $\emph{\mat{M}}\in\F^{n\times m}$ denote the matrix represention of the MLE $f$.
+
+Compute the commitment:
 
  - $(n,\G, H)\parse \ck$
  - $C_i \gets r_i\cdot H + \mat{M}_i\cdot \G,\forall i\in[n)$ 
@@ -184,51 +194,51 @@ Denote the matrix represention of the MLE $f$ as $\mat{M}\in\F^{n \times m}$.
 
 {: .note}
 Computing each commitment takes an $\msm{m+1}\Rightarrow n\times\msm{m+1}$ in total.
+(Committing will be faster for sparse matrices, but in the [Spartan](/spartan) setting, we don't care about it.)
 
-### $\mathsf{Hyrax}.\mathsf{Open}(\ck, f(\boldsymbol{X},\boldsymbol{Y}), (\boldsymbol{x}, \boldsymbol{y}), z; \aux, \C)\rightarrow \pi$
+### $\mathsf{Hyrax}_\mathsf{ZK}.\mathsf{Open}(\ck, f(\boldsymbol{X},\boldsymbol{Y}), (\boldsymbol{x}, \boldsymbol{y}), z; \aux, \C)\rightarrow \pi$
  
 Parse commitment key and auxiliary data:
  - $(n,\G,H)\parse \ck$
  - $\r\gets\aux$
 
-Denote the matrix representation of the MLE $f$ as $\mat{M}\in\F^{n \times m}$.
-
+Compute the opening proof:
  - $\vec{a}\gets (\eq(\x, \i))_{i\in[n)}\in\F^{1\times n}$ 
  - $\vec{b} \gets (\eq(\y, \j))_{j\in[m)}\in \F^{1\times m}$ 
- - $\vect{A}\gets \vec{a}\cdot \mat{M}\in \F^{1\times m}$
+ - $\A\gets \vec{a}\cdot \mat{M}\in \F^{1\times m}$
  - $u\gets \sum_{i\in[n)} a_i\cdot r_i$ 
-    + This will be the randomness for the commitment to $\vect{A}$ homomorphically-reconstructed by the verifier
+    + This will be the randomness for the commitment to $\A$ homomorphically-reconstructed by the verifier
  - $\prk_\ipa\gets (\G,H)$
- - $\pi \gets \ipa.\mathcal{P}(\prk_\ipa, \vect{A}, \vec{b}; u)$
-    - This will be a ZK IPA proof that $z = \vect{A}\cdot \vec{b}^\top = \vec{a}\cdot\mat{M}\cdot\vec{b}^\top \bydef f(\x,\y)$
+ - $\pi \gets \ipa.\mathcal{P}(\prk_\ipa, \A, \vec{b}; u)$
+    - This will be a ZK IPA proof that $z = \A\cdot \vec{b}^\top = \vec{a}\cdot\mat{M}\cdot\vec{b}^\top \bydef f(\x,\y)$
 
-### Opening time
+### ZK opening time
 
 First, recall that [computing all Lagrange evaluations](/mle#computing-all-lagrange-evaluations-fast) for a size-$n$ MLE takes $2n$ $\F$ multiplications.
 
  - $\vec{a}$ takes $\Fmul{2n}$
  - $\vec{b}$ takes $\Fmul{2m}$
- - $\vect{A}$ takes $m \times(\Fmul{n}+\Fadd{n})=\Fmul{nm}+\Fadd{nm}$ because we are inner-producting $\vec{a}$ with every column $\mat{M}_j^\top\in\F^n$.
-    + When the matrix is "sparse", i.e., only has $t\bydef\sum_{i\in[m)} t_i \ll nm$ non-zero entries, with column $i$ having $t_i$ non-zero entries, then this cost lowers to $\sum_{i\in[m)} (\Fmul{t_i}+\Fadd{t_i}) = \Fmul{t} + \Fadd{t}$
+ - $\A$ takes $m \times(\Fmul{n}+\Fadd{n})=\Fmul{nm}+\Fadd{nm}$ because we are inner-producting $\vec{a}$ with every column $\mat{M}_j^\top\in\F^n$.
+    + When the matrix is "sparse", i.e., only has $\term{t}\bydef\sum_{j\in[m)} \term{t_j} \ll nm$ non-zero entries, with column $j$ having $\emph{t_j}$ non-zero entries, then this cost lowers to $\sum_{j\in[m)} (\Fmul{t_j}+\Fadd{t_j}) = \Fmul{t} + \Fadd{t}$
  - $\vec{u}$ takes $\Fmul{n}+\Fadd{n}$
  - $\pi$ takes $\term{\ipa.\mathcal{P}(m)}$, which denotes the time of a size-$m$ IPA prover
     + e.g., $O(\Gmul{m})$ for Bulletproofs[^BBBplus18]
 
 {: .note}
 Adding time complexities up, we get $\Fmul{(2n + 2m)} + \Fmul{nm} + \Fadd{nm} + \Fmul{n} + \Fadd{n} + \ipa.\mathcal{P}(m)$, 
-which gives a **total opening time** of $\Fmul{(3n + 2m + nm)} + \Fadd{(nm + n)} + \ipa.\mathcal{P}(m)$.
+which gives a **total ZK opening time** of $\Fmul{(3n + 2m + nm)} + \Fadd{(nm + n)} + \ipa.\mathcal{P}(m)$.
 
-### $\mathsf{Hyrax}.\mathsf{Verify}(\vk, \boldsymbol{C}, (\boldsymbol{x}, \boldsymbol{y}), z; \pi)\rightarrow \\{0,1\\}$
+### $\mathsf{Hyrax}_\mathsf{ZK}.\mathsf{Verify}(\vk, \boldsymbol{C}, (\boldsymbol{x}, \boldsymbol{y}), z; \pi)\rightarrow \\{0,1\\}$
  
- - $(n,\cdot)\parse \vk$
+ - $(n,\G, H)\parse \vk$
  - $\vec{a}\gets (\eq(\x, \i))_{i\in[n)}\in\F^{1\times n}$ 
  - $\vec{b} \gets (\eq(\y, \j))_{j\in[m)}\in \F^{1\times m}$ 
  - $D \gets \sum_{i\in[n)} a_i\cdot C_i$
-    + This will be the Pedersen commitment to $\vec{a}\cdot\mat{M}$
+    + This will be the Pedersen commitment to $\A\bydef\vec{a}\cdot\mat{M}$
  - $\vk_\ipa\gets (\G,H)$
- - **assert** $\ipa.\mathcal{V}(\vk_\ipa, D, \vec{b}; \pi) \equals 1$
+ - **assert** $\ipa.\mathcal{V}(\vk_\ipa, D, \vec{b}, z; \pi) \equals 1$
 
-### Verifier time
+### ZK verifier time
 
  - $\vec{a}$ takes $\Fmul{2n}$ (recall from [here](/mle#computing-all-lagrange-evaluations-fast))
  - $\vec{b}$ takes $\Fmul{2m}$
@@ -239,40 +249,170 @@ which gives a **total opening time** of $\Fmul{(3n + 2m + nm)} + \Fadd{(nm + n)}
 {: .note}
 Adding time complexities up, we get a **total verifier time** of $\Fmul{2(n + m)} + \msm{n} + \ipa.\mathcal{V}(m)$.
 
-## Performance
+### ZK performance
 
 {: .info}
-We use $\hyrax^{n,m}$ to refer to the $\hyrax$ scheme set up with [$\hyraxSetup(1^\lambda, \log_2{n},\log_2{m})$](#).
-We use $\hyrax^{\sqN}$ to refer to $\hyrax^{\sqN,\sqN}$.
+We use $\hyraxZknm$ to refer to the $\hyraxZk$ scheme set up with [$\hyraxZkSetup(1^\lambda, \log_2{n},\log_2{m})$](#).
+We use $\hyraxZkSqN$ to refer to $\hyraxZk^{\sqN,\sqN}$.
 
-### Setup, commitments and proof sizes
+#### Setup, hiding commitments and ZK proof sizes
 
 |--------------+-------+-------+-------------+------+--------+-------|
 | Scheme       | $\ck$ | $\vk$ | Commit time | $\C$ | $\aux$ | $\pi$ |
 |--------------|-------|-------|-------------|------+--------|-------|
-| $\hyrax^{n,m}$  | $\Gr^{n+1},\ck_\ipa$    | $\Gr^{n+1},\vk_\ipa   $ | $n\cdot\msm{m+1}$       | $\Gr^n$     | $\r\in\F^n$   | $\pi_\ipa(m)$ |
-| $\hyrax^{\sqN}$ | $\Gr^{\sqN+1},\ck_\ipa$ | $\Gr^{\sqN+1},\vk_\ipa$ | $\sqN\cdot\msm{\sqN+1}$ | $\Gr^\sqN$ | $\r\in\F^\sqN$ | $\pi_\ipa(\sqN)$ |
+| $\hyraxZknm$  | $\Gr^{n+1},\ck_\ipa$    | $\Gr^{n+1},\vk_\ipa   $ | $n\cdot\msm{m+1}$       | $\Gr^n$     | $\r\in\F^n$   | $\pi_\ipa(m)$ |
+| $\hyraxZkSqN$ | $\Gr^{\sqN+1},\ck_\ipa$ | $\Gr^{\sqN+1},\vk_\ipa$ | $\sqN\cdot\msm{\sqN+1}$ | $\Gr^\sqN$ | $\r\in\F^\sqN$ | $\pi_\ipa(\sqN)$ |
 |--------------+-------+-------+-------------|------|--------|-------|
 
-### Openings at arbitry points
+#### ZK openings at arbitry points
 
 Recall that $\emph{t}\le nm$ denotes the # of non-zero entries in the MLE $f$ or, equivalently, matrix $\mat{M}$.
 
 |----------------+--------------------+---------------|
 | Scheme         | Open time (random) | Verifier time |
 |----------------|--------------------|---------------|
-| $\hyrax^{n,m}$  | $\Fmul{(3n+2m+t)} + \Fadd{(t+n)} + \ipa.\mathcal{P}(m)$         | $\Fmul{2(n+m)} + \msm{n} + \ipa.\mathcal{V}(m)$ |
-| $\hyrax^{\sqN}$ | $\Fmul{(5\sqN + t)} + \Fadd{(t + \sqN)} + \ipa.\mathcal{P}(\sqN)$ | $\Fmul{4\sqN} + \msm{\sqN} + \ipa.\mathcal{V}(\sqN)$ |
+| $\hyraxZknm$  | $\Fmul{(3n+2m+t)} + \Fadd{(t+n)} + \ipa.\mathcal{P}(m)$         | $\Fmul{2(n+m)} + \msm{n} + \ipa.\mathcal{V}(m)$ |
+| $\hyraxZkSqN$ | $\Fmul{(5\sqN + t)} + \Fadd{(t + \sqN)} + \ipa.\mathcal{P}(\sqN)$ | $\Fmul{4\sqN} + \msm{\sqN} + \ipa.\mathcal{V}(\sqN)$ |
 |----------------+--------------------+---------------|
 
-### Openings at points on the hypercube
+#### ZK openings at points on the hypercube
 
 |----------------+-----------------------+---------------|
 | Scheme         | Open time (hypercube) | Verifier time |
 |----------------|-----------------------|---------------|
-| $\hyrax^{n,m}$  | $\ipa.\mathcal{P}(m)$    | $\ipa.\mathcal{V}(m)$ |
-| $\hyrax^{\sqN}$ | $\ipa.\mathcal{P}(\sqN)$ | $\ipa.\mathcal{V}(\sqN)$ |
+| $\hyraxZknm$  | $\ipa.\mathcal{P}(m)$    | $\ipa.\mathcal{V}(m)$ |
+| $\hyraxZkSqN$ | $\ipa.\mathcal{P}(\sqN)$ | $\ipa.\mathcal{V}(\sqN)$ |
 |----------------+-----------------------+---------------|
+
+## Non-ZK construction
+
+### $\mathsf{Hyrax}.\mathsf{Setup}(1^\lambda, \nu,\mu) \rightarrow (\mathsf{vk},\mathsf{ck})$
+
+Pick random generators (reusing [$\hyraxZk$ notation](#mathsfhyrax_mathsfzkmathsfsetup1lambda-numu-rightarrow-mathsfvkmathsfck)):
+
+ - $\G\randget\Gr^m$
+ - $\vk\gets (n, \G)$
+ - $\ck\gets \vk$
+
+### $\mathsf{Hyrax}.\mathsf{Commit}(\mathsf{ck}, f(\boldsymbol{X},\boldsymbol{Y})) \rightarrow \boldsymbol{C}$
+
+Recall that $\mat{M}\in\F^{n \times m}$ represents the MLE $f\in\MLE(n,m)$.
+
+ - $(n,\G)\parse \ck$
+ - $C_i \gets \mat{M}_i\cdot \G,\forall i\in[n)$ 
+
+{: .note}
+Computing each commitment takes an $\msm{m}\Rightarrow n\times\msm{m}$ in total.
+(Committing will be faster for sparse matrices, but in the [Spartan](/spartan) setting, we don't care about it.)
+
+### $\mathsf{Hyrax}.\mathsf{Open}(\ck, f(\boldsymbol{X},\boldsymbol{Y}), (\boldsymbol{x}, \boldsymbol{y}), z; \C)\rightarrow \pi$
+ 
+Parse commitment key:
+ - $(n,\G)\parse \ck$
+
+Compute the opening proof:
+ - $\vec{a}\gets (\eq(\x, \i))_{i\in[n)}\in\F^{1\times n}$ 
+ - $\vec{b} \gets (\eq(\y, \j))_{j\in[m)}\in \F^{1\times m}$ 
+ - $\A\gets \vec{a}\cdot \mat{M}\in \F^{1\times m}$
+ - $\pi\gets \A$
+
+{: .note}
+A more succinct but less computationally-efficient variant would compute an IPA proof instead, arguing that $z = \A\cdot \vec{b}^\top = \vec{a}\cdot\mat{M}\cdot\vec{b}^\top \bydef f(\x,\y)$ as
+$\pi \gets \ipa.\mathcal{P}(\prk_\ipa, \A, \vec{b})$ where $\prk_\ipa = \G$.
+
+### Non-ZK opening time
+
+ - $\vec{a}$ takes $\Fmul{2n}$
+ (recall from [here](/mle#computing-all-lagrange-evaluations-fast))
+ - $\vec{b}$ takes $\Fmul{2m}$
+ - $\A$ takes $\Fmul{nm}+\Fadd{nm}$ in the worst case, and $\Fmul{t}+\Fadd{t}$ in the sparse case with $\emph{t}$ non-zero entries in $\mat{M}$
+ (recall from [here](#zk-opening-time))
+
+{: .note}
+Adding time complexities up, we get a total **non-ZK opening time** of $\Fmul{(2n + 2m + t)} + \Fadd{t}$.
+
+{: .warning}
+If the IPA variant was used, then $\pi$ would add $\emph{\ipa.\mathcal{P}(m)}$.
+
+{: .note}
+When $(\x,\y)$ are on the hypercube: 
+(1) $\vec{a}$ and $\vec{b}$ are 0 everywhere except at location $x$ and $y$,
+and (2) $\A$ is just the $x$th row of $\mat{M}$.
+So opening time involves no computation.
+Also, the proof $\pi$ need only include $A_y$, rather than the full row $\A$.
+
+### $\mathsf{Hyrax}.\mathsf{Verify}(\vk, \boldsymbol{C}, (\boldsymbol{x}, \boldsymbol{y}), z; \pi)\rightarrow \\{0,1\\}$
+ 
+ - $(n,\cdot)\parse \vk$
+ - $\vec{a}\gets (\eq(\x, \i))_{i\in[n)}\in\F^{1\times n}$ 
+ - $\vec{b} \gets (\eq(\y, \j))_{j\in[m)}\in \F^{1\times m}$ 
+ - $D \gets \sum_{i\in[n)} a_i\cdot C_i$
+    + This will be the Pedersen commitment to $\A\bydef\vec{a}\cdot\mat{M}\in\F^{1\times m}$
+ - $\A\parse \pi$
+ - **assert** $D\equals \A\cdot\vect{G}$ 
+ - **assert** $z\equals \A\cdot \vec{b}$
+
+{: .note}
+A more succinct but less computationally-efficient variant would verify an IPA proof instead of checking that $\A$ is committed in $D$ and manually re-computing $z$.
+
+### Non-ZK verifier time
+
+ - $\vec{a}$ takes $\Fmul{2n}$
+ (recall from [here](/mle#computing-all-lagrange-evaluations-fast))
+ - $\vec{b}$ takes $\Fmul{2m}$
+ - $D$ takes $\msm{n}$
+ - Verifying $\A$ against $D$ takes $\msm{m}$
+ - $\Rightarrow$ but these two checks can be combined into a single $\msm{n+m}$ as $\left(\A\cdot (-\G)\right)\cdot \sum_{i\in[n)} a_i \cdot C_i\equals 1$
+ - Verifying $z$ is a size-$m$ inner product, so takes $\Fmul{m}+\Fadd{m}$
+
+{: .note}
+Adding time complexities up, we get a **total non-ZK verifier time** of $\Fmul{(2n + 3m)} + \Fadd{m} + \msm{n+m}$.
+
+{: .warning}
+If the IPA variant was used, then $\pi$ would add $\emph{\ipa.\mathcal{V}(m)}$ and remove the size-$m$ MSM for checking $\A$ and the field operations for computing $\A\cdot\vec{b}$.
+The **total non-ZK IPA verifier time** would be $\Fmul{2(n+m)} + \msm{n} + \ipa.\mathcal{V}(m)$.
+
+{: .note}
+When $(\x,\y)$ are on the hypercube: 
+(1) $\vec{a}$ and $\vec{b}$ are 0 everywhere except at location $x$ and $y$,
+(2) $D$ is just $C_y$, where $y\in[m)$,
+(3) verifying $A_y$ against $D$ is $\Gmul{1}$ to check that $C_y \equals A_y \cdot G_y$.
+
+### Non-ZK performance
+
+{: .info}
+We use $\hyraxnm$ to refer to the $\hyrax$ scheme set up with [$\hyraxSetup(1^\lambda, \log_2{n},\log_2{m})$](#).
+We use $\hyraxSqN$ to refer to $\hyrax^{\sqN,\sqN}$.
+
+#### Setup, commitments and proof sizes
+
+|---------------+-------+-------+-------------+------+--------+-------|
+| Scheme        | $\ck$ | $\vk$ | Commit time | $\C$ | $\aux$ | $\pi$ |
+|---------------|-------|-------|-------------|------+--------|-------|
+| $\hyraxnm$    | $\Gr^n$     | $\Gr^n$      | $n\cdot\msm{m}$       | $\Gr^n$    | $\bot$ | $\F^m$ |
+| $\hyraxSqN$   | $\Gr^\sqN$  | $\Gr^\sqN+1$ | $\sqN\cdot\msm{\sqN}$ | $\Gr^\sqN$ | $\bot$ | $\F^\sqN$ |
+|---------------+-------+-------+-------------|------|--------|-------|
+
+#### Non-ZK openings at arbitry points
+
+Recall that $\emph{t}\le nm$ denotes the # of non-zero entries in the MLE $f$ or, equivalently, matrix $\mat{M}$.
+
+|----------------+--------------------+---------------|
+| Scheme         | Open time (random) | Verifier time |
+|----------------|--------------------|---------------|
+| $\hyraxnm$     | $\Fmul{(2n+2m+t)} + \Fadd{t}$ | $\Fmul{(2n+3m)} + \Fadd{m} + \msm{n+m}$ |
+| $\hyraxSqN$    | $\Fmul{(4\sqN+t)} + \Fadd{t}$ | $\Fmul{5\sqN} + \Fadd{\sqN} + \msm{2\sqN}$ |
+|----------------+--------------------+---------------|
+
+#### Non-ZK openings at points on the hypercube
+
+|----------------+-----------------------+---------------|
+| Scheme         | Open time (hypercube) | Verifier time |
+|----------------|-----------------------|---------------|
+| $\hyraxnm$     | $\bot$                | $\Gmul{1}$    |
+| $\hyraxSqN$    | $\bot$                | $\Gmul{1}$    |
+|----------------+-----------------------+---------------|
+
 
 ## References
 
