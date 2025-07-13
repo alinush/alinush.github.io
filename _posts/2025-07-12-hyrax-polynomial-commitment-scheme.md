@@ -38,6 +38,8 @@ Hyrax has _information-theoretic hiding_ commitments and _honest verifier zero-k
 \def\hyraxZkSqN{\hyraxZk^{\sqN}}
 \def\hyraxZkSetup{\hyraxZk.\mathsf{Setup}}
 \def\ipa{\mathsf{IPA}}
+\def\ipaProve{\mathcal{P}_\ipa}
+\def\ipaVer{\mathcal{P}_\ipa}
 \def\r{\vect{r}}
 \def\sqN{\sqrt{N}}
 $</div> <!-- $ -->
@@ -150,21 +152,21 @@ Second, the verifier uses $\vec{a}$ and the $C_i$'s to derive a commitment $\ter
 \term{D} \gets \sum_{i\in[n)} a\_i\cdot D\_i 
     &= \sum\_{i\in[n)} a\_i\cdot(r_i \cdot H + \mat{M}\_i\cdot \G)\\\\\
     &= \sum\_{i\in[n)} (a\_i\cdot r_i) \cdot H + \sum\_{i\in[n)} a\_i\cdot\left(\sum\_{j\in[m)} M\_{i,j} \cdot G\_j\right)\\\\\
-    &\bydef u\cdot H + \sum\_{i\in[n)}\sum\_{j\in[m)} (a\_i\cdot M\_{i,j}) \cdot G\_j\\\\\
+    &\bydef \term{u}\cdot H + \sum\_{i\in[n)}\sum\_{j\in[m)} (a\_i\cdot M\_{i,j}) \cdot G\_j\\\\\
     &= u\cdot H + \sum\_{j\in[m)}\left(\sum\_{i\in[n)} (a\_i\cdot M\_{i,j})\right) \cdot G\_j\\\\\
     &= u\cdot H + \sum\_{j\in[m)}(\vec{a}\cdot \mat{M}^\top\_j) \cdot G\_j\\\\\
 \end{align}
 (This can be generalized into a nicer homorphic property of such Pedersen matrix commitments.)
 
-Third, the prover computes $\vec{a}\cdot \mat{M}$ via $m$ inner-products in $\F$ of size $n$ each (as per Eq. \ref{eq:hyrax-cols}) and gives the verifier an **inner-product argument (IPA)** proof[^BBBplus18] that $z = (\vec{a} \cdot \mat{M})\cdot\vec{b}^\top$.
-The verifier checks the IPA proof against (1) the commitment $D$ to $\vec{a}\cdot{\mat{M}}$ and (2) $\vec{b}$.
+Third, the prover computes $\vec{a}\cdot \mat{M}$ via $m$ inner-products in $\F$ of size $n$ each (as per Eq. \ref{eq:hyrax-cols}).
 
-{: .note}
-The prover proves an inner-product of size only $m$!
+Fourth, the prover gives the verifier a size-$m$ **inner-product argument (IPA)** proof[^BBBplus18] that $z = (\vec{a} \cdot \mat{M})\cdot\vec{b}^\top$.
+
+Lastly, the verifier checks the IPA proof against (1) the commitment $D$ to $\vec{a}\cdot{\mat{M}}$ and (2) $\vec{b}$.
 
 {: .note}
 To commit to MLEs $f\in\MLE{N}$, Hyrax is typically used with $n=m=\sqrt{N}$, yielding sublinear-sized commitments & proofs and sublinear-time verifier.
-The prover time will be dominated by the $\sqrt{N}$-sized IPA proof
+The proving time will be dominated by the $\sqrt{N}$-sized IPA.
 
 ## ZK construction
 
@@ -207,9 +209,8 @@ Compute the opening proof:
  - $\vec{b} \gets (\eq(\y, \j))_{j\in[m)}\in \F^{1\times m}$ 
  - $\A\gets \vec{a}\cdot \mat{M}\in \F^{1\times m}$
  - $u\gets \sum_{i\in[n)} a_i\cdot r_i$ 
-    + This will be the randomness for the commitment to $\A$ homomorphically-reconstructed by the verifier
- - $\prk_\ipa\gets (\G,H)$
- - $\pi \gets \ipa.\mathcal{P}(\prk_\ipa, \A, \vec{b}; u)$
+    + This will be the randomness for the commitment to $\A$, which the verifier will homomorphically-reconstruct
+ - $\pi \gets \ipaProve(\prk_\ipa, \A, \vec{b}, z; u)$ where $\prk_\ipa = (\G,H)$
     - This will be a ZK IPA proof that $z = \A\cdot \vec{b}^\top = \vec{a}\cdot\mat{M}\cdot\vec{b}^\top \bydef f(\x,\y)$
 
 ### ZK opening time
@@ -221,12 +222,15 @@ First, recall that [computing all Lagrange evaluations](/mle#computing-all-lagra
  - $\A$ takes $m \times(\Fmul{n}+\Fadd{n})=\Fmul{nm}+\Fadd{nm}$ because we are inner-producting $\vec{a}$ with every column $\mat{M}_j^\top\in\F^n$.
     + When the matrix is "sparse", i.e., only has $\term{t}\bydef\sum_{j\in[m)} \term{t_j} \ll nm$ non-zero entries, with column $j$ having $\emph{t_j}$ non-zero entries, then this cost lowers to $\sum_{j\in[m)} (\Fmul{t_j}+\Fadd{t_j}) = \Fmul{t} + \Fadd{t}$
  - $\vec{u}$ takes $\Fmul{n}+\Fadd{n}$
- - $\pi$ takes $\term{\ipa.\mathcal{P}(m)}$, which denotes the time of a size-$m$ IPA prover
+ - $\pi$ takes $\term{\ipaProve(m)}$, which denotes the time of a size-$m$ IPA prover
     + e.g., $O(\Gmul{m})$ for Bulletproofs[^BBBplus18]
 
-{: .note}
-Adding time complexities up, we get $\Fmul{(2n + 2m)} + \Fmul{nm} + \Fadd{nm} + \Fmul{n} + \Fadd{n} + \ipa.\mathcal{P}(m)$, 
-which gives a **total ZK opening time** of $\Fmul{(3n + 2m + nm)} + \Fadd{(nm + n)} + \ipa.\mathcal{P}(m)$.
+In **total**, we have:
+\begin{align}
+ &\Fmul{(2n + 2m)} + \Fmul{nm} + \Fadd{nm} + \Fmul{n} + \Fadd{n} + \ipaProve(m)= 
+\\\\\
+= &\Fmul{(3n + 2m + nm)} + \Fadd{(nm + n)} + \ipaProve(m)
+\end{align}
 
 ### $\mathsf{Hyrax}_\mathsf{ZK}.\mathsf{Verify}(\vk, \boldsymbol{C}, (\boldsymbol{x}, \boldsymbol{y}), z; \pi)\rightarrow \\{0,1\\}$
  
@@ -236,18 +240,19 @@ which gives a **total ZK opening time** of $\Fmul{(3n + 2m + nm)} + \Fadd{(nm + 
  - $D \gets \sum_{i\in[n)} a_i\cdot C_i$
     + This will be the Pedersen commitment to $\A\bydef\vec{a}\cdot\mat{M}$
  - $\vk_\ipa\gets (\G,H)$
- - **assert** $\ipa.\mathcal{V}(\vk_\ipa, D, \vec{b}, z; \pi) \equals 1$
+ - **assert** $\ipaVer(\vk_\ipa, D, \vec{b}, z; \pi) \equals 1$
 
 ### ZK verifier time
 
  - $\vec{a}$ takes $\Fmul{2n}$ (recall from [here](/mle#computing-all-lagrange-evaluations-fast))
  - $\vec{b}$ takes $\Fmul{2m}$
  - $D$ takes $\msm{n}$
- - Verfiying $\pi$ takes $\term{\ipa.\mathcal{V}(m)}$, which denotes the time of a size-$m$ IPA verifier
-    + e.g., $O(\msm{m})$ for Bulletproofs[^BBBplus18]
+ - Verfiying $\pi$ takes $\term{\ipaVer(m)}$, which denotes the time of a size-$m$ IPA verifier (e.g., $O(\msm{m})$ for Bulletproofs[^BBBplus18])
 
-{: .note}
-Adding time complexities up, we get a **total verifier time** of $\Fmul{2(n + m)} + \msm{n} + \ipa.\mathcal{V}(m)$.
+In **total**, we have:
+\begin{align}
+\Fmul{2(n + m)} + \msm{n} + \ipaVer(m)
+\end{align}
 
 ### ZK performance
 
@@ -270,8 +275,8 @@ Recall that $\emph{t}\le nm$ denotes the # of non-zero entries in the MLE $f$ or
 |----------------+--------------------+---------------|
 | Scheme         | Open time (random) | Verifier time |
 |----------------|--------------------|---------------|
-| $\hyraxZknm$  | $\Fmul{(3n+2m+t)} + \Fadd{(t+n)} + \ipa.\mathcal{P}(m)$         | $\Fmul{2(n+m)} + \msm{n} + \ipa.\mathcal{V}(m)$ |
-| $\hyraxZkSqN$ | $\Fmul{(5\sqN + t)} + \Fadd{(t + \sqN)} + \ipa.\mathcal{P}(\sqN)$ | $\Fmul{4\sqN} + \msm{\sqN} + \ipa.\mathcal{V}(\sqN)$ |
+| $\hyraxZknm$  | $\Fmul{(3n + 2m + t)} + \Fadd{(t + n)} + \ipaProve(m)$     | $\Fmul{2(n+m)} + \msm{n} + \ipaVer(m)$ |
+| $\hyraxZkSqN$ | $\Fmul{(5\sqN + t)} + \Fadd{(t + \sqN)} + \ipaProve(\sqN)$ | $\Fmul{4\sqN} + \msm{\sqN} + \ipaVer(\sqN)$ |
 |----------------+--------------------+---------------|
 
 #### ZK openings at points on the hypercube
@@ -279,8 +284,8 @@ Recall that $\emph{t}\le nm$ denotes the # of non-zero entries in the MLE $f$ or
 |----------------+-----------------------+---------------|
 | Scheme         | Open time (hypercube) | Verifier time |
 |----------------|-----------------------|---------------|
-| $\hyraxZknm$  | $\ipa.\mathcal{P}(m)$    | $\ipa.\mathcal{V}(m)$ |
-| $\hyraxZkSqN$ | $\ipa.\mathcal{P}(\sqN)$ | $\ipa.\mathcal{V}(\sqN)$ |
+| $\hyraxZknm$  | $\ipaProve(m)$    | $\ipaVer(m)$ |
+| $\hyraxZkSqN$ | $\ipaProve(\sqN)$ | $\ipaVer(\sqN)$ |
 |----------------+-----------------------+---------------|
 
 ## Non-ZK construction
@@ -316,8 +321,7 @@ Compute the opening proof:
  - $\pi\gets \A$
 
 {: .note}
-A more succinct but less computationally-efficient variant would compute an IPA proof instead, arguing that $z = \A\cdot \vec{b}^\top = \vec{a}\cdot\mat{M}\cdot\vec{b}^\top \bydef f(\x,\y)$ as
-$\pi \gets \ipa.\mathcal{P}(\prk_\ipa, \A, \vec{b})$ where $\prk_\ipa = \G$.
+A more succinct but less computationally-efficient variant would compute an IPA proof that $z = \A\cdot \vec{b}^\top$ instead of sending $\A$ over and having the verifier manually check.
 
 ### Non-ZK opening time
 
@@ -327,11 +331,8 @@ $\pi \gets \ipa.\mathcal{P}(\prk_\ipa, \A, \vec{b})$ where $\prk_\ipa = \G$.
  - $\A$ takes $\Fmul{nm}+\Fadd{nm}$ in the worst case, and $\Fmul{t}+\Fadd{t}$ in the sparse case with $\emph{t}$ non-zero entries in $\mat{M}$
  (recall from [here](#zk-opening-time))
 
-{: .note}
-Adding time complexities up, we get a total **non-ZK opening time** of $\Fmul{(2n + 2m + t)} + \Fadd{t}$.
-
-{: .warning}
-If the IPA variant was used, then $\pi$ would add $\emph{\ipa.\mathcal{P}(m)}$.
+In **total**, we have $\Fmul{(2n + 2m + t)} + \Fadd{t}$ proving work for vanilla $\hyrax$.
+The $\hyrax_\ipa$ variant would require extra $\emph{\ipaProve(m)}$ work.
 
 {: .note}
 When $(\x,\y)$ are on the hypercube: 
@@ -349,7 +350,7 @@ The proof remains the same size though.
     + This will be the Pedersen commitment to $\A\bydef\vec{a}\cdot\mat{M}\in\F^{1\times m}$
  - $\A\parse \pi$
  - **assert** $D\equals \A\cdot\vect{G}$ 
- - **assert** $z\equals \A\cdot \vec{b}$
+ - **assert** $z\equals \A\cdot \vec{b}^\top$
 
 {: .note}
 A more succinct but less computationally-efficient variant would verify an IPA proof instead of checking that $\A$ is committed in $D$ and manually re-computing $z$.
@@ -364,12 +365,8 @@ A more succinct but less computationally-efficient variant would verify an IPA p
  - $\Rightarrow$ but these two checks can be combined into a single $\msm{n+m}$ as $\left(\A\cdot (-\G)\right)\cdot \sum_{i\in[n)} a_i \cdot C_i\equals 1$
  - Verifying $z$ is a size-$m$ inner product, so takes $\Fmul{m}+\Fadd{m}$
 
-{: .note}
-Adding time complexities up, we get a **total non-ZK verifier time** of $\Fmul{(2n + 3m)} + \Fadd{m} + \msm{n+m}$.
-
-{: .warning}
-If the IPA variant was used, then $\pi$ would add $\emph{\ipa.\mathcal{V}(m)}$ and remove the size-$m$ MSM for checking $\A$ and the field operations for computing $\A\cdot\vec{b}$.
-The **total non-ZK IPA verifier time** would be $\Fmul{2(n+m)} + \msm{n} + \ipa.\mathcal{V}(m)$.
+In **total**, we have $\Fmul{(2n + 3m)} + \Fadd{m} + \msm{n+m}$ verifier work for vanilla $\hyrax$.
+The $\hyrax_\ipa$ variant would take $\Fmul{2(n+m)} + \msm{n} + \ipaVer(m)$ (because no decommitment check for $D$ and no $\A\cdot\vec{b}^\top$ inner-product).
 
 {: .note}
 When $(\x,\y)$ are on the hypercube: 

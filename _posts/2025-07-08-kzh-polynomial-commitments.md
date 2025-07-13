@@ -72,10 +72,15 @@ $</div> <!-- $_ -->
  - We use $\vect{a}\cdot \G \bydef \sum_{i\in[n)} a_i\cdot G_i$
  - Recall the definition of $\eq(\x,\boldsymbol{b})$ Lagrange polynomials from [here](/spartan#mathsfeqmathbfxmathbfb-lagrange-polynomials)
 {% include prelims-time-complexities.md %}
+ - It is useful to understand [Hyrax](/hyrax), which KZH is highly-related to.
 
-### Hyrax
+<!-- ## Overview
 
-It is useful to understand [Hyrax](/hyrax), which KZH is highly-related to.
+TODO: add; will be very similar to hyrax
+TODO: explain that the \sqrt{N} comitments can be "pre-verified" ahead of time (may be useful for Spartan?)
+TODO: rewrite eq() polys as \vec{a} and \vec{b}
+
+-->
 
 ## $\mathsf{KZH}_2$ construction
 
@@ -296,8 +301,8 @@ The second check is correct because:
 \sum_{j\in[m)} f_\x(\j) \cdot A_j &\equals \sum_{i\in[n)}\eq(\x, \i) \cdot D_i\Leftrightarrow\\\\\
 \alpha \sum_{j\in[m)} f(\x, \j) \cdot G_j &\equals \sum_{i\in[n)}\eq(\x, \i) \cdot \left( \sum_{j\in [m)} f(\i,\j) \cdot A_j \right)\Leftrightarrow\\\\\
 \alpha \sum_{j\in[m)} \sum_{i\in[n)} \eq(\x,\i) f(\i, \j) \cdot G_j &\equals \sum_{i\in[n)}\eq(\x, \i) \cdot \alpha \left( \sum_{j\in [m)} f(\i,\j) \cdot G_j \right)\Leftrightarrow\\\\\
-\alpha \sum_{i\in[n)} \sum_{i\in[m)} \eq(\x,\i) f(\i, \j) \cdot G_j &\equals \alpha \sum_{i\in[n)}\eq(\x, \i) \cdot \left( \sum_{j\in [m)} f(\i,\j) \cdot G_j \right)\Leftrightarrow\\\\\
-\alpha \sum_{i\in[n)} \sum_{i\in[m)} \eq(\x,\i) f(\i, \j) \cdot G_j &\goddamnequals \alpha \sum_{i\in[n)} \sum_{j\in [m)} \eq(\x, \i) f(\i,\j) \cdot G_j
+\alpha \sum_{i\in[n)} \sum_{j\in[m)} \eq(\x,\i) f(\i, \j) \cdot G_j &\equals \alpha \sum_{i\in[n)}\eq(\x, \i) \cdot \left( \sum_{j\in [m)} f(\i,\j) \cdot G_j \right)\Leftrightarrow\\\\\
+\alpha \sum_{i\in[n)} \sum_{j\in[m)} \eq(\x,\i) f(\i, \j) \cdot G_j &\goddamnequals \alpha \sum_{i\in[n)} \sum_{j\in [m)} \eq(\x, \i) f(\i,\j) \cdot G_j
 \end{align}
 
 ### Efficient instantiation
@@ -317,7 +322,6 @@ $</div> <!-- $ -->
 Include vanilla $\kzhK(d)$, explaining eval proofs for hypercube and for non-hypercube points and how $\kzh{\log_2{N}}$ yields $2\log_2{N}$-sized proofs.
 Include the optimized variant of $\kzhK(d)$.
 
-{: .info}
 We use $\kzhTwo^{n,m}$ to refer to the $\kzhTwo$ scheme set up with [$\kzhSetup{2}(1^\lambda, \log_2{n},\log_2{m})$](#mathsfkzh_2mathsfsetup1lambda-numu-rightarrow-mathsfvkmathsfck)
 We use $\kzhTwoSqr$ to refer to $\kzhTwo^{\sqN,\sqN}$.
 
