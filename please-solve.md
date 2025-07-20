@@ -25,7 +25,7 @@ The state of the art construction is by Papamanthou et al.[^PSTY13] from lattice
 However, its efficiency is not great.
 In particular, when parameterized to instantiate a depth-256 prefix tree, it is likely very inefficient.
 (Some performance numbers were initialy explored in an earlier version of Edrax[^CPZ18].)
-There are other constructions from pairings, but they are bounded-depth: for a tree of depth $\ell$ a trusted setup of size $2^\ell$ needs to be performed[^TCZplus20]$^,$[^SCPplus22].
+There are other constructions from pairings (e.g., [AMTs](/amt), [Hyperproofs](/hyperproofs)), but they are _bounded-depth_: for a tree of depth $\ell$ a trusted setup of size $2^\ell$ needs to be performed.
 
 Applications:
  1. Homomorphic and maintainable authenticated dictionaries for authenticating blockchain validation state
