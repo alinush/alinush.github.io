@@ -27,7 +27,7 @@ Specifically, the _Lagrange interpolation_ formula says that:
 \end{align}
 
 This formula is intimidating at first, but there's a very simple intuition behind it.
-The key idea is that $\lagr_i(X)$ is defined so that it has two properties:
+The key idea is that each **Lagrange polynomial** $\lagr_i(X)$ is defined so that it has two properties:
 
  1. $\lagr_i(x_i) = 1,\forall i\in[n]$ 
  2. $\lagr_i(x_j) = 0,\forall j \in [n]\setminus\\{i\\}$
@@ -39,7 +39,7 @@ You can actually convince yourself that $\lagr_i(X)$ has these properties by plu
 Clearly, $\mathcal{L}_2(x_2) = 1$ and $\mathcal{L}_2(x_3) = 0$.
 
 {: .warning}
-**Important:** The $\lagr_i(X)$ polynomials are dependent on the set of $x_i$'s only (and thus on $n$)! Specifically each $\lagr_i(X)$ has degree $n-1$ and has a root at each $x_j$ when $j\ne i$!
+**Important:** The $\lagr_i(X)$ Lagrange polynomials are dependent on the set of $x_i$'s only (and thus on $n$)! Specifically each $\lagr_i(X)$ has degree $n-1$ and has a root at each $x_j$ when $j\ne i$!
 In this sense, a better notation for them would be $\lagr_i^{[x_i, n]}(X)$ or $\lagr_i^{[n]}(X)$ to indicate this dependence.
 
 ## Example: Interpolating a polynomial from three evaluations
@@ -84,5 +84,49 @@ If done naively, interpolating $\phi(X)$ using the Lagrange formula in Equation 
 
 However, there are known techniques for computing $\phi(X)$ in $O(n\log^2{n})$ time.
 We described **part of** these techniques in a [previous blog post](/threshold-bls#our-quasilinear-time-bls-threshold-signature-aggregation), but for the full techniques please refer to the _"Modern Computer Algebra"_ book[^vG13ModernCh10].
+
+## Roots of unity
+
+Let:
+\begin{align}
+A(X) &= \prod_{j\in[n]} (X - x_j)\\\\\
+A'(X) &= \sum_{i\in[n]} \prod_{j\in[n],j\ne i} (X - x_j)
+\end{align}
+
+{: .note}
+See [this post](/threshold-bls#step-2-computing-all-denominators-leftrightarrow-evaluate-some-polynomial-at-t-points) for how the derivative $A'(X)$ of $A(X)$ is derived.
+
+Then, the Lagrange polynomials from Eq. \ref{eq:lagrange-formula} can be re-written as:
+\begin{align}
+\lagr_i(X)
+ &= \prod_{j\in[n],j\ne i} \frac{X-x_j}{x_i-x_j}\\\\\ 
+ &= \frac{\prod_{j\in[n],j\ne i} X-x_j}{\prod_{j\in[n],j\ne i} x_i-x_j} 
+  = \frac{\left(\prod_{j\in[n]} X-x_j\right) / (X-x_i)}{\prod_{j\in[n],j\ne i} x_i-x_j}\\\\\ 
+ &= \frac{A(X)/(X-x_i)}{A'(x_i)}
+  = \emph{\frac{A(X)}{(X-x_i)\cdot A'(x_i)}}
+\end{align}
+
+Let $\omega\in \F$ denote a primitive $n$th root of unity, where $\F$ is a finite field.
+
+Now, consider interpolating a polynomial $\phi$ such that $\phi(\omega^i)=y_i,\forall i\in[n)\bydef[0, n-1]$.
+In other words, the $x_i$'s are $\omega^i$'s.
+
+Then, we can use a simpler expression for the Lagrange polynomials.
+First, since $\omega$ is a primitive $n$th root of unity, then the polynomial $A(X)$ simplifies to $X^n - 1$.
+Second, its derivative $A'(X)$ has a much simpler formula: $nX^{n-1}$.
+\begin{align}
+\lagr_i(X)
+ &= \frac{A(X)}{(X-\omega^i)\cdot A'(\omega^i)}\\\\\
+ &= \frac{X^n - 1}{(X-\omega^i)\cdot n \omega^{i(n-1)}}\\\\\
+ &= \frac{X^n - 1}{(X-\omega^i)\cdot n \omega^{in-i}}\\\\\
+ &= \frac{X^n - 1}{(X-\omega^i)\cdot n \omega^{-i}}
+  = \emph{\frac{(X^n - 1)\cdot \omega^i}{(X-\omega^i)\cdot n}}\\\\\
+\end{align}
+As a result, the interpolation formula can be rewritten as:
+\begin{align}
+\phi(X) 
+    &= \sum_{i\in[n]} y_i \frac{(X^n - 1)\cdot \omega^i}{(X-\omega^i)\cdot n}
+     = \emph{\frac{X^n - 1}{n} \sum_{i\in[n]} y_i \frac{\omega^i}{X-\omega^i}}\\\\\
+\end{align}
 
 {% include refs.md %}
