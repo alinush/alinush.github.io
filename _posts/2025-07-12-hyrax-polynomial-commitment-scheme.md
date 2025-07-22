@@ -39,7 +39,7 @@ Hyrax has _information-theoretic hiding_ commitments and _honest verifier zero-k
 \def\hyraxZkSetup{\hyraxZk.\mathsf{Setup}}
 \def\ipa{\mathsf{IPA}}
 \def\ipaProve{\mathcal{P}_\ipa}
-\def\ipaVer{\mathcal{P}_\ipa}
+\def\ipaVer{\mathcal{V}_\ipa}
 \def\r{\vect{r}}
 \def\sqN{\sqrt{N}}
 $</div> <!-- $ -->
