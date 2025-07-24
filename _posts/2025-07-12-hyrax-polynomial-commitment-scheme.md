@@ -68,7 +68,7 @@ $</div> <!-- $ -->
 The main idea in Hyrax is that, for a **row** vector $\term{a}\in\F^{1\times n}$, a **column** vector $\term{b}^\top \in \F^m$ and a matrix $\term{\mat{A}}\in \F^{n\times m}$, you can express a dot product as:
 \begin{align}
     \label{eq:hyrax}
-    \sum_{i\in[n)} \sum_{j\in[m)} a_i \cdot M_{i,j} \cdot b_j
+    \sum_{i\in[n), j\in[m)} a_i \cdot M_{i,j} \cdot b_j
     = 
     \emph{\vec{a}\cdot \mat{M}\cdot \vec{b}^\top}
     &\bydef
@@ -130,7 +130,7 @@ where $\term{\mat{M}_i}\in\F^{1\times m}$ is the $i$th row in $\mat{M}$ and $\te
         \cdots +
         \left(a_{n-1} \sum_{j\in[m)} M_{n-1,j} \cdot b_j\right)\\\
     &\goddamnequals
-        \sum_{i\in[n)} \sum_{j\in[m)} a_i \cdot M_{i,j} \cdot b_j
+        \sum_{i\in[n), j\in[m)} a_i \cdot M_{i,j} \cdot b_j
 \end{align}
 </details>
 
@@ -147,10 +147,10 @@ This yields an $n$-sized commitment $\C\bydef(C_i)_{i\in[n)}$.
 An opening proof for $z\equals f(\x,\y)$, can be framed through the lens of Eq. \ref{eq:hyrax}:
 \begin{align}
 z 
-    &=\sum_{i\in[n)}\sum_{j\in[m)} \eq(\x, \i) \cdot \eq(\y,\j) \cdot f(\i,\j)\\\\\
-    &=\sum_{i\in[n)}\sum_{j\in[m)} \eq(\x, \i) \cdot M_{i,j} \cdot \eq(\y,\j)\\\\\
+    &=\sum_{i\in[n), j\in[m)} \eq(\x, \i) \cdot \eq(\y,\j) \cdot f(\i,\j)\\\\\
+    &=\sum_{i\in[n), j\in[m)} \eq(\x, \i) \cdot M_{i,j} \cdot \eq(\y,\j)\\\\\
     &\bydef 
-    \sum_{i\in[n)}\sum_{j\in[m)} a_i \cdot M_{i,j} \cdot b_j 
+    \sum_{i\in[n), j\in[m)} a_i \cdot M_{i,j} \cdot b_j 
     =\vec{a}\cdot\mat{M}\cdot\vec{b}^\top
 \end{align}
 where $\vec{a} \bydef (\eq(\x,\i))\_{i\in[n)}$ and $\vec{b} \bydef (\eq(\y, \j))_{j\in[m)}$.
