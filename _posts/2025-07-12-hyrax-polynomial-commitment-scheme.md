@@ -11,11 +11,22 @@ permalink: hyrax
 # TODO: uncomment
 #sidebar:
 #    nav: cryptomat
-#article_header:
-#  type: cover
-#  image:
-#    src: /pictures/.jpg
+article_header:
+  type: cover
+  image:
+    src: /pictures/aMb.png
 ---
+
+<!-- LaTeX for header picture
+\begin{bmatrix}a_1 & a_2 & a_3 & a_4\end{bmatrix} 
+\begin{pmatrix}
+  \cdot & \cdot & \cdot & \cdot & \cdot\\
+  \cdot & \cdot & \cdot & \cdot & \cdot\\
+  \cdot & \cdot & \cdot & \cdot & \cdot\\
+  \cdot & \cdot & \cdot & \cdot & \cdot\\
+\end{pmatrix}
+\begin{bmatrix}b_1\\ b_2\\ b_3 \\ b_4\\ b_5\end{bmatrix}
+-->
 
 {: .info}
 **tl;dr:** Hyrax is polynomial commitment scheme (PCS) with (1) sublinear commitment-and-proof sizes and (2) sublinear opening-and-verification times.
