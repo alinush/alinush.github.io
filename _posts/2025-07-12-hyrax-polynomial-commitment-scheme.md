@@ -70,7 +70,7 @@ The main idea in Hyrax is that, for a **row** vector $\term{a}\in\F^{1\times n}$
     \label{eq:hyrax}
     \sum_{i\in[n)} \sum_{j\in[m)} a_i \cdot M_{i,j} \cdot b_j
     = 
-    \vec{a}\cdot \mat{M}\cdot \vec{b}^\top
+    \emph{\vec{a}\cdot \mat{M}\cdot \vec{b}^\top}
     &\bydef
     \underbrace{\vec{a}}\_{\in\F^{1\times n}}
     \cdot \underbrace{\begin{bmatrix}
