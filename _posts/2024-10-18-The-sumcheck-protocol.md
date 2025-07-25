@@ -67,7 +67,7 @@ While the sumcheck protocol inherently must require $\P$ to compute $O(2^\mu)$ p
 <table style="border-collapse: collapse; border: 1px solid grey; table-layout: fixed;">
 <tr>
   <td style="border: none; text-align: left;">
-    <b style="font-size: 1.3em;"><u>The sumcheck protocol</u></b> 
+    <b style="font-size: 1.3em;">The sumcheck protocol</b> 
     <ul>
         <li><em>Initialization</em>:</li>
         <ul>
