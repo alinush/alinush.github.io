@@ -28,7 +28,7 @@ article_header:
 <!-- See notes here about HTML blocks: https://kramdown.gettalong.org/syntax.html#html-blocks -->
 
 {: .info}
-**tl;dr:** Motorcycles are drugs.
+**tl;dr:** [Motorcycles are drugs](https://motorcyclesaredrugs.com/).
 
 <strike>Alin might buy a motorcycle and risk the few, still-functioning limbs in his body.
 Someone should convince him not to do this.</strike>

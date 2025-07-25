@@ -6,8 +6,8 @@ title: The multivariate sumcheck protocol
 date: 2025-06-20 20:45:59
 #published: false
 permalink: sumcheck
-sidebar:
-    nav: cryptomat
+#sidebar:
+#    nav: cryptomat
 #article_header:
 #  type: cover
 #  image:
@@ -62,7 +62,44 @@ Both $\P$ and $\V$ have access to the same $\term{\mu}$-variate polynomial $f$, 
 
 While the sumcheck protocol inherently must require $\P$ to compute $O(2^\mu)$ polynomial evaluations of $f$ it **surprisingly** only requires $\V$ to compute **a single** _random_ polynomial evaluation of $f$, together with some other sumcheck verification work linear in the number of variables (which is typically sublinear in the number of coefficients of the polynomial).
 
-## Overview
+## At a glance
+
+<table style="border-collapse: collapse; border: 1px solid grey; table-layout: fixed;">
+<tr>
+  <td style="border: none; text-align: left;">
+    <b style="font-size: 1.3em;"><u>The sumcheck protocol</u></b> 
+    <ul>
+        <li><em>Initialization</em>:</li>
+        <ul>
+            <li>Prover $\P$ claims $\emph{H} = \sum_{\b\in\binMu} \emph{f}(b_1, b_2,\ldots, b_\mu)$.</li>
+            <li>Verifier $\V$ has an $\term{\oracle{f}}$ oracle, the degrees $\term{d_j} \bydef \deg_j(f)$ of each variable of $f$, and starts with $\term{g_0(X)} = H$.</li>
+        </ul>
+        <li><em>Round $1 \le \term{j} \le \mu-1$</em>:</li>
+        <ul>
+            <li>$\P$ sends $\term{g_j(X)} \gets \underbrace{\sum_{b_{j+1} \in \bin} \cdots \sum_{b_\mu \in \bin}}_{\mu-j\ \text{variables}} f(r_1, \ldots, r_{j-1}, X, b_{j+1}, \ldots,b_\mu)$ to $\V$</li>
+            <li>
+                $\V$ <b>asserts</b> that
+                $d_j \equals \deg(g_j)$ <u>and</u> that
+                $g_{j-1}(r_{j-1}) \equals g_j(0) + g_j(1)$ (as it should, by definition of $g_j$)
+            </li>
+            <li>$\V$ sends public randomness $\term{r_j}\randget\F$ to $\P$</li>
+        </ul>
+        <li><em>Last round $\mu$</em>:</li>
+        <ul>
+            <li>$\P$ sends $\term{g_\mu(X)} \gets f(r_1, \ldots, r_{\mu-1}, X)$ to $\V$</li>
+            <li>
+                $\V$ <b>asserts</b> that
+                $d_\mu \equals \deg(g_\mu)$ <u>and</u> that
+                $g_{\mu-1}(r_{\mu-1}) \equals g_\mu(0) + g_\mu(1)$ (as it should)
+            </li>
+            <li>$\V$ picks $\term{r_\mu}\randget\F$ and <b>asserts</b> that $g_\mu(r_\mu) \equals f(r_1,\ldots,r_\mu)$.</li>
+        </ul>
+    </ul>
+  </td>
+</tr>
+</table>
+
+## Deep dive
 
 The **key idea** is: reduce a sumcheck of size $\mu$ to a sumcheck of size $\mu-1$ by replacing the current variable $X_1$ with a random value $r_1\in \F$ from $\V$.
 
