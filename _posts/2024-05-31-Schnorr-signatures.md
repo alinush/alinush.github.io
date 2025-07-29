@@ -30,6 +30,8 @@ In 2010, once the patent expired, Schnorr became more popular.
 Much like ECDSA, (some variants of) Schnorr signatures support [public key recovery](#pubkey-recovery), which Bitcoin leverages in P2PKH mode[^P2PKH] to keep TXN signatures smaller.
 (Bitcoin has leveraged P2PKH since the beginning, it seems[^P2PKH-always].)
 
+Later on, the Bitcoin community proposed[^BIP-340] and adopted an EdDSA-like variant of Schnorr signatures over the secp256k1 curve.
+
 ## Preliminaries
 
  - We assume a group $\Gr$ of prime order $p$ and a finite field $\Zp$
@@ -322,6 +324,7 @@ Thanks to [Michael Straka](https://x.com/mstrakastrak) for pointing me to (1) th
 
 ---
 
+[^bip-340]: [Schnorr Signatures for secp256k1](https://en.bitcoin.it/wiki/BIP_0340#Default_Signing), Peter Wuille, Jonas Nick, Tim ruffing, 2020
 [^clamping]: [An Explainer On Ed25519 Clamping](https://www.jcraige.com/an-explainer-on-ed25519-clamping), Jake Craige
 [^devalence]: [It's 255:19AM. Do you know what your validation criteria are?](https://hdevalence.ca/blog/2020-10-04-its-25519am), Henry de Valence
 [^P2PKH]: [ECDSA verification, P2PKH uncompressed address](https://en.bitcoin.it/wiki/Message_signing#ECDSA_verification.2C_P2PKH_uncompressed_address)

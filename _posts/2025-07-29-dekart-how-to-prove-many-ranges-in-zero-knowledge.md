@@ -1,0 +1,251 @@
+---
+tags:
+title: "DeKART: How to prove many ranges in zero-knowledge"
+#date: 2020-11-05 20:45:59
+#published: false
+permalink: dekart
+#sidebar:
+#    nav: cryptomat
+#article_header:
+#  type: cover
+#  image:
+#    src: /pictures/.jpg
+---
+
+{: .info}
+**tl;dr:** [Dan](https://crypto.stanford.edu/~dabo/), [Kamilla](https://x.com/nazirkamilla), Alin, [Rex](https://x.com/rex1fernando) and [Trisha](https://x.com/TrishaCDatta) came up with a blazing-fast batched ZK range proof for KZG-like committed vectors of values.
+
+<!--more-->
+
+{% include pairings.md %}
+{% include fiat-shamir.md %}
+
+<!-- Here you can define LaTeX macros -->
+<div style="display: none;">$
+\def\correlate#1{\mathsf{CorrelatedRandomness}(#1)}
+\def\dekart{\mathsf{DeKART}}
+\def\dekartUni{\dekart^\mathsf{FFT}}
+\def\dekartMulti{\dekart^{\vec{X}}}
+\def\H{\mathbb{H}}
+$</div> <!-- $ -->
+
+## Introduction
+
+In a very short blog post[^Borg20], Borgeaud describes a very simple range proof for a single value $z$, which we summarize [here](borgeauds-unbatched-range-proof).
+In this blog post, accompanying our academic paper[^BDFplus25e], we observe that Borgeaud's elegant protocol **very efficiently** extends to batch-proving **many values**[^BDFplus25e].
+
+## Preliminaries
+
+ - Univariate polynomials
+ - MLEs?
+ - $[\ell)$
+ - $\F$
+ - $r\randget \F$
+ - $\one{a}$ and $\two{b}$ and $\three{c}$ additive group notation
+{% include prelims-fiat-shamir.md %}
+
+### Borgeaud's unbatched range proof
+
+The **verifier** has a homomorphic commitment (e.g., a [KZG commitment](/kzg)) to a polynomial $\term{f(X)}$ that encodes a value $\term{z}$ as:
+\begin{align}
+f(X) = \term{r}X + z
+\end{align}
+where $\emph{r}\randget \F$ is a blinder. Note that $f(0)=z$.
+The **prover** wants to prove that $z$ is an $\term{\ell}$-bit value: i.e., that $z\in[0,2^\ell)$.
+
+Prover commits to each bit $\term{z_j}$ of $z\bydef \sum_{j\in[\ell)} z_j 2^j$ via $\ell$ blinded polynomials:
+\begin{align}
+\term{f_j(X)} = \term{r_j} X + z_j
+\end{align}
+where $\emph{r_j}\randget \F$ is a blinder. Note that $f_j(0)=z_j$. As a result, we have:
+\begin{align}
+\label{eq:f}
+f(X) = \sum_{j\in[\ell)} f_j(X) 2^j
+\end{align}
+
+For Eq. \ref{eq:f} to hold, the prover picks $r_j$’s randomly but correlates them such that:
+\begin{align}
+r = \sum_{j\in[\ell)} r_j 2^j
+\end{align}
+We denote this by $(r_j)_{j\in[\ell)}\randget \term{\correlate{r, \ell}}$.
+
+Note that, if the prover gives the $f_j$ commitments to the verifier, then the verifier can combine them homomorphically and obtain's $f$’s commitment.
+This assures the verifier that $z=\sum_{j\in[\ell)} z_j 2^j$.
+Thus the prover's remaing work is to prove that $z_j\in\\{0,1\\},\forall j\in[\ell)$.
+
+The key observation is that $z_j\in\\{0,1\\}$ can be reduced to a claim about the $f_j$'s:
+\begin{align}
+z_j\in\\{0,1\\} \Leftrightarrow\\\\\
+f_j(0) \in \\{0,1\\} \Leftrightarrow\\\\\
+\begin{cases}
+f_j(0) = 0 \lor{}\\\\\
+f_j(0) = 1\\\\\
+\end{cases}\Leftrightarrow\\\\\
+\begin{cases}
+    (X - 0) \mid f_j(X) - 0 \lor {}\\\\\
+    (X - 0) \mid f_j(X) - 1\\\\\
+\end{cases}\Leftrightarrow\\\\\
+\emph{X \mid f_j(X) (f_j(X) - 1)}
+%\Leftrightarrow\\\\\ 
+\end{align}
+The last claim can be proved by showing there exists a quotient polynomial $\term{h_j(X)}$ such that:
+\begin{align}
+X\cdot h_j(X) = f_j(X)\left(f_j(X) - 1\right) 
+\end{align}
+
+If the verifier has KZG commitments to the $f_j$'s, the verifier can be given a KZG commitment to $h_j$ and use a pairing-check to enforce the above relation:
+\begin{align}
+\pair{\one{h_j(\tau)}}{\two{\tau}} &= \pair{\one{f_j(\tau)}}{\two{f_j(\tau)}-\two{1}},\forall j\in[\ell)
+\end{align}
+(Note that $\term{\tau}$ denotes the KZG trapdoor here.)
+For this to work, the verifier must verify "duality" of the $\Gr_1$ and $\Gr_2$ commitments to $f_j$:
+\begin{align}
+\label{eq:duality}
+\pair{\one{f_j(\tau)}}{\two{1}} &= \pair{\one{1}}{\two{f_j(\tau)}},\forall j\in[\ell)
+\end{align}
+
+## A hypothetical univariate batched ZK range proof
+
+We observe that the $f$ and $f_j$ polynomials could be re-defined to store the bits of **$n$ different values** $\term{z_0, \ldots, z_{n-1}}$ without affecting the proof size and verifier time too much!
+
+Firt, we store all the $n$ values in the polynomial $\emph{f}$, now of degree $n$:
+\begin{align}
+\label{eq:f-batched}
+f(\omega^i) &= z_i,\forall i\in[n)\\\\\
+f(\omega^n) &= r
+\end{align}
+where $r\randget \F$ is a blinding factor as before.
+
+Let $\term{z_{i,j}}$ denote the $j$th bit of the $i$th value $z_i \bydef \sum_{i\in[\ell)} z_{i,j} 2^j$.
+Second, we store the $j$th bit of all the values in the $\emph{f_j}$ polynomials, now of degree $n$ too:
+\begin{align}
+f_j(\omega^i) &= z_{i,j},\forall i\in[n)\\\\\
+f_j(\omega^n) &= r_j
+\end{align}
+where $(r_j)_{j\in[\ell)} \randget \correlate{r, \ell}$ are randomly picked as before and $\term{\omega}$ is a $(n+1)$th primitive root of unity in $\F$. 
+
+{: .note}
+We will typically (and a bit awkwardly) require that $n \gets 2^k-1$, since many fields $\F$ of interest have prime order $p$ where $p-1$ is divisible by $2^k\bydef n+1$ and thus will admit an $(n+1)$th primitive root of unity. e.g., [BLS12-381](/pairings#bls12-381-performance) admits a root of unity for $k=32$.
+
+Importantly, note that Eq. \ref{eq:f} still holds for these (redefined) $f$ and $f_j$ polynomials!
+\begin{align}
+f(X) = \sum_{j\in[\ell)} f_j(X) 2^j
+\end{align}
+
+Let $\term{\H}\bydef\\{\omega^0,\omega^1,\ldots,\omega^n\\}$ denote all $(n+1)$th roots of unity.
+The key observation is that proving that $f_j$ stores bits is equivalent to:
+\begin{align}
+f_j(X) \in \\{0,1\\}, \forall X\in \H\setminus\\{\omega^n\\}\Leftrightarrow
+\\\\\
+\left. \frac{X^{n+1} - 1}{X - \omega^n}\ \middle|\ f_j(X)\left(f_j(X) - 1\right) \right.
+\end{align}
+This, in turn, is equivalent to proving there exists a quotient polynomial $\term{h_j(X)}$ of degree $2n - n = n$ such that:
+\begin{align}
+\frac{X^{n+1} - 1}{X - \omega^n} \cdot h_j(X) = f_j(X)\left(f_j(X) - 1\right)
+%\Leftrightarrow
+%(X^{n+1} - 1)\cdot h_j(X) = (X-\omega^n)f_j(X)\left(f_j(X) - 1\right)
+\end{align}
+The verifier would how to check, for each $j\in[\ell)$ that:
+\begin{align}
+\label{eq:hj-inefficient}
+\pair{\one{h_j(\tau)}}{\two{\frac{\tau^{n+1} - 1}{\tau - \omega^n}}} &= \pair{\one{f_j(\tau)}}{\two{f_j(\tau)}-\two{1}},\forall j\in[\ell)
+\end{align}
+As before, for this to work, the verifier would also verify "duality" of the $\Gr_1$ and $\Gr_2$ commitments to $f_j$ as per Eq. \ref{eq:duality}.
+
+For performance, the verifier could verify pick a random challenge $\term{\beta}\randget\F$ and combine all the checks from Eq. \ref{eq:hj-inefficient} into one:
+\begin{align}
+\label{eq:hj}
+\pair{\underbrace{\sum_{j\in[\ell)} \beta^j \cdot \one{h_j(\tau)}}\_{\term{D}}}{\two{\frac{\tau^{n+1} - 1}{\tau - \omega^n}}}
+ &= 
+\sum_{j\in[\ell)} \pair{\beta^j \cdot \one{f_j(\tau)}}{\two{f_j(\tau)}-\two{1}}
+\end{align}
+(A similar trick can be applied for the duality check as well from Eq. \ref{eq:duality}.
+Furthermore, everything can be combined into a single multi-pairing.)
+
+Next, instead of asking for the individual $h_j$ commitments, the verifier will send $\beta$ to the prover and expect to receive just the commitment $\emph{D}$ to the random linear combination of the $h_j$'s.
+This reduces proof size and makes the check in Eq. \ref{eq:hj} slightly faster:
+\begin{align}
+\label{eq:hj-efficient}
+\pair{D}{\two{\frac{\tau^{n+1} - 1}{\tau - \omega^n}}}
+ &= 
+\sum_{j\in[\ell)} \pair{\beta^j \cdot \one{f_j(\tau)}}{\two{f_j(\tau)}-\two{1}}
+\end{align}
+This is the bulk of a KZG-based **univariate** DeKART, which we describe formally below.
+
+{: .note}
+DeKART easily generalizes to other homomorphic commitment schemes (e.g., Bulletproofs[^BBBplus18]).
+With some effort, it will also work for non-homomorphic ones (e.g., FRI[^BBHR18FRI]).
+
+### $\mathsf{Dekart}^\mathsf{FFT}.\mathsf{Setup}(1^\lambda, n)\rightarrow \mathsf{prk},\mathsf{vk}$
+
+Generate powers of $\tau$ up to and including $\tau^n$: the highest degree of a committed polynomial is $n$.
+(Note that even the vanishing polynomial $(X^{n+1}-1)/(X-\omega^n)$ will have degree $n$.)
+
+ - $\tau\randget\F$
+ - $\term{G_i}\gets \one{\tau^i},\forall i\in[0,n]$ 
+ - $\omega \gets$ a primitive $(n+1)$th root of unity in $\F$
+ - $\H\bydef\\{\omega^0,\omega^1,\ldots,\omega^n\\}$
+
+Let $\term{\ell_i(X)} \bydef \prod_{j\in\H, j\ne i} \frac{X - \omega^j}{\omega^i - \omega^j}$ denote the $i$th [Lagrange polynomial](/lagrange-interpolation), for $i\in[0, n]$.
+
+ - $\term{L_i}\gets \one{\ell_i(\tau)},\forall i\in[0,n]$
+ - $\term{\tilde{L}_i}\gets \two{\ell_i(\tau)},\forall i\in[0,n]$
+ - $\term{\tilde{V}} \gets \two{\frac{\tau^{n+1} - 1}{\tau-\omega^n}}$
+    + Note that this has degree $n$
+
+Return the public parameters:
+ - $\vk\gets (\two{\tau},\tilde{V})$
+ - $\prk\gets \left((L_i)\_{i\in[0,n]},(\tilde{L}\_i)_{i\in[0,n]}\right)$
+
+### $\mathsf{Dekart}^\mathsf{FFT}.\mathsf{Commit}(\mathsf{prk},z_0,\ldots,z_{n-1}; r)\rightarrow C$
+
+This is just a [KZG commitment](/kzg) to the vector $\vec{z}\bydef [z_0,\ldots,z_{n-1}]$:
+
+ - $C \gets r\cdot L_n + \sum_{i\in[n)} z_i \cdot L_i = r\cdot\one{\ell_n(\tau)} + \sum_{i\in[n)} z_i \cdot \one{\ell_i(\tau)} \bydef \one{\emph{f}(\tau)}$ (as per Eq. \ref{eq:f-batched})
+
+### $\mathsf{Dekart}^\mathsf{FFT}.\mathsf{Prove}^{\mathcal{FS}(\cdot)}(\mathsf{prk}, C, \ell; z_0,\ldots,z_{n-1}, r)\rightarrow \pi$
+
+Let $\emph{z_{i,j}}$ denote the $j$th bit of each $z_i\in[0,2^\ell)$.
+
+ - $\left((L_i)\_{i\in[0,n]},(\tilde{L}\_i)_{i\in[0,n]}\right)\parse\prk$
+ - $(r_j)_{j\in[n)} \randget \correlate{r, \ell}$
+ - $C_j \gets r_j \cdot L_n + \sum_{i\in[n)} z_{i,j}\cdot L_i = r_j\cdot \one{\ell_n(\tau)} + \sum_{i\in[n)} z_{i,j}\cdot\one{\ell_i(\tau)} \bydef \one{\emph{f_j}(\tau)},\forall j\in[\ell)$
+ - $\tilde{C}\_j \gets r_j \cdot \tilde{L}\_n + \sum_{i\in[n)} z_{i,j}\cdot \tilde{L}_i = \ldots \bydef \two{\emph{f_j}(\tau)},\forall j\in[\ell)$
+    - **Note:** The $2\ell$ MSMs here can be optimized carefully since the scalars are either 0 or 1.
+ - add $(C, \ell, (C_j, \tilde{C}\_j)_{j\in[\ell})$ to the $\FS$ transcript
+ - $h_j(X)\gets \frac{f_j(X)(f_j(X) - 1)}{(X^{n+1} - 1) / (X-\omega^n)} = \frac{(X-\omega^n)f_j(X)(f_j(X) - 1)}{X^{n+1} - 1},\forall j \in[\ell)$
+ - $\beta \fsget \F$
+ - $\term{h(X)}\gets \sum_{j\in[\ell)} \beta^j \cdot h_j(X)$ 
+ - $D \gets \sum_{i\in[0,n]} h(\omega^i) \cdot L_i \bydef \one{\emph{h}(\tau)}$
+    + **Note:** We discuss below how to interpolate these efficiently!
+ - $\term{\pi}\gets \left(D, (C_j,\tilde{C}\_j)_{j\in[\ell)}\right)$
+
+#### Proof size and prover time
+
+**Proof size** is _trivial_: $(\ell+1)\Gr_1 + \ell \Gr_2$ group elements $\Rightarrow$ independent of the batch size $n$, but linear in the bit-width $\ell$ of the values.
+
+{: .todo}
+**Prover time**!
+
+#### Computing $h(X)$
+
+We borrow differentiation tricks from [Groth16](/groth16#computing-hx).
+
+#### Verifier time
+
+{: .todo}
+**Verifier time**!
+
+{: .todo}
+Breakdown of performance from our experiments.
+Table comparing with Bulletproofs on Ed25519.
+Mention that the extra $\Gr_2$ commitment cost and the lack of ZKness proof $\Rightarrow$ sumcheck-based variant in our paper[^BDFplus25e]!
+
+
+## References
+
+[^Borg20]: [Membership proofs from polynomial commitments](https://solvable.group/posts/membership-proofs-from-polynomial-commitments/), William Borgeaud, 2020
+
+For cited works, see below 👇👇
+
+{% include refs.md %}

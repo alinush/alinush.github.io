@@ -1,0 +1,149 @@
+Please build me two Markdown tables for the following size-n multiexp experiments, with one table for G_1 experiments and one table for G_2.
+
+The columns should be:
+
+$\log_2{n}$  | Total time   | Time / element   | Speedup over single exp.   | Speedup vs prev row.  
+
+Note:
+
+The "Total time" column should include values with "user-friendly" time units: e.g., include 1.4 seconds rather than 1,400 ms
+
+The "speedup over single exp." column should compute how much faster the "time/element" value is over a naive exponentiation: for G_1 it's 73 microseconds and for G_2 it's 136 microseconds. The first row should not have a value here.
+
+The "speed up over previous row" column should compute how much faster this row's time/element value is than the previous row's. The first row should not have a value here.
+
+Here's the data from my criterion benchmarks. Remember to output in Markdown format:
+```
+crypto/g1_multiexp/1    time:   [72.436 µs 73.546 µs 76.363 µs]
+                        thrpt:  [13.095 Kelem/s 13.597 Kelem/s 13.805 Kelem/s]
+crypto/g2_multiexp/1    time:   [137.84 µs 138.47 µs 139.11 µs]
+                        thrpt:  [7.1885 Kelem/s 7.2217 Kelem/s 7.2550 Kelem/s]
+crypto/g1_multiexp/2    time:   [140.72 µs 142.99 µs 144.74 µs]
+                        thrpt:  [13.818 Kelem/s 13.987 Kelem/s 14.212 Kelem/s]
+crypto/g2_multiexp/2    time:   [310.42 µs 310.91 µs 311.15 µs]
+                        thrpt:  [6.4279 Kelem/s 6.4327 Kelem/s 6.4429 Kelem/s]
+crypto/g1_multiexp/4    time:   [204.57 µs 206.86 µs 210.94 µs]
+                        thrpt:  [18.963 Kelem/s 19.337 Kelem/s 19.553 Kelem/s]
+crypto/g2_multiexp/4    time:   [478.71 µs 481.56 µs 483.52 µs]
+                        thrpt:  [8.2726 Kelem/s 8.3063 Kelem/s 8.3557 Kelem/s]
+crypto/g1_multiexp/8    time:   [333.18 µs 334.42 µs 336.34 µs]
+                        thrpt:  [23.786 Kelem/s 23.922 Kelem/s 24.011 Kelem/s]
+crypto/g2_multiexp/8    time:   [796.25 µs 803.29 µs 809.17 µs]
+                        thrpt:  [9.8867 Kelem/s 9.9590 Kelem/s 10.047 Kelem/s]
+crypto/g1_multiexp/16   time:   [694.19 µs 700.69 µs 706.72 µs]
+                        thrpt:  [22.640 Kelem/s 22.835 Kelem/s 23.048 Kelem/s]
+crypto/g2_multiexp/16   time:   [1.3268 ms 1.3400 ms 1.3556 ms]
+                        thrpt:  [11.803 Kelem/s 11.940 Kelem/s 12.059 Kelem/s]
+crypto/g1_multiexp/32   time:   [270.84 µs 273.83 µs 276.13 µs]
+                        thrpt:  [115.89 Kelem/s 116.86 Kelem/s 118.15 Kelem/s]
+crypto/g2_multiexp/32   time:   [588.48 µs 594.61 µs 599.31 µs]
+                        thrpt:  [53.395 Kelem/s 53.816 Kelem/s 54.377 Kelem/s]
+crypto/g1_multiexp/64   time:   [367.65 µs 389.79 µs 424.95 µs]
+                        thrpt:  [150.61 Kelem/s 164.19 Kelem/s 174.08 Kelem/s]
+crypto/g2_multiexp/64   time:   [797.28 µs 805.34 µs 809.88 µs]
+                        thrpt:  [79.025 Kelem/s 79.469 Kelem/s 80.273 Kelem/s]
+crypto/g1_multiexp/128  time:   [535.27 µs 540.48 µs 543.36 µs]
+                        thrpt:  [235.57 Kelem/s 236.83 Kelem/s 239.13 Kelem/s]
+crypto/g2_multiexp/128  time:   [1.1841 ms 1.2712 ms 1.3647 ms]
+                        thrpt:  [93.793 Kelem/s 100.69 Kelem/s 108.10 Kelem/s]
+crypto/g1_multiexp/256  time:   [796.51 µs 843.50 µs 917.17 µs]
+                        thrpt:  [279.12 Kelem/s 303.50 Kelem/s 321.40 Kelem/s]
+crypto/g2_multiexp/256  time:   [1.9383 ms 1.9534 ms 1.9776 ms]
+                        thrpt:  [129.45 Kelem/s 131.05 Kelem/s 132.08 Kelem/s]
+crypto/g1_multiexp/512  time:   [1.3104 ms 1.4287 ms 1.6614 ms]
+                        thrpt:  [308.17 Kelem/s 358.37 Kelem/s 390.71 Kelem/s]
+crypto/g2_multiexp/512  time:   [3.2411 ms 3.5457 ms 4.0254 ms]
+                        thrpt:  [127.19 Kelem/s 144.40 Kelem/s 157.97 Kelem/s]
+crypto/g1_multiexp/1024 time:   [2.2066 ms 2.2201 ms 2.2286 ms]
+                        thrpt:  [459.48 Kelem/s 461.25 Kelem/s 464.05 Kelem/s]
+
+crypto/g2_multiexp/1024 time:   [5.9480 ms 6.0672 ms 6.2046 ms]
+                        thrpt:  [165.04 Kelem/s 168.78 Kelem/s 172.16 Kelem/s]
+
+crypto/g1_multiexp/2048 time:   [3.8030 ms 3.8253 ms 3.8374 ms]
+                        thrpt:  [533.69 Kelem/s 535.39 Kelem/s 538.52 Kelem/s]
+crypto/g2_multiexp/2048 time:   [9.7203 ms 9.9590 ms 10.251 ms]
+                        thrpt:  [199.79 Kelem/s 205.64 Kelem/s 210.69 Kelem/s]
+crypto/g1_multiexp/4096 time:   [5.8006 ms 6.0413 ms 6.3021 ms]
+                        thrpt:  [649.94 Kelem/s 678.00 Kelem/s 706.14 Kelem/s]
+
+crypto/g2_multiexp/4096 time:   [15.741 ms 16.286 ms 16.876 ms]
+                        thrpt:  [242.71 Kelem/s 251.51 Kelem/s 260.22 Kelem/s]
+crypto/g1_multiexp/8192 time:   [11.704 ms 12.661 ms 13.777 ms]
+                        thrpt:  [594.63 Kelem/s 647.03 Kelem/s 699.90 Kelem/s]
+
+crypto/g2_multiexp/8192 time:   [28.985 ms 30.099 ms 31.374 ms]
+                        thrpt:  [261.11 Kelem/s 272.17 Kelem/s 282.63 Kelem/s]
+
+crypto/g1_multiexp/16384
+                        time:   [20.378 ms 21.981 ms 24.267 ms]
+                        thrpt:  [675.15 Kelem/s 745.37 Kelem/s 804.00 Kelem/s]
+
+crypto/g2_multiexp/16384
+                        time:   [56.350 ms 57.111 ms 57.688 ms]
+                        thrpt:  [284.01 Kelem/s 286.88 Kelem/s 290.75 Kelem/s]
+
+crypto/g1_multiexp/32768
+                        time:   [37.489 ms 38.773 ms 40.123 ms]
+                        thrpt:  [816.70 Kelem/s 845.13 Kelem/s 874.07 Kelem/s]
+
+crypto/g2_multiexp/32768
+                        time:   [92.398 ms 93.751 ms 95.224 ms]
+                        thrpt:  [344.12 Kelem/s 349.52 Kelem/s 354.64 Kelem/s]
+
+crypto/g1_multiexp/65536
+                        time:   [66.901 ms 69.666 ms 72.671 ms]
+                        thrpt:  [901.82 Kelem/s 940.71 Kelem/s 979.60 Kelem/s]
+
+crypto/g2_multiexp/65536
+                        time:   [172.79 ms 179.13 ms 186.05 ms]
+                        thrpt:  [352.24 Kelem/s 365.85 Kelem/s 379.29 Kelem/s]
+
+crypto/g1_multiexp/131072
+                        time:   [122.10 ms 123.28 ms 124.45 ms]
+                        thrpt:  [1.0532 Melem/s 1.0632 Melem/s 1.0735 Melem/s]
+
+crypto/g2_multiexp/131072
+                        time:   [317.03 ms 321.09 ms 325.75 ms]
+                        thrpt:  [402.37 Kelem/s 408.20 Kelem/s 413.44 Kelem/s]
+
+crypto/g1_multiexp/262144
+                        time:   [230.73 ms 232.56 ms 234.45 ms]
+                        thrpt:  [1.1181 Melem/s 1.1272 Melem/s 1.1361 Melem/s]
+
+crypto/g2_multiexp/262144
+                        time:   [604.47 ms 610.78 ms 618.87 ms]
+                        thrpt:  [423.59 Kelem/s 429.20 Kelem/s 433.68 Kelem/s]
+
+crypto/g1_multiexp/524288
+                        time:   [453.03 ms 454.43 ms 456.31 ms]
+                        thrpt:  [1.1490 Melem/s 1.1537 Melem/s 1.1573 Melem/s]
+
+crypto/g2_multiexp/524288
+                        time:   [1.1935 s 1.2048 s 1.2244 s]
+                        thrpt:  [428.21 Kelem/s 435.17 Kelem/s 439.27 Kelem/s]
+
+crypto/g1_multiexp/1048576
+                        time:   [846.29 ms 852.31 ms 862.17 ms]
+                        thrpt:  [1.2162 Melem/s 1.2303 Melem/s 1.2390 Melem/s]
+
+crypto/g2_multiexp/1048576
+                        time:   [2.2491 s 2.2733 s 2.2961 s]
+                        thrpt:  [456.68 Kelem/s 461.26 Kelem/s 466.21 Kelem/s]
+
+crypto/g1_multiexp/2097152
+                        time:   [1.6810 s 1.7220 s 1.7777 s]
+                        thrpt:  [1.1797 Melem/s 1.2179 Melem/s 1.2475 Melem/s]
+
+crypto/g2_multiexp/2097152
+                        time:   [4.5131 s 4.6038 s 4.6989 s]
+                        thrpt:  [446.31 Kelem/s 455.52 Kelem/s 464.68 Kelem/s]
+```
+
+Note: Run benches with;
+
+ cargo bench -- _multiexp/ 2&>1 | tee -a benches.log
+
+Note: filter out most useless stuff in the 'cargo bench' output with:
+
+ cat bench.log | grep -v '^Warning' | grep -v 'Warming up' | grep -v 'Collecting' | grep -v '^Found' | grep -v 'high mild' | grep -v 'Analyzing' | grep -v 'high severe' | grep -v '^Benchmarking' | grep -v 'low mild' >filtered.txt

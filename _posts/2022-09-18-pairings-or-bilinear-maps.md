@@ -408,7 +408,31 @@ Therefore, a pairing takes around 486 microseconds (i.e., the sum of the two).
 {: .info}
 The Miller loop is actually two steps: (1) a G2 point "preparation", which takes 62 microseconds and (2) the actual loop which takes 148 microseconds.
 
-#### Exponentiation times
+#### Group multiplication times
+
+<!--
+alinush@Aptos-MacBook [~/repos/blstrs/benches] (master *) $ cargo bench -- _add
+
+test bls12_381::ec::g1::bench_g1_add_assign            ... bench:         571.84 ns/iter (+/- 15.35)
+test bls12_381::ec::g1::bench_g1_add_assign_mixed      ... bench:         443.40 ns/iter (+/- 20.77)
+test bls12_381::ec::g2::bench_g2_add_assign            ... bench:       1,505.08 ns/iter (+/- 80.49)
+test bls12_381::ec::g2::bench_g2_add_assign_mixed      ... bench:       1,170.71 ns/iter (+/- 12.09)
+test bls12_381::ec::gt::bench_gt_add_assign            ... bench:       1,617.53 ns/iter (+/- 44.66)
+test bls12_381::scalar::bench_scalar_add_assign        ... bench:           3.06 ns/iter (+/- 0.01)
+
+ -->
+
+ - $\Gr_1$ multiplications (recall we are using multiplicative notation for groups, not additive notation)
+   - Normal: 565 nanoseconds (when both points are in projective $(X, Y)$ coordinates)
+   - Mixed: 438 nanoseconds (when first point is in projective coordinates, second is in affine $(X, Y, Z)$ coordinates)
+       - Faster, because saves one projective-to-affine conversion
+ - $\Gr_2$ multiplications
+   - Normal: 1,484 nanoseconds
+   - Mixed: 1,095 nanoseconds
+ - $\Gr_T$ multiplications
+   - 1,617 nanoseconds
+
+#### Group exponentiation times
 
 {: .warning}
 The $\Gr_T$ microbenchmarks were done by slightly-modifying the `blstrs` benchmarking code [here](https://github.com/filecoin-project/blstrs/blob/e70aff6505fb6f87f9a13e409c080995bd0f244e/benches/bls12_381/ec.rs#L10).
@@ -489,12 +513,6 @@ The $\Gr_T$ microbenchmarks were done by slightly-modifying the `blstrs` benchma
 
 #### Multi-exponentiations
 
-This is a well-known optimization that I'm including for completeness.
-
-Specifically, many libraries allow you to compute a product $\prod_{0 < i < k} \left(g_i\right)^{x_i}$ of $k$ exponentiations much faster than individually computing the $k$ exponentiations and aggregating their product.
-
-For example, [blstrs](https://github.com/filecoin-project/blstrs) seems to be incredibly fast in this regard:
-
 <!--
 running 4 tests
 test bls12_381::bench_g1_multi_exp                     ... bench:     760,554 ns/iter (+/- 47,355)
@@ -503,12 +521,64 @@ test bls12_381::bench_g2_multi_exp                     ... bench:   1,876,416 ns
 test bls12_381::bench_g2_multi_exp_naive               ... bench:  35,272,720 ns/iter (+/- 266,279)
 -->
 
- - a size-256 multi-exponentiation in $\Gr_1$
-    + takes 760 microseconds in total, or 3 microseconds per exponentiation!
-    - done naively, it would take 18.5 milliseconds in total, which is $24\times$ longer
- - a size-256 multi-exponentiation in $\Gr_2$
-    - takes 1.88 milliseconds in total, or 7.33 microseconds per exponentiation!
-    - done naively, it would take 35.3 milliseconds, which is $18.8\times$ longer
+This is a well-known optimization that I'm including for completeness.
+
+Specifically, many libraries allow you to compute a product $\prod_{0 < i < k} \left(g_i\right)^{x_i}$ of $k$ exponentiations much faster than individually computing the $k$ exponentiations and aggregating their product.
+For example, [blstrs](https://github.com/filecoin-project/blstrs) seems to be incredibly fast in this regard.
+
+For $\Gr_1$ multiexps:
+
+| $\log_2{n}$ | Total time | Time / element | Speedup over single exp. | Speedup vs prev row. |
+|-------------|-------------|----------------|---------------------------|------------------------|
+| 0           | 73.55 µs    | 73.55 µs       |                           |                        |
+| 1           | 142.99 µs   | 71.50 µs       | 1.02×                     | 1.03×                  |
+| 2           | 206.86 µs   | 51.72 µs       | 1.41×                     | 1.38×                  |
+| 3           | 334.42 µs   | 41.80 µs       | 1.75×                     | 1.24×                  |
+| 4           | 700.69 µs   | 43.79 µs       | 1.67×                     | 0.95×                  |
+| 5           | 273.83 µs   | 8.56 µs        | 8.53×                     | 5.12×                  |
+| 6           | 389.79 µs   | 6.09 µs        | 11.99×                    | 1.41×                  |
+| 7           | 540.48 µs   | 4.22 µs        | 17.29×                    | 1.44×                  |
+| 8           | 843.50 µs   | 3.29 µs        | 22.16×                    | 1.28×                  |
+| 9           | 1.43 ms     | 2.79 µs        | 26.16×                    | 1.18×                  |
+| 10          | 2.22 ms     | 2.17 µs        | 33.67×                    | 1.29×                  |
+| 11          | 3.83 ms     | 1.87 µs        | 39.08×                    | 1.16×                  |
+| 12          | 6.04 ms     | 1.47 µs        | 49.49×                    | 1.27×                  |
+| 13          | 12.66 ms    | 1.55 µs        | 47.23×                    | 0.95×                  |
+| 14          | 21.98 ms    | 1.34 µs        | 54.41×                    | 1.15×                  |
+| 15          | 38.77 ms    | 1.18 µs        | 61.69×                    | 1.13×                  |
+| 16          | 69.67 ms    | 1.06 µs        | 68.67×                    | 1.11×                  |
+| 17          | 123.28 ms   | 0.94 µs        | 77.61×                    | 1.13×                  |
+| 18          | 232.56 ms   | 0.89 µs        | 82.29×                    | 1.06×                  |
+| 19          | 454.43 ms   | 0.87 µs        | 84.22×                    | 1.02×                  |
+| 20          | 852.31 ms   | 0.81 µs        | 89.81×                    | 1.07×                  |
+| 21          | 1.72 s      | 0.82 µs        | 88.90×                    | 0.99×                  |
+
+For $\Gr_2$ multiexps:
+
+| $\log_2{n}$ | Total time | Time / element | Speedup over single exp. | Speedup vs prev row. |
+|-------------|-------------|----------------|---------------------------|------------------------|
+| 0           | 138.47 µs   | 138.47 µs      |                           |                        |
+| 1           | 310.91 µs   | 155.46 µs      | 0.87×                     | 0.89×                  |
+| 2           | 481.56 µs   | 120.39 µs      | 1.13×                     | 1.29×                  |
+| 3           | 803.29 µs   | 100.41 µs      | 1.35×                     | 1.20×                  |
+| 4           | 1.34 ms     | 83.75 µs       | 1.62×                     | 1.20×                  |
+| 5           | 594.61 µs   | 18.58 µs       | 7.32×                     | 4.51×                  |
+| 6           | 805.34 µs   | 12.58 µs       | 10.81×                    | 1.48×                  |
+| 7           | 1.27 ms     | 9.94 µs        | 13.68×                    | 1.27×                  |
+| 8           | 1.95 ms     | 7.63 µs        | 17.83×                    | 1.30×                  |
+| 9           | 3.55 ms     | 6.93 µs        | 19.63×                    | 1.10×                  |
+| 10          | 6.07 ms     | 5.92 µs        | 22.97×                    | 1.17×                  |
+| 11          | 9.96 ms     | 4.87 µs        | 27.95×                    | 1.22×                  |
+| 12          | 16.29 ms    | 3.98 µs        | 34.17×                    | 1.22×                  |
+| 13          | 30.10 ms    | 3.68 µs        | 36.92×                    | 1.08×                  |
+| 14          | 57.11 ms    | 3.49 µs        | 38.97×                    | 1.05×                  |
+| 15          | 93.75 ms    | 2.86 µs        | 47.59×                    | 1.22×                  |
+| 16          | 179.13 ms   | 2.73 µs        | 49.89×                    | 1.05×                  |
+| 17          | 321.09 ms   | 2.45 µs        | 55.47×                    | 1.11×                  |
+| 18          | 610.78 ms   | 2.33 µs        | 58.30×                    | 1.05×                  |
+| 19          | 1.20 s      | 2.29 µs        | 59.29×                    | 1.02×                  |
+| 20          | 2.27 s      | 2.17 µs        | 62.62×                    | 1.06×                  |
+| 21          | 4.60 s      | 2.20 µs        | 61.89×                    | 0.99×                  |
 
 #### Group element sizes
 
@@ -519,29 +589,17 @@ test bls12_381::bench_g2_multi_exp_naive               ... bench:  35,272,720 ns
  - $\Gr_T$ elements are 12$\times$ larger
     + In general, for a pairing-friendly curve with _embedding degree_ $k$, they are $k$ times larger
 
+
+#### Field operations
+
+ - 2.65 ns / addition in $\F$
+ - 14.08 ns / multiplication in $\F$
+
+{: .note}
+Multiplication is 5.3x slower than addition in $\F$.
+(To rerun these benchmarks, see [this PR](https://github.com/aptos-labs/aptos-core/pull/17177))
+
 #### Other operations
-
-<!--
-alinush@Aptos-MacBook [~/repos/blstrs/benches] (master *) $ cargo bench -- _add
-
-test bls12_381::ec::g1::bench_g1_add_assign            ... bench:         571.84 ns/iter (+/- 15.35)
-test bls12_381::ec::g1::bench_g1_add_assign_mixed      ... bench:         443.40 ns/iter (+/- 20.77)
-test bls12_381::ec::g2::bench_g2_add_assign            ... bench:       1,505.08 ns/iter (+/- 80.49)
-test bls12_381::ec::g2::bench_g2_add_assign_mixed      ... bench:       1,170.71 ns/iter (+/- 12.09)
-test bls12_381::ec::gt::bench_gt_add_assign            ... bench:       1,617.53 ns/iter (+/- 44.66)
-test bls12_381::scalar::bench_scalar_add_assign        ... bench:           3.06 ns/iter (+/- 0.01)
-
- -->
-
- - $\Gr_1$ multiplications (recall we are using multiplicative notation for groups, not additive notation)
-   - Normal: 565 nanoseconds (when both points are in projective $(X, Y)$ coordinates)
-   - Mixed: 438 nanoseconds (when first point is in projective coordinates, second is in affine $(X, Y, Z)$ coordinates)
-       - Faster, because saves one projective-to-affine conversion
- - $\Gr_2$ multiplications
-   - Normal: 1,484 nanoseconds
-   - Mixed: 1,095 nanoseconds
- - $\Gr_T$ multiplications
-   - 1,617 nanoseconds
  - Hashing to $\Gr_1$ takes around 50 microseconds (not accounting for the extra time required to hash down larger messages using SHA2-256)
 
 #### Switching between $\Gr_1$ and $\Gr_2$
