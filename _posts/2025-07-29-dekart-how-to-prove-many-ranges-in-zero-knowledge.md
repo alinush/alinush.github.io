@@ -214,10 +214,12 @@ Let $\emph{z_{i,j}}$ denote the $j$th bit of each $z_i\in[0,2^\ell)$.
     - **Note:** The $2\ell$ MSMs here can be optimized carefully since the scalars are either 0 or 1.
  - add $(C, \ell, (C_j, \tilde{C}\_j)_{j\in[\ell})$ to the $\FS$ transcript
  - $h_j(X)\gets \frac{f_j(X)(f_j(X) - 1)}{(X^{n+1} - 1) / (X-\omega^n)} = \frac{(X-\omega^n)f_j(X)(f_j(X) - 1)}{X^{n+1} - 1},\forall j \in[\ell)$
+    + **Note:** Numerator is degree $2n$ and denominator is degree $n \Rightarrow h_j(X)$ is degree $n$
  - $\beta \fsget \F$
- - $\term{h(X)}\gets \sum_{j\in[\ell)} \beta^j \cdot h_j(X)$ 
+ - $\term{h(X)}\gets \sum_{j\in[\ell)} \beta^j \cdot h_j(X) = \frac{\sum_{j\in[\ell)}\beta^j (X-\omega^n)f_j(X)(f_j(X) - 1)}{X^{n+1} - 1}$ 
+    - **Note:** Of degree $n$
  - $D \gets \sum_{i\in[0,n]} h(\omega^i) \cdot L_i \bydef \one{\emph{h}(\tau)}$
-    + **Note:** We discuss below how to interpolate these efficiently!
+    + **Note:** We [discuss below](#computing-hx) how to interpolate these efficiently!
  - $\term{\pi}\gets \left(D, (C_j,\tilde{C}\_j)_{j\in[\ell)}\right)$
 
 #### Proof size and prover time
@@ -226,10 +228,6 @@ Let $\emph{z_{i,j}}$ denote the $j$th bit of each $z_i\in[0,2^\ell)$.
 
 {: .todo}
 **Prover time**!
-
-#### Computing $h(X)$
-
-We borrow differentiation tricks from [Groth16](/groth16#computing-hx).
 
 #### Verifier time
 
@@ -240,6 +238,62 @@ We borrow differentiation tricks from [Groth16](/groth16#computing-hx).
 Breakdown of performance from our experiments.
 Table comparing with Bulletproofs on Ed25519.
 Mention that the extra $\Gr_2$ commitment cost and the lack of ZKness proof $\Rightarrow$ sumcheck-based variant in our paper[^BDFplus25e]!
+
+## Appendix
+
+### Computing $h(X)$
+
+We borrow differentiation tricks from [Groth16](/groth16#computing-hx) to ensure we only do size-$(n+1)$ FFTs.
+(Otherwise, we'd have to use size-$2(n+1)$ FFTs to compute the $\ell$ different $f_j(X)(f_j(X) - 1)$ multiplications.)
+
+Our goal will be to obtain all $(h(\omega^i))_{i\in[0,n]}$ evaluations and then do a size-$(n+1)$ multiexp to commit to it and obtain $\emph{D}$.
+
+Recall that:
+\begin{align}
+h(X)
+    &= \frac{\sum_{j\in[\ell)}\beta^j \cdot \overbrace{(X-\omega^n)f_j(X)(f_j(X) - 1)}^{\term{N_j(X)}}}{X^{n+1} - 1}
+    \\\\\
+    &\bydef \frac{\sum_{j\in[\ell)} \beta^j \cdot \emph{N_j(X)}}{X^{n+1} - 1}
+\Leftrightarrow\\\\\
+\Leftrightarrow
+h(X) (X^{n+1} - 1)
+    &=
+\sum_{j\in[\ell)} \beta^j \cdot N_j(X)
+\end{align}
+Differentiating the above expression:
+\begin{align}
+h'(X)(X^{n+1} - 1) + h(X) (n+1)X^n &= \sum_{j\in[\ell)} \beta^j \cdot N_j'(X)\Leftrightarrow\\\\\
+\Leftrightarrow
+h(X) &= \frac{\sum_{j\in[\ell)} \beta^j \cdot N_j'(X) - h'(X)(X^{n+1} - 1)}{(n+1)X^n}
+\end{align}
+This reduces computing all $h(\omega^i)$'s to computing all $N_j'(\omega^i)$'s:
+\begin{align}
+\emph{h(\omega^i)} &= \frac{\sum_{j\in[\ell)} \beta^j \cdot N_j'(\omega^i)}{(n+1)\omega^{in}}
+\end{align}
+Our challenge is to compute all the $N_j'(\omega^i)$'s efficiently.
+Recall that:
+\begin{align}
+N_j(X) &\bydef (X-\omega^n)f_j(X)(f_j(X) - 1)
+\end{align}
+Differentiating it yields:
+\begin{align}
+N_j'(X) &= (X-\omega^n)' \cdot \left(f_j(X)(f_j(X) - 1)\right) + (X-\omega^n) \left(f_j(X)(f_j(X) - 1)\right)'\Leftrightarrow\\\\\
+N_j'(X) &= f_j(X)(f_j(X) - 1) + (X-\omega^n) \left(f_j(X)^2 - f_j(X)\right)'\Leftrightarrow\\\\\
+N_j'(X) &= f_j(X)(f_j(X) - 1) + (X-\omega^n) \left(2f_j(X)f'_j(X) - f_j'(X)\right)\Leftrightarrow\\\\\
+N_j'(X) &= f_j(X)(f_j(X) - 1) + (X-\omega^n) f_j'(X)\left(2f_j(X)-1\right)
+\end{align}
+This reduces computing all $N_j'(\omega^i)$'s to computing all $f_j'(\omega^i)$'s:
+\begin{align}
+N_j'(\omega^i) &= f_j(\omega^i)(f_j(\omega^i) - 1) + (\omega^i-\omega^n) f_j'(\omega^i)\left(2f_j(\omega^i)-1\right)\Rightarrow\\\\\
+\emph{N_j'(\omega^i)} &= (\omega^i-\omega^n) f_j'(\omega^i)\left(2f_j(\omega^i)-1\right)
+\end{align}
+Finally, we can compute all $f_j'(\omega^i)$'s using:
+ 1. A size-$(n+1)$ inverse FFT to obtain $f_j$'s coefficients in monomial basis 
+ 2. Obtaining the coefficients of the derivative $f_j'$ using $n$ $\F$ multiplications
+ 3. A size-$(n+1)$ FFT to compute all $f_j'(\omega^i)$'s.
+
+Unfortunately, the steps above must be done $\ell$ times, once per $f_j$.
+(It would be nice to avoid this, but it's unclear to me how.)
 
 
 ## References
