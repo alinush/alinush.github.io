@@ -785,6 +785,10 @@ Thanks to Justin Thaler, Kabir Peshawaria and Guru Vamsi Policharla for explaini
  - [Brakedown PCS](https://xn--2-umb.com/24/brakedown/)
  - [WHIR PCS](https://xn--2-umb.com/24/whir/)
 
+## Conclusion
+
+Your thoughts or comments are welcome on [this thread](https://x.com/alinush407/status/1933978751324262671).
+
 ## References
 
 For cited works, see below 👇👇

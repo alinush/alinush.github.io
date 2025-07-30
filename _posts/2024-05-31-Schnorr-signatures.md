@@ -318,7 +318,7 @@ Discuss some state-of-the-art threshold Schnorr protocols (e.g., Yehuda's[^Lind2
 [Trail of Bits](https://www.zkdocs.com/docs/zkdocs/zero-knowledge-protocols/schnorr/) suggests additional checks: $R\ne 1\_\Gr$, the pubkey $\pk\ne 1\_\Gr$, and $s\ne 0$. But I am not sure what they achieve beyond preventing the protocol to run for $\pk=g^0$.
 For any other PK whose SK is not known, the protocol remains sound without these checks.
 
-## Acknowledgements
+## Conclusion and acknowledgements
 
 Thanks to [Michael Straka](https://x.com/mstrakastrak) for pointing me to (1) the journal version of Schnorr's paper which described potential class group or elliptic curve variants of the scheme and (2) the analysis of "short" Schnorr signatures by Brown[^Brow15e].
 

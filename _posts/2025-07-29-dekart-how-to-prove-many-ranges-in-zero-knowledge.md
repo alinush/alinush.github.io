@@ -311,6 +311,10 @@ The previous section's [univariate construction](#univariate-batched-zk-range-pr
 
 As a result, our paper[^BDFplus25e] focuses on a [multilinear-based](/mle) variant of DeKART that uses a zero-knowledge variant of the [sumcheck protocol](/sumcheck).
 
+## Conclusion
+
+Your thoughts or comments are welcome on [this thread](https://x.com/alinush407/status/1950600327066980693).
+
 ## Appendix
 
 ### Computing $h(X)$

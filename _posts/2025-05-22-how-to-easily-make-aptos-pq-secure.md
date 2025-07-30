@@ -89,12 +89,15 @@ Of course, this post does not address two fascinating questions:
         + We'd predict the date by which we'd need to be ready,
         + We'd allocate all resources to ensure we are ready.
 
-## Acknowledgements
+## Conclusion and acknowledgements
 
 Thanks to Dan Boneh for encouraging me to write this.
+
+Your thoughts or comments are welcome on [this thread](https://x.com/alinush407/status/1927441785204146622).
 
 ## References
 
 For cited works, see below 👇👇
 
 {% include refs.md %}
+

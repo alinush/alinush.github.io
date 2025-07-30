@@ -425,6 +425,9 @@ Recall that $\emph{t}\le nm$ denotes the # of non-zero entries in the MLE $f$ or
 | $\hyraxSqN$    | $\bot$                | $\msm{\sqN}$  |
 |----------------+-----------------------+---------------|
 
+## Conclusion
+
+Your thoughts or comments are welcome on [this thread](https://x.com/alinush407/status/1947662884961477017).
 
 ## References
 
