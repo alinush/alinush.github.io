@@ -242,7 +242,7 @@ Let $\emph{z_{i,j}}$ denote the $j$th bit of each $z_i\in[0,2^\ell)$.
  - $\ell n$ $\Gr_2$ $\textcolor{green}{\text{additions}}$ for each $\tilde{c}_j, j\in[\ell)$
  - $\ell$ $\Gr_2$ scalar multiplications to blind each $\tilde{c}_j$ with $r_j$
  - $O(\ell n\log{n})$ $\F$ multiplications to interpolate $h(X)$
-    + See [break down here](#time-complexity).
+    + Surprisingly, these $\textcolor{red}{\text{dominate}}$: see [break down here](#time-complexity).
  - 1 size-$(n+1)$ L-MSM for committing to $h(X)$
 
 ### $\mathsf{Dekart}^\mathsf{FFT}.\mathsf{Verify}^{\mathcal{FS}(\cdot)}(\mathsf{vk}, C, \ell; \pi)\rightarrow \\{0,1\\}$
@@ -276,7 +276,7 @@ The verifier must do:
 ### Concrete performance
 
 We implemented $\dekartUni$ in Rust over BLS12-381 using `blstrs`.
-Our code stands to be further optimized and will be open source soon.
+Our code will be open source soon.
 Until then, here are some benchmarks comparing it with Bulletproofs over a **faster** curve: Ristretto255.
 
 | Scheme       | $\ell$ | $n$    | Proving time (ms) | Verify time (ms) | Total time (ms) | Proof size (bytes) |
@@ -286,19 +286,30 @@ Until then, here are some benchmarks comparing it with Bulletproofs over a **fas
 | Bulletproofs | 32-bit | $2032$ | $\bad{5,539}$     | $\bad{411}$      | $\bad{5,950}$   | $\good{1,312}$     |
 | $\dekartUni$ | 32-bit | $2032$ | $\good{121}$      | $\good{6.9}$     | $\good{128}$    | $\bad{4,672}$      |
 
-In terms where most of the time is spent in $\dekartUni$, here's a breakdown for $\ell=16$ and $n=2^{12}-1=4095$ (run on a different machine):
+In terms where most of the time is spent in $\dekartUni$, here's a breakdown for $\ell=16$ and $n=2^{12}-1=4095$:
 ```
- 39.47 ms: All 16 deg-4095 f_j G_1 commitments
-           + Each C_j took: 2.467122ms
-101.62 ms: All 16 deg-4095 f_j G_2 commitments
-           + Each \hat{C}_j took: 6.351356ms
- 37.03 ms: All 16 deg-4095 h_j(X) coeffs
-  1.07 ms: h(X) as a size-16 linear combination
-  6.77 ms: deg-4095 h(X) commitment
+n = 4095, ell = 16
+  420.00 mus: Chunking 4095 z_i's into bits
+     \--> Cumulative time: 420.917µs
+   11.00 mus: Correlating 16 pieces of randomness
+     \--> Cumulative time: 432.042µs
+ 1400.00 mus: Convert 65520 z_{i,j} bits to scalars
+     \--> Cumulative time: 1.832709ms
+39473.00 mus: All 16 deg-4095 f_j G_1 commitments
+     \--> Cumulative time: 41.306667ms
+        + Each c_j took: 2.467122ms
+101621.00 mus: All 16 deg-4095 f_j G_2 commitments
+     \--> Cumulative time: 142.928375ms
+        + Each \hat{c}_j took: 6.351356ms
+37034.00 mus: All 16 deg-4095 h_j(X) coeffs
+     \--> Cumulative time: 179.962541ms
+    2.00 mus: 16 Fiat-Shamir challenges
+     \--> Cumulative time: 179.965458ms
+ 1068.00 mus: h(X) as a size-16 linear combination of h_j(X)'s
+     \--> Cumulative time: 181.034291ms
+ 6774.00 mus: deg-4095 h(X) commitment
+     \--> Cumulative time: 187.808666ms
 ```
-
-{: .warning}
-The time to commit to the $f_j(X)$'s currently $\bad{dominates}$ but this can be sped up significantly using pre-computation since the scalars are small and the bases $L_i$ and $\tilde{L_i}$ are fixed.
 
 ## Multilinear batched ZK range proof
 
@@ -307,7 +318,7 @@ The previous section's [univariate construction](#univariate-batched-zk-range-pr
 1. It currently **lacks a simulator** to show that $\dekartUni$ is ZK.
     + With some effort such a simulator should exist, perhaps with a few changes in the construction or with extra cryptographic assumptions.
 1. It incurs extra $\Gr_2$ commitment cost (for the $\tilde{C}_j$ commitments to the $f_j$'s)
-1. The FFT work for interpolating $h(X)$ is a significant chunk of the prover time
+1. The FFT work for interpolating $h(X)$ dominates the prover time
 
 As a result, our paper[^BDFplus25e] focuses on a [multilinear-based](/mle) variant of DeKART that uses a zero-knowledge variant of the [sumcheck protocol](/sumcheck).
 
