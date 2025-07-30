@@ -220,7 +220,7 @@ Let $\emph{z_{i,j}}$ denote the $j$th bit of each $z_i\in[0,2^\ell)$.
  - $(r_j)_{j\in[n)} \randget \correlate{r, \ell}$
  - $C_j \gets r_j \cdot L_n + \sum_{i\in[n)} z_{i,j}\cdot L_i = r_j\cdot \one{\ell_n(\tau)} + \sum_{i\in[n)} z_{i,j}\cdot\one{\ell_i(\tau)} \bydef \one{\emph{f_j}(\tau)},\forall j\in[\ell)$
  - $\tilde{C}\_j \gets r_j \cdot \tilde{L}\_n + \sum_{i\in[n)} z_{i,j}\cdot \tilde{L}_i = \ldots \bydef \two{\emph{f_j}(\tau)},\forall j\in[\ell)$
-    - **Note:** The $2\ell$ MSMs here can be optimized carefully since the scalars are either 0 or 1.
+    - **Note:** The $2\ell$ size-$(n+1)$ MSMs here can be carefully-optimized: the scalars are either 0 or 1.
  - add $(\vk, C, \ell, (C_j, \tilde{C}\_j)_{j\in[\ell})$ to the $\FS$ transcript
  - $h_j(X)\gets \frac{f_j(X)(f_j(X) - 1)}{(X^{n+1} - 1) / (X-\omega^n)} = \frac{(X-\omega^n)f_j(X)(f_j(X) - 1)}{X^{n+1} - 1},\forall j \in[\ell)$
     + **Note:** Numerator is degree $2n$ and denominator is degree $n \Rightarrow h_j(X)$ is degree $n$
