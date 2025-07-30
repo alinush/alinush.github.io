@@ -526,6 +526,10 @@ This is a well-known optimization that I'm including for completeness.
 Specifically, many libraries allow you to compute a product $\prod_{0 < i < k} \left(g_i\right)^{x_i}$ of $k$ exponentiations much faster than individually computing the $k$ exponentiations and aggregating their product.
 For example, [blstrs](https://github.com/filecoin-project/blstrs) seems to be incredibly fast in this regard.
 
+{: .warning}
+Something interesting happens for $n\in \\{2^4, 2^5\\}$: the $2^5$ times are much faster even though the multiexp is larger.
+Would need to investigate.
+
 For $\Gr_1$ multiexps:
 
 | $\log_2{n}$ | Total time | Time / element | Speedup over single exp. | Speedup vs prev row. |
