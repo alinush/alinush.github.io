@@ -36,12 +36,14 @@ In this blog post, accompanying our academic paper[^BDFplus25e], we observe that
 
 ## Preliminaries
 
- - Univariate polynomials
- - MLEs?
- - $[\ell)$
- - $\F$
- - $r\randget \F$
- - $\one{a}$ and $\two{b}$ and $\three{c}$ additive group notation
+ - [Univariate polynomials](/polynomials)
+ - [KZG polynomial commitments](/kzg)
+ - [MLEs](/mle)
+ - $[\ell)\bydef\\{0,1,\ldots,\ell-1\\}$
+ - $\F$ is a finite field of prime order $p$
+ - $r\randget S$ denotes randomly sampling from a set $S$
+ - We use $\one{a}\bydef a\cdot G_1$ and $\two{b}\bydef b\cdot G_2$ and $\three{c}\bydef c\cdot G_\top$ to denote scalar multiplication in bilinear groups $(\Gr_1,\Gr_2,\Gr_\top)$ with generators $G_1,G_2,G_\top$, respectively (i.e., additive group notation).
+ - We use "small-MSM" to refer to multi-scalar multiplications (MSMs) where the scalars are small; we use "L-MSM" to refer to ones where the scalars are large
 {% include prelims-fiat-shamir.md %}
 
 ### Borgeaud's unbatched range proof
@@ -104,7 +106,10 @@ For this to work, the verifier must verify "duality" of the $\Gr_1$ and $\Gr_2$ 
 \pair{\one{f_j(\tau)}}{\two{1}} &= \pair{\one{1}}{\two{f_j(\tau)}},\forall j\in[\ell)
 \end{align}
 
-## A hypothetical univariate batched ZK range proof
+## Univariate batched ZK range proof 
+
+{: .warning}
+This construction is [not yet known to be ZK](#multilinear-batched-zk-range-proof).
 
 We observe that the $f$ and $f_j$ polynomials could be re-defined to store the bits of **$n$ different values** $\term{z_0, \ldots, z_{n-1}}$ without affecting the proof size and verifier time too much!
 
@@ -227,8 +232,15 @@ Let $\emph{z_{i,j}}$ denote the $j$th bit of each $z_i\in[0,2^\ell)$.
 
 **Proof size** is _trivial_: $(\ell+1)\Gr_1 + \ell \Gr_2$ group elements $\Rightarrow$ independent of the batch size $n$, but linear in the bit-width $\ell$ of the values.
 
-{: .todo}
-**Prover time**!
+**Prover time** is:
+
+ - $\ell n$ $\Gr_1$ $\textcolor{green}{\text{additions}}$ for each $c_j, j\in[\ell)$
+ - $\ell$ $\Gr_1$ scalar multiplications to blind each $c_j$ with $r_j$
+ - $\ell n$ $\Gr_2$ $\textcolor{green}{\text{additions}}$ for each $\tilde{c}_j, j\in[\ell)$
+ - $\ell$ $\Gr_2$ scalar multiplications to blind each $\tilde{c}_j$ with $r_j$
+ - $O(\ell n\log{n})$ $\F$ multiplications to interpolate $h(X)$
+    + Surprisingly, these $\textcolor{red}{\text{dominate}}$: see [break down here](#time-complexity).
+ - 1 size-$(n+1)$ L-MSM for committing to $h(X)$
 
 ### $\mathsf{Dekart}^\mathsf{FFT}.\mathsf{Verify}^{\mathcal{FS}(\cdot)}(\mathsf{vk}, C, \ell; \pi)\rightarrow \\{0,1\\}$
 
@@ -251,13 +263,33 @@ The two pairing equation checks above can be combined into a single size $\ell+3
 
 #### Verifier time
 
-{: .todo}
-**Verifier time**!
+The verifier must do:
+
+ - size-$\ell$ $\mathbb{G}_1$ small-MSM (i.e., small $2^0, 2^1, 2^2, \ldots, 2^{\ell-1}$ scalars)
+ - size-$\ell$ $\mathbb{G}_1$ L-MSM for the $C_j$'s (i.e., 128-bit $\alpha_j$ scalars)
+ - size-$\ell$ $\mathbb{G}_2$ L-MSM for the $\tilde{C}_j$'s (i.e., 128-bit $\alpha_j$ scalars)
+ - size-$(\ell+3)$ multipairing
+
+### Concrete performance
+
+We implemented $\dekartUni$ in Rust over BLS12-381 using `blstrs`.
+Our code will be open source soon.
+Until then, here are some benchmarks comparing it with Bulletproofs over a **faster** curve: Ristretto255.
 
 {: .todo}
 Breakdown of performance from our experiments.
 Table comparing with Bulletproofs on Ed25519.
-Mention that the extra $\Gr_2$ commitment cost and the lack of ZKness proof $\Rightarrow$ sumcheck-based variant in our paper[^BDFplus25e]!
+
+## Multilinear batched ZK range proof
+
+The previous section's [univariate construction](#univariate-batched-zk-range-proof) suffers from a few problems:
+
+1. It currently **lacks a simulator** to show that $\dekartUni$ is ZK.
+    + With some effort such a simulator should exist, perhaps with a few changes in the construction or with extra cryptographic assumptions.
+1. It incurs extra $\Gr_2$ commitment cost (for the $\tilde{C}_j$ commitments to the $f_j$'s)
+1. The FFT work for interpolating $h(X)$ dominates the prover time
+
+As a result, our paper[^BDFplus25e] focuses on a [multilinear-based](/mle) variant of DeKART that uses a zero-knowledge variant of the [sumcheck protocol](/sumcheck).
 
 ## Appendix
 
@@ -266,7 +298,7 @@ Mention that the extra $\Gr_2$ commitment cost and the lack of ZKness proof $\Ri
 We borrow differentiation tricks from [Groth16](/groth16#computing-hx) to ensure we only do size-$(n+1)$ FFTs.
 (Otherwise, we'd have to use size-$2(n+1)$ FFTs to compute the $\ell$ different $f_j(X)(f_j(X) - 1)$ multiplications.)
 
-Our goal will be to obtain all $(h(\omega^i))_{i\in[0,n]}$ evaluations and then do a size-$(n+1)$ multiexp to commit to it and obtain $\emph{D}$.
+Our goal will be to obtain all $(h(\omega^i))_{i\in[0,n]}$ evaluations and then do a size-$(n+1)$ L-MSM to commit to it and obtain $\emph{D}$.
 
 Recall that:
 \begin{align}
@@ -288,6 +320,7 @@ h(X) &= \frac{\sum_{j\in[\ell)} \beta_j \cdot N_j'(X) - h'(X)(X^{n+1} - 1)}{(n+1
 \end{align}
 This reduces computing all $h(\omega^i)$'s to computing all $N_j'(\omega^i)$'s:
 \begin{align}
+\label{eq:h}
 \emph{h(\omega^i)} &= \frac{\sum_{j\in[\ell)} \beta_j \cdot N_j'(\omega^i)}{(n+1)\omega^{in}}
 \end{align}
 Our challenge is to compute all the $N_j'(\omega^i)$'s efficiently.
@@ -304,17 +337,34 @@ N_j'(X) &= f_j(X)(f_j(X) - 1) + (X-\omega^n) f_j'(X)\left(2f_j(X)-1\right)
 \end{align}
 This reduces computing all $N_j'(\omega^i)$'s to computing all $f_j'(\omega^i)$'s:
 \begin{align}
-N_j'(\omega^i) &= f_j(\omega^i)(f_j(\omega^i) - 1) + (\omega^i-\omega^n) f_j'(\omega^i)\left(2f_j(\omega^i)-1\right)\Rightarrow\\\\\
-\emph{N_j'(\omega^i)} &= (\omega^i-\omega^n) f_j'(\omega^i)\left(2f_j(\omega^i)-1\right)
+N_j'(\omega^i) = f_j(\omega^i)(f_j(\omega^i) - 1) + (\omega^i-\omega^n) f_j'(\omega^i)\left(2f_j(\omega^i)-1\right)\Rightarrow\\\\\
+\label{eq:nj-prime}
+\Rightarrow\begin{cases}
+    \emph{N_j'(\omega^i)} &= (\omega^i-\omega^n) f_j'(\omega^i)\left(2f_j(\omega^i)-1\right) = \pm(\omega^i-\omega^n) f_j'(\omega^i), i\in[0,n)\\\\\
+    \emph{N_j'(\omega^n)} &= f_j(\omega^n)(f_j(\omega^n) - 1) + 0 = r_j (r_j - 1)
+\end{cases}
 \end{align}
-Finally, we can compute all $f_j'(\omega^i)$'s using:
- 1. A size-$(n+1)$ inverse FFT to obtain $f_j$'s coefficients in monomial basis 
- 2. Obtaining the coefficients of the derivative $f_j'$ using $n$ $\F$ multiplications
- 3. A size-$(n+1)$ FFT to compute all $f_j'(\omega^i)$'s.
 
-Unfortunately, the steps above must be done $\ell$ times, once per $f_j$.
-(It would be nice to avoid this, but it's unclear to me how.)
+#### Time complexity
 
+To compute all $f_j'(\omega^i)$'s for a single $j$:
+ 1. 1 size-$(n+1)$ inverse FFT, for $f_j$'s coefficients in monomial basis 
+ 2. $n$ $\F$ multiplications, for the coefficients of the derivative $f_j'$
+ 3. 1 size-$(n+1)$ FFT, for all $f_j'(\omega^i)$'s.
+
+Then, to compute all $N_j'(\omega^i)$'s for a single $j$:
+ 4. $2n+1$ $\F$ multiplications, for all $N'_j(\omega^i)$'s as per Eq. \ref{eq:nj-prime}
+    + (Assuming all $\pm (\omega^i - \omega^n)$ are precomputed.)
+
+{: .note}
+All the numbers above get multipled by $\ell$, since we are doing this for every $j\in[\ell)$.
+
+Lastly, to compute all the $h(\omega^i)$'s, we do:
+ 5. $\ell n$ $\F$ multiplications to compute the $n$ different numerators from Eq. \ref{eq:h}, one for each evaluation $h(\omega^i)$
+ 6. $n$ $\F$ multiplications, to divide the $n$ numerators by (the precomputed) $(n+1)\omega^{-in}$'s
+
+{: .note}
+Doing this $h(X)$ interpolation faster is an open problem, which is why in the paper we explore a multinear variant of DeKART[^BDFplus25e].
 
 ## References
 
