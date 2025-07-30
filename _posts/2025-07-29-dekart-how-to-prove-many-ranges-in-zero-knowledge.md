@@ -155,9 +155,9 @@ As before, for this to work, the verifier would also verify "duality" of the $\G
 For performance, the verifier could verify pick a random challenge $\term{\beta}\randget\F$ and combine all the checks from Eq. \ref{eq:hj-inefficient} into one:
 \begin{align}
 \label{eq:hj}
-\pair{\underbrace{\sum_{j\in[\ell)} \beta^j \cdot \one{h_j(\tau)}}\_{\term{D}}}{\two{\frac{\tau^{n+1} - 1}{\tau - \omega^n}}}
+\pair{\underbrace{\sum_{j\in[\ell)} \beta_j \cdot \one{h_j(\tau)}}\_{\term{D}}}{\two{\frac{\tau^{n+1} - 1}{\tau - \omega^n}}}
  &= 
-\sum_{j\in[\ell)} \pair{\beta^j \cdot \one{f_j(\tau)}}{\two{f_j(\tau)}-\two{1}}
+\sum_{j\in[\ell)} \pair{\beta_j \cdot \one{f_j(\tau)}}{\two{f_j(\tau)}-\two{1}}
 \end{align}
 (A similar trick can be applied for the duality check as well from Eq. \ref{eq:duality}.
 Furthermore, everything can be combined into a single multi-pairing.)
@@ -168,7 +168,7 @@ This reduces proof size and makes the check in Eq. \ref{eq:hj} slightly faster:
 \label{eq:hj-efficient}
 \pair{D}{\two{\frac{\tau^{n+1} - 1}{\tau - \omega^n}}}
  &= 
-\sum_{j\in[\ell)} \pair{\beta^j \cdot \one{f_j(\tau)}}{\two{f_j(\tau)}-\two{1}}
+\sum_{j\in[\ell)} \pair{\beta_j \cdot \one{f_j(\tau)}}{\two{f_j(\tau)}-\two{1}}
 \end{align}
 This is the bulk of a KZG-based **univariate** DeKART, which we describe formally below.
 
@@ -195,28 +195,29 @@ Let $\term{\ell_i(X)} \bydef \prod_{j\in\H, j\ne i} \frac{X - \omega^j}{\omega^i
 
 Return the public parameters:
  - $\vk\gets (\two{\tau},\tilde{V})$
- - $\prk\gets \left((L_i)\_{i\in[0,n]},(\tilde{L}\_i)_{i\in[0,n]}\right)$
+ - $\prk\gets \left(\vk, (L_i)\_{i\in[0,n]},(\tilde{L}\_i)_{i\in[0,n]}\right)$
 
 ### $\mathsf{Dekart}^\mathsf{FFT}.\mathsf{Commit}(\mathsf{prk},z_0,\ldots,z_{n-1}; r)\rightarrow C$
 
 This is just a [KZG commitment](/kzg) to the vector $\vec{z}\bydef [z_0,\ldots,z_{n-1}]$:
 
+ - $\left(\cdot, (L_i)\_{i\in[0,n]}, \cdot)_{i\in[0,n]}\right)\parse\prk$
  - $C \gets r\cdot L_n + \sum_{i\in[n)} z_i \cdot L_i = r\cdot\one{\ell_n(\tau)} + \sum_{i\in[n)} z_i \cdot \one{\ell_i(\tau)} \bydef \one{\emph{f}(\tau)}$ (as per Eq. \ref{eq:f-batched})
 
 ### $\mathsf{Dekart}^\mathsf{FFT}.\mathsf{Prove}^{\mathcal{FS}(\cdot)}(\mathsf{prk}, C, \ell; z_0,\ldots,z_{n-1}, r)\rightarrow \pi$
 
 Let $\emph{z_{i,j}}$ denote the $j$th bit of each $z_i\in[0,2^\ell)$.
 
- - $\left((L_i)\_{i\in[0,n]},(\tilde{L}\_i)_{i\in[0,n]}\right)\parse\prk$
+ - $\left(\vk, (L_i)\_{i\in[0,n]},(\tilde{L}\_i)_{i\in[0,n]}\right)\parse\prk$
  - $(r_j)_{j\in[n)} \randget \correlate{r, \ell}$
  - $C_j \gets r_j \cdot L_n + \sum_{i\in[n)} z_{i,j}\cdot L_i = r_j\cdot \one{\ell_n(\tau)} + \sum_{i\in[n)} z_{i,j}\cdot\one{\ell_i(\tau)} \bydef \one{\emph{f_j}(\tau)},\forall j\in[\ell)$
  - $\tilde{C}\_j \gets r_j \cdot \tilde{L}\_n + \sum_{i\in[n)} z_{i,j}\cdot \tilde{L}_i = \ldots \bydef \two{\emph{f_j}(\tau)},\forall j\in[\ell)$
     - **Note:** The $2\ell$ MSMs here can be optimized carefully since the scalars are either 0 or 1.
- - add $(C, \ell, (C_j, \tilde{C}\_j)_{j\in[\ell})$ to the $\FS$ transcript
+ - add $(\vk, C, \ell, (C_j, \tilde{C}\_j)_{j\in[\ell})$ to the $\FS$ transcript
  - $h_j(X)\gets \frac{f_j(X)(f_j(X) - 1)}{(X^{n+1} - 1) / (X-\omega^n)} = \frac{(X-\omega^n)f_j(X)(f_j(X) - 1)}{X^{n+1} - 1},\forall j \in[\ell)$
     + **Note:** Numerator is degree $2n$ and denominator is degree $n \Rightarrow h_j(X)$ is degree $n$
- - $\beta \fsget \F$
- - $\term{h(X)}\gets \sum_{j\in[\ell)} \beta^j \cdot h_j(X) = \frac{\sum_{j\in[\ell)}\beta^j (X-\omega^n)f_j(X)(f_j(X) - 1)}{X^{n+1} - 1}$ 
+  $(\beta_j)_{j\in[\ell)} \fsget \\{0,1\\}^\lambda$
+ - $\term{h(X)}\gets \sum_{j\in[\ell)} \beta_j \cdot h_j(X) = \frac{\sum_{j\in[\ell)}\beta_j (X-\omega^n)f_j(X)(f_j(X) - 1)}{X^{n+1} - 1}$ 
     - **Note:** Of degree $n$
  - $D \gets \sum_{i\in[0,n]} h(\omega^i) \cdot L_i \bydef \one{\emph{h}(\tau)}$
     + **Note:** We [discuss below](#computing-hx) how to interpolate these efficiently!
@@ -228,6 +229,25 @@ Let $\emph{z_{i,j}}$ denote the $j$th bit of each $z_i\in[0,2^\ell)$.
 
 {: .todo}
 **Prover time**!
+
+### $\mathsf{Dekart}^\mathsf{FFT}.\mathsf{Verify}^{\mathcal{FS}(\cdot)}(\mathsf{vk}, C, \ell; \pi)\rightarrow \\{0,1\\}$
+
+ - $\left(D, (C_j,\tilde{C}\_j)_{j\in[\ell)}\right) \parse \pi$
+ - **assert** $C \equals \sum_{j=0}^{\ell-1} 2^j \cdot C_j$
+ - $\alpha_j \randget \\{0,1\\}^\lambda,\forall j\in[\ell)$
+ - **assert** $\pair{\sum_{j\in[0,\ell)} \alpha_j \cdot C_j}{\two{1}} \stackrel{?}{=} \pair{\one{1}}{\sum_{j\in[0,\ell)} \alpha_j \cdot \tilde{C}_j}$
+ - add $(\vk, C, \ell, (C_j, \tilde{C}\_j)_{j\in[\ell})$ to the $\FS$ transcript
+ - $(\beta_j)_{j\in[\ell)} \fsget \\{0,1\\}^\lambda$
+ - **assert** $\pair{D}{\two{\frac{\tau^{n+1} - 1}{\tau-\omega^n}}} \equals \sum_{j\in[0,\ell)}\pair{\beta_j\cdot C_j}{\tilde{C}_j - \two{1}}$
+
+The two pairing equation checks above can be combined into a single size $\ell+3$ multipairing by picking a random $\gamma\in\F$ and checking:
+\begin{align}
+\pair{\sum\_{j\in[\ell)} \alpha_j\cdot C_j}{\two{-\gamma}} +
+\pair{\one{\gamma}}{\sum\_{j\in[\ell)} \alpha_j\cdot \tilde{C}\_j} + {} \\\\\ 
+{} + \pair{-D}{\two{\frac{\tau^{n+1} - 1}{\tau - \omega^n}}} + 
+\sum\_{j\in[\ell)} \pair{\beta_j \cdot C_j}{\tilde{C}_j - \two{1}} \equals \three{0}
+\end{align}
+{: .note}
 
 #### Verifier time
 
@@ -251,24 +271,24 @@ Our goal will be to obtain all $(h(\omega^i))_{i\in[0,n]}$ evaluations and then 
 Recall that:
 \begin{align}
 h(X)
-    &= \frac{\sum_{j\in[\ell)}\beta^j \cdot \overbrace{(X-\omega^n)f_j(X)(f_j(X) - 1)}^{\term{N_j(X)}}}{X^{n+1} - 1}
+    &= \frac{\sum_{j\in[\ell)}\beta_j \cdot \overbrace{(X-\omega^n)f_j(X)(f_j(X) - 1)}^{\term{N_j(X)}}}{X^{n+1} - 1}
     \\\\\
-    &\bydef \frac{\sum_{j\in[\ell)} \beta^j \cdot \emph{N_j(X)}}{X^{n+1} - 1}
+    &\bydef \frac{\sum_{j\in[\ell)} \beta_j \cdot \emph{N_j(X)}}{X^{n+1} - 1}
 \Leftrightarrow\\\\\
 \Leftrightarrow
 h(X) (X^{n+1} - 1)
     &=
-\sum_{j\in[\ell)} \beta^j \cdot N_j(X)
+\sum_{j\in[\ell)} \beta_j \cdot N_j(X)
 \end{align}
 Differentiating the above expression:
 \begin{align}
-h'(X)(X^{n+1} - 1) + h(X) (n+1)X^n &= \sum_{j\in[\ell)} \beta^j \cdot N_j'(X)\Leftrightarrow\\\\\
+h'(X)(X^{n+1} - 1) + h(X) (n+1)X^n &= \sum_{j\in[\ell)} \beta_j \cdot N_j'(X)\Leftrightarrow\\\\\
 \Leftrightarrow
-h(X) &= \frac{\sum_{j\in[\ell)} \beta^j \cdot N_j'(X) - h'(X)(X^{n+1} - 1)}{(n+1)X^n}
+h(X) &= \frac{\sum_{j\in[\ell)} \beta_j \cdot N_j'(X) - h'(X)(X^{n+1} - 1)}{(n+1)X^n}
 \end{align}
 This reduces computing all $h(\omega^i)$'s to computing all $N_j'(\omega^i)$'s:
 \begin{align}
-\emph{h(\omega^i)} &= \frac{\sum_{j\in[\ell)} \beta^j \cdot N_j'(\omega^i)}{(n+1)\omega^{in}}
+\emph{h(\omega^i)} &= \frac{\sum_{j\in[\ell)} \beta_j \cdot N_j'(\omega^i)}{(n+1)\omega^{in}}
 \end{align}
 Our challenge is to compute all the $N_j'(\omega^i)$'s efficiently.
 Recall that:
