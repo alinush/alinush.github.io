@@ -6,6 +6,7 @@ tags:
  - range proofs
  - zero-knowledge proofs (ZKPs)
 title: Range Proofs from Polynomial Commitments, Re-explained
+permalink: bfgw
 ---
 
 {: .info}

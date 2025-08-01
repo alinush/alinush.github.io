@@ -147,7 +147,7 @@ Here's a few we've blogged about in the past:
 
  * [Cryptographic accumulators](/bilinear-accumulators)
  - Vector Commitments (VC) schemes [with $O(\log{n})$-sized proofs](/amt) or [with $O(1)$-sized proofs](/2020/05/06/aggregatable-subvector-commitments-for-stateless-cryptocurrencies.html)
- - [Range proofs](/2020/03/03/range-proofs-from-polynomial-commitments-reexplained.html)
+ - [Range proofs](/bfgw)
 
 ## Appendix
 
