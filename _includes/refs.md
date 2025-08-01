@@ -172,7 +172,7 @@
 
 [^AR20e]: **KVaC: Key-Value Commitments for Blockchains and Beyond**, by Shashank Agrawal and Srinivasan Raghuraman, *in Cryptology ePrint Archive, Report 2020/1161*, 2020, [[URL]](https://eprint.iacr.org/2020/1161)
 
-[^ARR25e]: **Linear Prover {IOPs} in Log Star Rounds**, by Noor Athamnah and Noga Ron-Zewi and Ron D. Rothblum, *in Cryptology {ePrint} Archive, Paper 2025/1269*, 2025, [[URL]](https://eprint.iacr.org/2025/1269)
+[^ARR25e]: **Linear Prover IOPs in Log Star Rounds**, by Noor Athamnah and Noga Ron-Zewi and Ron D. Rothblum, *in Cryptology {ePrint} Archive, Paper 2025/1269*, 2025, [[URL]](https://eprint.iacr.org/2025/1269)
 
 [^ASM08]: **Practical Anonymous Divisible E-Cash from Bounded Accumulators**, by Au, Man Ho and Susilo, Willy and Mu, Yi, *in Financial Cryptography and Data Security*, 2008
 

@@ -103,7 +103,7 @@ Therefore, the product is zero when $\X\ne \b$.
 
 ### Computing all Lagrange evaluations fast
 
-In many MLE-based protocols (e.g., [sumchecks](/sumcheck) or PCSs like [Hyrax](/hyrax) or [KZH](/kzh)), it is often necessary to **efficiently** compute all $n=2^\ell$ evaluations $(\eq(\x, \i))_{\i\in\\{0,1\\}^\ell}$ of the Lagrange polynomials for a random point $\x\in\F^\ell$!
+In many MLE-based protocols (e.g., [sumchecks](/sumcheck) or PCSs like [Hyrax](/hyrax) or [KZH](/kzh)), it is often necessary to **efficiently** compute all $n=2^\ell$ evaluations $(\eq(\x, \i))_{\i\in\\{0,1\\}^\ell}$ of the Lagrange polynomials for an arbitrary point $\x\in\F^\ell$!
 
 This can be done in $2n$ $\F$ multiplications using a tree-based algorithm, best illustrated with an example (for $\ell = 3$):
 ```
@@ -154,7 +154,7 @@ This way, if $\i=[i_0,\ldots,i_{s-1}]$ is the binary representation of $i$, we h
 $f$ is often called the **multilinear extension (MLE)** of $\vect{V}$.
 
 {: .note}
-Using the [time complexities from above](#computing-all-lagrange-evaluations-fast), notice that evaluating a size-$n$ MLE $f$ at a random point $(\x,\y)$ will involve (1) $2n$ $\F$ multiplications to compute all the $\eq_i(\x)$ evaluations and (2) $n$ $\F$ multiplications and $n$ $\F$ additions to compute Eq. \ref{eq:mle}.
+Using the [time complexities from above](#computing-all-lagrange-evaluations-fast), notice that evaluating a size-$n$ MLE $f$ at an arbitrary point $(\x,\y)$ will involve (1) $2n$ $\F$ multiplications to compute all the $\eq_i(\x)$ evaluations and (2) $n$ $\F$ multiplications and $n$ $\F$ additions to compute Eq. \ref{eq:mle}.
 The total time will be $3n$ $\F$ multiplications and $n$ $\F$ additions.
 
 {: .todo}
@@ -162,9 +162,9 @@ Contrast this with evaluating polynomials in [Lagrange basis](/lagrange-interpol
 
 ## Conclusion and acknowledgements
 
-Big thanks to [Ron Rothblum](https://csaws.cs.technion.ac.il/~rothblum/) for pointing out several optimizations that are possible (which I am to look into and integrate here):
+Big thanks to [Ron Rothblum](https://csaws.cs.technion.ac.il/~rothblum/) for pointing out several optimizations that are possible (which I am looking into and will integrate here):
 
-1. For computing all $n=2^\ell$ Lagrange $\eq(\x,\i)_{\i\in\\{0,1\\}^\ell}$ evaluations for a random $\x\in \F^\ell$, Proposition 1 of [Roth24e][^Roth24e] gives a faster algorithm: $n$ instead of $2n$ $\F$ multiplications! 🤔
+1. For computing all $n=2^\ell$ Lagrange $\eq(\x,\i)_{\i\in\\{0,1\\}^\ell}$ evaluations for an arbitrary $\x\in \F^\ell$, Proposition 1 of [Roth24e][^Roth24e] gives a faster algorithm: $n$ instead of $2n$ $\F$ multiplications! 🤔
     + Also, it gives a way to stream the computation (but, AFAICT, so does a careful walk through the tree depicted above) 
 2. The faster algorithm from above would immediately reduce the MLE evaluation time from $3n$ $\F$ muls to $2n$, but Remark 1 from [ARR25e][^ARR25e] can further reduce this to $n$! 🤯
 
