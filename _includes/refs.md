@@ -172,6 +172,8 @@
 
 [^AR20e]: **KVaC: Key-Value Commitments for Blockchains and Beyond**, by Shashank Agrawal and Srinivasan Raghuraman, *in Cryptology ePrint Archive, Report 2020/1161*, 2020, [[URL]](https://eprint.iacr.org/2020/1161)
 
+[^ARR25e]: **Linear Prover {IOPs} in Log Star Rounds**, by Noor Athamnah and Noga Ron-Zewi and Ron D. Rothblum, *in Cryptology {ePrint} Archive, Paper 2025/1269*, 2025, [[URL]](https://eprint.iacr.org/2025/1269)
+
 [^ASM08]: **Practical Anonymous Divisible E-Cash from Bounded Accumulators**, by Au, Man Ho and Susilo, Willy and Mu, Yi, *in Financial Cryptography and Data Security*, 2008
 
 [^ASM08e]: **Constant-Size Dynamic $k$-TAA**, by Man Ho Au and Willy Susilo and Yi Mu, *in Cryptology ePrint Archive, Paper 2008/136*, 2008, [[URL]](https://eprint.iacr.org/2008/136)
@@ -1286,6 +1288,8 @@
 
 [^DEFplus18]: **On the Security of Two-Round Multi-Signatures**, by Manu Drijvers and Kasra Edalatnejad and Bryan Ford and Eike Kiltz and Julian Loss and Gregory Neven and Igors Stepanovs, *in Cryptology ePrint Archive, Report 2018/417*, 2018, [[URL]](https://eprint.iacr.org/2018/417)
 
+[^DEFplus21e]: **The Exact Security of {BIP32} Wallets**, by Poulami Das and Andreas Erwig and Sebastian Faust and Julian Loss and Siavash Riahi, *in Cryptology {ePrint} Archive, Paper 2021/1287*, 2021, [[URL]](https://eprint.iacr.org/2021/1287)
+
 [^DEFplus23e]: **BIP32-Compatible Threshold Wallets**, by Poulami Das and Andreas Erwig and Sebastian Faust and Julian Loss and Siavash Riahi, *in Cryptology ePrint Archive, Paper 2023/312*, 2023, [[URL]](https://eprint.iacr.org/2023/312)
 
 [^DF01]: **An Integer Commitment Scheme based on Groups with Hidden Order**, by Ivan Damgard and Eiichiro Fujisaki, *in Cryptology ePrint Archive, Report 2001/064*, 2001, [[URL]](https://eprint.iacr.org/2001/064)
@@ -1439,6 +1443,8 @@
 [^DXKR22e]: **Practical Asynchronous High-threshold Distributed Key Generation and Distributed Polynomial Sampling**, by Sourav Das and Zhuolun Xiang and Lefteris Kokoris-Kogias and Ling Ren, *in Cryptology ePrint Archive, Paper 2022/1389*, 2022, [[URL]](https://eprint.iacr.org/2022/1389)
 
 [^DXKR23]: **Practical Asynchronous High-threshold Distributed Key Generation and Distributed Polynomial Sampling**, by Sourav Das and Zhuolun Xiang and Lefteris Kokoris-Kogias and Ling Ren, *in 32nd USENIX Security Symposium (USENIX Security 23)*, 2023, [[URL]](https://www.usenix.org/conference/usenixsecurity23/presentation/das)
+
+[^DXNT23e]: **MuxProofs}: Succinct Arguments for Machine Computation from Vector Lookups**, by Zijing Di and Lucas Xia and Wilson Nguyen and Nirvan Tyagi, *in Cryptology {ePrint} Archive, Paper 2023/974*, 2023, [[URL]](https://eprint.iacr.org/2023/974)
 
 [^DXR21]: **Asynchronous Data Dissemination and its Applications**, by Sourav Das and Zhuolun Xiang and Ling Ren, *in Cryptology ePrint Archive, Report 2021/777*, 2021, [[URL]](https://eprint.iacr.org/2021/777)
 
@@ -3031,6 +3037,8 @@
 [^RotSeg21]: **Non-Malleable Vector Commitments via Local Equivocability**, by Lior Rotem and Gil Segev, *in Cryptology ePrint Archive, Report 2021/1207*, 2021, [[URL]](https://ia.cr/2021/1207)
 
 [^Roth06]: **Introduction to Coding Theory**, by Ron Roth, 2006, [[URL]](https://pce-fet.com/common/library/books/34/4141_[Ron_Roth]_Introduction_to_Coding_Theory(b-ok.org).pdf)
+
+[^Roth24e]: **A Note on Efficient Computation of the Multilinear Extension**, by Ron D. Rothblum, *in Cryptology {ePrint} Archive, Paper 2024/1103*, 2024, [[URL]](https://eprint.iacr.org/2024/1103)
 
 [^Ryan14]: **Enhanced certificate transparency and end-to-end encrypted mail**, by Mark D. Ryan, *in NDSS'14*, 2014
 

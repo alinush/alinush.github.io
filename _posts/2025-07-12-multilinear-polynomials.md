@@ -160,6 +160,14 @@ The total time will be $3n$ $\F$ multiplications and $n$ $\F$ additions.
 {: .todo}
 Contrast this with evaluating polynomials in [Lagrange basis](/lagrange-interpolation) using the efficient formulas over root of unity?
 
+## Conclusion and acknowledgements
+
+Big thanks to [Ron Rothblum](https://csaws.cs.technion.ac.il/~rothblum/) for pointing out several optimizations that are possible (which I am to look into and integrate here):
+
+1. For computing all $n=2^\ell$ Lagrange $\eq(\x,\i)_{\i\in\\{0,1\\}^\ell}$ evaluations for a random $\x\in \F^\ell$, Proposition 1 of [Roth24e][^Roth24e] gives a faster algorithm: $n$ instead of $2n$ $\F$ multiplications! 🤔
+    + Also, it gives a way to stream the computation (but, AFAICT, so does a careful walk through the tree depicted above) 
+2. The faster algorithm from above would immediately reduce the MLE evaluation time from $3n$ $\F$ muls to $2n$, but Remark 1 from [ARR25e][^ARR25e] can further reduce this to $n$! 🤯
+
 ## References
 
 For cited works, see below 👇👇
