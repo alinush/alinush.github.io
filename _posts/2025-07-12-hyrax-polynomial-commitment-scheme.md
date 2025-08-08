@@ -62,12 +62,15 @@ $</div> <!-- $ -->
 
 ## Preliminaries
 
-{% include prelims-time-complexities.md %}
+{% include time-complexities-prelims-no-pairings.md %}
+    + $\fmsm{n}{< B}$ for a single multi-scalar multiplication (MSM) in $\Gr$ of size $n$ where the group element bases are known ahead of time (i.e., _fixed-base_) and each scalar is $< B$
+    + $\vmsm{n}{< B}$ for a single multi-scalar multiplication (MSM) in $\Gr$ of size $n$ where the group element bases are **NOT** known ahead of time (i.e., _variable-base_) and each scalar is $< B$
  - [Multilinear extensions (MLEs)](/mle)
+ - The finite field $\F$ is of prime order $p$
 
 ## Overview
 
-The main idea in Hyrax is that, for a **row** vector $\term{a}\in\F^{1\times n}$, a **column** vector $\term{b}^\top \in \F^m$ and a matrix $\term{\mat{A}}\in \F^{n\times m}$, you can express a dot product as:
+The main idea in Hyrax is that, for a **row** vector $\term{\a}\in\F^{1\times n}$, a **column** vector $\term{\b}^\top \in \F^m$ and a matrix $\term{\mat{A}}\in \F^{n\times m}$, you can express a dot product as:
 \begin{align}
     \label{eq:hyrax}
     \sum_{i\in[n), j\in[m)} a_i \cdot M_{i,j} \cdot b_j
@@ -337,7 +340,7 @@ Compute the opening proof:
  - $\pi\gets \A$
 
 {: .note}
-A more succinct but less computationally-efficient variant would compute an IPA proof that $z = \A\cdot \b^\top$ instead of sending $\A$ over and having the verifier manually check.
+A more succinct but less computationally-efficient variant, denoted by $\hyrax_\ipa$, would compute an IPA proof that $z = \A\cdot \b^\top$ instead of sending $\A$ over and having the verifier manually check.
 
 ### Non-ZK opening time
 
@@ -369,20 +372,24 @@ The proof remains the same size though.
  - **assert** $z\equals \A\cdot \b^\top$
 
 {: .note}
-A more succinct but less computationally-efficient variant would verify an IPA proof instead of checking that $\A$ is committed in $D$ and manually re-computing $z$.
+The more succinct but less computationally-efficient $\hyrax_\ipa$ variant would verify an IPA proof instead of checking that $\A$ is committed in $D$ and manually re-computing $z$.
 
 ### Non-ZK verifier time
 
  - $\a$ takes $\Fmul{2n}$
  (recall from [here](/mle#computing-all-lagrange-evaluations-fast))
  - $\b$ takes $\Fmul{2m}$
- - $D$ takes $\msm{n}$
- - Verifying $\A$ against $D$ takes $\msm{m}$
- - $\Rightarrow$ but these two checks can be combined into a single $\msm{n+m}$ as $\left(\A\cdot (-\G)\right)\cdot \sum_{i\in[n)} a_i \cdot C_i\equals 1$
+ - $D$ takes $\vmsm{n}{< p}$ because:
+    + the $a_i$ scalars are arbitrary $\eq(\x,\i)$ evaluations
+    + the bases $C_i$ are the commitment which is not necessarily known ahead of time
+ - Verifying $\A$ against $D$ takes $\fmsm{m}{<p}$
+    - the exponents in $\A$ will be arbitrary (see the [opening algorithm](#mathsfhyraxmathsfopenck-fboldsymbolxboldsymboly-boldsymbolx-boldsymboly-z-crightarrow-pi))
+    - the bases are fixed in the commitment key
+ - Although this last $D \equals \A \cdot \G$ check can be turned into a single $\msm{n+m}$ as $\left(\A\cdot (-\G)\right)\cdot \sum_{i\in[n)} a_i \cdot C_i\equals 1$, I believe that may actually be slower, since the fixed-base MSM should be much faster than the variable-base one and we do not have MSM algorithms that work on combinations of the two!
  - Verifying $z$ is a size-$m$ inner product, so takes $\Fmul{m}+\Fadd{m}$
 
-In **total**, we have $\Fmul{(2n + 3m)} + \Fadd{m} + \msm{n+m}$ verifier work for vanilla $\hyrax$.
-The $\hyrax_\ipa$ variant would take $\Fmul{2(n+m)} + \msm{n} + \ipaVer(m)$ (because no decommitment check for $D$ and no $\A\cdot\b^\top$ inner-product).
+In **total**, we have $\Fmul{(2n + 3m)} + \Fadd{m} + \vmsm{n}{<p} + \fmsm{m}{<p}$ verifier work for vanilla $\hyrax$.
+The $\hyrax_\ipa$ variant would take $\Fmul{2(n+m)} + \vmsm{n}{<p} + \ipaVer(m)$ (because no decommitment check for $D$ and no $\A\cdot\b^\top$ inner-product).
 
 {: .note}
 When $(\x,\y)$ are on the hypercube: 
@@ -412,8 +419,8 @@ Recall that $\emph{t}\le nm$ denotes the # of non-zero entries in the MLE $f$ or
 |----------------+--------------------+---------------|
 | Scheme         | Open time (random) | Verifier time |
 |----------------|--------------------|---------------|
-| $\hyraxnm$     | $\Fmul{(2n+2m+t)} + \Fadd{t}$ | $\Fmul{(2n+3m)} + \Fadd{m} + \msm{n+m}$ |
-| $\hyraxSqN$    | $\Fmul{(4\sqN+t)} + \Fadd{t}$ | $\Fmul{5\sqN} + \Fadd{\sqN} + \msm{2\sqN}$ |
+| $\hyraxnm$     | $\Fmul{(2n+2m+t)} + \Fadd{t}$ | $\Fmul{(2n+3m)} + \Fadd{m} + \vmsm{n}{<p} + \fmsm{m}{<p}$ |
+| $\hyraxSqN$    | $\Fmul{(4\sqN+t)} + \Fadd{t}$ | $\Fmul{5\sqN} + \Fadd{\sqN} + \vmsm{\sqN}{<p} + \fmsm{\sqN}{<p}$ |
 |----------------+--------------------+---------------|
 
 #### Non-ZK openings at points on the hypercube
