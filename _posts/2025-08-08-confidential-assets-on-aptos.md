@@ -26,6 +26,9 @@ $</div> <!-- $ -->
 We chose 16-bit chunks to ensure that the max pending balance chunks never exceed $2^{32}$ after around $2^{16}$ incoming transfers.
 This, in turn, ensures fast decryption times.
 
+Why so many incoming transfers?
+There could be use cases, such as payment processors, where seamlessly receiving many transfers is necessary.
+
 ## Resources
 
  - [aptos.dev docs](https://aptos.dev/build/smart-contracts/confidential-asset)
