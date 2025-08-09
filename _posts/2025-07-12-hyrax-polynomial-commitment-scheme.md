@@ -408,8 +408,8 @@ We use $\hyraxSqN$ to refer to $\hyrax^{\sqN,\sqN}$.
 |---------------+-------+-------+-------------+------+--------+-------|
 | Scheme        | $\ck$ | $\vk$ | Commit time | $\C$ | $\aux$ | $\pi$ |
 |---------------|-------|-------|-------------|------+--------|-------|
-| $\hyraxnm$    | $\Gr^n$     | $\Gr^n$      | $n\cdot\msm{m}$       | $\Gr^n$    | $\bot$ | $\F^m$ |
-| $\hyraxSqN$   | $\Gr^\sqN$  | $\Gr^\sqN+1$ | $\sqN\cdot\msm{\sqN}$ | $\Gr^\sqN$ | $\bot$ | $\F^\sqN$ |
+| $\hyraxnm$    | $\Gr^n$    | $\Gr^n$      | $n\cdot\msm{m}$       | $\Gr^n$    | $\bot$ | $\F^m$ |
+| $\hyraxSqN$   | $\Gr^\sqN$ | $\Gr^\sqN+1$ | $\sqN\cdot\msm{\sqN}$ | $\Gr^\sqN$ | $\bot$ | $\F^\sqN$ |
 |---------------+-------+-------+-------------|------|--------|-------|
 
 #### Non-ZK openings at arbitry points
@@ -419,8 +419,8 @@ Recall that $\emph{t}\le nm$ denotes the # of non-zero entries in the MLE $f$ or
 |----------------+--------------------+---------------|
 | Scheme         | Open time (random) | Verifier time |
 |----------------|--------------------|---------------|
-| $\hyraxnm$     | $\Fmul{(2n+2m+t)} + \Fadd{t}$ | $\Fmul{(2n+3m)} + \Fadd{m} + \vmsm{n}{<p} + \fmsm{m}{<p}$ |
-| $\hyraxSqN$    | $\Fmul{(4\sqN+t)} + \Fadd{t}$ | $\Fmul{5\sqN} + \Fadd{\sqN} + \vmsm{\sqN}{<p} + \fmsm{\sqN}{<p}$ |
+| $\hyraxnm$     | $\Fmul{(2n+2m+t)} + \Fadd{t}$ | $\vmsm{n}{<p} + \fmsm{m}{<p} + \Fmul{(2n+3m)} + \Fadd{m}$ |
+| $\hyraxSqN$    | $\Fmul{(4\sqN+t)} + \Fadd{t}$ | $\vmsm{\sqN}{<p} + \fmsm{\sqN}{<p} + \Fmul{5\sqN} + \Fadd{\sqN}$ |
 |----------------+--------------------+---------------|
 
 #### Non-ZK openings at points on the hypercube
