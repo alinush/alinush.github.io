@@ -35,7 +35,9 @@ There could be use cases, such as payment processors, where seamlessly receiving
 
 ## Appendix
 
-### BL DL benchmarks
+### BL DL benchmarks for Ristretto255
+
+These were run on a Macbook M3.
 
 |----------------+------------------------+-------------+--------------+--------------+
 | Chunk size     | Algorithm              | Lowest time | Average time | Highest time |
@@ -44,6 +46,9 @@ There could be use cases, such as payment processors, where seamlessly receiving
 | 32-bit         | Bernstein-Lange[^BL12] | 7.38 ms     | 30.86 ms     | 77.00 ms     |
 | 48-bit         | Bernstein-Lange[^BL12] | 0.72 s      | 4.03 s       | 12.78 s      |
 |----------------+------------------------+-------------+--------------+--------------|
+
+{: .warning}
+Something is off here: BL should be faster than baby-step giant-step (BSGS), which would take $2^{16}$ group operations for a 32-bit DL $\Rightarrow$ 0.5 microseconds $2^{16} \approx 32$ ms.
 
 ## References
 
