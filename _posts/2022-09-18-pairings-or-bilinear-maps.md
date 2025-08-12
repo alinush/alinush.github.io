@@ -176,6 +176,9 @@ From there, an abundance of new, efficient cryptography started pouring over:
 An interesting pattern to notice here is how pairings evolved from a _cryptanalytic tool_ used to break cryptosystems, to a **constructive tool** used to build cryptosystems.
 Interestingly, the same pattern also arose in the development of lattice-based cryptography.
 
+{: .note}
+The recent 40-year celebration of elliptic curve cryptography includes many interesting historical accounts in talks by Victor Miller, Neal Koblitz, Dan Boneh and Kristin Lauter[^forty-years].
+
 ## Arithmetic tricks with pairings
 
 There are a few tricks cryptographers often use when dealing with pairings in their proofs of correctness or security of a cryptosystem.
@@ -679,5 +682,6 @@ Big thanks to:
 [^miller-talk]: Miller tells this story himself in [a talk he gave at Microsoft Research](https://www.youtube.com/watch?v=yK5fYfn6HJg&t=2901s) on October 10th, 2010.
 
 [^alin-where]: I am unable to find any trace of Miller's published work on this beyond the manuscript Boneh published in[^Mill86Short]. Any pointers would be appreciated.
+[^forty-years]: [ECC workshop 2025](https://www.youtube.com/watch?v=YtZowEkaE0o)
 
 {% include refs.md %}
