@@ -178,6 +178,7 @@ Interestingly, the same pattern also arose in the development of lattice-based c
 
 {: .note}
 The recent 40-year celebration of elliptic curve cryptography includes many interesting historical accounts in talks by Victor Miller, Neal Koblitz, Dan Boneh and Kristin Lauter[^forty-years].
+While it was happening, I could not help myself but [tweet all the little gems I found](https://x.com/alinush407/status/1955010288845197673).
 
 ## Arithmetic tricks with pairings
 
