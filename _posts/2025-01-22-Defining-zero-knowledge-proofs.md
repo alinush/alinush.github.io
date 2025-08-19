@@ -156,19 +156,20 @@ $\forall$ adversaries $\Adv$,
     (\prk,\vk,\td)\gets\zkpSetup(1^\lambda, R),\\\\\
     \pi\gets \zkpProve(\prk, \stmt; \witn) 
     :\\\\\ 
-    \Adv(\prk,\vk,\td,\mathsf{aux},\stmt;\pi) = 1
+    \Adv(\prk,\vk,\td,\mathsf{aux};\pi) = 1
 \end{array}\right]
 = 
 \Pr\left[\begin{array}%
     (\prk,\vk,\td)\gets\zkpSetup(1^\lambda, R),\\\\\
     \pi\gets \zkpSim(\td, \stmt)
     :\\\\\ 
-    \Adv(\prk,\vk,\td,\mathsf{aux},\stmt;\pi) = 1
+    \Adv(\prk,\vk,\td,\mathsf{aux};\pi) = 1
 \end{array}\right]
 \end{align}
 
 {: .note}
 The adversary is even given the trapdoor $\td$.
+Note that because we say "for all $(\stmt,\witn,\Adv)$" this means the adversary _can_ have access to $(\stmt,\witn)$.
 
 ### The many flavors of zero-knowledge
 
