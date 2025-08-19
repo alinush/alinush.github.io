@@ -30,7 +30,7 @@ $</div> <!-- $ -->
 
 ## Introduction
 
-Skipping over 30+ years of $\Sigma$-protocol design and jmping right into the (most?) useful generalization from the Boneh-Shoup[^BS23] textbook.
+Skipping over 30+ years of $\Sigma$-protocol design and jumping right into the (most?) useful generalization from the Boneh-Shoup[^BS23] textbook.
 (Actually, I think the most useful one may be the preimage of a homomorphism one...)
 
 ## Preliminaries
