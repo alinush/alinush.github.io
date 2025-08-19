@@ -116,11 +116,11 @@ A $\Sigma$-protocol for $\Rlin$ follows below:
     - $m$ $\Gr$ group elements
     - $n$ $\F$ field elements
  - Verifier time:
-    - size-$(m(n+1))$ MSM in $\Gr$ (see [here](#performance))
+    - size-$(m(n+1))$ MSM in $\Gr$ (see [here](#faster-verifier))
 
 {: .note}
 This protocols works across _different groups_: i.e., when $U_i, G_{i,j}\in \Gr_i$ and the $\Gr_i$'s are different but of the same prime order $p$!
-(However, the faster verification optimization [described below](#performance) will be affected.)
+(However, the faster verification optimization [described below](#faster-verifier) will be affected.)
 
 ### Examples of formulas $\phi$
 
@@ -130,9 +130,7 @@ Boneh and Shoup[^BS23] give a few examples of popular $\Sigma$-protocols viewed 
  - Okamoto signatures[^Okam93] use $\phi(\sk_1,\sk_2) = \left\\{\pk \equals \sk_1 \cdot G_1 + \sk_2\cdot G_2\right\\}$, where $(\sk_1,\sk_2)\in\F^2$ is the secret key and $\pk\in\Gr$ is the public key
  - Discrete log equality proofs (a.k.a. Chaum-Pedersen[^CP92] proofs) use $\phi(w_1, w_2) = \left\\{ H_1 = w_1\cdot G_1 \wedge H_2 = w_2\cdot G_2 \right\\}$
 
-## Implementation pitfalls
-
-### Performance
+### Faster verifier
 
 In practice, the verifier would use a **multi-scalar multiplication (MSM)** to check all the $A_i + e\cdot U_i \equals \sum_{j\in[n]} \sigma_j \cdot G_{i,j}$ equations faster.
 
@@ -149,10 +147,13 @@ Then, all such equations can be combined into a single one:
 \begin{align}
 \sum_{i\in [m]}\left( \beta_i\cdot A_i + (\beta_i \cdot e) \cdot U_i\right) + \sum_{i\in[m],j\in[n]}\left( (\beta_i \cdot \sigma_j) \cdot G_{i,j}\right) &\\equals 0
 \end{align}
-One can show that, except with negligible probability, this batched check is $\approx$ as sound as the original check:
+One can show that, except with negligible probability, this batched check is $\approx$ as sound as the original check.
 
 {: .note}
 The check above is now a single size-$(nm + m)$ MSM!
+
+
+## Implementation pitfalls
 
 ### Secure deserialization
 
@@ -169,11 +170,11 @@ Here's a few pro tips below.
        + Otherwise, there may be big security issues (e.g., see [here](/schnorr#fn:devalence))
 
 2. Carefully-handle field element deserialization too:
-   - A conservative approach: always reject bytes that encode a number $\ge p$, since field elements are in $[0, p)$.
+   - A conservative approach: always reject bytes that encode a number $\ge p$ or $< 0$, since field elements are in $[0, p)$.
 
-### Fiat-Shamir transform
+### Fiat-Shamir transform (for $\mathcal{R}_\mathsf{lin}$'s $\Sigma$-protocol)
 
-**tl;dr:** Hash everything and nothing more: a description of $\Gr$ (e.g., _"Edwards 25519"_), the prime order $p$, the sizes $n,m$, the formula $\phi$, all the $G_{i,j}$'s, all the $U_i$'s, all the messages so far (i.e., the $A_i$'s), and any application-specific context $\mathsf{ctx}$.
+**tl;dr:** Hash everything _but_ nothing more: i.e., a description of $\Gr$ (e.g., _"Edwards 25519"_), the prime order $p$, the sizes $n,m$, the formula $\phi$, all the $G_{i,j}$'s, all the $U_i$'s, all the messages so far (i.e., the $A_i$'s), and any application-specific context $\mathsf{ctx}$.
 
 Specifically:
 \begin{align}
