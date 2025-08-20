@@ -68,22 +68,23 @@ $</div> <!-- $ -->
  - [Multilinear extensions (MLEs)](/mle)
  - The finite field $\F$ is of prime order $p$
 
-## Overview
+### Inner product trick
 
-The main idea in Hyrax is that, for a **row** vector $\term{\a}\in\F^{1\times n}$, a **column** vector $\term{\b}^\top \in \F^m$ and a matrix $\term{\mat{A}}\in \F^{n\times m}$, you can express a dot product as:
+At the core of Hyrax lies the following observation:
+for a **row** vector $\a\in\F^{1\times n}$, a **column** vector $\b^\top \in \F^m$ and a matrix $\mat{M}\in \F^{n\times m}$, you can express a dot product as:
 \begin{align}
     \label{eq:hyrax}
     \sum_{i\in[n), j\in[m)} a_i \cdot M_{i,j} \cdot b_j
     = 
     \emph{\a\cdot \mat{M}\cdot \b^\top}
     &\bydef
-    \underbrace{\a}\_{\in\F^{1\times n}}
-    \cdot \underbrace{\begin{bmatrix}
+    \overbrace{\a}^{\in\F^{1\times n}}
+    \cdot \overbrace{\begin{bmatrix}
         \mat{M}\_0 \cdot \b^\top\\\\\
         \mat{M}\_1 \cdot \b^\top\\\\\
         \vdots &\\\\\
         \mat{M}\_{n-1} \cdot \b^\top\\\\\
-    \end{bmatrix}}\_{\in \F^n}\\\\\
+    \end{bmatrix}}^{\in \F^n}\\\\\
     %\label{eq:hyrax-rows}
     &\bydef
     \underbrace{\begin{bmatrix}
@@ -139,50 +140,49 @@ where $\term{\mat{M}_i}\in\F^{1\times m}$ is the $i$th row in $\mat{M}$ and $\te
 \end{align}
 </details>
 
-Hyrax represents an MLE $\term{f(\X,\Y)}\in \MLE{n,m}$ as a matrix $\mat{M}$, where each row $\emph{\mat{M}\_i} \bydef (f(\i,\j))\_{j\in[m)}$.
-Put differently, $\term{M_{i,j}}\bydef f(\i,\j)$.
+## Overview
 
-Hyrax commits to $f$ by **individually** committing to the rows $\mat{M}\_i$ using a _hiding_ Pedersen vector commitment as:
+Hyrax represents an MLE $\term{f(\X,\Y)}\in \MLE{n,m}$ as a matrix $\mat{M}\bydef(M\_{i,j})\_{i\in[n],j\in[m]}\bydef (f(\i,\j))\_{i\in[n],j\in[m]}$.
+
+Hyrax commits to $f$ by **individually** committing to the rows $\mat{M}\_i \bydef (f(\i,\j))\_{j\in[m)}$ using a _hiding_ Pedersen vector commitment:
 \begin{align}
-    \term{C\_i} \gets \term{r\_i} \cdot \term{H} + \mat{M}\_i \cdot \term{\G} = r\_i\cdot H+ \sum\_{j\in[m)} f(\i, \j) \cdot G_j\in \Gr
+    \term{C\_i} \gets r\_i \cdot H + \mat{M}\_i \cdot \G = r\_i\cdot H+ \sum\_{j\in[m)} f(\i, \j) \cdot G_j\in \Gr
 \end{align}
-where $\emph{\G,H}\in\Gr^{m+1}$ is the **commitment key** and $r_i\randget \F$.
-This yields an $n$-sized commitment $\C\bydef(C_i)_{i\in[n)}$.
+where $\term{(\G,H)}\in\Gr^{m+1}$ is the **commitment key** and $\term{r_i}\randget \F$.
+This yields an $n$-sized commitment $\term{\C}\bydef(C_i)_{i\in[n)}$.
 
-An opening proof for $z\equals f(\x,\y)$, can be framed through the lens of Eq. \ref{eq:hyrax}:
+The opening proof for $\term{z}\equals f(\x,\y)$ uses the inner product trick from Eq. \ref{eq:hyrax}:
 \begin{align}
 z 
-    &=\sum_{i\in[n), j\in[m)} \eq(\x, \i) \cdot \eq(\y,\j) \cdot f(\i,\j)\\\\\
-    &=\sum_{i\in[n), j\in[m)} \eq(\x, \i) \cdot M_{i,j} \cdot \eq(\y,\j)\\\\\
+    &=\sum_{i\in[n), j\in[m)} \underbrace{\eq(\x, \i)}\_{\term{a_i}} \cdot \underbrace{\eq(\y,\j)}\_{\term{b_i}} \cdot \underbrace{f(\i,\j)}\_{\emph{M_{i,j}}}\\\\\
     &\bydef 
-    \sum_{i\in[n), j\in[m)} a_i \cdot M_{i,j} \cdot b_j 
-    =\a\cdot\mat{M}\cdot\b^\top
+    \sum_{i\in[n), j\in[m)} a_i \cdot M_{i,j} \cdot b_j\\\\\
+    &\bydef\a\cdot\mat{M}\cdot\b^\top
 \end{align}
-where $\a \bydef (\eq(\x,\i))\_{i\in[n)}$ and $\b \bydef (\eq(\y, \j))_{j\in[m)}$.
 
-What does an opening proof look like exactly?
+Specifically, to open, the prover:
+1. Computes the $\a,\b$ vectors from $\x$ and $\y$.
+2. Sends $\a\cdot \mat{M} \in \F^{1\times m}$ (see Eq. \ref{eq:hyrax-cols}).
+3. Sends a size-$m$ **inner-product argument (IPA)** proof[^BBBplus18] that $z = (\a \cdot \mat{M})\cdot\b^\top$.
 
-First, both the prover and the verifier compute the $\a,\b$ vectors from $\x$ and $\y$.
+To verify the opening, the verifier:
 
-Second, the verifier uses $\a$ and the $C_i$'s to derive a commitment $\term{D}$ to the vector $\a \cdot \mat{M} \in \F^{1\times m}$ from Eq. \ref{eq:hyrax-cols}:
+**Step 1:** Similarly, computes the same $\a,\b$ vectors.
+
+**Step 2**: Derives a (hiding) vector commitment $\term{D}$ to $\a \cdot \mat{M}$:
 \begin{align}
-\term{D} \gets \sum_{i\in[n)} a\_i\cdot D\_i 
+\term{D} \gets \sum_{i\in[n)} a\_i\cdot C\_i 
     &= \sum\_{i\in[n)} a\_i\cdot(r_i \cdot H + \mat{M}\_i\cdot \G)\\\\\
     &= \sum\_{i\in[n)} (a\_i\cdot r_i) \cdot H + \sum\_{i\in[n)} a\_i\cdot\left(\sum\_{j\in[m)} M\_{i,j} \cdot G\_j\right)\\\\\
     &\bydef \term{u}\cdot H + \sum\_{i\in[n)}\sum\_{j\in[m)} (a\_i\cdot M\_{i,j}) \cdot G\_j\\\\\
     &= u\cdot H + \sum\_{j\in[m)}\left(\sum\_{i\in[n)} (a\_i\cdot M\_{i,j})\right) \cdot G\_j\\\\\
     &= u\cdot H + \sum\_{j\in[m)}(\a\cdot \mat{M}^\top\_j) \cdot G\_j\\\\\
 \end{align}
-(This can be generalized into a nicer homorphic property of such Pedersen matrix commitments.)
 
-Third, the prover computes $\a\cdot \mat{M}$ via $m$ inner-products in $\F$ of size $n$ each (as per Eq. \ref{eq:hyrax-cols}).
-
-Fourth, the prover gives the verifier a size-$m$ **inner-product argument (IPA)** proof[^BBBplus18] that $z = (\a \cdot \mat{M})\cdot\b^\top$.
-
-Lastly, the verifier checks the IPA proof against (1) the commitment $D$ to $\a\cdot{\mat{M}}$ and (2) $\b$.
+**Step 3:** Checks the IPA proof against (1) the commitment $D$ and (2) $\b$.
 
 {: .note}
-To commit to MLEs $f\in\MLE{N}$, Hyrax is typically used with $n=m=\sqrt{N}$, yielding sublinear-sized commitments & proofs and sublinear-time verifier.
+Hyrax is typically used with $n=m=\sqrt{N}$, yielding sublinear-sized commitments, sublinear-sized proofs and sublinear-time verifier.
 The proving time will be dominated by the $\sqrt{N}$-sized IPA.
 
 ## ZK construction

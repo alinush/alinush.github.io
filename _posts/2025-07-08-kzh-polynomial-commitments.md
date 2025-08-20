@@ -42,6 +42,7 @@ permalink: kzh
 \def\Vp{\V'}
 \def\VV{\widetilde{\vect{V}}}
 \def\H{\mat{H}}
+\def\ok{\mathsf{ok}}
 %\def\?{\vect{?}}
 % - Let $\tobin{i}_s$ denote the $s$-bit binary representation of $i$
 $</div> <!-- $_ -->
@@ -159,7 +160,6 @@ Compute $\A\in\Gr_1^m$, $\VV\in\Gr_2^n$ and $\Vp\in\Gr_2$:
     &\gets (\btau\cdot \V)
     %\\\\\
     \bydef (\tau_0\cdot \V, \tau_1\cdot \V,\ldots,\tau_{n-1}\cdot \V)\in\Gr_2^n\\\\\
-    %&\bydef (V_0,\ldots,V_{n-1})\\\\\
 \term{\Vp}
     &\gets \alpha\cdot \V\in\Gr_2\\\\\
 \end{align}
@@ -228,9 +228,11 @@ Partially-evaluate $f\in \MLE{\nu,\mu}$:
 Return the proof[^open]:
  - $\pi \gets (f_\x, \aux) \in \F^m \times \Gr_1^n$
 
-{: .note}
+### Opening time
+
 When $\x\in\bin^\nu$ and $\y\in{\bin^\mu}$, the step above involves **zero work**:  $f_\x(\Y)$ is just the $x$th column in the matrix encoded by $f$.
 Furthermore, $z=f(\x,\y)$ is simply the entry at location $(x,y)$ in the matrix.
+
 When $\x$ is an arbitrary, point, computing all the $\eq(\x, \i)$'s requires $\Fmul{2n}$ (see [here](/mle#computing-all-lagrange-evaluations-fast)).
 Then, assuming a Lagrange-basis representation for all $f(\i,\Y)$ rows, combining them together as per Eq. \ref{eq:fxY} will require (1) $\Fmul{m}$ for each row $i$ to multiply $\eq(\x, \i)$ by $f(\i,\Y)$ and (2) $\Fadd{(n-1)m}$ to add all multiplied rows together.
 So, $\Fmul{n(m + 2)} + \Fadd{(n-1)m}$ in total.
@@ -249,10 +251,13 @@ Parse the VK and the proof:
 
 Check the row commitments are consistent with the full commitment (via a multipairing $\multipair{n+1}$):
 \begin{align}
-e(C, \Vp) \equals \sum_{i\in[n)} e(D_i, V_i)\Leftrightarrow\\\\\
+e(C, \Vp) \equals \sum_{i\in[n)} e(D_i, \V_i)\Leftrightarrow\\\\\
 \end{align}
 
-Check the auxiliary data:
+{: .note}
+This step is agnostic of the evaluation claim $f(\x,\y)\equals z$ and, in some settings, could be memoized (e.g., when verifying multiple proofs for the same commitment $C$).
+
+Check the proof:
 \begin{align}
 \label{eq:kzh2-verify-aux}
 \sum_{j\in[m)} f_\x(\j) \cdot A_j \equals \sum_{i\in[n)}\eq(\x, \i) \cdot D_i\Leftrightarrow
@@ -263,19 +268,23 @@ Check $z$ against the partially-evaluated $f_\x$:
 z\equals f_\x(\y) 
 \end{align}
 
-{: .note}
+### Verification time
+
 Assuming $f_\x$ is received in Lagrange basis, computing all $f_\x(\j)$ is just fetching entries.
 Therefore, the LHS of the auxiliary check from Eq. \ref{eq:kzh2-verify-aux} **always** involves an $\msm{m}\_1$.
+
 When $(\x,\y)$ are on the hypercube (1) the RHS is a single $\Gr_1$ scalar multiplication which can be absorbed into the MSM on the LHS and (2) the last check on $z$ involves simply fetching the $y$th entry in $f_\x$.
+
 When $(\x,\y)$ are arbitrary, the RHS involves $\Fmul{2n}$ to evaluate all $\eq(\x,\i)$ Lagrange polynomials (see [here](/mle#computing-all-lagrange-evaluations-fast)) and then an $\msm{n}\_1$ which can be absorbed into the LHS.
+
 The final check involves evaluating the $f_\x$ MLE at an arbitrary $\y$.
 This involves evaluating all $\eq(\y,\j)$ Lagrange polynomials in $\Fmul{2m}$ time and then taking a dot product in $\Fmul{m} + \Fadd{m}$ time.
 
-#### Correctness
+### Correctness
 
 The first check is correct because:
 \begin{align}
-e(C, \Vp) &\equals \sum_{i\in[n)} e(D_i, V_i)\Leftrightarrow\\\\\
+e(C, \Vp) &\equals \sum_{i\in[n)} e(D_i, \V_i)\Leftrightarrow\\\\\
 e\left(\sum_{i\in[n)} \vec{f_i} \cdot \mat{H}\_i, \alpha\cdot \V\right) 
     &\equals
 \sum_{i\in[n)} e\left(\vec{f_i} \cdot \A, \tau_i \cdot \V\right)
@@ -310,7 +319,7 @@ The second check is correct because:
 Typically, when commiting to a size-$N$ MLE, the scheme is most-efficiently set up with $n = m = \sqrt{N} = 2^s$ via $\kzhSetup{2}(1^\lambda, s, s)$.
 (Assuming $\sqrt{N}$ is a power of two, for simplicity here; otherwise, must pad.)
 
-## Performance
+### Performance
 
 <!-- Here you can define LaTeX macros -->
 <div style="display: none;">$
@@ -358,6 +367,37 @@ Openings at points on the hypercube:
 
 {: .warning}
 For "Open time (random)" the time should technically have $\Fmul{n(m+2)} + \Fadd{(n-1)m}$ instead, but it's peanuts, so ignoring.
+
+## $\mathsf{KZH}_{\log{n}}$ construction
+
+Let $\term{\ell}\bydef\log{n}$.
+This construction can commit to any MLE $f(\X)\in \MLE{\ell}$ representing a vector of $\term{n} \bydef 2^\ell$ entries.
+
+### $\mathsf{KZH}_{\log{n}}.\mathsf{Setup}(1^\lambda, \log{n}) \rightarrow (\mathsf{vk},\mathsf{ck},\mathsf{ok})$
+
+Notation:
+ - $\ell \bydef \log{n}$, where $n$ denotes the total # of entries in the MLE
+
+Pick trapdoors and generators:
+ - $\term{\btau}\randget\F^\ell$
+
+{: .todo}
+Describe.
+
+### $\mathsf{KZH}_{\log{n}}.\mathsf{Commit}(\mathsf{ck}, f(\boldsymbol{X})) \rightarrow (C, \mathsf{aux})$
+
+{: .todo}
+Describe.
+
+### $\mathsf{KZH}_{\log{n}}.\mathsf{Open}(\mathsf{ok}, f(\boldsymbol{X}), \boldsymbol{x}, y; \mathsf{aux})\rightarrow \pi$
+
+{: .todo}
+Describe.
+
+### $\mathsf{KZH}_{\log{n}}.\mathsf{Verify}(\mathsf{vk}, C, \boldsymbol{x}, y; \pi)\rightarrow \\{0,1\\}$
+
+{: .todo}
+Describe.
 
 ## References
 
