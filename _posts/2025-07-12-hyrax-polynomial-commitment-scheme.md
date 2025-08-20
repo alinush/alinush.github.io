@@ -67,6 +67,7 @@ $</div> <!-- $ -->
     + $\vmsm{n}{< B}$ for a single multi-scalar multiplication (MSM) in $\Gr$ of size $n$ where the group element bases are **NOT** known ahead of time (i.e., _variable-base_) and each scalar is $< B$
  - [Multilinear extensions (MLEs)](/mle)
  - The finite field $\F$ is of prime order $p$
+ - We often denote the binary representation of $b$ as $\term{\vect{b}} \bydef [b_0,\ldots,b_{s-1}]\in\bin^s$, such that $b = \sum_{i\in[s)} b_i 2^i$.
 
 ### Inner product trick
 
@@ -142,14 +143,19 @@ where $\term{\mat{M}_i}\in\F^{1\times m}$ is the $i$th row in $\mat{M}$ and $\te
 
 ## Overview
 
-Hyrax represents an MLE $\term{f(\X,\Y)}\in \MLE{n,m}$ as a matrix $\mat{M}\bydef(M\_{i,j})\_{i\in[n],j\in[m]}\bydef (f(\i,\j))\_{i\in[n],j\in[m]}$.
+Hyrax represents an MLE $\term{f(\X,\Y)}\in \MLE{n,m}$ as a matrix:
+\begin{align}
+\mat{M}\bydef(M\_{i,j})\_{i\in[n],j\in[m]}\bydef (f(\i,\j))\_{i\in[n],j\in[m]}
+\end{align}
 
 Hyrax commits to $f$ by **individually** committing to the rows $\mat{M}\_i \bydef (f(\i,\j))\_{j\in[m)}$ using a _hiding_ Pedersen vector commitment:
 \begin{align}
-    \term{C\_i} \gets r\_i \cdot H + \mat{M}\_i \cdot \G = r\_i\cdot H+ \sum\_{j\in[m)} f(\i, \j) \cdot G_j\in \Gr
+\term{C\_i} 
+    &= r\_i \cdot H + \mat{M}\_i \cdot \G\\\\\
+    &= r\_i\cdot H+ \sum\_{j\in[m)} f(\i, \j) \cdot G_j\in \Gr
 \end{align}
 where $\term{(\G,H)}\in\Gr^{m+1}$ is the **commitment key** and $\term{r_i}\randget \F$.
-This yields an $n$-sized commitment $\term{\C}\bydef(C_i)_{i\in[n)}$.
+This yields a commitment $\term{\C}\bydef(C_i)_{i\in[n)}$.
 
 The opening proof for $\term{z}\equals f(\x,\y)$ uses the inner product trick from Eq. \ref{eq:hyrax}:
 \begin{align}
