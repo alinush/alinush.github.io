@@ -35,6 +35,7 @@ permalink: kzh
 \def\kzhOpen#1{\kzh{#1}.\mathsf{Open}}
 \def\tobin#1{\langle #1 \rangle}
 \def\vect#1{\boldsymbol{#1}}
+\def\b{\vect{b}}
 \def\btau{\vect{\tau}}
 \def\G{\vect{G}}
 \def\A{\vect{A}}
@@ -47,6 +48,7 @@ permalink: kzh
 % - Let $\tobin{i}_s$ denote the $s$-bit binary representation of $i$
 $</div> <!-- $_ -->
 
+{% include pairings.md %}
 {% include mle.md %}
 {% include time-complexities.md %}
 
@@ -64,6 +66,8 @@ $</div> <!-- $_ -->
     - We also use $\MLE{s_1,s_2,\ldots,s_\ell} \bydef \MLE{\sum_{i\in[\ell]} s_i}$ 
  - Denote $i$'s binary representation as $\vect{i} = (i_0, i_1, \ldots, i_{s-1})\in \bin^s$, s.t. $i=\sum_{k=0}^{s-1} 2^k \cdot i_k$
     - We often naturally interchange between these two, when it is clear from context
+ - For any size-$\ell$ vector $\b$, and $k\in[\ell)$, we let $\b_{\|k}\bydef (b_k, b_{k+1},\ldots,b_{\ell-1})$ denote the size $\ell-k$ suffix of $\b$.
+    + Similary, we let $\b_{k\|}\bydef (b_0, \ldots, b_k)$ denote the size $k$ prefix of $\b$.
  - $(v_0, v_2, \ldots, v_{n-1})^\top$ denotes the transpose of a row vector
  - We typically use bolded variables to indicate vectors and matrices
     - e.g., a matrix $\mat{A}$ consists of rows $\mat{A}\_i,\forall i\in[n)$, where each row $\mat{A}\_i$ consists of entries $A_{i,j},\forall j\in[m)$
@@ -71,7 +75,7 @@ $</div> <!-- $_ -->
  - We use $\vect{a}\cdot G\bydef (a_0\cdot G,a_1\cdot G,\ldots, a_{n-1}\cdot G)$
  - We use $a\cdot \G\bydef (a\cdot G_0,a\cdot G_1,\ldots, a\cdot G_{n-1})$
  - We use $\vect{a}\cdot \G \bydef \sum_{i\in[n)} a_i\cdot G_i$
- - Recall the definition of $\eq(\x,\boldsymbol{b})$ Lagrange polynomials from [here](/spartan#mathsfeqmathbfxmathbfb-lagrange-polynomials)
+ - Recall the definition of $\eq(\boldsymbol{b};\x)$ Lagrange polynomials from [here](/spartan#mathsfeqmathbfxmathbfb-lagrange-polynomials)
 {% include time-complexities-prelims-pairings.md %}
  - It is useful to understand [Hyrax](/hyrax), which KZH is highly-related to.
 
@@ -218,7 +222,7 @@ Partially-evaluate $f\in \MLE{\nu,\mu}$:
 \term{f_\x(\Y)} &\gets f(\x, \Y) \in \MLE{\mu}
 \\\\\
 \label{eq:fxY}
-&\bydef \sum_{i\in[n)} \eq(\x, \i) f(\i,\Y)
+&\bydef \sum_{i\in[n)} \eq(\i; \x) f(\i,\Y)
 \end{align}
 <!--Evaluate $f(\x,\y)$:
 \begin{align}
@@ -233,8 +237,8 @@ Return the proof[^open]:
 When $\x\in\bin^\nu$ and $\y\in{\bin^\mu}$, the step above involves **zero work**:  $f_\x(\Y)$ is just the $x$th column in the matrix encoded by $f$.
 Furthermore, $z=f(\x,\y)$ is simply the entry at location $(x,y)$ in the matrix.
 
-When $\x$ is an arbitrary, point, computing all the $\eq(\x, \i)$'s requires $\Fmul{2n}$ (see [here](/mle#computing-all-lagrange-evaluations-fast)).
-Then, assuming a Lagrange-basis representation for all $f(\i,\Y)$ rows, combining them together as per Eq. \ref{eq:fxY} will require (1) $\Fmul{m}$ for each row $i$ to multiply $\eq(\x, \i)$ by $f(\i,\Y)$ and (2) $\Fadd{(n-1)m}$ to add all multiplied rows together.
+When $\x$ is an arbitrary, point, computing all the $\eq(\i;\x)$'s requires $\Fmul{2n}$ (see [here](/mle#computing-all-lagrange-evaluations-fast)).
+Then, assuming a Lagrange-basis representation for all $f(\i,\Y)$ rows, combining them together as per Eq. \ref{eq:fxY} will require (1) $\Fmul{m}$ for each row $i$ to multiply $\eq(\i;\x)$ by $f(\i,\Y)$ and (2) $\Fadd{(n-1)m}$ to add all multiplied rows together.
 So, $\Fmul{n(m + 2)} + \Fadd{(n-1)m}$ in total.
 
 ### $\mathsf{KZH}_2.\mathsf{Verify}(\mathsf{vk}, C, (\boldsymbol{x}, \boldsymbol{y}), z; \pi)\rightarrow \\{0,1\\}$
@@ -260,7 +264,7 @@ This step is agnostic of the evaluation claim $f(\x,\y)\equals z$ and, in some s
 Check the proof:
 \begin{align}
 \label{eq:kzh2-verify-aux}
-\sum_{j\in[m)} f_\x(\j) \cdot A_j \equals \sum_{i\in[n)}\eq(\x, \i) \cdot D_i\Leftrightarrow
+\sum_{j\in[m)} f_\x(\j) \cdot A_j \equals \sum_{i\in[n)}\eq(\i;\x) \cdot D_i\Leftrightarrow
 \end{align}
 
 Check $z$ against the partially-evaluated $f_\x$:
@@ -275,10 +279,10 @@ Therefore, the LHS of the auxiliary check from Eq. \ref{eq:kzh2-verify-aux} **al
 
 When $(\x,\y)$ are on the hypercube (1) the RHS is a single $\Gr_1$ scalar multiplication which can be absorbed into the MSM on the LHS and (2) the last check on $z$ involves simply fetching the $y$th entry in $f_\x$.
 
-When $(\x,\y)$ are arbitrary, the RHS involves $\Fmul{2n}$ to evaluate all $\eq(\x,\i)$ Lagrange polynomials (see [here](/mle#computing-all-lagrange-evaluations-fast)) and then an $\msm{n}\_1$ which can be absorbed into the LHS.
+When $(\x,\y)$ are arbitrary, the RHS involves $\Fmul{2n}$ to evaluate all $\eq(\i;\x)$ Lagrange polynomials (see [here](/mle#computing-all-lagrange-evaluations-fast)) and then an $\msm{n}\_1$ which can be absorbed into the LHS.
 
 The final check involves evaluating the $f_\x$ MLE at an arbitrary $\y$.
-This involves evaluating all $\eq(\y,\j)$ Lagrange polynomials in $\Fmul{2m}$ time and then taking a dot product in $\Fmul{m} + \Fadd{m}$ time.
+This involves evaluating all $\eq(\j;\y)$ Lagrange polynomials in $\Fmul{2m}$ time and then taking a dot product in $\Fmul{m} + \Fadd{m}$ time.
 
 ### Correctness
 
@@ -307,11 +311,11 @@ e\left(\sum_{i\in[n)} \vec{f_i} \cdot \mat{H}\_i, \alpha\cdot \V\right)
 
 The second check is correct because:
 \begin{align}
-\sum_{j\in[m)} f_\x(\j) \cdot A_j &\equals \sum_{i\in[n)}\eq(\x, \i) \cdot D_i\Leftrightarrow\\\\\
-\alpha \sum_{j\in[m)} f(\x, \j) \cdot G_j &\equals \sum_{i\in[n)}\eq(\x, \i) \cdot \left( \sum_{j\in [m)} f(\i,\j) \cdot A_j \right)\Leftrightarrow\\\\\
-\alpha \sum_{j\in[m)} \sum_{i\in[n)} \eq(\x,\i) f(\i, \j) \cdot G_j &\equals \sum_{i\in[n)}\eq(\x, \i) \cdot \alpha \left( \sum_{j\in [m)} f(\i,\j) \cdot G_j \right)\Leftrightarrow\\\\\
-\alpha \sum_{i\in[n)} \sum_{j\in[m)} \eq(\x,\i) f(\i, \j) \cdot G_j &\equals \alpha \sum_{i\in[n)}\eq(\x, \i) \cdot \left( \sum_{j\in [m)} f(\i,\j) \cdot G_j \right)\Leftrightarrow\\\\\
-\alpha \sum_{i\in[n)} \sum_{j\in[m)} \eq(\x,\i) f(\i, \j) \cdot G_j &\goddamnequals \alpha \sum_{i\in[n)} \sum_{j\in [m)} \eq(\x, \i) f(\i,\j) \cdot G_j
+\sum_{j\in[m)} f_\x(\j) \cdot A_j &\equals \sum_{i\in[n)}\eq(\i;\x) \cdot D_i\Leftrightarrow\\\\\
+\alpha \sum_{j\in[m)} f(\x, \j) \cdot G_j &\equals \sum_{i\in[n)}\eq(\i;\x) \cdot \left( \sum_{j\in [m)} f(\i,\j) \cdot A_j \right)\Leftrightarrow\\\\\
+\alpha \sum_{j\in[m)} \sum_{i\in[n)} \eq(\i;\x) f(\i, \j) \cdot G_j &\equals \sum_{i\in[n)}\eq(\i;\x) \cdot \alpha \left( \sum_{j\in [m)} f(\i,\j) \cdot G_j \right)\Leftrightarrow\\\\\
+\alpha \sum_{i\in[n)} \sum_{j\in[m)} \eq(\i;\x) f(\i, \j) \cdot G_j &\equals \alpha \sum_{i\in[n)}\eq(\i;\x) \cdot \left( \sum_{j\in [m)} f(\i,\j) \cdot G_j \right)\Leftrightarrow\\\\\
+\alpha \sum_{i\in[n)} \sum_{j\in[m)} \eq(\i;\x) f(\i, \j) \cdot G_j &\goddamnequals \alpha \sum_{i\in[n)} \sum_{j\in [m)} \eq(\i;\x) f(\i,\j) \cdot G_j
 \end{align}
 
 ### Efficient instantiation
@@ -373,21 +377,81 @@ For "Open time (random)" the time should technically have $\Fmul{n(m+2)} + \Fadd
 Let $\term{\ell}\bydef\log{n}$.
 This construction can commit to any MLE $f(\X)\in \MLE{\ell}$ representing a vector of $\term{n} \bydef 2^\ell$ entries.
 
-### $\mathsf{KZH}_{\log{n}}.\mathsf{Setup}(1^\lambda, \log{n}) \rightarrow (\mathsf{vk},\mathsf{ck},\mathsf{ok})$
+### $\mathsf{KZH}_{\log{n}}.\mathsf{Setup}(1^\lambda, n) \rightarrow (\mathsf{vk},\mathsf{ck},\mathsf{ok})$
 
 Notation:
  - $\ell \bydef \log{n}$, where $n$ denotes the total # of entries in the MLE
 
-Pick trapdoors and generators:
- - $\term{\btau}\randget\F^\ell$
+{: .warning}
+Currently, we assume $\ell \ge 2$ and $\ell$ is even.
 
-{: .todo}
-Describe.
+Pick trapdoors and generators:
+\begin{align}
+\term{\btau}\randget\F^\ell
+\end{align}
+
+Compute the public parameters.
+\begin{align}
+\ck 
+    &\gets 
+    %\left(\one{\eq(\i\_{\|k};\btau\_{\|k})}\right)\_{i\in[n), k \in [\ell)}
+    \left(\one{\eq(\i\_{\|k};\btau\_{\|k})}\right)\_{k\in[\ell), \i_{\|k}\in\bin^{\ell-k}}
+    =\begin{pmatrix}
+        \eq(i\_0, \ldots, i\_{\ell-1}; \tau\_0,\ldots,\tau\_{\ell-1})_{i_0,\ldots,i\_{\ell-1}\in\\{0,1\\}}\\\\\
+        \eq(i\_1, \ldots, i\_{\ell-1}; \tau\_1,\ldots,\tau\_{\ell-1})\_{i\_1,\ldots,i\_{\ell-1}\in\\{0,1\\}}\\\\\
+        \vdots\\\\\
+        \eq(i\_{\ell-2}, i\_{\ell-1}; \tau\_{\ell-2},\tau\_{\ell-1})\_{i\_{\ell-2},i\_{\ell-1}\in\\{0,1\\}}\\\\\
+        \eq(i\_{\ell-1};\tau\_{\ell-1})\_{i\_{\ell-1}\in\\{0,1\\}}\\\\\
+    \end{pmatrix}\\\\\
+\vk &\gets \left(\two{\tau\_0},\two{\tau\_1},\ldots,\two{\tau\_{\ell-1}}\right)\bydef \two{\btau}\\\\\
+\ok &\gets ?\\\\\
+\end{align}
+
+{: .note}
+Recall our [$\b_{\|k}$ notation](#notation) for the size-$(\ell-k)$ suffix of $\b$ starting at $b_k$.
+
+### Public parameter sizes
+
+For the commitment key $\ck$:
+ - There are $2^\ell + 2^{\ell-1} + \ldots + 2^1 = \emph{2^{\ell+1} - 2}$ possible $\one{\eq(\i\_{\|k};\btau\_{\|k})}$ commitments.
 
 ### $\mathsf{KZH}_{\log{n}}.\mathsf{Commit}(\mathsf{ck}, f(\boldsymbol{X})) \rightarrow (C, \mathsf{aux})$
 
+Parse the commitment key:
+\begin{align}
+\left(\one{\eq(\i; \btau)}\right)_{i\in[n)},\ldots \parse \ck
+\end{align}
+
+Commit to the polynomial:
+\begin{align}
+C\gets \sum_{i\in[n)} f(\i)\cdot \one{\eq(\i;\tau)}
+\end{align}
+
+Compute the auxiliary data:
+\begin{align}
+\aux
+    \gets \left(\one{f(\i\_{k\|},\btau\_{\|k+1})}\right)\_{k\in[\ell/2), \i\_{k\|}\in\bin^k}
+    =\begin{pmatrix}
+        f(i_0, \tau\_1,\tau\_2,\ldots,\tau\_{\ell-1})\_{i_0\in\\{0,1\\}}\\\\\
+        f(i_0, i_1, \tau\_1,\ldots,\tau\_{\ell-1})\_{i_0,i_1\in\\{0,1\\}}\\\\\
+        \vdots\\\\\
+        f(i\_0,\ldots, i\_{\ell/2-1}, \tau\_{\ell/2},\ldots,\tau\_{\ell-1})\_{i\_0,\ldots,i\_{\ell/2-1}\in\\{0,1\\}}\\\\\
+    \end{pmatrix}
+\end{align}
+
+{: .note}
+Recall our [$\b_{k\|}$ notation](#notation) for the size-$(k+1)$ prefix of $\b$ ending at $b_k$.
+
 {: .todo}
-Describe.
+Assumes $\ell$ is even and $\ge 2$. I guess we could either floor or ceil?
+
+{: .todo}
+This commits to the L, R, LL, LR, LLL, LLR MLEs, and so on: i.e., to all sub-MLEs / sub-vectors of size up to $\ell/2$.
+Can depict it more intuitively via a tree.
+
+### Auxiliary data size
+
+For each $k\in[\ell/2)$, there are $2^{k+1}$ choices for $\i_{k\|}$. Thus, $\|\aux\| =$ $2^1 + 2^2 + \ldots + 2^{(\ell/2 - 1) + 1} =$ $2^1 + \ldots + 2^{\ell/2} = 2^{\ell/2 + 1} - 2$.
 
 ### $\mathsf{KZH}_{\log{n}}.\mathsf{Open}(\mathsf{ok}, f(\boldsymbol{X}), \boldsymbol{x}, y; \mathsf{aux})\rightarrow \pi$
 
