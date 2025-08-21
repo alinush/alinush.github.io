@@ -44,6 +44,7 @@ permalink: kzh
 \def\VV{\widetilde{\vect{V}}}
 \def\H{\mat{H}}
 \def\ok{\mathsf{ok}}
+\def\crs#1{\textcolor{green}{#1}}
 %\def\?{\vect{?}}
 % - Let $\tobin{i}_s$ denote the $s$-bit binary representation of $i$
 $</div> <!-- $_ -->
@@ -381,11 +382,12 @@ This construction can commit to any MLE $f(\X)\in \MLE{\ell}$ representing a vec
 
 Notation:
  - $\ell \bydef \log{n}$, where $n$ denotes the total # of entries in the MLE
+ - We assume $\one{1}$ and $\two{1}$ have been randomly picked and fixed globally.
 
 {: .warning}
 Currently, we assume $\ell \ge 2$ and $\ell$ is even.
 
-Pick trapdoors and generators:
+Pick trapdoor:
 \begin{align}
 \term{\btau}\randget\F^\ell
 \end{align}
@@ -395,7 +397,7 @@ Compute the public parameters.
 \ck 
     &\gets 
     %\left(\one{\eq(\i\_{\|k};\btau\_{\|k})}\right)\_{i\in[n), k \in [\ell)}
-    \left(\one{\eq(\i\_{\|k};\btau\_{\|k})}\right)\_{k\in[\ell), \i_{\|k}\in\bin^{\ell-k}}
+    \left(\crs{\one{\eq(\i\_{\|k};\btau\_{\|k})}}\right)\_{k\in[\ell), \i_{\|k}\in\bin^{\ell-k}}
     =\begin{pmatrix}
         \eq(i\_0, \ldots, i\_{\ell-1}; \tau\_0,\ldots,\tau\_{\ell-1})_{i_0,\ldots,i\_{\ell-1}\in\\{0,1\\}}\\\\\
         \eq(i\_1, \ldots, i\_{\ell-1}; \tau\_1,\ldots,\tau\_{\ell-1})\_{i\_1,\ldots,i\_{\ell-1}\in\\{0,1\\}}\\\\\
@@ -403,28 +405,29 @@ Compute the public parameters.
         \eq(i\_{\ell-2}, i\_{\ell-1}; \tau\_{\ell-2},\tau\_{\ell-1})\_{i\_{\ell-2},i\_{\ell-1}\in\\{0,1\\}}\\\\\
         \eq(i\_{\ell-1};\tau\_{\ell-1})\_{i\_{\ell-1}\in\\{0,1\\}}\\\\\
     \end{pmatrix}\\\\\
-\vk &\gets \left(\two{\tau\_0},\two{\tau\_1},\ldots,\two{\tau\_{\ell-1}}\right)\bydef \two{\btau}\\\\\
+\vk &\gets \left(\crs{\two{\tau\_0}},\crs{\two{\tau\_1}},\ldots,\crs{\two{\tau\_{\ell-1}}}\right)\bydef \crs{\two{\btau}}\\\\\
 \ok &\gets ?\\\\\
 \end{align}
 
 {: .note}
 Recall our [$\b_{\|k}$ notation](#notation) for the size-$(\ell-k)$ suffix of $\b$ starting at $b_k$.
+We distinguish public parameters from other group elements by highlighting them in $\crs{\text{green}}$
 
 ### Public parameter sizes
 
 For the commitment key $\ck$:
- - There are $2^\ell + 2^{\ell-1} + \ldots + 2^1 = \emph{2^{\ell+1} - 2}$ possible $\one{\eq(\i\_{\|k};\btau\_{\|k})}$ commitments.
+ - There are $2^\ell + 2^{\ell-1} + \ldots + 2^1 = 2^{\ell+1} - 2 = \emph{2n - 2}$ possible $\crs{\one{\eq(\i\_{\|k};\btau\_{\|k})}}$ commitments.
 
 ### $\mathsf{KZH}_{\log{n}}.\mathsf{Commit}(\mathsf{ck}, f(\boldsymbol{X})) \rightarrow (C, \mathsf{aux})$
 
 Parse the commitment key:
 \begin{align}
-\left(\one{\eq(\i; \btau)}\right)_{i\in[n)},\ldots \parse \ck
+\left(\crs{\one{\eq(\i; \btau)}}\right)_{i\in[n)},\ldots \parse \ck
 \end{align}
 
 Commit to the polynomial:
 \begin{align}
-C\gets \sum_{i\in[n)} f(\i)\cdot \one{\eq(\i;\tau)}
+C\gets \sum_{i\in[n)} f(\i)\cdot \crs{\one{\eq(\i;\tau)}}
 \end{align}
 
 Compute the auxiliary data:
@@ -446,12 +449,21 @@ Recall our [$\b_{k\|}$ notation](#notation) for the size-$(k+1)$ prefix of $\b$ 
 Assumes $\ell$ is even and $\ge 2$. I guess we could either floor or ceil?
 
 {: .todo}
-This commits to the L, R, LL, LR, LLL, LLR MLEs, and so on: i.e., to all sub-MLEs / sub-vectors of size up to $\ell/2$.
+The auxiliary data contains commitments to the L, R, LL, LR, RL, RR, LLL, LLR, ... MLEs, and so on: i.e., to all sub-MLEs / sub-vectors of size up to $\ell/2$.
 Can depict it more intuitively via a tree.
 
 ### Auxiliary data size
 
-For each $k\in[\ell/2)$, there are $2^{k+1}$ choices for $\i_{k\|}$. Thus, $\|\aux\| =$ $2^1 + 2^2 + \ldots + 2^{(\ell/2 - 1) + 1} =$ $2^1 + \ldots + 2^{\ell/2} = 2^{\ell/2 + 1} - 2$.
+For each $k\in[\ell/2)$, there are $2^{k+1}$ choices for $\i_{k\|}$. Thus, $\|\aux\| =$ $2^1 + 2^2 + \ldots + 2^{(\ell/2 - 1) + 1} =$ $2^1 + \ldots + 2^{\ell/2} = 2^{\ell/2 + 1} - 2 = \emph{2\sqrt{n} - 2}$.
+
+### Commit time
+
+1. A size-$n$ fixed-base MSM in $\Gr_1$ to compute $C$
+2. **TODO:** MSMs for computing the sub-MLE commitments.
+<!-- Note: Doing MSMs for the smallest sub-MLE commitments + combine these into larger ones does not work: e.g., good luck combining a size-2 MLE commitment like 4\tau_1 + 5(1-\tau_1) with another one into a size-4 MLE commitment. It would require multiplyin by \tau in the exponent -->
+
+{: .todo}
+Use notation for MSM sizes in different groups.
 
 ### $\mathsf{KZH}_{\log{n}}.\mathsf{Open}(\mathsf{ok}, f(\boldsymbol{X}), \boldsymbol{x}, y; \mathsf{aux})\rightarrow \pi$
 
