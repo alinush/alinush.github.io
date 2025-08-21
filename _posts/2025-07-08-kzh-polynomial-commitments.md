@@ -29,6 +29,7 @@ permalink: kzh
 \def\kzh#1{\mathsf{KZH}_{#1}}   <!-- _ _ $____ -->
 \def\kzhTwo{\kzh{2}}
 \def\kzhK{\kzh{k}}
+\def\kzhLogN{\kzh{\log{n}}}
 \def\kzhTwoGen{\kzhTwo^{n, m}}
 \def\kzhTwoSqr{\kzhTwo^{\sqrt{N}}}
 \def\kzhSetup#1{\kzh{#1}.\mathsf{Setup}}
@@ -375,8 +376,8 @@ For "Open time (random)" the time should technically have $\Fmul{n(m+2)} + \Fadd
 
 ## $\mathsf{KZH}_{\log{n}}$ construction
 
-Let $\term{\ell}\bydef\log{n}$.
-This construction can commit to any MLE $f(\X)\in \MLE{\ell}$ representing a vector of $\term{n} \bydef 2^\ell$ entries.
+The KZH paper[^KZHB25e] describes a family $\kzhK$ of commitment schemes for $k$-dimensional tensors and thus for multilinear extension (MLE) polynomials.
+In this section, we (more clearly?) re-describe the $k = \log{n}$ instantiation of this family, which can be used to commit to any MLE $f(\X)\in \MLE{\ell}$ representing a vector of $\term{n} \bydef 2^\ell$ entries.
 
 ### $\mathsf{KZH}_{\log{n}}.\mathsf{Setup}(1^\lambda, n) \rightarrow (\mathsf{vk},\mathsf{ck},\mathsf{ok})$
 
@@ -397,14 +398,15 @@ Compute the public parameters.
 \ck 
     &\gets 
     %\left(\one{\eq(\i\_{\|k};\btau\_{\|k})}\right)\_{i\in[n), k \in [\ell)}
-    \left(\crs{\one{\eq(\i\_{\|k};\btau\_{\|k})}}\right)\_{k\in[\ell), \i_{\|k}\in\bin^{\ell-k}}
-    =\begin{pmatrix}
-        \eq(i\_0, \ldots, i\_{\ell-1}; \tau\_0,\ldots,\tau\_{\ell-1})_{i_0,\ldots,i\_{\ell-1}\in\\{0,1\\}}\\\\\
+    \begin{pmatrix}
+        \eq(i\_0, \ldots, i\_{\ell-1}; \tau\_0,\ldots,\tau\_{\ell-1})\_{i_0,\ldots,i\_{\ell-1}\in\\{0,1\\}}\\\\\
         \eq(i\_1, \ldots, i\_{\ell-1}; \tau\_1,\ldots,\tau\_{\ell-1})\_{i\_1,\ldots,i\_{\ell-1}\in\\{0,1\\}}\\\\\
         \vdots\\\\\
         \eq(i\_{\ell-2}, i\_{\ell-1}; \tau\_{\ell-2},\tau\_{\ell-1})\_{i\_{\ell-2},i\_{\ell-1}\in\\{0,1\\}}\\\\\
         \eq(i\_{\ell-1};\tau\_{\ell-1})\_{i\_{\ell-1}\in\\{0,1\\}}\\\\\
-    \end{pmatrix}\\\\\
+    \end{pmatrix}
+    \bydef\left(\crs{\one{\eq(\i\_{\|k};\btau\_{\|k})}}\right)\_{k\in[\ell), \i_{\|k}\in\bin^{\ell-k}}
+    \\\\\
 \vk &\gets \left(\crs{\two{\tau\_0}},\crs{\two{\tau\_1}},\ldots,\crs{\two{\tau\_{\ell-1}}}\right)\bydef \crs{\two{\btau}}\\\\\
 \ok &\gets ?\\\\\
 \end{align}
@@ -433,13 +435,14 @@ C\gets \sum_{i\in[n)} f(\i)\cdot \crs{\one{\eq(\i;\tau)}}
 Compute the auxiliary data:
 \begin{align}
 \aux
-    \gets \left(\one{f(\i\_{k\|},\btau\_{\|k+1})}\right)\_{k\in[\ell/2), \i\_{k\|}\in\bin^k}
-    =\begin{pmatrix}
+    \label{eq:kzh-logn-aux}
+    \gets\begin{pmatrix}
         f(i_0, \tau\_1,\tau\_2,\ldots,\tau\_{\ell-1})\_{i_0\in\\{0,1\\}}\\\\\
         f(i_0, i_1, \tau\_1,\ldots,\tau\_{\ell-1})\_{i_0,i_1\in\\{0,1\\}}\\\\\
         \vdots\\\\\
         f(i\_0,\ldots, i\_{\ell/2-1}, \tau\_{\ell/2},\ldots,\tau\_{\ell-1})\_{i\_0,\ldots,i\_{\ell/2-1}\in\\{0,1\\}}\\\\\
     \end{pmatrix}
+    \bydef \left(\one{f(\i\_{k\|},\btau\_{\|k+1})}\right)\_{k\in[\ell/2), \i\_{k\|}\in\bin^k}
 \end{align}
 
 {: .note}
@@ -459,7 +462,11 @@ For each $k\in[\ell/2)$, there are $2^{k+1}$ choices for $\i_{k\|}$. Thus, $\|\a
 ### Commit time
 
 1. A size-$n$ fixed-base MSM in $\Gr_1$ to compute $C$
-2. **TODO:** MSMs for computing the sub-MLE commitments.
+2. Several MSMs for computing the sub-MLE commitments:
+    - 2 size-$n/2$ MSMs for the 1st row in Eq. \ref{eq:kzh-logn-aux}
+    - 4 size-$n/4$ MSMs for the 2nd row
+    - $\ldots$
+    - $2^{\ell/2}$ size-$n/2^{\ell/2}$ MSMs for the last row = $\sqrt{n}$ size-$\sqrt{n}$ MSMs 
 <!-- Note: Doing MSMs for the smallest sub-MLE commitments + combine these into larger ones does not work: e.g., good luck combining a size-2 MLE commitment like 4\tau_1 + 5(1-\tau_1) with another one into a size-4 MLE commitment. It would require multiplyin by \tau in the exponent -->
 
 {: .todo}
@@ -467,8 +474,30 @@ Use notation for MSM sizes in different groups.
 
 ### $\mathsf{KZH}_{\log{n}}.\mathsf{Open}(\mathsf{ok}, f(\boldsymbol{X}), \boldsymbol{x}, y; \mathsf{aux})\rightarrow \pi$
 
+For each $k\in[1,\ell-1)$, compute commitments:
+<!--for all $i_k\in\bin$, compute:-->
+\begin{align}
+%c_{k, i_k} &= \one{f(\x_{k-1\|},i_{k},\btau_{\|k+1})}
+\term{c_{k, 0}} &= \one{f(x_0,\ldots,x_{k-1}, 0, \tau_{k+1}, \ldots, \tau_{\ell-1})} \bydef \one{f(\x_{k-1\|}, 0, \btau_{\|k+1})}\\\\\
+\term{c_{k, 1}} &= \one{f(x_0,\ldots,x_{k-1}, 1, \tau_{k+1}, \ldots, \tau_{\ell-1})} \bydef \one{f(\x_{k-1\|}, 1, \btau_{\|k+1})}
+\end{align}
+
+{: .note}
+The extreme cases are $\emph{c_{1, b}} = \one{f(x_0, b, \tau_2, \ldots, \tau_{\ell-1})}$ and $\emph{c_{\ell-2,b}} = \one{f(x_0, \ldots x_{\ell-3}, b, \tau_{\ell-1})}$. 
+
+For $k=\ell-1$, partially-evaluate:
+\begin{align}
+f(x_0, x_1,\ldots,x_{\ell-2}, X_{\ell-1}) \bydef \term{t_1} \cdot X_{\ell-1} + \term{t_0} 
+\end{align}
+Return the proof:
+\begin{align}
+\pi\gets \left(\left(c_{k, b}\right)_{k\in[1,\ell-1),b\in\bin}, t_0, t_1\right)
+\end{align}
+
+### Opening time
+
 {: .todo}
-Describe.
+Describe algorithm to compute commitments and to partially-evaluate!
 
 ### $\mathsf{KZH}_{\log{n}}.\mathsf{Verify}(\mathsf{vk}, C, \boldsymbol{x}, y; \pi)\rightarrow \\{0,1\\}$
 
