@@ -408,7 +408,7 @@ Compute the public parameters.
     \bydef\left(\crs{\one{\eq(\i\_{\|k};\btau\_{\|k})}}\right)\_{k\in[\ell), \i_{\|k}\in\bin^{\ell-k}}
     \\\\\
 \vk &\gets \left(\crs{\two{\tau\_0}},\crs{\two{\tau\_1}},\ldots,\crs{\two{\tau\_{\ell-1}}}\right)\bydef \crs{\two{\btau}}\\\\\
-\ok &\gets ?\\\\\
+\ok &\gets \textbf{TODO}\\\\\
 \end{align}
 
 {: .note}
@@ -418,7 +418,9 @@ We distinguish public parameters from other group elements by highlighting them 
 ### Public parameter sizes
 
 For the commitment key $\ck$:
- - There are $2^\ell + 2^{\ell-1} + \ldots + 2^1 = 2^{\ell+1} - 2 = \emph{2n - 2}$ possible $\crs{\one{\eq(\i\_{\|k};\btau\_{\|k})}}$ commitments.
+ - There are $2^\ell + 2^{\ell-1} + \ldots + 2^1 = 2^{\ell+1} - 2 = \emph{2n - 2}$ possible $\crs{\one{\eq(\i\_{\|k};\btau\_{\|k})}}$ commitments $\Rightarrow \|\ck\| = 2n-2$ $\Gr_1$.
+ - $\|\vk\| = \log{n}$ $\Gr_2$
+ - **TODO:** $\|\ok\| = ?$
 
 ### $\mathsf{KZH}_{\log{n}}.\mathsf{Commit}(\mathsf{ck}, f(\boldsymbol{X})) \rightarrow (C, \mathsf{aux})$
 
@@ -502,11 +504,11 @@ Return the proof:
 ### Opening time
 
 {: .todo}
-Describe algorithm to compute commitments and to partially-evaluate!
+Describe algorithm to compute commitments and to partially-evaluate! Then, figure out what $\ok$ needs to be.
 
 ### Proof size
 
- - $2(\ell+1)$ $\Gr_1$ elements
+ - $2(\ell-1)$ $\Gr_1$ elements
  - $2$ $\F$ elements
 
 ### $\mathsf{KZH}_{\log{n}}.\mathsf{Verify}(\mathsf{vk}, C, \boldsymbol{x}, y; \pi)\rightarrow \\{0,1\\}$
