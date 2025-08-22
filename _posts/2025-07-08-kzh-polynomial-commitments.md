@@ -474,24 +474,29 @@ Use notation for MSM sizes in different groups.
 
 ### $\mathsf{KZH}_{\log{n}}.\mathsf{Open}(\mathsf{ok}, f(\boldsymbol{X}), \boldsymbol{x}, y; \mathsf{aux})\rightarrow \pi$
 
-For each $k\in[1,\ell-1)$, compute commitments:
+First, compute the initial commitments:
+\begin{align}
+%c_{k, i_k} &= \one{f(\x_{k-1\|},i_{k},\btau_{\|k+1})}
+\term{C_{0, b}} &= \one{f(b, \tau_1, \ldots, \tau_{\ell-1})} \bydef \one{f(0, \btau_{\|1})}, b\in\bin\\\\\
+\end{align}
+
+For $k\in[1, \ell-1)$, compute commitments:
 <!--for all $i_k\in\bin$, compute:-->
 \begin{align}
 %c_{k, i_k} &= \one{f(\x_{k-1\|},i_{k},\btau_{\|k+1})}
-\term{c_{k, 0}} &= \one{f(x_0,\ldots,x_{k-1}, 0, \tau_{k+1}, \ldots, \tau_{\ell-1})} \bydef \one{f(\x_{k-1\|}, 0, \btau_{\|k+1})}\\\\\
-\term{c_{k, 1}} &= \one{f(x_0,\ldots,x_{k-1}, 1, \tau_{k+1}, \ldots, \tau_{\ell-1})} \bydef \one{f(\x_{k-1\|}, 1, \btau_{\|k+1})}
+\term{C_{k, b}} &= \one{f(x_0,\ldots,x_{k-1}, b, \tau_{k+1}, \ldots, \tau_{\ell-1})} \bydef \one{f(\x_{k-1\|}, 0, \btau_{\|k+1})},b\in\bin\\\\\
 \end{align}
 
 {: .note}
-The extreme cases are $\emph{c_{1, b}} = \one{f(x_0, b, \tau_2, \ldots, \tau_{\ell-1})}$ and $\emph{c_{\ell-2,b}} = \one{f(x_0, \ldots x_{\ell-3}, b, \tau_{\ell-1})}$. 
+The extreme cases are $\emph{C_{1, b}} = \one{f(x_0, b, \tau_2, \ldots, \tau_{\ell-1})}$ and $\emph{C_{\ell-2,b}} = \one{f(x_0, \ldots x_{\ell-3}, b, \tau_{\ell-1})}$. 
 
-For $k=\ell-1$, partially-evaluate:
+Lastly, partially-evaluate:
 \begin{align}
 f(x_0, x_1,\ldots,x_{\ell-2}, X_{\ell-1}) \bydef \term{t_1} \cdot X_{\ell-1} + \term{t_0} 
 \end{align}
 Return the proof:
 \begin{align}
-\pi\gets \left(\left(c_{k, b}\right)_{k\in[1,\ell-1),b\in\bin}, t_0, t_1\right)
+\pi\gets \left(\left(C_{k, b}\right)_{k\in[\ell-1),b\in\bin}, t_0, t_1\right)
 \end{align}
 
 ### Opening time
@@ -499,10 +504,55 @@ Return the proof:
 {: .todo}
 Describe algorithm to compute commitments and to partially-evaluate!
 
+### Proof size
+
+ - $2(\ell+1)$ $\Gr_1$ elements
+ - $2$ $\F$ elements
+
 ### $\mathsf{KZH}_{\log{n}}.\mathsf{Verify}(\mathsf{vk}, C, \boldsymbol{x}, y; \pi)\rightarrow \\{0,1\\}$
 
-{: .todo}
-Describe.
+Parse the proof:
+\begin{align}
+\left(\left(C_{k, b}\right)_{k\in[\ell-1),b\in\bin}, t_0, t_1\right)\parse \pi
+\end{align}
+
+First, verify the initial commitments:
+\begin{align}
+\term{C_0}\gets C
+\end{align}
+
+For $k\in[\ell-1)$, verify the commitments:
+\begin{align}
+\pair{\emph{C_k}}{\two{1}} &\equals \pair{C_{k, 0}}{\two{1 - \tau_k}} + \pair{C_{k,1}}{\two{\tau_k}}\\\\\
+\term{C_{k+1}} &\gets (1-x_k)\cdot C_{k,0} + x_k \cdot C_{k,1}
+\end{align}
+
+Lastly, verify the partial evaluation:
+\begin{align}
+C_{\ell-1} &\equals t_1 \cdot \one{\tau_k} + t_0\cdot\one{1} = \one{t_1\cdot \tau_k + t_0}
+\end{align}
+
+### Verification time
+
+_Naively_:
+
+ - $\ell-1$ size-3 multipairing (to verify the $C_{k,b}$'s)
+ - $\ell-1$ size-2 $\Gr_1$ MSMs (to compute the $C_k$'s)
+ - a size-2 $\Gr_1$ MSM (to verify the $(t_1,t_0)$ polynomial)
+
+**Faster** (pick random $\term{\alpha_k}$'s and combine the pairing checks):
+\begin{align}
+\pair{\sum_{k\in[\ell-1)} \emph{\alpha_k} \cdot C_k}{\two{1}} &\equals \sum_{k\in[\ell-1)} \left(\pair{\emph{\alpha_k} \cdot C_{k, 0}}{\two{1 - \tau_k}} + \pair{\emph{\alpha_k} \cdot C_{k,1}}{\two{\tau_k}}\right)\Leftrightarrow\\\\\
+\end{align}
+\begin{align\*}
+\Leftrightarrow\pair{\sum_{k\in[\ell-1)} \left(\alpha_k (1-x_{k-1}) \cdot C_{k-1,0} + \alpha_k x_{k-1} \cdot C_{k-1,1}\right)}{\two{1}} &\equals \sum_{k\in[\ell-1)} \left(\pair{\alpha_k \cdot C_{k, 0}}{\two{1 - \tau_k}} + \pair{\alpha_k \cdot C_{k,1}}{\two{\tau_k}}\right)
+\end{align\*}
+
+This takes:
+ - $2\ell-2$ $\Gr_1$ scalar multiplications (for $\alpha_k \cdot C_{k,0}$ and $\alpha_k\cdot C_{k,1}$)
+ - a size-$(2\ell-1)$ multipairing
+ - a size-$(2\ell-2)$ $\Gr_1$ MSM (for the $\Gr_1$ input of the pairing on the left-hand side)
+ - a size-2 $\Gr_1$ MSM (as before: to verify the $(t_1,t_0)$ polynomial)
 
 ## References
 

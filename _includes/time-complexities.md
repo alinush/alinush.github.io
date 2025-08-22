@@ -6,6 +6,6 @@
 \def\Gadd#1{#1\ \green{\Gr}^\green{+}}
 \def\Gmul#1{#1\ \red{\Gr}^\red{\times}}
 \def\Fadd#1{#1\ \green{\F^+}}
-\def\pair{\mathbb{P}}
+\def\pairing{\mathbb{P}}
 \def\multipair#1{\mathbb{P}^{#1}}
 $</div> <!-- $ -->
