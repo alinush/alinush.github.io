@@ -379,6 +379,9 @@ For "Open time (random)" the time should technically have $\Fmul{n(m+2)} + \Fadd
 The KZH paper[^KZHB25e] describes a family $\kzhK$ of commitment schemes for $k$-dimensional tensors and thus for multilinear extension (MLE) polynomials.
 In this section, we (more clearly?) re-describe the $k = \log{n}$ instantiation of this family, which can be used to commit to any MLE $f(\X)\in \MLE{\ell}$ representing a vector of $\term{n} \bydef 2^\ell$ entries.
 
+{: .todo}
+Check this against notes from Arantxa!
+
 ### $\mathsf{KZH}_{\log{n}}.\mathsf{Setup}(1^\lambda, n) \rightarrow (\mathsf{vk},\mathsf{ck},\mathsf{ok})$
 
 Notation:
