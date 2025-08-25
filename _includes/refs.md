@@ -684,6 +684,8 @@
 
 [^BNN07]: **Unrestricted Aggregate Signatures**, by Bellare, Mihir and Namprempre, Chanathip and Neven, Gregory, *in Automata, Languages and Programming*, 2007
 
+[^BNNP25e]: **Data Availability Sampling with Repair**, by Dan Boneh and Joachim Neu and Valeria Nikolaenko and Aditi Partap, *in Cryptology {ePrint} Archive, Paper 2025/1414*, 2025, [[URL]](https://eprint.iacr.org/2025/1414)
+
 [^BNO21]: **Efficient Functional Commitments: How to Commit to Private Functions**, by Dan Boneh and Wilson Nguyen and Alex Ozdemir, *in Cryptology ePrint Archive, Report 2021/1342*, 2021, [[URL]](https://ia.cr/2021/1342)
 
 [^BNPS01]: **The One-More-RSA-Inversion Problems and the Security of Chaum's Blind Signature Scheme**, by M. Bellare and C. Namprempre and D. Pointcheval and M. Semanko, *in Cryptology ePrint Archive, Report 2001/002*, 2001, [[URL]](https://eprint.iacr.org/2001/002)
@@ -961,6 +963,8 @@
 [^CFFplus20]: **Lunar: a Toolbox for More Efficient Universal and Updatable zkSNARKs and Commit-and-Prove Extensions**, by Matteo Campanelli and Antonio Faonio and Dario Fiore and Anaïs Querol and Hadrián Rodríguez, *in Cryptology ePrint Archive, Report 2020/1069*, 2020, [[URL]](https://eprint.iacr.org/2020/1069)
 
 [^CFFplus23e]: **Lookup Arguments: Improvements, Extensions and Applications to Zero-Knowledge Decision Trees**, by Matteo Campanelli and Antonio Faonio and Dario Fiore and Tianyu Li and Helger Lipmaa, *in Cryptology ePrint Archive, Paper 2023/1518*, 2023, [[URL]](https://eprint.iacr.org/2023/1518)
+
+[^CFFZ24e]: **A Time-Space Tradeoff for the Sumcheck Prover**, by Alessandro Chiesa and Elisabetta Fedele and Giacomo Fenzi and Andrew Zitek-Estrada, *in Cryptology {ePrint} Archive, Paper 2024/524*, 2024, [[URL]](https://eprint.iacr.org/2024/524)
 
 [^CFGplus20]: **Incrementally Aggregatable Vector Commitments and Applications to Verifiable Decentralized Storage**, by Campanelli, Matteo and Fiore, Dario and Greco, Nicola and Kolonelos, Dimitris and Nizzardo, Luca, *in Advances in Cryptology -- ASIACRYPT 2020*, 2020
 
@@ -2852,6 +2856,8 @@
 
 [^PRTY20]: **PSI from PaXoS:  Fast, Malicious Private Set Intersection**, by Benny Pinkas and Mike Rosulek and Ni Trieu and Avishay Yanai, *in Cryptology ePrint Archive, Report 2020/193*, 2020, [[URL]](https://eprint.iacr.org/2020/193)
 
+[^PRV12e]: **How powerful are the {DDH} hard groups?**, by Periklis A.  Papakonstantinou and Charles W.  Rackoff and Yevgeniy Vahlis, *in Cryptology {ePrint} Archive, Paper 2012/653*, 2012, [[URL]](https://eprint.iacr.org/2012/653)
+
 [^PS16]: **Short Randomizable Signatures**, by Pointcheval, David and Sanders, Olivier, *in CT-RSA 2016*, 2016
 
 [^PS16e]: **Short Randomizable Signatures**, by David Pointcheval and Olivier Sanders, *in Cryptology ePrint Archive, Report 2015/525*, 2015, [[URL]](https://eprint.iacr.org/2015/525)
@@ -3134,6 +3140,8 @@
 
 [^SS21]: **Anonymous Tokens with Public Metadata and Applications to Private Contact Tracing**, by Tjerand Silde and Martin Strand, *in Cryptology ePrint Archive, Report 2021/203*, 2021, [[URL]](https://eprint.iacr.org/2021/203)
 
+[^SS21e]: **Generic-Group Identity-Based Encryption: A Tight Impossibility Result**, by Gili Schul-Ganz and Gil Segev, *in Cryptology {ePrint} Archive, Paper 2021/745*, 2021, [[URL]](https://eprint.iacr.org/2021/745)
+
 [^SS23e]: **Lightweight Asynchronous Verifiable Secret Sharing with Optimal Resilience**, by Victor Shoup and Nigel P. Smart, *in Cryptology ePrint Archive, Paper 2023/536*, 2023, [[URL]](https://eprint.iacr.org/2023/536)
 
 [^SS76]: **A Fast Monte-Carlo Test for Primality**, by Solovay, R. and Strassen, V., *in SIAM Journal on Computing*, 1977, [[URL]](https://doi.org/10.1137/0206006)
@@ -3397,6 +3405,8 @@
 [^WLPZ23e]: **The Locality of Memory Checking**, by Weijie Wang and Yujie Lu and Charalampos Papamanthou and Fan Zhang, *in Cryptology ePrint Archive, Paper 2023/1358*, 2023, [[URL]](https://eprint.iacr.org/2023/1358)
 
 [^WOSplus25e]: **Efficient Proofs of Possession for Legacy Signatures**, by Anna P. Y. Woo and Alex Ozdemir and Chad Sharp and Thomas Pornin and Paul Grubbs, *in Cryptology {ePrint} Archive, Paper 2025/538*, 2025, [[URL]](https://eprint.iacr.org/2025/538)
+
+[^WPSP24e]: **Dynamic zk-{SNARKs**, by Weijie Wang and Charalampos Papamanthou and Shravan Srinivasan and Dimitrios Papadopoulos, *in Cryptology {ePrint} Archive, Paper 2024/1566*, 2024, [[URL]](https://eprint.iacr.org/2024/1566)
 
 [^WR19]: **How to End Password Reuse on the Web**, by Wang, Ke Coby and Reiter, Michael K, *in NDSS'19*, 2019
 

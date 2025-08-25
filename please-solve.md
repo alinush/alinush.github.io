@@ -30,6 +30,7 @@ There are other constructions from pairings (e.g., [AMTs](/amt), [Hyperproofs](/
 Applications:
  1. Homomorphic and maintainable authenticated dictionaries for authenticating blockchain validation state
  2. Trivially-shardable authenticated nullifier sets for anonymous cryptocurrencies
+ 3. Dynamic zkSNARKs[^WPSP24e] (see the "Dynalog" section that uses AMTs)
 
 **Open problem 1:** Devise an arbitrary-depth homomorphic Merkle tree construction that can support a large number of updates per second in one core (e.g., tens of thousands). e.g., the Merkle tree should be able to have up to $2^{256}$ leaves.
 
