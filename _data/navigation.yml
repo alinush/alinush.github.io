@@ -127,6 +127,7 @@ cryptomat:
   #      url: /afgho
 
   - title: Digital signatures
+    url: /signatures
     children:
       - title: BBS+ signatures
         url: /bbs-plus-signatures

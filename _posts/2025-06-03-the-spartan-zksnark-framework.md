@@ -567,6 +567,7 @@ My understanding so far is that Spark is an efficient protocol for "linearizing"
 
 {: .todo}
 Describe the Spark approach, later refined by Lasso[^STW23e] and Shout[^ST25e].
+Until then, see a (likely well-known?) naive dense-to-sparse alternative I'm calling [Cinder](/cinder).
 
 ## Spartan PIOP framework for (non-ZK) SNARKs
 

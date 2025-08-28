@@ -71,7 +71,7 @@ Verifies a cross-aggregated proof for the given subvectors and their associated 
 
 ## TODOs
 
- - Proof updates for vanilla VCs and SVCs (and maybe cross-agg VCs[^TXN20]?)
+ - Proof updates for vanilla VCs and SVCs (and maybe cross-agg VCs[^TXN20e]?)
     + hintless
     + with hints
     + with update keys
