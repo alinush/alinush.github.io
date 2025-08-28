@@ -286,16 +286,16 @@ In an IBE scheme, one can encrypt directly to a user-friendly email address (or 
 
 Boneh and Franklin give a very efficient IBE scheme from pairings[^BF01].
 
-For IBE to work, a trusted third-party (TTP) called a **private key generator (PKG)** must be introduced, who will issue secret keys to users based on their email addresses.
-This PKG has a **master secret key (MSK)** $\msk \in \Zp$ with an associated **master public key (MPK)** $\mpk = g_2^\msk$, where $\langle g_2 \rangle = \Gr_2$.
+For IBE to work, a trusted third-party (TTP) called a **key-issuing authority (KIA)** must be introduced, who will issue secret keys to users based on their email addresses.
+This KIA has a **master secret key (MSK)** $\msk \in \Zp$ with an associated **master public key (MPK)** $\mpk = g_2^\msk$, where $\langle g_2 \rangle = \Gr_2$.
 
 The $\mpk$ is made public and can be used to encrypt a message to any user given their email address.
-Crucially, the PKG must keep the $\msk$ secret.
+Crucially, the KIA must keep the $\msk$ secret.
 Otherwise, an attacker who steals it can derive any user's secret key and decrypt everyone's messages.
 
 {: .warning}
-As you can tell the PKG is a central point of failure: theft of the $\msk$ compromises everyone's secrecy.
-To mitigate against this, the PKG can be decentralized into multiple authorities such that a threshold number of authorities must be compromised in order to steal the $\msk$.
+As you can tell the KIA is a central point of failure: theft of the $\msk$ compromises everyone's secrecy.
+To mitigate against this, the KIA can be decentralized into multiple authorities such that a threshold number of authorities must be compromised in order to steal the $\msk$.
 
 Let $H_1 : \\{0,1\\}^\* \rightarrow \Gr_1^\*$ and $H_T : \Gr_T \rightarrow \\{0,1\\}^n$ be two hash functions modeled as random oracles.
 To encrypt an $n$-bit message $m$ to a user with email address $id$, one computes:
@@ -312,11 +312,11 @@ To encrypt an $n$-bit message $m$ to a user with email address $id$, one compute
 
 **Note:** Later on, we'll use $(\pk_{id})^r = e(H_1(id), g_2^{\msk})^r = e(H_1(id), g_2^r)^\msk = e(H_1(id)^\msk, u) \bydef e(\dsk_{id}, u)$, where $\dsk_{id}$ will be the **decryption secret key** for $id$.
 
-To decrypt, the user with email address $id$ must first obtain their **decryption secret key** $\dsk_{id}$ from the PKG.
-For this, we assume the PKG has a way of authenticating the user, before handing them their secret key. 
+To decrypt, the user with email address $id$ must first obtain their **decryption secret key** $\dsk_{id}$ from the KIA.
+For this, we assume the KIA has a way of authenticating the user, before handing them their secret key. 
 For example this could be done via email.
 
-The PKG computes the user's decryption secret key as:
+The KIA computes the user's decryption secret key as:
 \begin{align}
     \dsk_{id} = H_1(id)^\msk \in \Gr_1
 \end{align}

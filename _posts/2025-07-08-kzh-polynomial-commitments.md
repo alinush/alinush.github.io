@@ -68,8 +68,8 @@ $</div> <!-- $_ -->
     - We also use $\MLE{s_1,s_2,\ldots,s_\ell} \bydef \MLE{\sum_{i\in[\ell]} s_i}$ 
  - Denote $i$'s binary representation as $\vect{i} = (i_0, i_1, \ldots, i_{s-1})\in \bin^s$, s.t. $i=\sum_{k=0}^{s-1} 2^k \cdot i_k$
     - We often naturally interchange between these two, when it is clear from context
- - For any size-$\ell$ vector $\b$, and $k\in[\ell)$, we let $\b_{\|k}\bydef (b_k, b_{k+1},\ldots,b_{\ell-1})$ denote the size $\ell-k$ suffix of $\b$.
-    + Similary, we let $\b_{k\|}\bydef (b_0, \ldots, b_k)$ denote the size $k$ prefix of $\b$.
+ - For any size-$\ell$ vector $\b$, and $k\in[\ell)$, we let $\b_{[k:]}\bydef (b_k, b_{k+1},\ldots,b_{\ell-1})$ denote the size $\ell-k$ suffix of $\b$.
+    + Similary, we let $\b_{[:k]}\bydef (b_0, \ldots, b_k)$ denote the size $k$ prefix of $\b$.
  - $(v_0, v_2, \ldots, v_{n-1})^\top$ denotes the transpose of a row vector
  - We typically use bolded variables to indicate vectors and matrices
     - e.g., a matrix $\mat{A}$ consists of rows $\mat{A}\_i,\forall i\in[n)$, where each row $\mat{A}\_i$ consists of entries $A_{i,j},\forall j\in[m)$
@@ -400,7 +400,6 @@ Compute the public parameters.
 \begin{align}
 \ck 
     &\gets 
-    %\left(\one{\eq(\i\_{\|k};\btau\_{\|k})}\right)\_{i\in[n), k \in [\ell)}
     \begin{pmatrix}
         \eq(i\_0, \ldots, i\_{\ell-1}; \tau\_0,\ldots,\tau\_{\ell-1})\_{i_0,\ldots,i\_{\ell-1}\in\\{0,1\\}}\\\\\
         \eq(i\_1, \ldots, i\_{\ell-1}; \tau\_1,\ldots,\tau\_{\ell-1})\_{i\_1,\ldots,i\_{\ell-1}\in\\{0,1\\}}\\\\\
@@ -408,20 +407,20 @@ Compute the public parameters.
         \eq(i\_{\ell-2}, i\_{\ell-1}; \tau\_{\ell-2},\tau\_{\ell-1})\_{i\_{\ell-2},i\_{\ell-1}\in\\{0,1\\}}\\\\\
         \eq(i\_{\ell-1};\tau\_{\ell-1})\_{i\_{\ell-1}\in\\{0,1\\}}\\\\\
     \end{pmatrix}
-    \bydef\left(\crs{\one{\eq(\i\_{\|k};\btau\_{\|k})}}\right)\_{k\in[\ell), \i_{\|k}\in\bin^{\ell-k}}
+    \bydef\left(\crs{\one{\eq(\i\_{[k:]};\btau\_{[k:]})}}\right)\_{k\in[\ell), \i_{[k:]}\in\bin^{\ell-k}}
     \\\\\
 \vk &\gets \left(\crs{\two{\tau\_0}},\crs{\two{\tau\_1}},\ldots,\crs{\two{\tau\_{\ell-1}}}\right)\bydef \crs{\two{\btau}}\\\\\
 \ok &\gets \textbf{TODO}\\\\\
 \end{align}
 
 {: .note}
-Recall our [$\b_{\|k}$ notation](#notation) for the size-$(\ell-k)$ suffix of $\b$ starting at $b_k$.
+Recall our [$\b_{[k:]}$ notation](#notation) for the size-$(\ell-k)$ suffix of $\b$ starting at $b_k$ and inclusively-ending at $b_{\ell-1}$.
 We distinguish public parameters from other group elements by highlighting them in $\crs{\text{green}}$
 
 ### Public parameter sizes
 
 For the commitment key $\ck$:
- - There are $2^\ell + 2^{\ell-1} + \ldots + 2^1 = 2^{\ell+1} - 2 = \emph{2n - 2}$ possible $\crs{\one{\eq(\i\_{\|k};\btau\_{\|k})}}$ commitments $\Rightarrow \|\ck\| = 2n-2$ $\Gr_1$.
+ - There are $2^\ell + 2^{\ell-1} + \ldots + 2^1 = 2^{\ell+1} - 2 = \emph{2n - 2}$ possible $\crs{\one{\eq(\i\_{[k:]};\btau\_{[k:]})}}$ commitments $\Rightarrow \|\ck\| = 2n-2$ $\Gr_1$.
  - $\|\vk\| = \log{n}$ $\Gr_2$
  - **TODO:** $\|\ok\| = ?$
 
@@ -447,22 +446,22 @@ Compute the auxiliary data:
         \vdots\\\\\
         f(i\_0,\ldots, i\_{\ell/2-1}, \tau\_{\ell/2},\ldots,\tau\_{\ell-1})\_{i\_0,\ldots,i\_{\ell/2-1}\in\\{0,1\\}}\\\\\
     \end{pmatrix}
-    \bydef \left(\one{f(\i\_{k\|},\btau\_{\|k+1})}\right)\_{k\in[\ell/2), \i\_{k\|}\in\bin^k}
+    \bydef \left(\one{f(\i_{[:k]},\btau_{[k+1:]})}\right)\_{k\in[\ell/2), \i\_{[:k]}\in\bin^k}
 \end{align}
 
 {: .note}
-Recall our [$\b_{k\|}$ notation](#notation) for the size-$(k+1)$ prefix of $\b$ ending at $b_k$.
+Recall our [$\b_{[:k]}$ notation](#notation) for the size-$(k+1)$ prefix of $\b$ starting at $b_0$ and inclusively-ending at $b_k$.
 
 {: .todo}
-Assumes $\ell$ is even and $\ge 2$. I guess we could either floor or ceil?
+Since we are going up to $i_{\ell / 2 - 1}$, we are implicitly assuming $\ell$ is even and $\ge 2$. I guess we could either floor or ceil?
 
 {: .todo}
-The auxiliary data contains commitments to the L, R, LL, LR, RL, RR, LLL, LLR, ... MLEs, and so on: i.e., to all sub-MLEs / sub-vectors of size up to $\ell/2$.
+The auxiliary data contains commitments to the left half, right half, left-left half, and so on, sub-MLEs / sub-vectors of size up to $\ell/2$.
 Can depict it more intuitively via a tree.
 
 ### Auxiliary data size
 
-For each $k\in[\ell/2)$, there are $2^{k+1}$ choices for $\i_{k\|}$. Thus, $\|\aux\| =$ $2^1 + 2^2 + \ldots + 2^{(\ell/2 - 1) + 1} =$ $2^1 + \ldots + 2^{\ell/2} = 2^{\ell/2 + 1} - 2 = \emph{2\sqrt{n} - 2}$.
+For each $k\in[\ell/2)$, there are $2^{k+1}$ choices for $\i_{[:k]}$. Thus, $\|\aux\| =$ $2^1 + 2^2 + \ldots + 2^{(\ell/2 - 1) + 1} =$ $2^1 + \ldots + 2^{\ell/2} = 2^{\ell/2 + 1} - 2 = \emph{2\sqrt{n} - 2}$.
 
 ### Commit time
 
@@ -481,15 +480,13 @@ Use notation for MSM sizes in different groups.
 
 First, compute the initial commitments:
 \begin{align}
-%c_{k, i_k} &= \one{f(\x_{k-1\|},i_{k},\btau_{\|k+1})}
-\term{C_{0, b}} &= \one{f(b, \tau_1, \ldots, \tau_{\ell-1})} \bydef \one{f(0, \btau_{\|1})}, b\in\bin\\\\\
+\term{C_{0, b}} &= \one{f(b, \tau_1, \ldots, \tau_{\ell-1})} \bydef \one{f(0, \btau_{[1:]})}, b\in\bin\\\\\
 \end{align}
 
 For $k\in[1, \ell-1)$, compute commitments:
 <!--for all $i_k\in\bin$, compute:-->
 \begin{align}
-%c_{k, i_k} &= \one{f(\x_{k-1\|},i_{k},\btau_{\|k+1})}
-\term{C_{k, b}} &= \one{f(x_0,\ldots,x_{k-1}, b, \tau_{k+1}, \ldots, \tau_{\ell-1})} \bydef \one{f(\x_{k-1\|}, 0, \btau_{\|k+1})},b\in\bin\\\\\
+\term{C_{k, b}} &= \one{f(x_0,\ldots,x_{k-1}, b, \tau_{k+1}, \ldots, \tau_{\ell-1})} \bydef \one{f(\x_{[:k-1]}, 0, \btau_{[k+1:]})},b\in\bin\\\\\
 \end{align}
 
 {: .note}

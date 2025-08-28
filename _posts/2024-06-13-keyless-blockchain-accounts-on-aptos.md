@@ -255,6 +255,7 @@ AIPs for auxiliary keyless services:
 
 AIPs for recent extensions to keyless:
 
+ - [AIP-90: Add Apple as a supported OIDC provider](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-90.md)
  - [AIP-96: Federated Keyless](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-96.md)
     + Adds decentralized support for "federated" OIDC providers like Auth0, which have tenant-specific `iss`'s and JWKs and could not be scalably integrated into our [JWK consensus](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-67.md) mechanism
  - [AIP-108: "Audless" Federated Keyless](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-108.md)
@@ -304,6 +305,7 @@ In February 2025, I gave a 25 minute workshop on keyless accounts at AZTEC's [No
     + Also, [see this note](https://zkresear.ch/t/discussions-on-lookups-in-groth16-ultragroth/290)
  - Reef[^AIMplus23e], potentially-useful for in-circuit regex matching
  - FLIP-and-prove R1CS[^NPR24e], potentially-useful for folding SHA2
+     - Crescent[^PPZ24e], also compute ZKPoKs of signed JWTs
 
 ### Misc
  
@@ -316,10 +318,12 @@ In February 2025, I gave a 25 minute workshop on keyless accounts at AZTEC's [No
  - [TheFrozenFire/snark-jwt-verify](https://github.com/TheFrozenFire/snark-jwt-verify/tree/master)
  - [emmaguo13/nozee](https://github.com/emmaguo13/nozee)
  - [emmaguo13/zk-blind](https://github.com/emmaguo13/zk-blind)
- - [noir-r1cs](https://github.com/worldfnd/ProveKit/tree/main/noir-r1cs)
- - [semaphore-rs](https://github.com/worldcoin/semaphore-rs)
- - [WHIR in arkworks](https://github.com/WizardOfMenlo/whir)
- - [hyrax-pcs-commit](https://github.com/worldcoin/hyrax-pcs-commit)
+ - [worldfnd/noir-r1cs](https://github.com/worldfnd/ProveKit/tree/main/noir-r1cs)
+ - [worldcoin/semaphore-rs](https://github.com/worldcoin/semaphore-rs)
+ - [WizardOfMenlo/whir](https://github.com/WizardOfMenlo/whir), WHIR in arkworks
+ - [worldcoin/hyrax-pcs-commit](https://github.com/worldcoin/hyrax-pcs-commit)
+ - [saleel/stealthnote](https://github.com/saleel/stealthnote)
+ - [zkemail/noir-jwt](https://github.com/zkemail/noir-jwt]
 
 ## Apendix
 
