@@ -227,7 +227,7 @@ Let $\emph{z_{i,j}}$ denote the $j$th bit of each $z_i\in[0,2^\ell)$.
  - $(\term{\beta_j})_{j\in[\ell)} \fsget \\{0,1\\}^\lambda$
  - $\term{h(X)}\gets \sum_{j\in[\ell)} \beta_j \cdot h_j(X) = \frac{\sum_{j\in[\ell)}\beta_j (X-\omega^n)f_j(X)(f_j(X) - 1)}{X^{n+1} - 1}$ 
     - **Note:** Of degree $n$
- - $D \gets \sum_{i\in[0,n]} h(\omega^i) \cdot L_i \bydef \one{\emph{h}(\tau)}$
+ - $D \gets \sum_{i\in[0,n]} h(\omega^i) \cdot L_i \bydef \one{\emph{h(\tau)}}$
     + **Note:** We [discuss below](#computing-hx) how to interpolate these efficiently!
  - $\term{\pi}\gets \left(D, (C_j,\tilde{C}\_j)_{j\in[\ell)}\right)$
 
