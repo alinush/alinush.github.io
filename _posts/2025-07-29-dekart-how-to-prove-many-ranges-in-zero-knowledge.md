@@ -224,7 +224,7 @@ Let $\emph{z_{i,j}}$ denote the $j$th bit of each $z_i\in[0,2^\ell)$.
  - add $(\vk, C, \ell, (C_j, \tilde{C}\_j)_{j\in[\ell})$ to the $\FS$ transcript
  - $h_j(X)\gets \frac{f_j(X)(f_j(X) - 1)}{(X^{n+1} - 1) / (X-\omega^n)} = \frac{(X-\omega^n)f_j(X)(f_j(X) - 1)}{X^{n+1} - 1},\forall j \in[\ell)$
     + **Note:** Numerator is degree $2n$ and denominator is degree $n \Rightarrow h_j(X)$ is degree $n$
-  $(\beta_j)_{j\in[\ell)} \fsget \\{0,1\\}^\lambda$
+ - $(\term{\beta_j})_{j\in[\ell)} \fsget \\{0,1\\}^\lambda$
  - $\term{h(X)}\gets \sum_{j\in[\ell)} \beta_j \cdot h_j(X) = \frac{\sum_{j\in[\ell)}\beta_j (X-\omega^n)f_j(X)(f_j(X) - 1)}{X^{n+1} - 1}$ 
     - **Note:** Of degree $n$
  - $D \gets \sum_{i\in[0,n]} h(\omega^i) \cdot L_i \bydef \one{\emph{h}(\tau)}$
@@ -249,11 +249,11 @@ Let $\emph{z_{i,j}}$ denote the $j$th bit of each $z_i\in[0,2^\ell)$.
 
  - $\left(D, (C_j,\tilde{C}\_j)_{j\in[\ell)}\right) \parse \pi$
  - **assert** $C \equals \sum_{j=0}^{\ell-1} 2^j \cdot C_j$
- - $\alpha_j \randget \\{0,1\\}^\lambda,\forall j\in[\ell)$
- - **assert** $\pair{\sum_{j\in[0,\ell)} \alpha_j \cdot C_j}{\two{1}} \stackrel{?}{=} \pair{\one{1}}{\sum_{j\in[0,\ell)} \alpha_j \cdot \tilde{C}_j}$
  - add $(\vk, C, \ell, (C_j, \tilde{C}\_j)_{j\in[\ell})$ to the $\FS$ transcript
- - $(\beta_j)_{j\in[\ell)} \fsget \\{0,1\\}^\lambda$
+ - $(\term{\beta_j})_{j\in[\ell)} \fsget \\{0,1\\}^\lambda$
  - **assert** $\pair{D}{\two{\frac{\tau^{n+1} - 1}{\tau-\omega^n}}} \equals \sum_{j\in[0,\ell)}\pair{\beta_j\cdot C_j}{\tilde{C}_j - \two{1}}$
+ - $(\term{\alpha_j})_{j\in[\ell)} \fsget \\{0,1\\}^\lambda$
+ - **assert** $\pair{\sum_{j\in[0,\ell)} \alpha_j \cdot C_j}{\two{1}} \stackrel{?}{=} \pair{\one{1}}{\sum_{j\in[0,\ell)} \alpha_j \cdot \tilde{C}_j}$
 
 The two pairing equation checks above can be combined into a single size $\ell+3$ multipairing by picking a random $\gamma\in\F$ and checking:
 \begin{align}
