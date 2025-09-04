@@ -50,6 +50,11 @@ These were run on a Macbook M3.
 {: .warning}
 Something is off here: BL should be faster than baby-step giant-step (BSGS), which would take $2^{16}$ group operations for a 32-bit DL $\Rightarrow$ 0.5 microseconds $2^{16} \approx 32$ ms.
 
+## Related work
+
+ - [Taurus Releases Open-Source Private Security Token for Banks, Powered by Aztec](https://www.taurushq.com/blog/taurus-releases-open-source-private-security-token-for-banks-powered-by-aztec/), see [repo here](https://github.com/taurushq-io/private-CMTAT-aztec?tab=readme-ov-file)
+ - [Solana's confidential transfers](https://solana.com/docs/tokens/extensions/confidential-transfer)
+
 ## References
 
 For cited works, see below 👇👇
