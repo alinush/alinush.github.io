@@ -16,7 +16,7 @@ sidebar:
 {: .info}
 **tl;dr:** A **zero-knowledge proof (ZKP)** system for an NP relation $R$ allows a **prover**, who has a **statement** $\mathbf{x}$ and a **witness** $\mathbf{w}$ to convince a **verifier**, who only has the statement $\mathbf{x}$, that $R(\mathbf{x}; \mathbf{w}) = 1$.
 Importantly, the **proof** leaks _nothing_ about the secret witness $\mathbf{w}$. 
-(e.g., a ZKP can be used to convince a verifier that the prover knows the solution $\mathbf{w}$ to a Sudoku puzzle $\mathbf{x}$, without leaking anyhting about the solution!)
+(e.g., a ZKP can be used to convince a verifier that the prover knows the solution $\mathbf{w}$ to a Sudoku puzzle $\mathbf{x}$, without leaking anything about the solution!)
 
 <!--more-->
 
@@ -42,7 +42,7 @@ For a more mild, high-level introduction to ZKPs via a Sudoku puzzle example, se
  - We denote NP relations by $R$
  - We denote an NP statement by $\stmt$ and a witness by $\witn$
  - We often denote $R(\stmt;\witn) = 1$ as $(\stmt, \witn)\in R$.
- - We use $(x\|\| y)\gets (\Adv\|\|\mathcal{X})(a,b,c)$ to denote that an algorithm $\Adv$ on input $(a,b,c)$ returns $x$ **and** another algorithm $\mathcal{X}$ on the same input $(a,b,c)$ returns $y$
+ - We use $(x\|\| y)\gets (\Adv\|\|\mathcal{X})(a)$ to denote that an algorithm $\Adv$ on input $a$ returns $x$ **and** another algorithm $\mathcal{X}$ on the same input $a$, _and the same random coins as $\Adv$_, returns $y$
  - We denote the set of all relations outputted by a relation generator $\relgen$ by $\allrels\bydef \mathsf{Image}(\relgen)$
 
 ## Algorithms

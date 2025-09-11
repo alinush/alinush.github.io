@@ -95,6 +95,8 @@ fi
 # Open or error
 if [ -n "$file_to_open" ]; then
     vim "$file_to_open"
+    echo
+    echo "$file_to_open"
 else
     echo "No match found for '$input'"
     exit 1
