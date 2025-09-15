@@ -12,6 +12,10 @@ key: page-paraphernalia
 
 This is some of the stuff I (plan to) read and think others could find useful.
 
+## Blogroll
+
+ - [Oded Goldreich's essays](https://www.wisdom.weizmann.ac.il/~oded/essays.html)
+
 ## Cryptography and (zero-knowledge) proof systems
 
  - [Cryptography 101](https://cryptography101.ca/), Alfred Menezes
@@ -44,7 +48,6 @@ This is some of the stuff I (plan to) read and think others could find useful.
 
 ## Others
 
- - [The moral character of cryptographic work](https://eprint.iacr.org/2015/1162), Phillip Rogaway
  - [Bitcoin Is Worse Is Better](https://gwern.net/bitcoin-is-worse-is-better), gwern.net
  - [Bullsh*t jobs](https://mcrawford.substack.com/p/bullsht-jobs), Matthew B. Crawford
  - [Do artifacts have politics?](/files/articles/2024-11-01 Langdon Winner - Do Artifacts Have Politics.pdf), Langdon Winner
