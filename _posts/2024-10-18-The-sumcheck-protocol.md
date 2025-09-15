@@ -72,17 +72,19 @@ While the sumcheck protocol inherently must require $\P$ to compute $O(2^\mu)$ p
         <li><em>Initialization</em>:</li>
         <ul>
             <li>Prover $\P$ claims $\emph{H} = \sum_{\b\in\binMu} \emph{f}(b_1, b_2,\ldots, b_\mu)$.</li>
-            <li>Verifier $\V$ has an $\term{\oracle{f}}$ oracle, the degrees $\term{d_j} \bydef \deg_j(f)$ of each variable of $f$, and starts with $\term{g_0(X)} = H$.</li>
+            <li>Verifier $\V$ has an $\term{\oracle{f}}$ oracle <em>and</em> the degrees $\term{d_j} \bydef \deg_j(f)$ of each variable of $f$</li>
+            <li>Verifier's <b>initial claim</b> is $\term{g_0(X)} \bydef H \equals \sum_{\b\in\binMu} f(\b)$.</li>
         </ul>
         <li><em>Round $1 \le \term{j} \le \mu-1$</em>:</li>
         <ul>
-            <li>$\P$ sends $\term{g_j(X)} \gets \underbrace{\sum_{b_{j+1} \in \bin} \cdots \sum_{b_\mu \in \bin}}_{\mu-j\ \text{variables}} f(r_1, \ldots, r_{j-1}, X, b_{j+1}, \ldots,b_\mu)$ to $\V$</li>
+            <li>$\P$ sends $\term{g_j(X)} \gets \underbrace{\sum_{b_{j+1} \in \bin} \cdots \sum_{b_\mu \in \bin}}_{\mu-j\ \text{variables}} f(\overbrace{r_1, \ldots, r_{j-1}}^{j-1\ \text{variables}}, X, \overbrace{b_{j+1}, \ldots,b_\mu}^{\mu - j\ \text{variables}})$ to $\V$</li>
             <li>
                 $\V$ <b>asserts</b> that
                 $d_j \equals \deg(g_j)$ <u>and</u> that
                 $g_{j-1}(r_{j-1}) \equals g_j(0) + g_j(1)$ (as it should, by definition of $g_j$)
             </li>
             <li>$\V$ sends public randomness $\term{r_j}\randget\F$ to $\P$</li>
+            <li>Verifier's <b>reduced claim</b> is $g_j(r_j) \equals \sum_{b_{j+1} \in \bin} \cdots \sum_{b_\mu \in \bin} f(r_1, \ldots, r_{j-1}, \emph{r_j}, b_{j+1},\ldots,b_\mu)$.</li>
         </ul>
         <li><em>Last round $\mu$</em>:</li>
         <ul>
