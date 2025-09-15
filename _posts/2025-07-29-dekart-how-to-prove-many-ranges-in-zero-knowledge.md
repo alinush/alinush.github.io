@@ -1,5 +1,9 @@
 ---
 tags:
+ - papers
+ - range proofs
+ - zero-knowledge proofs (ZKPs)
+ - KZG
 title: "DeKART: How to prove many ranges in zero-knowledge"
 #date: 2020-11-05 20:45:59
 #published: false

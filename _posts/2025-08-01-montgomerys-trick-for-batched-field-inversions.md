@@ -1,5 +1,6 @@
 ---
 tags:
+ - math
 title: Montgomery's trick for batched field inversions
 #date: 2020-11-05 20:45:59
 permalink: batch-inversion

@@ -1,6 +1,7 @@
 ---
 tags: 
  - books 
+ - philosophy
 date: 2020-01-23 09:37:00
 title: "\"Ego is the enemy\", by Ryan Holiday"
 article_header:

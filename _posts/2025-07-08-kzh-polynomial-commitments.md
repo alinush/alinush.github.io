@@ -1,8 +1,8 @@
 ---
 tags:
- - kzg
- - hyrax
- - kzh
+ - KZG
+ - Hyrax
+ - KZH
  - polynomial commitments
  - tensors
 title: KZH polynomial commitments

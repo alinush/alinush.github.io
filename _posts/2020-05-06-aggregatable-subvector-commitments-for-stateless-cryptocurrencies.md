@@ -3,13 +3,14 @@ tags:
  - vector commitments (VCs)
  - polynomials 
  - fast fourier transform (FFT)
- - lagrange 
+ - Lagrange 
  - aggregation 
  - KZG
  - polynomial commitments
  - stateless validation
  - papers
 title: Aggregatable Subvector Commitments for Stateless Cryptocurrencies from Lagrange Polynomials
+permalink: asvc
 date: 2020-05-06 14:00:00
 ---
 {: .info}

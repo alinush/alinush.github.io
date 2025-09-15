@@ -1,5 +1,6 @@
 ---
-tags: motorcycling
+tags:
+ - motorcycles
 title: Lessons learned motorcycling from CA to TX
 #date: 2020-11-05 20:45:59
 #published: false

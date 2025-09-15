@@ -1,5 +1,9 @@
 ---
 tags:
+ - ElGamal
+ - zero-knowledge proofs (ZKPs)
+ - range proofs
+ - sigma protocols
 title: Confidential assets on Aptos
 #date: 2020-11-05 20:45:59
 #published: false

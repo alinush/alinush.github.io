@@ -1,7 +1,7 @@
 ---
 tags:
- - hyrax
- - pedersen
+ - Hyrax
+ - Pedersen
  - polynomial commitments
  - inner-product arguments (IPAs)
 title: Hyrax polynomial commitment scheme

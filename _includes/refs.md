@@ -58,7 +58,7 @@
 
 [^ACFY24e]: **WHIR: Reed–Solomon Proximity Testing with Super-Fast Verification**, by Gal Arnon and Alessandro Chiesa and Giacomo Fenzi and Eylon Yogev, *in Cryptology {ePrint} Archive, Paper 2024/1586*, 2024, [[URL]](https://eprint.iacr.org/2024/1586)
 
-[^ACFY24estire]: **STIR}: Reed–Solomon Proximity Testing with Fewer Queries**, by Gal Arnon and Alessandro Chiesa and Giacomo Fenzi and Eylon Yogev, *in Cryptology {ePrint} Archive, Paper 2024/390*, 2024, [[URL]](https://eprint.iacr.org/2024/390)
+[^ACFY24eSTIR]: **STIR: Reed–Solomon Proximity Testing with Fewer Queries**, by Gal Arnon and Alessandro Chiesa and Giacomo Fenzi and Eylon Yogev, *in Cryptology {ePrint} Archive, Paper 2024/390*, 2024, [[URL]](https://eprint.iacr.org/2024/390)
 
 [^ACGplus21]: **FastVer: Making Data Integrity a Commodity**, by Arvind Arasu and Badrish Chandramouli and Johannes Gehrke and Esha Ghosh and Donald Kossmann and Jonathan Protzenko and Ravi Ramamurthy and Tahina Ramananandro and Aseem Rastogi and Srinath Setty and Nikhil Swamy and Alexander van Renen and Min Xu, *in Proceedings of the 2021 International Conference on Management of Data*, 2021, [[URL]](https://doi.org/10.1145%2F3448016.3457312)
 
@@ -87,6 +87,8 @@
 [^AEKplus17]: **Concerto**, by Arvind Arasu and Ken Eguro and Raghav Kaushik and Donald Kossmann and Pingfan Meng and Vineet Pandey and Ravi Ramamurthy, *in Proceedings of the 2017 {ACM} International Conference on Management of Data*, 2017, [[URL]](https://doi.org/10.1145%2F3035918.3064030)
 
 [^AF04]: **Adaptively Secure Feldman VSS and Applications to Universally-Composable Threshold Cryptography**, by Abe, Masayuki and Fehr, Serge, *in CRYPTO 2004*, 2004
+
+[^AF06e]: **Perfect {NIZK} with Adaptive Soundness**, by Masayuki Abe and Serge Fehr, *in Cryptology {ePrint} Archive, Paper 2006/423*, 2006, [[URL]](https://eprint.iacr.org/2006/423)
 
 [^AFGplus10]: **Structure-Preserving Signatures and Commitments to Group Elements**, by Abe, Masayuki and Fuchsbauer, Georg and Groth, Jens and Haralambiev, Kristiyan and Ohkubo, Miyako, *in Advances in Cryptology -- CRYPTO 2010*, 2010
 
@@ -2038,6 +2040,8 @@
 
 [^HLN23e]: **Reed-Solomon Codes over the Circle Group**, by Ulrich Haböck and Daniel Lubarov and Jacqueline Nabaglo, *in Cryptology ePrint Archive, Paper 2023/824*, 2023, [[URL]](https://eprint.iacr.org/2023/824)
 
+[^HLNR18e]: **Fast Secure Multiparty {ECDSA} with Practical Distributed Key Generation and Applications to Cryptocurrency Custody**, by Iftach Haitner and Yehuda Lindell and Ariel Nof and Samuel Ranellucci, *in Cryptology {ePrint} Archive, Paper 2018/987*, 2018, [[URL]](https://eprint.iacr.org/2018/987)
+
 [^HLP24e]: **Circle STARKs**, by Ulrich Haböck and David Levit and Shahar Papini, *in Cryptology ePrint Archive, Paper 2024/278*, 2024, [[URL]](https://eprint.iacr.org/2024/278)
 
 [^HLR10]: **Constant Size Ciphertexts in Threshold Attribute-Based Encryption**, by Herranz, Javier and Laguillaumie, Fabien and Ràfols, Carla, *in Public Key Cryptography -- PKC 2010*, 2010
@@ -2072,6 +2076,8 @@
 
 [^HSB20]: **Fixing the Achilles Heel of E-Voting: The Bulletin Board**, by Lucca Hirschi and Lara Schmid and David Basin, *in Cryptology ePrint Archive, Report 2020/109*, 2020, [[URL]](https://eprint.iacr.org/2020/109)
 
+[^HSBB25e]: **IronDict}: Transparent Dictionaries from Polynomial Commitments**, by Hossein Hafezi and Alireza Shirzad and Benedikt Bünz and Joseph Bonneau, *in Cryptology {ePrint} Archive, Paper 2025/1580*, 2025, [[URL]](https://eprint.iacr.org/2025/1580)
+
 [^HSBa20]: **Privacy-Preserving {OpenID} Connect**, by Sven Hammann and Ralf Sasse and David Basin, *in Proceedings of the 15th {ACM} Asia Conference on Computer and Communications Security*, 2020, [[URL]](https://doi.org/10.1145%2F3320269.3384724)
 
 [^HSGplus22]: **Achieving Almost All Blockchain Functionalities with Polylogarithmic Storage**, by Parikshit Hegde and Robert Streit and Yanni Georghiades and Chaya Ganesh and Sriram Vishwanath, 2022
@@ -2097,6 +2103,8 @@
 [^HYZ20]: **Analysing and Improving Shard Allocation Protocols for Sharded Blockchains**, by Runchao Han and Jiangshan Yu and Ren Zhang, *in Cryptology ePrint Archive, Report 2020/943*, 2020, [[URL]](https://eprint.iacr.org/2020/943)
 
 [^HZY09]: **Practical Distributed Key Generation Scheme**, by Chen Huiyan and  Li Zichen and Fang Yong, *in Cryptology ePrint Archive, Report 2009/432*, 2009, [[URL]](https://eprint.iacr.org/2009/432)
+
+[^Habc22e]: **A summary on the {FRI} low degree test**, by Ulrich Haböck, *in Cryptology {ePrint} Archive, Paper 2022/1216*, 2022, [[URL]](https://eprint.iacr.org/2022/1216)
 
 [^Habo22e]: **Multivariate lookups based on logarithmic derivatives**, by Ulrich Haböck, *in Cryptology ePrint Archive, Paper 2022/1530*, 2022, [[URL]](https://eprint.iacr.org/2022/1530)
 
@@ -2216,6 +2224,8 @@
 
 [^KG20]: **FROST: Flexible Round-Optimized Schnorr Threshold Signatures**, by Chelsea Komlo and Ian Goldberg, *in Cryptology ePrint Archive, Report 2020/852*, 2020, [[URL]](https://eprint.iacr.org/2020/852)
 
+[^KGPplus25e]: **Breaking Omertà: On Threshold Cryptography, Smart Collusion, and Whistleblowing**, by Mahimna Kelkar and Aadityan Ganesh and Aditi Partap and Joseph Bonneau and S. Matthew Weinberg, *in Cryptology {ePrint} Archive, Paper 2025/1582*, 2025, [[URL]](https://eprint.iacr.org/2025/1582)
+
 [^KHG12]: **Distributed Key Generation in the Wild**, by Aniket Kate and Yizhou Huang and Ian Goldberg, *in Cryptology ePrint Archive, Report 2012/377*, 2012, [[URL]](https://eprint.iacr.org/2012/377)
 
 [^KJGplus18]: **OmniLedger: A Secure, Scale-Out, Decentralized Ledger via Sharding**, by E. Kokoris-Kogias and P. Jovanovic and L. Gasser and N. Gailly and E. Syta and B. Ford, *in IEEE S\&P'18*, 2018
@@ -2239,6 +2249,8 @@
 [^KL07]: **Introduction to Modern Cryptography**, by Jonathan Katz and Yehuda Lindell, 2007
 
 [^KL15]: **Introduction to Modern Cryptography**, by Jonathan Katz and Yehuda Lindell, 2007
+
+[^KL17]: **BIP32-Ed25519: Hierarchical Deterministic Keys over a Non-linear Keyspace**, by Khovratovich, Dmitry and Law, Jason, *in 2017 IEEE European Symposium on Security and Privacy Workshops (EuroS&PW)*, 2017
 
 [^KL23]: **Save The Implicit Flow? Enabling Privacy-Preserving RP Authentication in OpenID Connect**, by Maximilian Kroschewski and Anja Lehmann, 2023, [[URL]](https://petsymposium.org/2023/files/papers/issue4/popets-2023-0100.pdf)
 
@@ -3172,7 +3184,7 @@
 
 [^STW23e]: **Unlocking the lookup singularity with Lasso**, by Srinath Setty and Justin Thaler and Riad Wahby, *in Cryptology {ePrint} Archive, Paper 2023/1216*, 2023, [[URL]](https://eprint.iacr.org/2023/1216)
 
-[^STW23eccse]: **Customizable constraint systems for succinct arguments**, by Srinath Setty and Justin Thaler and Riad Wahby, *in Cryptology {ePrint} Archive, Paper 2023/552*, 2023, [[URL]](https://eprint.iacr.org/2023/552)
+[^STW23eCCS]: **Customizable constraint systems for succinct arguments**, by Srinath Setty and Justin Thaler and Riad Wahby, *in Cryptology {ePrint} Archive, Paper 2023/552*, 2023, [[URL]](https://eprint.iacr.org/2023/552)
 
 [^SU17]: **Security of Blind Signatures Revisited**, by Schröder, Dominique and Unruh, Dominique, *in Journal of Cryptology*, 2017, [[URL]](https://doi.org/10.1007/s00145-015-9225-1)
 

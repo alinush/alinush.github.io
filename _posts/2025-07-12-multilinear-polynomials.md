@@ -2,7 +2,7 @@
 tags:
  - mle
  - polynomials
- - lagrange
+ - Lagrange
 title: Multilinear polynomials and multilinear extensions (MLEs)
 #date: 2020-11-05 20:45:59
 #published: false

@@ -151,7 +151,7 @@ We call the resulting AD an **updatable authenticated dictionary (UAD)**.
 
 {: .info}
 Note that ADs cannot be obtained in this fashion from any VC scheme.
-For example, [KZG-based VCs](https://alinush.github.io/2020/05/06/aggregatable-subvector-commitments-for-stateless-cryptocurrencies.html) do not support a sparse set of vector indices (but nonetheless other techniques[^Feis20Multi] can be used there).
+For example, [KZG-based VCs](/asvc) do not support a sparse set of vector indices (but nonetheless other techniques[^Feis20Multi] can be used there).
 However, some schemes like Catalano-Fiore[^CF13e] and Boneh et al's VC[^BBF18] do support sparse indices.
 Indeed, Boneh et al.[^BBF18] also build an AD on top of their VC scheme, but it is not as (dis)aggregatable as ours.
 

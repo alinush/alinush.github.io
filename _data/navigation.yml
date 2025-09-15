@@ -201,8 +201,8 @@ cryptomat:
         url: /univariate-sumcheck
       - title: Multivariate sumcheck
         url: /sumcheck
-      #- title: FRI
-      #  url: /fri
+      - title: FRI
+        url: /fri
       #-title: STIR
       #  url: /stir
       #-title: WHIR

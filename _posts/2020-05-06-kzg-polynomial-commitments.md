@@ -131,7 +131,7 @@ e(g^{\phi(\tau) - R_I(\tau)}, g) &= e(g,g)^{q_I(\tau) A_I(\tau)}\Leftrightarrow\
 
 ## Aggregation of proofs
 
-For now, we discuss proof aggregation in [a different blog post on building vector commitments (VCs)](/2020/05/06/aggregatable-subvector-commitments-for-stateless-cryptocurrencies.html#aggregating-proofs-into-subvector-profs) from KZG.
+For now, we discuss proof aggregation in [a different blog post on building vector commitments (VCs)](/asvc#aggregating-proofs-into-subvector-profs) from KZG.
 
 <!-- TODO: proof updates -->
 
@@ -146,7 +146,7 @@ There are many cryptographic tools one can build using polynomial commitment sch
 Here's a few we've blogged about in the past:
 
  * [Cryptographic accumulators](/bilinear-accumulators)
- - Vector Commitments (VC) schemes [with $O(\log{n})$-sized proofs](/amt) or [with $O(1)$-sized proofs](/2020/05/06/aggregatable-subvector-commitments-for-stateless-cryptocurrencies.html)
+ - Vector Commitments (VC) schemes [with $O(\log{n})$-sized proofs](/amt) or [with $O(1)$-sized proofs](/asvc)
  - [Range proofs](/bfgw)
 
 ## Appendix
