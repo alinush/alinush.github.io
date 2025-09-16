@@ -173,6 +173,8 @@ Note that because we say "for all $(\stmt,\witn,\Adv)$" this means the adversary
 
 ### The many flavors of zero-knowledge
 
+ > _"The very notion of a zero-knowledge proof is interesting only in case the assertion being proved to be valid is hard to verify in probabilistic polynomial time"_ --Oded Goldreich (Why? Otherwise, membership of $\mathbf{x} \in L$ is easily-verifiable in polynomial time.)
+
 There are many ways of defining the zero-knowledge property of a ZKP scheme.
 
  - **Interactive:** Some proof systems are **interactive**. 

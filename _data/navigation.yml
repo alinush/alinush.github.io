@@ -148,6 +148,15 @@ cryptomat:
       #- title: Rabin 
       #  url: /rabin
 
+  - title: Encryption
+    children:
+      - title: Public-key encryption (PKE)
+        url: /encryption
+      - title: ElGamal
+        url: /elgamal
+      - title: Identity-based encryption (IBE)
+        url: /ibe
+
   - title: Verifiable randomn functions (VRFs)
     children:
       - title: Baird et al.'s unique threshold signature scheme

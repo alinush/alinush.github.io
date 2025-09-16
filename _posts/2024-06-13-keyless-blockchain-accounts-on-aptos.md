@@ -323,7 +323,8 @@ In February 2025, I gave a 25 minute workshop on keyless accounts at AZTEC's [No
  - [WizardOfMenlo/whir](https://github.com/WizardOfMenlo/whir), WHIR in arkworks
  - [worldcoin/hyrax-pcs-commit](https://github.com/worldcoin/hyrax-pcs-commit)
  - [saleel/stealthnote](https://github.com/saleel/stealthnote)
- - [zkemail/noir-jwt](https://github.com/zkemail/noir-jwt]
+ - [zkemail/noir-jwt](https://github.com/zkemail/noir-jwt)
+ - [IrreducibleOSS/binius64/../zklogin.rs](https://github.com/IrreducibleOSS/binius64/blob/main/prover/examples/src/circuits/zklogin.rs)
 
 ## Apendix
 

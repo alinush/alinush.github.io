@@ -53,6 +53,19 @@
     }
   }
 
+  p.smallnote {
+    padding: map-get($spacers, 2) map-get($spacers, 3);
+    background-color: rgba($gray, .1);
+    border: 1px solid $gray;
+    border-radius: map-get($base, border-radius);
+    &::before {
+      content: "Note: ";
+      font-weight: bold;
+      color: $gray;
+      margin-right: map-get($spacers, 1);
+    }
+  }
+
   p.theorem {
     padding: map-get($spacers, 2) map-get($spacers, 3);
     background-color: rgba($yellow, .1);
