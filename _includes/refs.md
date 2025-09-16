@@ -2462,6 +2462,8 @@
 
 [^LM24e]: **Fast {SNARK}-based Non-Interactive Distributed Verifiable Random Function with Ethereum Compatibility**, by Jia Liu and Mark Manulis, *in Cryptology ePrint Archive, Paper 2024/968*, 2024, [[URL]](https://eprint.iacr.org/2024/968)
 
+[^LMN25]: **A divide-and-conquer sumcheck protocol**, by Christophe Levrat and Tanguy Medevielle and Jade Nardi, 2025
+
 [^LMPR08]: **SWIFFT: A Modest Proposal for FFT Hashing**, by Lyubashevsky, Vadim and Micciancio, Daniele and Peikert, Chris and Rosen, Alon, *in Fast Software Encryption*, 2008
 
 [^LMPY16]: **Practical “Signatures with Efficient Protocols” from Simple Assumptions**, by Libert, Benoit and Mouhartem, Fabrice and Peters, Thomas and Yung, Moti, *in Proceedings of the 11th ACM on Asia Conference on Computer and Communications Security*, 2016, [[URL]](https://doi.org/10.1145/2897845.2897898)

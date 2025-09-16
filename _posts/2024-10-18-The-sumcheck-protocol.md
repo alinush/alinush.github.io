@@ -49,7 +49,7 @@ $</div> <!-- $ -->
 
 ## What is sumcheck?
 
-The sumcheck protocol allows a **prover** $\term{\P}$ to convince a **verifier** $\term{\V}$ that a multivariate polynomial $\term{f}$ sums to $\term{H}$ over the boolean hypercube $\binMu$:
+The sumcheck protocol[^LFKN92] allows a **prover** $\term{\P}$ to convince a **verifier** $\term{\V}$ that a multivariate polynomial $\term{f}$ sums to $\term{H}$ over the boolean hypercube $\binMu$:
 
 \begin{align}
 \label{rel:sumcheck}
@@ -214,6 +214,20 @@ For example:
 {: .note}
 HyperPLONK[^CBBZ22e] gives a technique to reduce the proof size.
 For example, when using KZG commitments, the proof is reduced to (1) $\mu\times \Gr_1 + \mu\times \F$ elements and (2) a batch evaluation proof[^BDFG20], IIUC.
+
+## Academic work
+
+There have been many interesting advances on sumcheck, some of which I ran into recently:
+ 
+ - Fold-divide-and-conquer sumcheck[^LMN25]
+ - HyperPLONK includes many interesting sumcheck-based sub-protocols[^CBBZ22e]
+ - ZK sumchecks[^BDFplus25e]
+ - Inner product checks in $\log^\*$ rounds[^ARR25e]
+ - Time-space trade-offs for sumcheck[^CFFZ24e]
+
+{: .note}
+This list is by no means exhaustive, nor is it meant to be inclusive.
+I'm just trying to keep track of _some_ interesting works.
 
 ## Conclusion
 

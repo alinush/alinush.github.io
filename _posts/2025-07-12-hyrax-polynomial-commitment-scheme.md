@@ -185,7 +185,7 @@ To verify the opening, the verifier:
     &= u\cdot H + \sum\_{j\in[m)}(\a\cdot \mat{M}^\top\_j) \cdot G\_j\\\\\
 \end{align}
 
-**Step 3:** Checks the IPA proof against (1) the commitment $D$ and (2) $\b$.
+**Step 3:** Checks the IPA proof for $z$ against (1) the commitment $D$ and (2) $\b$.
 
 {: .note}
 Hyrax is typically used with $n=m=\sqrt{N}$, yielding sublinear-sized commitments, sublinear-sized proofs and sublinear-time verifier.
