@@ -529,6 +529,14 @@ For $k\in[\ell-1)$, verify the commitments:
 \term{C_{k+1}} &\gets (1-x_k)\cdot C_{k,0} + x_k \cdot C_{k,1}
 \end{align}
 
+Can be rewritten as:
+\begin{align}
+\pair{\emph{C_k}}{\two{1}} &\equals \pair{C_{k, 0}}{\two{1}} + \pair{-C_{k,0}}{\two{\tau_k}} + \pair{C_{k,1}}{\two{\tau_k}}\\\\\
+\pair{C_k - C_{k,0}}{\two{1}} &\equals \pair{C_{k,1}-C_{k,0}}{\two{\tau_k}}\\\\\
+\end{align}
+This means that, with a random linear combination, we can turn the bulk of the verification work into a $(\log{n}+1)$-sized multipairing.
+{: .note}
+
 Lastly, verify the partial evaluation:
 \begin{align}
 C_{\ell-1} &\equals t_1 \cdot \one{\tau_k} + t_0\cdot\one{1} = \one{t_1\cdot \tau_k + t_0}
