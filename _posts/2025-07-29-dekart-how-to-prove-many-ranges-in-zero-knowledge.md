@@ -42,6 +42,7 @@ This blog post describes a "warm-up" scheme based on univariate polynomials, whi
 \def\tauTwo{\crs{\two{\tau}}}
 \def\ellOne#1{\crs{\one{\ell_{#1}(\tau)}}}
 \def\ellTwo#1{\crs{\two{\ell_{#1}(\tau)}}}
+\def\sim{\mathcal{S}}
 $</div> <!-- $ -->
 
 ## Introduction
@@ -153,7 +154,7 @@ For this to work, the verifier must verify "duality" of the $\Gr_1$ and $\Gr_2$ 
 \pair{\one{f_j(\tau)}}{\two{1}} &= \pair{\one{1}}{\two{f_j(\tau)}},\forall j\in[\ell)
 \end{align}
 
-## Univariate batched (plausibly ZK?) range proof 
+## (Likely-not-ZK) univariate batched range proof 
 
 We observe that the $f$ and $f_j$ polynomials could be re-defined to store the bits of **$n$ different values** $\term{z_0, \ldots, z_{n-1}}$ without affecting the proof size and verifier time too much!
 
@@ -213,7 +214,7 @@ Furthermore, everything can be combined into a single multi-pairing.)
 Next, instead of asking for the individual $h_j(X)$ commitments, the verifier will send the $\beta_j$'s to the prover and expect to receive just the commitment $\emph{D}$ to the random linear combination of the $h_j$'s.
 This reduces proof size and makes the check in Eq. \ref{eq:hj} slightly faster:
 \begin{align}
-\label{eq:hj-efficient}
+\label{eq:verification}
 \pair{D}{\two{\frac{\tau^{n+1} - 1}{\tau - \omega^n}}}
  &= 
 \sum_{j\in[\ell)} \pair{\beta_j \cdot \one{f_j(\tau)}}{\two{f_j(\tau)}-\two{1}}
@@ -358,12 +359,38 @@ In terms where most of the time is spent in $\tildeDekartUni$, here's a breakdow
 {: .warning}
 The time to commit to the $f_j(X)$'s currently $\bad{dominates}$ but this can be sped up significantly using pre-computation since the scalars are small and the bases $\ellOne{i}$ and $\ellTwo{i}$ are fixed.
 
+### Cannot simulate in the Type 3 setting
+
+Suppose, there exists a simulator $\sim$ for the scheme above such that $\sim(\tau, C, \ell)$ outputs a valid proof $\pi \bydef (D, (C\_j,\tilde{C}\_j)\_{j\in[\ell)})$.
+
+Then, the [verifier's](#widetildemathsfdekartmathsffftmathsfverifymathcalfscdotmathsfvk-c-ell-pirightarrow-01) last check will pass:
+\begin{align}
+\pair{\sum_{j\in[\ell)} \alpha_j \cdot C_j}{\two{1}} \equals \pair{\one{1}}{\sum_{j\in[\ell)} \alpha_j \cdot \tilde{C}_j}
+\end{align}
+
+In particular, for $\ell = 1$, recall that the verifier ensures that $C \equals \sum_{j\in[\ell)} 2^j\cdot C_j = 2^0 C_0 = C_0$.
+Furthermore, the pairing check from above will imply:
+\begin{align}
+\pair{\alpha_0 \cdot C_0}{\two{1}} &\equals \pair{\one{1}}{\alpha_0 \cdot \tilde{C}_0}\Leftrightarrow\\\\\
+\pair{C_0}{\two{1}} &\equals \pair{\one{1}}{\tilde{C}_0}\Leftrightarrow\\\\\
+\pair{C}{\two{1}} &\equals \pair{\one{1}}{\tilde{C}_0}
+\end{align}
+
+Therefore, the simulator $\sim$ yields a homomorphism $\term{\phi}_\tau : \Gr_1 \rightarrow \Gr_2$:
+\begin{align}
+\forall \term{G} \in \Gr\_1,
+\emph{\phi\_\tau(G)} \bydef \tilde{C}\_0,\ \text{where}\ (\cdot, (\cdot,\tilde{C}\_0))\gets \sim(\tau, G, 1)
+\end{align}
+Here, $\tau \randget \F$ is randomly picked so that the simulation succeeds and defines the homomorphism.
+
+Thus, symmetric external Diffie-Hellman (SXDH) would be broken in $(\Gr_1,\Gr_2)$.
 
 ## Multilinear batched ZK range proof
 
 The previous section's [univariate construction](#univariate-batched-plausibly-zk-range-proof) requires FFT work for interpolating $h(X)$, which takes up a significant chunk of the prover time.
 
 Also, we do not yet know how to prove it ZK: the $\tilde{C}_j$ commitments in $\Gr_2$ make the simulation difficult.
+In fact, in the Type 3 pairing setting, the existence of a simulator would imply an isomorphism from $\Gr_1$ to $\Gr_2$.
 
 As a result, our paper[^BDFplus25e] focuses on [multilinear-based](/mle) variant of DeKART that uses a zero-knowledge variant of the [sumcheck protocol](/sumcheck).
 The paper shows that variant to be ZK.
