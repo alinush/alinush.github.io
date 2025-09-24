@@ -32,9 +32,9 @@ Two years after the Edward Snowden revelations, Phillip Rogaway[^rogaway] writes
 At the time, I am a graduate student, desperately trying to find my way as a researcher.
 
 Rogaway's paper grounds me.
-It gives me some much-needed reassurance that it is **good** to explore what I thought could be an important tool in the fight against mass surveillance: secure public key distribution for end-to-end encrypted email and messaging.
+It gives me some much-needed reassurance that it is **good** to explore what I thought could be an important tool in the fight against mass surveillance: secure public key distribution (PKD) for end-to-end encrypted email and messaging.
 
-So, I start learning a lot about Bitcoin and cryptographic accumulators and end up making some _practical_[^TD17] and some _academic_[^TBPplus19] progress on the problem.
+So, I start learning a lot about Bitcoin and cryptographic accumulators and end up making some _practical_[^TD17] and some _academic_[^TBPplus19] progress on the PKD problem.
 Then, I become a full-time researcher at VMware Research and get wonderfully-distracted by the joys of solving cryptographic puzzles.
 
 Ten years later, I am reminded of his paper and I feel compelled to re-read it.
@@ -52,12 +52,14 @@ Perhaps this is understandable.
 "Morality" can be nothing but a luxury for most of us, as our livelihood depends on working for someone else and thus on deferring morality to them or their superiors.
 Plus, this is hardly the only difficulty.
 Determining what it means for **you, personally,** to act morally in the world is no trivial task.
-Sure, you may philosophically-investigate the manner: e.g., Aristotle, Kant, Stuart Mill, Rawls, etc.
-As interesting and as informative as that may be, I find that "In _theory_, practice and theory are the same. In **practice**, they are not."
+You could philosophically-investigate the manner (Aristotle, Kant, Stuart Mill, Rawls, etc.) but, as interesting and as informative as that may be, you may find that:
+
+ > "In _theory_, practice and theory are the same. In **practice**, they are not."
 
 More disturbingly, "morality" sometimes degenerates into performative virtue-signalling, turning into a weapon to be used against the "immoral."
 This is not at all what this blog post is trying to do: you do you, man.
 Live and let live.
+<small>(In this case: exponentiate and let others exponentiate.)</small>
 
 For me, a guiding principle is that my _immediate_ responsibilities to myself, to my family should probably trump my _remote_ responsibilities to our society.
 After all, wouldn't it be arrogant (even dangerous?) to adopt responsibility for an entire nation when I barely have my own proverbial house in order?
