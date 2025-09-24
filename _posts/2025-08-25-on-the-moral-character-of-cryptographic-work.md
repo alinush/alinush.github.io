@@ -45,10 +45,11 @@ Ten years later, I am reminded of his paper and I feel compelled to re-read it.
 ## Why this reflection?
 
 If you came here for moral clarity, you are about to be very dissapointed.
-I do not have a clear-cut answer to Rogaway's "call to morality" in cryptographic research, if it should even be called so.
+I do not have a clear-cut answer to Rogaway's call to morality in cryptographic research.
 
-I fear that in our incredibly-complex society, the sole (and unfortunate) effect of calling for morality is to put people off or to exhaust them.
-Perhaps understandably so, seeing how "morality" can be nothing but a luxury for most of us, as our livelihood depends on working for someone else and thus on deferring morality to them or their superiors.
+I fear that in our incredibly-complex society, the common (and unfortunate) effect of calling for morality is to put people off or to exhaust them.
+Perhaps this is understandable.
+"Morality" can be nothing but a luxury for most of us, as our livelihood depends on working for someone else and thus on deferring morality to them or their superiors.
 Plus, this is hardly the only difficulty.
 Determining what it means for **you, personally,** to act morally in the world is no trivial task.
 Sure, you may philosophically-investigate the manner: e.g., Aristotle, Kant, Stuart Mill, Rawls, etc.
