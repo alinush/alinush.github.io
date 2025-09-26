@@ -802,6 +802,8 @@
 
 [^Bd93]: **One-Way Accumulators: A Decentralized Alternative to Digital Signatures**, by Benaloh, Josh and de Mare, Michael, *in EUROCRYPT '93*, 1994
 
+[^Beav92]: **Efficient Multiparty Protocols Using Circuit Randomization**, by Beaver, Donald, *in Advances in Cryptology --- CRYPTO '91*, 1992
+
 [^BenO83]: **Another advantage of free choice (Extended Abstract)**, by Michael Ben-Or, *in Proceedings of the second annual {ACM} symposium on Principles of distributed computing  - {PODC} {\textquotesingle}83*, 1983, [[URL]](https://doi.org/10.1145%2F800221.806707)
 
 [^BenO90]: **Randomized agreement protocols**, by Ben-Or, Michael, *in Fault-Tolerant Distributed Computing*, 1990
@@ -995,6 +997,8 @@
 [^CG10]: **Multiple Denominations in E-cash with Compact Transaction Data**, by Canard, Sébastien and Gouget, Aline, *in Financial Cryptography and Data Security*, 2010
 
 [^CGGplus23e]: **SublonK: Sublinear Prover PlonK**, by Arka Rai Choudhuri and Sanjam Garg and Aarushi Goel and Sruthi Sekar and Rohit Sinha, *in Cryptology ePrint Archive, Paper 2023/902*, 2023, [[URL]](https://eprint.iacr.org/2023/902)
+
+[^CGGMP21e]: **UC} Non-Interactive, Proactive, Threshold {ECDSA} with Identifiable Aborts**, by Ran Canetti and Rosario Gennaro and Steven Goldfeder and Nikolaos Makriyannis and Udi Peled, *in Cryptology {ePrint} Archive, Paper 2021/060*, 2021, [[URL]](https://eprint.iacr.org/2021/060)
 
 [^CGGeplus23ee]: **Testudo: Linear Time Prover SNARKs with Constant Size Proofs and Square Root Size Universal Setup**, by Matteo Campanelli and Nicolas Gailly and Rosario Gennaro and Philipp Jovanovic and Mara Mihali and Justin Thaler, *in Cryptology ePrint Archive, Paper 2023/961*, 2023, [[URL]](https://eprint.iacr.org/2023/961)
 
@@ -1354,6 +1358,10 @@
 
 [^DIO98]: **Non-Interactive and Non-Malleable Commitment**, by Di Crescenzo, Giovanni and Ishai, Yuval and Ostrovsky, Rafail, *in Proceedings of the Thirtieth Annual ACM Symposium on Theory of Computing*, 1998, [[URL]](https://doi.org/10.1145/276698.276722)
 
+[^DJ01]: **A Generalisation, a Simplification and Some Applications of Paillier's Probabilistic Public-Key System**, by Damgård, Ivan and Jurik, Mads, *in Public Key Cryptography*, 2001
+
+[^DJ03]: **A Length-Flexible Threshold Cryptosystem with Applications**, by Damgård, Ivan and Jurik, Mads, *in Information Security and Privacy*, 2003
+
 [^DJMP11]: **Publicly Verifiable Secret Sharing for Cloud-Based Key Management**, by D'Souza, Roy and Jao, David and Mironov, Ilya and Pandey, Omkant, *in Progress in Cryptology -- INDOCRYPT 2011*, 2011
 
 [^DJNplus20]: **Fast Threshold ECDSA with Honest Majority**, by Ivan Damgård and Thomas Pelle Jakobsen and Jesper Buus Nielsen and Jakob Illeborg Pagter and Michael Bæksvang Østergård, *in Cryptology ePrint Archive, Report 2020/501*, 2020, [[URL]](https://eprint.iacr.org/2020/501)
@@ -1409,6 +1417,8 @@
 [^DN19]: **Forward-Secure Multi-Signatures**, by Manu Drijvers and Gregory Neven, *in Cryptology ePrint Archive, Report 2019/261*, 2019, [[URL]](https://eprint.iacr.org/2019/261)
 
 [^DN98]: **An Efficient Existentially Unforgeable Signature Scheme and Its Applications**, by Dwork, Cynthia and Naor, Moni, *in Journal of Cryptology*, 1998, [[URL]](https://doi.org/10.1007/s001459900043)
+
+[^DNP25e]: **Trout: Two-Round Threshold {ECDSA} from Class Groups**, by Hila Dahari-Garbian and Ariel Nof and Luke Parker, *in Cryptology {ePrint} Archive, Paper 2025/1666*, 2025, [[URL]](https://eprint.iacr.org/2025/1666)
 
 [^DNRV09]: **How Efficient Can Memory Checking Be?**, by Dwork, Cynthia and Naor, Moni and Rothblum, Guy N. and Vaikuntanathan, Vinod, *in Theory of Cryptography*, 2009
 
@@ -1595,6 +1605,8 @@
 [^FKP16]: **On the Provable Security of ({EC}){DSA} Signatures**, by Manuel Fersch and Eike Kiltz and Bertram Poettering, *in Proceedings of the 2016 {ACM} {SIGSAC} Conference on Computer and Communications Security*, 2016, [[URL]](https://doi.org/10.1145%2F2976749.2978413)
 
 [^FKP17e]: **On the One-Per-Message Unforgeability of (EC)DSA and its Variants**, by Manuel Fersch and Eike Kiltz and Bertram Poettering, *in Cryptology ePrint Archive, Paper 2017/890*, 2017, [[URL]](https://eprint.iacr.org/2017/890)
+
+[^FKP23e]: **Cuckoo Commitments: Registration-Based Encryption and Key-Value Map Commitments for Large Spaces**, by Dario Fiore and Dimitris Kolonelos and Paola de Perthuis, *in Cryptology {ePrint} Archive, Paper 2023/1389*, 2023, [[URL]](https://eprint.iacr.org/2023/1389)
 
 [^FL25e]: **Understanding Lasso: A Novel Lookup Argument Protocol**, by Oleg Fomenko and Anton Levochko, *in Cryptology {ePrint} Archive, Paper 2025/1169*, 2025, [[URL]](https://eprint.iacr.org/2025/1169)
 
@@ -1951,6 +1963,8 @@
 [^Giun23e]: **On the Impossibility of Algebraic NIZK In Pairing-Free Groups**, by Emanuele Giunta, *in Cryptology ePrint Archive, Paper 2023/897*, 2023, [[URL]](https://eprint.iacr.org/2023/897)
 
 [^Gold02]: **Cryptography and Cryptographic Protocols**, by Oded Goldreich, 2021, [[URL]](http://www.wisdom.weizmann.ac.il/~oded/PSX/foc-sur01.pdf)
+
+[^Gold10]: **A Short Tutorial on Zero-Knowledge**, by Oded Goldreich, 2010, [[URL]](https://www.wisdom.weizmann.ac.il/~oded/zk-tut02.html)
 
 [^Goldreich00The]: **The Foundations of Modern Cryptography (Version Nr. 3.2)**, by Oded Goldreich, 2000
 
@@ -2470,6 +2484,8 @@
 
 [^LMR19e]: **Succinct Arguments for Bilinear Group Arithmetic: Practical Structure-Preserving Cryptography**, by Russell W. F. Lai and Giulio Malavolta and Viktoria Ronge, *in Cryptology ePrint Archive, Report 2019/969*, 2019, [[URL]](https://eprint.iacr.org/2019/969)
 
+[^LN18]: **Fast Secure Multiparty ECDSA with Practical Distributed Key Generation and Applications to Cryptocurrency Custody**, by Lindell, Yehuda and Nof, Ariel, *in Proceedings of the 2018 ACM SIGSAC Conference on Computer and Communications Security*, 2018, [[URL]](https://doi.org/10.1145/3243734.3243788)
+
 [^LNP22e]: **Lattice-Based Zero-Knowledge Proofs and Applications: Shorter, Simpler, and More General**, by Vadim Lyubashevsky and Ngoc Khanh Nguyen and Maxime Plancon, *in Cryptology {ePrint} Archive, Paper 2022/284*, 2022, [[URL]](https://eprint.iacr.org/2022/284)
 
 [^LNPS21e]: **Shorter Lattice-Based Group Signatures via ``Almost Free'' Encryption and Other Optimizations**, by Vadim Lyubashevsky and Ngoc Khanh Nguyen and Maxime Plancon and Gregor Seiler, *in Cryptology {ePrint} Archive, Paper 2021/1575*, 2021, [[URL]](https://eprint.iacr.org/2021/1575)
@@ -2639,6 +2655,8 @@
 [^MOY20]: **Stronger Notions and a More Efficient Construction of Threshold Ring Signatures**, by Alexander Munch-Hansen and Claudio Orlandi and Sophia Yakoubov, *in Cryptology ePrint Archive, Report 2020/678*, 2020, [[URL]](https://eprint.iacr.org/2020/678)
 
 [^MP13e]: **Hardness of {SIS} and {LWE} with Small Parameters**, by Daniele Micciancio and Chris Peikert, *in Cryptology {ePrint} Archive, Paper 2013/069*, 2013, [[URL]](https://eprint.iacr.org/2013/069)
+
+[^MQ23]: **Online Mergers and Applications to Registration-Based Encryption and Accumulators**, by Mahmoody, Mohammad and Qi, Wei, *in 4th Conference on Information-Theoretic Cryptography (ITC 2023)*, 2023, [[URL]](https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ITC.2023.15)
 
 [^MQR22e]: **Lower Bounds for the Number of Decryption Updates in Registration-Based Encryption**, by Mohammad Mahmoody and Wei Qi and Ahmadreza Rahimi, *in Cryptology ePrint Archive, Paper 2022/1285*, 2022, [[URL]](https://eprint.iacr.org/2022/1285)
 
@@ -2861,6 +2879,10 @@
 [^PNS23]: **MEVade: An MEV-Resistant Blockchain Design**, by Piet, Julien and Nair, Vivek and Subramanian, Sanjay, *in 2023 IEEE International Conference on Blockchain and Cryptocurrency (ICBC)*, 2023
 
 [^PP15e]: **Balloon: A Forward-Secure Append-Only Persistent Authenticated Data Structure**, by Tobias Pulls and Roel Peeters, *in Cryptology ePrint Archive, Report 2015/007*, 2015, [[URL]](https://ia.cr/2015/007)
+
+[^PP24e]: **Sparrow: Space-Efficient {zkSNARK} for Data-Parallel Circuits and Applications to Zero-Knowledge Decision Trees**, by Christodoulos Pappas and Dimitrios Papadopoulos, *in Cryptology {ePrint} Archive, Paper 2024/1631*, 2024, [[URL]](https://eprint.iacr.org/2024/1631)
+
+[^PP25e]: **Hobbit: Space-Efficient {zkSNARK} with Optimal Prover Time**, by Christodoulos Pappas and Dimitrios Papadopoulos, *in Cryptology {ePrint} Archive, Paper 2025/1214*, 2025, [[URL]](https://eprint.iacr.org/2025/1214)
 
 [^PPS21e]: **Vector and Functional Commitments from Lattices**, by Chris Peikert and Zachary Pepin and Chad Sharp, *in Cryptology ePrint Archive, Report 2021/1254*, 2021, [[URL]](https://ia.cr/2021/1254)
 
@@ -3330,6 +3352,8 @@
 
 [^TV20]: **Succinct Diophantine-Satisfiability Arguments**, by Patrick Towa and Damien Vergnaud, *in Cryptology ePrint Archive, Report 2020/682*, 2020, [[URL]](https://eprint.iacr.org/2020/682)
 
+[^TX25e]: **Robust Threshold {ECDSA} with Online-Friendly Design in Three Rounds**, by Guofeng Tang and Haiyang Xue, *in Cryptology {ePrint} Archive, Paper 2025/910*, 2025, [[URL]](https://eprint.iacr.org/2025/910)
+
 [^TXN20e]: **Authenticated Dictionaries with Cross-Incremental Proof (Dis)aggregation**, by Alin Tomescu and Yu Xia and Zachary Newman, *in Cryptology ePrint Archive, Report 2020/1239*, 2020, [[URL]](https://eprint.iacr.org/2020/1239)
 
 [^TZ23e]: **Revisiting BBS Signatures**, by Stefano Tessaro and Chenzhi Zhu, *in Cryptology ePrint Archive, Paper 2023/275*, 2023, [[URL]](https://eprint.iacr.org/2023/275)
@@ -3417,6 +3441,8 @@
 [^WLGplus78]: **SIFT: Design and analysis of a fault-tolerant computer for aircraft control**, by J. H. Wensley and L. Lamport and J. Goldberg and M. W. Green and K. N. Levitt and P. M. Melliar-Smith and R. E. Shostak and C. B. Weinstock, *in Proceedings of the IEEE*, 1978
 
 [^WLPZ23e]: **The Locality of Memory Checking**, by Weijie Wang and Yujie Lu and Charalampos Papamanthou and Fan Zhang, *in Cryptology ePrint Archive, Paper 2023/1358*, 2023, [[URL]](https://eprint.iacr.org/2023/1358)
+
+[^WMC24]: **Secure Multiparty Computation of Threshold Signatures Made More Efficient**, by Harry W. H. Wong and Jack P. K. Ma and Sherman S. M. Chow, *in 31st Annual Network and Distributed System Security Symposium, {NDSS} 2024, San Diego, California, USA, February 26 - March 1, 2024*, 2024, [[URL]](https://www.ndss-symposium.org/ndss-paper/secure-multiparty-computation-of-threshold-signatures-made-more-efficient/)
 
 [^WOSplus25e]: **Efficient Proofs of Possession for Legacy Signatures**, by Anna P. Y. Woo and Alex Ozdemir and Chad Sharp and Thomas Pornin and Paul Grubbs, *in Cryptology {ePrint} Archive, Paper 2025/538*, 2025, [[URL]](https://eprint.iacr.org/2025/538)
 
@@ -3526,6 +3552,8 @@
 
 [^ZCF23e]: **BaseFold: Efficient Field-Agnostic Polynomial Commitment Schemes from Foldable Codes**, by Hadas Zeilberger and Binyi Chen and Ben Fisch, *in Cryptology ePrint Archive, Paper 2023/1705*, 2023, [[URL]](https://eprint.iacr.org/2023/1705)
 
+[^ZCLplus24e]: **Epistle: Elastic Succinct Arguments for Plonk Constraint System**, by Shuangjun Zhang and Dongliang Cai and Yuan Li and Haibin Kan and Liang Zhang, *in Cryptology {ePrint} Archive, Paper 2024/872*, 2024, [[URL]](https://eprint.iacr.org/2024/872)
+
 [^ZCQplus20]: **The Move Prover**, by Zhong, Jingyi Emma and Cheang, Kevin and Qadeer, Shaz and Grieskamp, Wolfgang and Blackshear, Sam and Park, Junkil and Zohar, Yoni and Barrett, Clark and Dill, David L., *in Computer Aided Verification*, 2020
 
 [^ZCYW23e]: **Sigma Protocols from Verifiable Secret Sharing and Their Applications**, by Min Zhang and Yu Chen and Chuanzhou Yao and Zhichao Wang, *in Cryptology ePrint Archive, Paper 2023/1388*, 2023, [[URL]](https://eprint.iacr.org/2023/1388)
@@ -3567,6 +3595,8 @@
 [^ZPK14]: **ALITHEIA: Towards Practical Verifiable Graph Processing**, by Zhang, Yupeng and Papamanthou, Charalampos and Katz, Jonathan, *in ACM CCS'14*, 2014, [[URL]](https://doi.org/10.1145/2660267.2660354)
 
 [^ZPL19]: **When NTT Meets Karatsuba: Preprocess-then-NTT Technique Revisited**, by Yiming Zhu and Yanbin Pan and Zhen Liu, *in Cryptology ePrint Archive, Report 2019/1079*, 2019, [[URL]](https://eprint.iacr.org/2019/1079)
+
+[^ZSCZ24e]: **MicroNova}: Folding-based arguments with efficient (on-chain) verification**, by Jiaxing Zhao and Srinath Setty and Weidong Cui and Greg Zaverucha, *in Cryptology {ePrint} Archive, Paper 2024/2099*, 2024, [[URL]](https://eprint.iacr.org/2024/2099)
 
 [^ZSG24e]: **Efficient {KZG}-based Univariate Sum-check and Lookup Argument**, by Yuncong Zhang and Shi-Feng Sun and Dawu Gu, *in Cryptology {ePrint} Archive, Paper 2024/618*, 2024, [[URL]](https://eprint.iacr.org/2024/618)
 

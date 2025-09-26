@@ -105,7 +105,7 @@ Therefore, the product is zero when $\X\ne \b$.
 
 In many MLE-based protocols (e.g., [sumchecks](/sumcheck) or PCSs like [Hyrax](/hyrax) or [KZH](/kzh)), it is often necessary to **efficiently** compute all $n=2^\ell$ evaluations $(\eq(\x, \i))_{\i\in\\{0,1\\}^\ell}$ of the Lagrange polynomials for an arbitrary point $\x\in\F^\ell$!
 
-This can be done in $2n$ $\F$ multiplications using a tree-based algorithm, best illustrated with an example (for $\ell = 3$):
+This can be done in $n$ $\F$ multiplications using a tree-based algorithm, best illustrated with an example (for $\ell = 3$):
 ```
                                1                                 <-- level 0
                          /           \
@@ -138,6 +138,11 @@ e.g., for $n=8$, it is $2 \cdot 8 - 4 = 16 - 4 = 12$
 
 However, let's not split hairs and call it $2n$ $\F$ multiplications!
 
+It turns out, instead of doing two multiplications per node (i.e., one for $\mathsf{parent}\cdot (1-x_i)$ and one for $\mathsf{parent}\cdot x_i$), we can get away with one: first compute $\mathsf{parent}\cdot x_i$ and then subtract it from $\mathsf{parent}$ to obtain $\mathsf{parent}\cdot (1-x_i)$.
+(Here, $\mathsf{parent}$ denotes the parent node in the tree, which stores the product computed so far. e.g., for $i = 2$, an example of a parent node is $(1-x_0)x_1$.)
+
+This reduces the multiplications to (roughly) $n$!
+
 ## Multilinear extensions (MLEs)
 
 Given a **vector** $\vect{V} = (V_0, \ldots V_{n-1})$, where $n = 2^\ell$, it can be represented as a multilinear polynomial with $\ell$ variables by interpolation via the Lagrange polynomials from above:
@@ -166,7 +171,7 @@ Big thanks to [Ron Rothblum](https://csaws.cs.technion.ac.il/~rothblum/) for poi
 
 1. For computing all $n=2^\ell$ Lagrange $\eq(\x,\i)_{\i\in\\{0,1\\}^\ell}$ evaluations for an arbitrary $\x\in \F^\ell$, Proposition 1 of [Roth24e][^Roth24e] gives a faster algorithm: $n$ instead of $2n$ $\F$ multiplications! 🤔
     + Also, it gives a way to stream the computation (but, AFAICT, so does a careful walk through the tree depicted above) 
-2. The faster algorithm from above would immediately reduce the MLE evaluation time from $3n$ $\F$ muls to $2n$, but Remark 1 from [ARR25e][^ARR25e] can further reduce this to $n$! 🤯
+2. The faster algorithm from above would immediately reduce the MLE evaluation time from $3n$ $\F$ muls to $2n$, but Remark 1.? from [ARR25e][^ARR25e] can further reduce this to $n$! 🤯
 
 ## References
 

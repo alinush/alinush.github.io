@@ -178,7 +178,7 @@ The **sumcheck proof** will consist of all the univariate polynomials sent by th
 {: .note}
 The prover can send the $d+1$ coefficients of the polynomials, as expressed above, or $d+1$ different evaluations.
 
-## Properties
+## Notes
 
 The sumcheck protocol has many nice properties:
 
@@ -195,6 +195,12 @@ The sumcheck protocol has many nice properties:
     - An oracle $\oracle{f}$
  1. $\V$ only needs to query the oracle $\oracle{f}$ on one random evaluation $f(r_1, r_2, \ldots, r_\mu)$
  1. $\P$ can be optimized when $f$ is a multilinear extension (MLE) or a product of MLEs
+
+Some notes:
+
+ 1. The order in which you sum over the variables does not matter, AFAICT. e.g.,
+    - round 1 can start from **left** to _right_, as $\sum_{b_2,\ldots,b_\mu \in \\{0,1\\}} f(X_1, b_2,\ldots, b_\mu)$
+    - or can start from _right_ to **left**, as $\sum_{b_1,\ldots,b_{\mu-1} \in \\{0,1\\}} f(b_1,\ldots, b_{\mu-1}, X_\mu)$
 
 ## Efficiency
 
