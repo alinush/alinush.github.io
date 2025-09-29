@@ -198,14 +198,14 @@ Parse the $\ck$ as:
 \end{align}
 
 Let $\term{\vec{f_i}\bydef(f(\i,\j))\_{\j \in\bin^\mu}}$ denote the $i$th row of the matrix encoded by $f$.
-Compute the **full commitment** to $f$ (via a single $\msm{N}\_1$):
+Compute the **full commitment** to $f$ (via a single $\msmOne{N}$ MSM):
 \begin{align}
 \term{C} 
     \gets \sum_{i \in [n)} \sum_{j\in [m)} f(\i, \j)\cdot H_{i,j}
     \bydef \emph{\sum_{i\in [n)} \vec{f_i} \cdot \mat{H}_i} \in \Gr_1
 \end{align}
 
-Compute the $n$ **row commitments** of $f$ (via $n$ $\msm{m}\_1$):
+Compute the $n$ **row commitments** of $f$ (via $n$ $\msmOne{m}$ MSMs):
 \begin{align}
 \term{D_i} 
     \gets \sum_{j\in[m)} f(\i, \j) \cdot A_j
@@ -277,11 +277,11 @@ z\equals f_\x(\y)
 ### Verification time
 
 Assuming $f_\x$ is received in Lagrange basis, computing all $f_\x(\j)$ is just fetching entries.
-Therefore, the LHS of the auxiliary check from Eq. \ref{eq:kzh2-verify-aux} **always** involves an $\msm{m}\_1$.
+Therefore, the LHS of the auxiliary check from Eq. \ref{eq:kzh2-verify-aux} **always** involves an $\msmOne{m}$.
 
 When $(\x,\y)$ are on the hypercube (1) the RHS is a single $\Gr_1$ scalar multiplication which can be absorbed into the MSM on the LHS and (2) the last check on $z$ involves simply fetching the $y$th entry in $f_\x$.
 
-When $(\x,\y)$ are arbitrary, the RHS involves $\Fmul{2n}$ to evaluate all $\eq(\i;\x)$ Lagrange polynomials (see [here](/mle#computing-all-lagrange-evaluations-fast)) and then an $\msm{n}\_1$ which can be absorbed into the LHS.
+When $(\x,\y)$ are arbitrary, the RHS involves $\Fmul{2n}$ to evaluate all $\eq(\i;\x)$ Lagrange polynomials (see [here](/mle#computing-all-lagrange-evaluations-fast)) and then an $\msmOne{n}$ which can be absorbed into the LHS.
 
 The final check involves evaluating the $f_\x$ MLE at an arbitrary $\y$.
 This involves evaluating all $\eq(\j;\y)$ Lagrange polynomials in $\Fmul{2m}$ time and then taking a dot product in $\Fmul{m} + \Fadd{m}$ time.
@@ -345,9 +345,9 @@ Setup, commitments and proof sizes:
 |--------------+-------+-------+-------------+-----+--------+-------|
 | Scheme       | $\ck$ | $\vk$ | Commit time | $C$ | $\aux$ | $\pi$ |
 |--------------|-------|-------|-------------|-----+--------|-------|
-| $\kzhTwoGen$ | $\Gr_2^{n+1}, \Gr_1^{m+nm}     $ | $\Gr_2^{n+1}, \Gr_1^m$           | $\msm{nm}_1 + n\cdot\msm{m}_1$      | $\Gr_1$ | $\Gr_1^n$    | $\F^m, \Gr_1^n$ |
+| $\kzhTwoGen$ | $\Gr_2^{n+1}, \Gr_1^{m+nm}     $ | $\Gr_2^{n+1}, \Gr_1^m$           | $\msmOne{nm} + n\cdot\msmOne{m}$      | $\Gr_1$ | $\Gr_1^n$    | $\F^m, \Gr_1^n$ |
 |--------------+-------+-------+-------------|-----|--------|-------|
-| $\kzhTwoSqr$ | $\Gr_2^{\sqN+1}, \Gr_1^{N+\sqN}$ | $\Gr_2^{\sqN+1}\times\Gr_1^\sqN$ | $\msm{N}_1 + \sqN\cdot\msm{\sqN}_1$ | $\Gr_1$ | $\Gr_1^\sqN$ | $\F^\sqN, \Gr_1^\sqN$ |
+| $\kzhTwoSqr$ | $\Gr_2^{\sqN+1}, \Gr_1^{N+\sqN}$ | $\Gr_2^{\sqN+1}\times\Gr_1^\sqN$ | $\msmOne{N} + \sqN\cdot\msmOne{\sqN}$ | $\Gr_1$ | $\Gr_1^\sqN$ | $\F^\sqN, \Gr_1^\sqN$ |
 |--------------+-------+-------+-------------|-----|--------|-------|
 
 Openings at arbitry points:
@@ -355,9 +355,9 @@ Openings at arbitry points:
 |----------------+--------------------+---------------|
 | Scheme         | Open time (random) | Verifier time |
 |----------------|--------------------|---------------|
-| $\kzhTwoGen$   | $\Fmul{nm} + \Fadd{nm} + \read{\aux}$             | $\multipair{n+1} + \msm{m+n}_1 + \Fmul{(2n+3m)} + \Fadd{m}$ |
+| $\kzhTwoGen$   | $\Fmul{nm} + \Fadd{nm} + \read{\aux}$             | $\multipair{n+1} + \msmOne{m+n} + \Fmul{(2n+3m)} + \Fadd{m}$ |
 |----------------|--------------------|---------------|
-| $\kzhTwoSqr$   | $\Fmul{N} + \Fadd{N} + \read{\aux}$               | $\multipair{\sqN+1} + \msm{2\sqN}_1 + \Fmul{5\sqN} + \Fadd{\sqN}$ |
+| $\kzhTwoSqr$   | $\Fmul{N} + \Fadd{N} + \read{\aux}$               | $\multipair{\sqN+1} + \msmOne{2\sqN} + \Fmul{5\sqN} + \Fadd{\sqN}$ |
 |----------------+--------------------+---------------|
 
 Openings at points on the hypercube:
@@ -365,9 +365,9 @@ Openings at points on the hypercube:
 |----------------+-----------------------+---------------|
 | Scheme         | Open time (hypercube) | Verifier time |
 |----------------|-----------------------|---------------|
-| $\kzhTwoGen$   | $\read{\aux}$         | $\multipair{n+1} + \msm{m+1}_1$       | 
+| $\kzhTwoGen$   | $\read{\aux}$         | $\multipair{n+1} + \msmOne{m+1}$       | 
 |----------------|-----------------------|---------------|
-| $\kzhTwoSqr$   | $\read{\aux}$         | $\multipair{\sqN+1} + \msm{\sqN+1}_1$ | 
+| $\kzhTwoSqr$   | $\read{\aux}$         | $\multipair{\sqN+1} + \msmOne{\sqN+1}$ | 
 |----------------+-----------------------+---------------|
 
 
@@ -467,14 +467,11 @@ For each $k\in[\ell/2)$, there are $2^{k+1}$ choices for $\i_{[:k]}$. Thus, $\|\
 
 1. A size-$n$ fixed-base MSM in $\Gr_1$ to compute $C$
 2. Several MSMs for computing the sub-MLE commitments:
-    - 2 size-$n/2$ MSMs for the 1st row in Eq. \ref{eq:kzh-logn-aux}
-    - 4 size-$n/4$ MSMs for the 2nd row
+    - $2\times\msmOne{n/2}$ MSM for the 1st row in Eq. \ref{eq:kzh-logn-aux}
+    - $4\times \msmOne{n/4}$ MSMs for the 2nd row
     - $\ldots$
-    - $2^{\ell/2}$ size-$n/2^{\ell/2}$ MSMs for the last row = $\sqrt{n}$ size-$\sqrt{n}$ MSMs 
+    - $2^{\ell/2}\times \msmOne{n/2^{\ell/2}}$ MSMs for the last row = $\sqrt{n} \times \msmOne{\sqrt{n}}$ MSMs 
 <!-- Note: Doing MSMs for the smallest sub-MLE commitments + combine these into larger ones does not work: e.g., good luck combining a size-2 MLE commitment like 4\tau_1 + 5(1-\tau_1) with another one into a size-4 MLE commitment. It would require multiplyin by \tau in the exponent -->
-
-{: .todo}
-Use notation for MSM sizes in different groups.
 
 ### $\mathsf{KZH}_{\log{n}}.\mathsf{Open}(\mathsf{ok}, f(\boldsymbol{X}), \boldsymbol{x}, y; \mathsf{aux})\rightarrow \pi$
 
@@ -531,10 +528,16 @@ For $k\in[\ell-1)$, verify the commitments:
 
 Can be rewritten as:
 \begin{align}
-\pair{\emph{C_k}}{\two{1}} &\equals \pair{C_{k, 0}}{\two{1}} + \pair{-C_{k,0}}{\two{\tau_k}} + \pair{C_{k,1}}{\two{\tau_k}}\\\\\
-\pair{C_k - C_{k,0}}{\two{1}} &\equals \pair{C_{k,1}-C_{k,0}}{\two{\tau_k}}\\\\\
+\forall k\in[\ell-1), 
+    \emph{\pair{C_k}{\two{1}}} 
+        &\equals 
+    \emph{\pair{C_{k, 0}}{\two{1}}} + \bluebox{\pair{-C_{k,0}}{\two{\tau_k}}} + \bluebox{\pair{C_{k,1}}{\two{\tau_k}}}\Leftrightarrow\\\\\
+\forall k\in[\ell-1), 
+    \emph{\pair{C_k - C_{k,0}}{\two{1}}}
+        &\equals
+    \bluebox{\pair{C_{k,1}-C_{k,0}}{\two{\tau_k}}}\\\\\
 \end{align}
-This means that, with a random linear combination, we can turn the bulk of the verification work into a $(\log{n}+1)$-sized multipairing.
+This means that, with a random linear combination, we can turn the bulk of the verification work into a $(\log{n}+1)$-sized multipairing as per Eq. \ref{eq:kzh-logn-verify-fast}.
 {: .note}
 
 Lastly, verify the partial evaluation:
@@ -547,11 +550,12 @@ C_{\ell-1} &\equals t_1 \cdot \one{\tau_k} + t_0\cdot\one{1} = \one{t_1\cdot \ta
 _Naively_:
 
  - $\ell-1$ size-3 multipairing (to verify the $C_{k,b}$'s)
- - $\ell-1$ size-2 $\Gr_1$ MSMs (to compute the $C_k$'s)
- - a size-2 $\Gr_1$ MSM (to verify the $(t_1,t_0)$ polynomial)
+ - $\ell-1 \times \msmOne{2}$ MSMs (to compute the $C_k$'s)
+ - a $\msmOne{2}$ MSM (to verify the $(t_1,t_0)$ polynomial)
 
 **Faster** (pick random $\term{\alpha_k}$'s and combine the pairing checks):
 \begin{align}
+\label{eq:kzh-logn-verify-fast}
 \pair{\sum_{k\in[\ell-1)} \emph{\alpha_k} \cdot C_k}{\two{1}} &\equals \sum_{k\in[\ell-1)} \left(\pair{\emph{\alpha_k} \cdot C_{k, 0}}{\two{1 - \tau_k}} + \pair{\emph{\alpha_k} \cdot C_{k,1}}{\two{\tau_k}}\right)\Leftrightarrow\\\\\
 \end{align}
 \begin{align\*}
@@ -561,8 +565,8 @@ _Naively_:
 This takes:
  - $2\ell-2$ $\Gr_1$ scalar multiplications (for $\alpha_k \cdot C_{k,0}$ and $\alpha_k\cdot C_{k,1}$)
  - a size-$(2\ell-1)$ multipairing
- - a size-$(2\ell-2)$ $\Gr_1$ MSM (for the $\Gr_1$ input of the pairing on the left-hand side)
- - a size-2 $\Gr_1$ MSM (as before: to verify the $(t_1,t_0)$ polynomial)
+ - a $\msmOne{2\ell-2}$ MSM (for the $\Gr_1$ input of the pairing on the left-hand side)
+ - a $\msmOne{2}$ MSM (as before: to verify the $(t_1,t_0)$ polynomial)
 
 ## References
 

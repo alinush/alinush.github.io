@@ -25,7 +25,18 @@ permalink: confidential-assets
 <div style="display: none;">$
 $</div> <!-- $ -->
 
-## Introduction
+## Preliminaries
+
+We assume familiarity with:
+
+ - [Public-key encryption](/encryption)
+    + In particular, [ElGamal](/elgamal)
+ - ZK range proofs (e.g., [DeKART](/dekart))
+ - [$\Sigma$-protocols](/sigma)
+
+## Construction
+
+### Chunk sizes
 
 We chose 16-bit chunks to ensure that the max pending balance chunks never exceed $2^{32}$ after around $2^{16}$ incoming transfers.
 This, in turn, ensures fast decryption times.

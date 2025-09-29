@@ -63,8 +63,6 @@ $</div> <!-- $ -->
 ## Preliminaries
 
 {% include time-complexities-prelims-no-pairings.md %}
-    + $\fmsm{n}{< B}$ for a single multi-scalar multiplication (MSM) in $\Gr$ of size $n$ where the group element bases are known ahead of time (i.e., _fixed-base_) and each scalar is $< B$
-    + $\vmsm{n}{< B}$ for a single multi-scalar multiplication (MSM) in $\Gr$ of size $n$ where the group element bases are **NOT** known ahead of time (i.e., _variable-base_) and each scalar is $< B$
  - [Multilinear extensions (MLEs)](/mle)
  - The finite field $\F$ is of prime order $p$
  - We often denote the binary representation of $b$ as $\term{\vect{b}} \bydef [b_0,\ldots,b_{s-1}]\in\bin^s$, such that $b = \sum_{i\in[s)} b_i 2^i$.
@@ -218,7 +216,7 @@ Compute the commitment:
  - $\aux \gets \r$
 
 {: .note}
-Computing each commitment takes an $\msm{m+1}\Rightarrow n\times\msm{m+1}$ in total.
+Computing each commitment takes an $\msmG{m+1}\Rightarrow n\times\msmG{m+1}$ in total.
 (Committing will be faster for sparse matrices, but in the [Spartan](/spartan) setting, we don't care about it.)
 
 ### $\mathsf{Hyrax}_\mathsf{ZK}.\mathsf{Open}(\ck, f(\boldsymbol{X},\boldsymbol{Y}), (\boldsymbol{x}, \boldsymbol{y}), z; \aux, \C)\rightarrow \pi$
@@ -270,12 +268,12 @@ In **total**, we have:
 
  - $\a$ takes $\Fmul{2n}$ (recall from [here](/mle#computing-all-lagrange-evaluations-fast))
  - $\b$ takes $\Fmul{2m}$
- - $D$ takes $\msm{n}$
- - Verfiying $\pi$ takes $\term{\ipaVer(m)}$, which denotes the time of a size-$m$ IPA verifier (e.g., $O(\msm{m})$ for Bulletproofs[^BBBplus18])
+ - $D$ takes $\msmG{n}$
+ - Verfiying $\pi$ takes $\term{\ipaVer(m)}$, which denotes the time of a size-$m$ IPA verifier (e.g., $O(\msmG{m})$ for Bulletproofs[^BBBplus18])
 
 In **total**, we have:
 \begin{align}
-\def\zkverify{\Fmul{2(n + m)} + \msm{n} + \ipaVer(m)}
+\def\zkverify{\Fmul{2(n + m)} + \msmG{n} + \ipaVer(m)}
 \zkverify
 \end{align}
 
@@ -289,8 +287,8 @@ We use $\hyraxZkSqN$ to refer to $\hyraxZk^{\sqN,\sqN}$.
 |--------------+-------+-------+-------------+------+--------+-------|
 | Scheme       | $\ck$ | $\vk$ | Commit time | $\C$ | $\aux$ | $\pi$ |
 |--------------|-------|-------|-------------|------+--------|-------|
-| $\hyraxZknm$  | $\Gr^{n+1},\ck_\ipa$    | $\Gr^{n+1},\vk_\ipa   $ | $n\cdot\msm{m+1}$       | $\Gr^n$     | $\r\in\F^n$   | $\pi_\ipa(m)$ |
-| $\hyraxZkSqN$ | $\Gr^{\sqN+1},\ck_\ipa$ | $\Gr^{\sqN+1},\vk_\ipa$ | $\sqN\cdot\msm{\sqN+1}$ | $\Gr^\sqN$ | $\r\in\F^\sqN$ | $\pi_\ipa(\sqN)$ |
+| $\hyraxZknm$  | $\Gr^{n+1},\ck_\ipa$    | $\Gr^{n+1},\vk_\ipa   $ | $n\cdot\msmG{m+1}$       | $\Gr^n$     | $\r\in\F^n$   | $\pi_\ipa(m)$ |
+| $\hyraxZkSqN$ | $\Gr^{\sqN+1},\ck_\ipa$ | $\Gr^{\sqN+1},\vk_\ipa$ | $\sqN\cdot\msmG{\sqN+1}$ | $\Gr^\sqN$ | $\r\in\F^\sqN$ | $\pi_\ipa(\sqN)$ |
 |--------------+-------+-------+-------------|------|--------|-------|
 
 #### ZK openings at arbitry points
@@ -300,8 +298,8 @@ Recall that $\emph{t}\le nm$ denotes the # of non-zero entries in the MLE $f$ or
 |----------------+--------------------+---------------|
 | Scheme         | Open time (random) | Verifier time |
 |----------------|--------------------|---------------|
-| $\hyraxZknm$   | $\zkopen$          | $\Fmul{2(n+m)} + \msm{n} + \ipaVer(m)$ |
-| $\hyraxZkSqN$  | $\zkverify$        | $\Fmul{4\sqN} + \msm{\sqN} + \ipaVer(\sqN)$ |
+| $\hyraxZknm$   | $\zkopen$          | $\Fmul{2(n+m)} + \msmG{n} + \ipaVer(m)$ |
+| $\hyraxZkSqN$  | $\zkverify$        | $\Fmul{4\sqN} + \msmG{\sqN} + \ipaVer(\sqN)$ |
 |----------------+--------------------+---------------|
 
 #### ZK openings at points on the hypercube
@@ -331,7 +329,7 @@ Recall that $\mat{M}\in\F^{n \times m}$ represents the MLE $f\in\MLE(n,m)$.
  - $C_i \gets \mat{M}_i\cdot \G,\forall i\in[n)$ 
 
 {: .note}
-Computing each commitment takes an $\msm{m}\Rightarrow n\times\msm{m}$ in total.
+Computing each commitment takes an $\msmG{m}\Rightarrow n\times\msmG{m}$ in total.
 (Committing will be faster for sparse matrices, but in the [Spartan](/spartan) setting, we don't care about it.)
 
 ### $\mathsf{Hyrax}.\mathsf{Open}(\ck, f(\boldsymbol{X},\boldsymbol{Y}), (\boldsymbol{x}, \boldsymbol{y}), z; \C)\rightarrow \pi$
@@ -385,23 +383,23 @@ The more succinct but less computationally-efficient $\hyrax_\ipa$ variant would
  - $\a$ takes $\Fmul{2n}$
  (recall from [here](/mle#computing-all-lagrange-evaluations-fast))
  - $\b$ takes $\Fmul{2m}$
- - $D$ takes $\vmsm{n}{< p}$ because:
+ - $D$ takes $\vmsmG{n}$ because:
     + the $a_i$ scalars are arbitrary $\eq(\x,\i)$ evaluations
     + the bases $C_i$ are the commitment which is not necessarily known ahead of time
- - Verifying $\A$ against $D$ takes $\fmsm{m}{<p}$
+ - Verifying $\A$ against $D$ takes $\fmsmG{m}$
     - the exponents in $\A$ will be arbitrary (see the [opening algorithm](#mathsfhyraxmathsfopenck-fboldsymbolxboldsymboly-boldsymbolx-boldsymboly-z-crightarrow-pi))
     - the bases are fixed in the commitment key
- - Although this last $D \equals \A \cdot \G$ check can be turned into a single $\msm{n+m}$ as $\left(\A\cdot (-\G)\right)\cdot \sum_{i\in[n)} a_i \cdot C_i\equals 1$, I believe that may actually be slower, since the fixed-base MSM should be much faster than the variable-base one and we do not have MSM algorithms that work on combinations of the two!
+ - Although this last $D \equals \A \cdot \G$ check can be turned into a single $\msmG{n+m}$ as $\left(\A\cdot (-\G)\right)\cdot \sum_{i\in[n)} a_i \cdot C_i\equals 1$, I believe that may actually be slower, since the fixed-base MSM should be much faster than the variable-base one and we do not have MSM algorithms that work on combinations of the two!
  - Verifying $z$ is a size-$m$ inner product, so takes $\Fmul{m}+\Fadd{m}$
 
-In **total**, we have $\Fmul{(2n + 3m)} + \Fadd{m} + \vmsm{n}{<p} + \fmsm{m}{<p}$ verifier work for vanilla $\hyrax$.
-The $\hyrax_\ipa$ variant would take $\Fmul{2(n+m)} + \vmsm{n}{<p} + \ipaVer(m)$ (because no decommitment check for $D$ and no $\A\cdot\b^\top$ inner-product).
+In **total**, we have $\Fmul{(2n + 3m)} + \Fadd{m} + \vmsmG{n} + \fmsmG{m}$ verifier work for vanilla $\hyrax$.
+The $\hyrax_\ipa$ variant would take $\Fmul{2(n+m)} + \vmsmG{n} + \ipaVer(m)$ (because no decommitment check for $D$ and no $\A\cdot\b^\top$ inner-product).
 
 {: .note}
 When $(\x,\y)$ are on the hypercube: 
 (1) $\a$ and $\b$ are 0 everywhere except at location $x$ and $y$,
 (2) $D$ is just the commitment $C_x$ to the $x$th row
-(3) $\A$ is verified directly against $C_x$ via an $\msm{m}$
+(3) $\A$ is verified directly against $C_x$ via an $\msmG{m}$
 (4) $z$ is verified by checking if $z \equals A_y$
 
 ### Non-ZK performance
@@ -414,8 +412,8 @@ We use $\hyraxSqN$ to refer to $\hyrax^{\sqN,\sqN}$.
 |---------------+-------+-------+-------------+------+--------+-------|
 | Scheme        | $\ck$ | $\vk$ | Commit time | $\C$ | $\aux$ | $\pi$ |
 |---------------|-------|-------|-------------|------+--------|-------|
-| $\hyraxnm$    | $\Gr^n$    | $\Gr^n$      | $n\cdot\msm{m}$       | $\Gr^n$    | $\bot$ | $\F^m$ |
-| $\hyraxSqN$   | $\Gr^\sqN$ | $\Gr^\sqN+1$ | $\sqN\cdot\msm{\sqN}$ | $\Gr^\sqN$ | $\bot$ | $\F^\sqN$ |
+| $\hyraxnm$    | $\Gr^n$    | $\Gr^n$      | $n\cdot\msmG{m}$       | $\Gr^n$    | $\bot$ | $\F^m$ |
+| $\hyraxSqN$   | $\Gr^\sqN$ | $\Gr^\sqN+1$ | $\sqN\cdot\msmG{\sqN}$ | $\Gr^\sqN$ | $\bot$ | $\F^\sqN$ |
 |---------------+-------+-------+-------------|------|--------|-------|
 
 #### Non-ZK openings at arbitry points
@@ -425,8 +423,8 @@ Recall that $\emph{t}\le nm$ denotes the # of non-zero entries in the MLE $f$ or
 |----------------+--------------------+---------------|
 | Scheme         | Open time (random) | Verifier time |
 |----------------|--------------------|---------------|
-| $\hyraxnm$     | $\Fmul{(2n+2m+t)} + \Fadd{t}$ | $\vmsm{n}{<p} + \fmsm{m}{<p} + \Fmul{(2n+3m)} + \Fadd{m}$ |
-| $\hyraxSqN$    | $\Fmul{(4\sqN+t)} + \Fadd{t}$ | $\vmsm{\sqN}{<p} + \fmsm{\sqN}{<p} + \Fmul{5\sqN} + \Fadd{\sqN}$ |
+| $\hyraxnm$     | $\Fmul{(2n+2m+t)} + \Fadd{t}$ | $\vmsmG{n} + \fmsmG{m} + \Fmul{(2n+3m)} + \Fadd{m}$ |
+| $\hyraxSqN$    | $\Fmul{(4\sqN+t)} + \Fadd{t}$ | $\vmsmG{\sqN} + \fmsmG{\sqN} + \Fmul{5\sqN} + \Fadd{\sqN}$ |
 |----------------+--------------------+---------------|
 
 #### Non-ZK openings at points on the hypercube
@@ -434,8 +432,8 @@ Recall that $\emph{t}\le nm$ denotes the # of non-zero entries in the MLE $f$ or
 |----------------+-----------------------+---------------|
 | Scheme         | Open time (hypercube) | Verifier time |
 |----------------|-----------------------|---------------|
-| $\hyraxnm$     | $\bot$                | $\msm{n}$     |
-| $\hyraxSqN$    | $\bot$                | $\msm{\sqN}$  |
+| $\hyraxnm$     | $\bot$                | $\msmG{n}$     |
+| $\hyraxSqN$    | $\bot$                | $\msmG{\sqN}$  |
 |----------------+-----------------------+---------------|
 
 ## Conclusion
