@@ -32,6 +32,8 @@ $$</p>
     + the smallest $n>0$, such that $\underbrace{e\_* + e\_* + \cdots + e\_*}\_{n\ \text{times}} = e\_+$ is called the **field characteristic**.
  - TODO: (full?) algebraic closure of a finite field $K$
     + TODO: Clarify the difference between $K$ and $\bar{K}$ (the algebraic closure of $K$), because points on the curve come from the latter.
+        + Wicher said it's kind of like the real numbers: not every polynomial has a root in $\mathbb{R}$, so the _algebraic closure_ of $\mathbb{R}$ are the complex numbers $\mathbb{C}$, where every polynomial has a root.
+        + Somehow the "every polynomial has a root over $\bar{K}$" property is a useful one for algebraic geometry / elliptic curves in particular
     - example: for $\mathbb{Q}$, the full algebraic closure $\bar{\mathbb{Q}}$ includes $\sqrt{-2}$.
  - TODO: $\mathbb{A}^n(K)$ = affine $n$-spaces over field $K$
  - TODO: quadratic extensions

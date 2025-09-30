@@ -373,17 +373,18 @@ Furthermore, the pairing check from above will imply:
 \begin{align}
 \pair{\alpha_0 \cdot C_0}{\two{1}} &\equals \pair{\one{1}}{\alpha_0 \cdot \tilde{C}_0}\Leftrightarrow\\\\\
 \pair{C_0}{\two{1}} &\equals \pair{\one{1}}{\tilde{C}_0}\Leftrightarrow\\\\\
-\pair{C}{\two{1}} &\equals \pair{\one{1}}{\tilde{C}_0}
+\pair{C}{\two{1}} &\equals \pair{\one{1}}{\tilde{C}_0} \Leftrightarrow\\\\\
+\pair{\underbrace{\one{x}}\_{\bydef C}}{\two{1}} &\equals \pair{\one{1}}{\underbrace{\two{x}}\_{\bydef \tilde{C}\_0}}
 \end{align}
 
-Therefore, the simulator $\sim$ yields a homomorphism $\term{\phi}_\tau : \Gr_1 \rightarrow \Gr_2$:
+Let $\term{\phi_\tau} : \Gr_1 \rightarrow \Gr_2$, be defined as:
 \begin{align}
-\forall \term{G} \in \Gr\_1,
+\forall G \in \Gr\_1,
 \emph{\phi\_\tau(G)} \bydef \tilde{C}\_0,\ \text{where}\ (\cdot, (\cdot,\tilde{C}\_0))\gets \sim(\tau, G, 1)
 \end{align}
-Here, $\tau \randget \F$ is randomly picked so that the simulation succeeds and defines the homomorphism.
 
-Thus, symmetric external Diffie-Hellman (SXDH) would be broken in $(\Gr_1,\Gr_2)$.
+When $\tau \randget \F$ is randomly picked, $\phi_\tau$ is a homomorphism, since $\phi_\tau(\one{x}) = \two{x}$ for all inputs $\one{x}$.
+Therefore, the simulator $\sim$ yields a homomorphism $\Rightarrow$ symmetric external Diffie-Hellman (SXDH) would be broken in $(\Gr_1,\Gr_2)$.
 
 ## Multilinear batched ZK range proof
 
