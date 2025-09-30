@@ -1,0 +1,53 @@
+%
+\usepackage{forest}
+\usepackage[dvipsnames]{xcolor}
+\def\one#1{[#1]_{\textcolor{ForestGreen}{1}}}
+
+%
+\begin{forest}
+    for tree={
+    %    fit=band,% spaces the tree out a little to avoid collisions
+    %    fit=tight,% spaces the tree out less
+    %    fit=rectangle,
+    %   grow=north, % upside-down tree
+        inner sep=3,
+    }
+    [{$\one{1}$}
+        [{$\one{(1-\tau_3)}$}
+            [{$\one{(1-\tau_2)(1-\tau_3)}$}
+                [\hspace{-3em}{$\one{(1-\tau_1)(1-\tau_2)(1-\tau_3)}$}
+                    [, no edge, tier=odd ]
+                ]
+                [{$\one{\tau_1(1-\tau_2)(1-\tau_3)}$},
+                    tier=odd
+                ]
+            ]
+            [{$\one{\tau_2(1-\tau_3)}$}
+                [\hspace{-3em}{$\one{(1-\tau_1)\tau_2(1-\tau_3)}$}
+                    [, no edge, tier=odd ]
+                ]
+                [{$\one{\tau_1\tau_2 (1-\tau_3)}$},
+                    tier=odd
+                ]
+            ]
+        ]
+        [{$\one{\tau_3}$}
+            [{$\one{(1-\tau_2)\tau_3}$}
+                [\hspace{-2em}{$\one{(1-\tau_1)(1-\tau_2)\tau_3)}$}
+                    [, no edge, tier=odd ]
+                ]
+                [{$\one{\tau_1(1-\tau_2)\tau_3}$},
+                    tier=odd
+                ]
+            ]
+            [{$\one{\tau_2 \tau_3}$}
+                [\hspace{-2em}{$\one{(1-\tau_1) \tau_2\tau_3}$}
+                    [, no edge, tier=odd ]
+                ]
+                [{$\one{\tau_1 \tau_2 \tau_3}$},
+                    tier=odd
+                ]
+            ]
+        ]
+    ]
+\end{forest}

@@ -44,7 +44,7 @@ permalink: kzh
 \def\Vp{\V'}
 \def\VV{\widetilde{\vect{V}}}
 \def\H{\mat{H}}
-\def\ok{\mathsf{ok}}
+\def\opk{\mathsf{opk}}
 \def\crs#1{\textcolor{green}{#1}}
 %\def\?{\vect{?}}
 % - Let $\tobin{i}_s$ denote the $s$-bit binary representation of $i$
@@ -382,7 +382,7 @@ In this section, we (more clearly?) re-describe the $k = \log{n}$ instantiation 
 {: .todo}
 Check this against notes from Arantxa!
 
-### $\mathsf{KZH}_{\log{n}}.\mathsf{Setup}(1^\lambda, n) \rightarrow (\mathsf{vk},\mathsf{ck},\mathsf{ok})$
+### $\mathsf{KZH}_{\log{n}}.\mathsf{Setup}(1^\lambda, n) \rightarrow (\mathsf{vk},\mathsf{ck},\mathsf{opk})$
 
 Notation:
  - $\ell \bydef \log{n}$, where $n$ denotes the total # of entries in the MLE
@@ -397,6 +397,13 @@ Pick trapdoor:
 \end{align}
 
 Compute the public parameters.
+
+First, compute the **verification key (VK)**:
+\begin{align}
+\vk &\gets \left(\crs{\two{\tau\_0}},\crs{\two{\tau\_1}},\ldots,\crs{\two{\tau\_{\ell-1}}}\right)\bydef \crs{\two{\btau}}\\\\\
+\end{align}
+
+Second, compute the **commitment key (CK)**:
 \begin{align}
 \ck 
     &\gets 
@@ -410,19 +417,27 @@ Compute the public parameters.
     \bydef\left(\crs{\one{\eq(\i\_{[k:]};\btau\_{[k:]})}}\right)\_{k\in[\ell), \i_{[k:]}\in\bin^{\ell-k}}
     \\\\\
 \vk &\gets \left(\crs{\two{\tau\_0}},\crs{\two{\tau\_1}},\ldots,\crs{\two{\tau\_{\ell-1}}}\right)\bydef \crs{\two{\btau}}\\\\\
-\ok &\gets \textbf{TODO}\\\\\
 \end{align}
 
 {: .note}
 Recall our [$\b_{[k:]}$ notation](#notation) for the size-$(\ell-k)$ suffix of $\b$ starting at $b_k$ and inclusively-ending at $b_{\ell-1}$.
 We distinguish public parameters from other group elements by highlighting them in $\crs{\text{green}}$
 
+The CK may look intimidating, but it is just a tree of committed Lagrange basis polynomials.
+For $\ell =3$, the CK is:
+<div align="center"><img style="width:100%" src="/pictures/kzh/ck.svg" /></div>
+
+Third, compute the **opening key (OPK)**:
+\begin{align}
+\opk &\gets \textbf{TODO}\\\\\
+\end{align}
+
 ### Public parameter sizes
 
 For the commitment key $\ck$:
  - There are $2^\ell + 2^{\ell-1} + \ldots + 2^1 = 2^{\ell+1} - 2 = \emph{2n - 2}$ possible $\crs{\one{\eq(\i\_{[k:]};\btau\_{[k:]})}}$ commitments $\Rightarrow \|\ck\| = 2n-2$ $\Gr_1$.
  - $\|\vk\| = \log{n}$ $\Gr_2$
- - **TODO:** $\|\ok\| = ?$
+ - **TODO:** $\|\opk\| = ?$
 
 ### $\mathsf{KZH}_{\log{n}}.\mathsf{Commit}(\mathsf{ck}, f(\boldsymbol{X})) \rightarrow (C, \mathsf{aux})$
 
@@ -473,17 +488,17 @@ For each $k\in[\ell/2)$, there are $2^{k+1}$ choices for $\i_{[:k]}$. Thus, $\|\
     - $2^{\ell/2}\times \msmOne{n/2^{\ell/2}}$ MSMs for the last row = $\sqrt{n} \times \msmOne{\sqrt{n}}$ MSMs 
 <!-- Note: Doing MSMs for the smallest sub-MLE commitments + combine these into larger ones does not work: e.g., good luck combining a size-2 MLE commitment like 4\tau_1 + 5(1-\tau_1) with another one into a size-4 MLE commitment. It would require multiplyin by \tau in the exponent -->
 
-### $\mathsf{KZH}_{\log{n}}.\mathsf{Open}(\mathsf{ok}, f(\boldsymbol{X}), \boldsymbol{x}, y; \mathsf{aux})\rightarrow \pi$
+### $\mathsf{KZH}_{\log{n}}.\mathsf{Open}(\mathsf{opk}, f(\boldsymbol{X}), \boldsymbol{x}, y; \mathsf{aux})\rightarrow \pi$
 
 First, compute the initial commitments:
 \begin{align}
-\term{C_{0, b}} &= \one{f(b, \tau_1, \ldots, \tau_{\ell-1})} \bydef \one{f(0, \btau_{[1:]})}, b\in\bin\\\\\
+\term{C_{0, b}} &= \one{f(b, \tau_1, \ldots, \tau_{\ell-1})} \bydef \one{f(b, \btau_{[1:]})}, b\in\bin\\\\\
 \end{align}
 
 For $k\in[1, \ell-1)$, compute commitments:
 <!--for all $i_k\in\bin$, compute:-->
 \begin{align}
-\term{C_{k, b}} &= \one{f(x_0,\ldots,x_{k-1}, b, \tau_{k+1}, \ldots, \tau_{\ell-1})} \bydef \one{f(\x_{[:k-1]}, 0, \btau_{[k+1:]})},b\in\bin\\\\\
+\term{C_{k, b}} &= \one{f(x_0,\ldots,x_{k-1}, b, \tau_{k+1}, \ldots, \tau_{\ell-1})} \bydef \one{f(\x_{[:k-1]}, b, \btau_{[k+1:]})},b\in\bin\\\\\
 \end{align}
 
 {: .note}
@@ -501,7 +516,7 @@ Return the proof:
 ### Opening time
 
 {: .todo}
-Describe algorithm to compute commitments and to partially-evaluate! Then, figure out what $\ok$ needs to be.
+Describe algorithm to compute commitments and to partially-evaluate! Then, figure out what $\opk$ needs to be.
 
 ### Proof size
 
@@ -553,19 +568,17 @@ _Naively_:
  - $\ell-1 \times \msmOne{2}$ MSMs (to compute the $C_k$'s)
  - a $\msmOne{2}$ MSM (to verify the $(t_1,t_0)$ polynomial)
 
-**Faster** (pick random $\term{\alpha_k}$'s and combine the pairing checks):
+**Faster**, by picking random $\term{\alpha_k}$'s and combining the pairing checks as (hinted above):
 \begin{align}
 \label{eq:kzh-logn-verify-fast}
-\pair{\sum_{k\in[\ell-1)} \emph{\alpha_k} \cdot C_k}{\two{1}} &\equals \sum_{k\in[\ell-1)} \left(\pair{\emph{\alpha_k} \cdot C_{k, 0}}{\two{1 - \tau_k}} + \pair{\emph{\alpha_k} \cdot C_{k,1}}{\two{\tau_k}}\right)\Leftrightarrow\\\\\
+\sum_{k\in[\ell-1)} \emph{\alpha_k}\cdot \pair{C_k - C_{k,0}}{\two{1}} &\equals \sum_{k\in[\ell-1)} \emph{\alpha_k} \cdot \pair{C_{k,1} - C_{k, 0}}{\two{\tau_k}}\Leftrightarrow\\\\\
+\pair{\sum_{k\in[\ell-1)} \emph{\alpha_k}\cdot (C_k - C_{k,0})}{\two{1}} &\equals \sum_{k\in[\ell-1)} \pair{\emph{\alpha_k} \cdot (C_{k,1} - C_{k, 0})}{\two{\tau_k}}\Leftrightarrow\\\\\
 \end{align}
-\begin{align\*}
-\Leftrightarrow\pair{\sum_{k\in[\ell-1)} \left(\alpha_k (1-x_{k-1}) \cdot C_{k-1,0} + \alpha_k x_{k-1} \cdot C_{k-1,1}\right)}{\two{1}} &\equals \sum_{k\in[\ell-1)} \left(\pair{\alpha_k \cdot C_{k, 0}}{\two{1 - \tau_k}} + \pair{\alpha_k \cdot C_{k,1}}{\two{\tau_k}}\right)
-\end{align\*}
 
 This takes:
- - $2\ell-2$ $\Gr_1$ scalar multiplications (for $\alpha_k \cdot C_{k,0}$ and $\alpha_k\cdot C_{k,1}$)
- - a size-$(2\ell-1)$ multipairing
- - a $\msmOne{2\ell-2}$ MSM (for the $\Gr_1$ input of the pairing on the left-hand side)
+ - a $\msmOne{\ell-1}$ MSM (for the $\Gr_1$ input of the LHS pairing)
+ - $\ell-1$ $\Gr_1$ scalar multiplications (for the $\Gr_1$ input of the RHS pairing)
+ - a size-$\ell$ multipairing
  - a $\msmOne{2}$ MSM (as before: to verify the $(t_1,t_0)$ polynomial)
 
 ## References
