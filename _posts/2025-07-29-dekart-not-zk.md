@@ -4,10 +4,10 @@ tags:
  - range proofs
  - zero-knowledge proofs (ZKPs)
  - KZG
-title: "DeKART: How to prove many ranges in zero-knowledge"
+title: "Negative result: Non-ZK DeKART range proof"
 #date: 2020-11-05 20:45:59
 #published: false
-permalink: dekart
+permalink: dekart-not-zk
 #sidebar:
 #    nav: cryptomat
 #article_header:
@@ -17,8 +17,8 @@ permalink: dekart
 ---
 
 {: .info}
-**tl;dr:** [Dan](https://crypto.stanford.edu/~dabo/), [Kamilla](https://x.com/nazirkamilla), Alin, [Rex](https://x.com/rex1fernando) and [Trisha](https://x.com/TrishaCDatta) came up with a blazing-fast batched ZK range proof for KZG-like committed vectors of values.
-This blog post describes a "warm-up" scheme based on univariate polynomials, which we do not yet know to be ZK.
+This blog post describes a **flawed**, non-ZK range range proof based on univariate polynomials.
+(For an actually-ZK scheme, see [this post](/dekart).)
 
 <!--more-->
 
@@ -40,15 +40,20 @@ This blog post describes a "warm-up" scheme based on univariate polynomials, whi
 \def\crs#1{\textcolor{green}{#1}}
 \def\tauOne{\crs{\one{\tau}}}
 \def\tauTwo{\crs{\two{\tau}}}
-\def\ellOne#1{\crs{\one{\ell_{#1}(\tau)}}}
-\def\ellTwo#1{\crs{\two{\ell_{#1}(\tau)}}}
+\def\ellOne#1{\crs{\one{\lagr_{#1}(\tau)}}}
+\def\ellTwo#1{\crs{\two{\lagr_{#1}(\tau)}}}
 \def\sim{\mathcal{S}}
 $</div> <!-- $ -->
 
 ## Introduction
 
-In a very short blog post[^Borg20], Borgeaud describes a very simple range proof for a single value $z$, which we summarize [here](borgeauds-unbatched-range-proof).
-In this blog post, accompanying our academic paper[^BDFplus25e], we observe that Borgeaud's elegant protocol **very efficiently** extends to batch-proving **many values**[^BDFplus25e].
+In a short blog post[^Borg20], Borgeaud describes a very simple range proof for a single value $z$, which we summarize [here](borgeauds-unbatched-range-proof).
+In the summer of 2024, we observed that Borgeaud's elegant protocol **very efficiently** extends to batch-proving **many values**[^BDFplus25e].
+This ultimately led to a ZK range proof scheme based on [multilinear polynomials](/mle) and [sumcheck](/sumcheck), which is fully described in our academic paper[^BDFplus25e],
+
+However, initially, we started with a ZK range proof based on [univariate polynomials](/polynomials) and [KZG commitments](/kzg).
+
+This blog post describes that range proof and explains why it cannot be ZK in Type III bilinear groups[^GPS08].
 
 ## Preliminaries
 
@@ -62,37 +67,7 @@ In this blog post, accompanying our academic paper[^BDFplus25e], we observe that
  - We use $\one{a}\bydef a\cdot G_1$ and $\two{b}\bydef b\cdot G_2$ and $\three{c}\bydef c\cdot G_\top$ to denote scalar multiplication in bilinear groups $(\Gr_1,\Gr_2,\Gr_\top)$ with generators $G_1,G_2,G_\top$, respectively (i.e., additive group notation).
  - We use "small-MSM" to refer to multi-scalar multiplications (MSMs) where the scalars are small; we use "L-MSM" to refer to ones where the scalars are large
 {% include prelims-fiat-shamir.md %}
-
-### Lagrange polynomials
-
-We will often work with polynomials $f(X)$ interpolated over the FFT basis $\term{\H}\bydef\\{\omega^0,\omega^1,\ldots,\omega^n\\}$, where $\term{\omega}$ is a primitive $(n+1)$th root of unity.
-(A bit clumsy, maybe we can fix later.)
-So, given $f(\omega^i)$ evaluations, for all $i\in[0,n]$, we want to interpolate $f(X)$ as:
-\begin{align}
-    f(X) \gets \sum_{i\in[0,n]} f(\omega^i)\cdot \ell_i(X),\ \text{where}\ \term{\ell_i(X)} = \prod_{\substack{j\in[0,n]\\\\j\ne i}} \frac{X - \omega^j}{\omega^i-\omega^j}
-\end{align}
-Let $\term{A(X)} = X^{n+1}-1 \bydef \prod_{i\in[0,n]} (X-\omega^n)$ and note that $\term{A'(X)} = (n+1) X^n$.
-We can rewrite the **Lagrange polynomial** $\ell_i(X)$ as[^TABplus20]:
-\begin{align}
-\ell_i(X) 
-    &= \frac{A(X)}{A'(\omega^i) (X - \omega^i)}\\\\\
-    &= \frac{X^{n+1} -1 }{A'(\omega^i) (X - \omega^i)}\\\\\
-    &= \frac{X^{n+1} -1 }{(n+1)\omega^{in} (X - \omega^i)}
-\end{align}
-Note that $\omega^{in} = \omega^{i(n+1) - i} = (\omega^{n+1})^i \cdot \omega^{-i} = \omega^{-i}$. So:
-\begin{align}
-\ell_i(X) 
-    &= \frac{(X^{n+1} - 1) \omega^i}{(n+1) (X - \omega^i)}\\\\\
-    &= \frac{(1 - X^{n+1})}{n+1} \cdot \frac{\omega^i}{\omega^i - X}\\\\\
-\end{align}
-This implies that, for any point $\term{\gamma}\notin \H$, we can interpolate $f(\gamma)$ as:
-\begin{align}
-\label{eq:interpolate}
-\term{f(\gamma)} = \frac{1 - \gamma^{n+1}}{n+1} \sum_{i\in[0, n]} f(\omega^i) \frac{\omega^i}{\omega^i - \gamma}
-\end{align}
-
-{: .note}
-This will be useful later in our [proving algorithm](#mathsfdekartmathsffftmathsfprovemathcalfscdotmathsfprk-c-ell-z_0ldotsz_n-1-rrightarrow-pi) and takes (1) $\approx \log_2{(n+1)}$ $\F$ muls for $\gamma^{n+1}$, (2) a size-$(n+1)$ [batch inversion](/batch-inversion) (3) $3(n+1)+1$ $\F$ multiplications for the 3 products inside the sum and (4) $2(n+1)$ $\F$ additions
+ - We will often [interpolate polynomials](/lagrange-interpolation) over the FFT basis $\term{\H}\bydef\\{\omega^0,\omega^1,\ldots,\omega^n\\}$, where $\term{\omega}$ is a primitive $(n+1)$th root of unity.
 
 ### Borgeaud's unbatched range proof
 
@@ -230,7 +205,7 @@ Generate powers of $\tau$ up to and including $\tau^n$:
  - $\term{\omega} \gets$ a primitive $(n+1)$th root of unity in $\F$
  - $\term{\H}\bydef\\{\omega^0,\omega^1,\ldots,\omega^n\\}$
 
-Let $\term{\ell_i(X)} \bydef \prod_{j\in\H, j\ne i} \frac{X - \omega^j}{\omega^i - \omega^j}$ denote the $i$th [Lagrange polynomial](/lagrange-interpolation), for $i\in[0, n]$.
+Let $\term{\lagr_i(X)} \bydef \prod_{j\in\H, j\ne i} \frac{X - \omega^j}{\omega^i - \omega^j}$ denote the $i$th [Lagrange polynomial](/lagrange-interpolation), for $i\in[0, n]$.
 
 Return the public parameters:
  - $\vk\gets \left(\tauTwo,\vanishTwo\right)$
@@ -386,16 +361,6 @@ Let $\term{\phi_\tau} : \Gr_1 \rightarrow \Gr_2$, be defined as:
 When $\tau \randget \F$ is randomly picked, $\phi_\tau$ is a homomorphism, since $\phi_\tau(\one{x}) = \two{x}$ for all inputs $\one{x}$.
 Therefore, the simulator $\sim$ yields a homomorphism $\Rightarrow$ symmetric external Diffie-Hellman (SXDH) would be broken in $(\Gr_1,\Gr_2)$.
 
-## Multilinear batched ZK range proof
-
-The previous section's [univariate construction](#univariate-batched-plausibly-zk-range-proof) requires FFT work for interpolating $h(X)$, which takes up a significant chunk of the prover time.
-
-Also, we do not yet know how to prove it ZK: the $\tilde{C}_j$ commitments in $\Gr_2$ make the simulation difficult.
-In fact, in the Type 3 pairing setting, the existence of a simulator would imply an isomorphism from $\Gr_1$ to $\Gr_2$.
-
-As a result, our paper[^BDFplus25e] focuses on [multilinear-based](/mle) variant of DeKART that uses a zero-knowledge variant of the [sumcheck protocol](/sumcheck).
-The paper shows that variant to be ZK.
-
 ## Conclusion
 
 Your thoughts or comments are welcome on [this thread](https://x.com/alinush407/status/1950600327066980693).
@@ -475,7 +440,6 @@ Doing this $h(X)$ interpolation faster is an open problem, which is why in the p
 
 ## References
 
-[^kzg-lagrange-no-ffts]: When $\gamma\notin\H$, we can use [a simple trick](https://ethresear.ch/t/kate-commitments-from-the-lagrange-basis-without-ffts/6950). However, when $\gamma = \omega^i \in \H$, we can use [differentiation tricks](/2025/01/24/Polynomial-differentiation-tricks.html) to compute the otherwise-uncomputable $\frac{u(\omega^i) - u(\omega^i)}{\omega^i - \omega^i}$ scalar by evaluating the derivative of $\frac{u(X) - u(\omega^i)}{X - \omega^i}$ at $X = \omega^i$. So, by evaluating $u'(X)$ at $X = \omega^i$, which should give $\sum_{j\ne i, j\in[0,n]} \frac{\omega^{j - i} (u(\omega^i) - u(\omega^j))}{\omega^j - \omega^i}$.
 [^pr1]: Pull request: [Add univariate DeKART range proof](https://github.com/aptos-labs/aptos-core/pull/17531/files)
 [^Borg20]: [Membership proofs from polynomial commitments](https://solvable.group/posts/membership-proofs-from-polynomial-commitments/), William Borgeaud, 2020
 

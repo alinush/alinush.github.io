@@ -113,7 +113,7 @@ In other words, the $x_i$'s are $\omega^i$'s.
 
 Then, we can use a simpler expression for the Lagrange polynomials.
 First, since $\omega$ is a primitive $n$th root of unity, then the polynomial $A(X)$ simplifies to $X^n - 1$.
-Second, its derivative $A'(X)$ has a much simpler formula: $nX^{n-1}$.
+Second, its derivative $A'(X) = (X^n - 1)' = (X^n)' = nX^{n-1}$.
 \begin{align}
 \lagr_i(X)
  &= \frac{A(X)}{(X-\omega^i)\cdot A'(\omega^i)}\\\\\
