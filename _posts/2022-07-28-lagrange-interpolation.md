@@ -122,11 +122,16 @@ Second, its derivative $A'(X) = (X^n - 1)' = (X^n)' = nX^{n-1}$.
  &= \frac{X^n - 1}{(X-\omega^i)\cdot n \omega^{-i}}
   = \emph{\frac{(X^n - 1)\cdot \omega^i}{(X-\omega^i)\cdot n}}\\\\\
 \end{align}
-As a result, the interpolation formula can be rewritten as:
+
+### Barycentric formula
+
+Leveraging the above, we can re-write the interpolation formula:
 \begin{align}
-\phi(X) 
+\label{eq:barycentric-formula}
+\phi(X)
     &= \sum_{i\in[n]} y_i \frac{(X^n - 1)\cdot \omega^i}{(X-\omega^i)\cdot n}
      = \emph{\frac{X^n - 1}{n} \sum_{i\in[n]} y_i \frac{\omega^i}{X-\omega^i}}\\\\\
 \end{align}
+This is known as the **Barycentric formula**.
 
 {% include refs.md %}
