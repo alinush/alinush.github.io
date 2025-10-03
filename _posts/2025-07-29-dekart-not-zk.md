@@ -237,8 +237,8 @@ Recall $\emph{z_{i,j}}$ denotes the $j$th bit of each $z_i\in[0,2^\ell)$.
 
 **Prover time** is:
 
- - $\ell n$ $\Gr_1$ $\textcolor{green}{\text{additions}}$ for each $c_j, j\in[\ell)$
- - $\ell$ $\Gr_1$ scalar multiplications to blind each $c_j$ with $r_j$
+ - $\ell n$ $\Gr_1$ $\textcolor{green}{\text{additions}}$ for each $C_j, j\in[\ell)$
+ - $\ell$ $\Gr_1$ scalar multiplications to blind each $C_j$ with $r_j$
  - $\ell n$ $\Gr_2$ $\textcolor{green}{\text{additions}}$ for each $\tilde{c}_j, j\in[\ell)$
  - $\ell$ $\Gr_2$ scalar multiplications to blind each $\tilde{c}_j$ with $r_j$
  - $O(\ell n\log{n})$ $\F$ multiplications to interpolate $h(X)$

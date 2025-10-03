@@ -30,8 +30,13 @@ $</div> <!-- $ -->
 
 ## Introduction
 
-Skipping over 30+ years of $\Sigma$-protocol design and jumping right into the (most?) useful generalization from the Boneh-Shoup[^BS23] textbook.
-(Actually, I think the most useful one may be the preimage of a homomorphism one...)
+Mostly skipping over 30+ years of $\Sigma$-protocol design and jumping right into (what I think is) the (most) useful generalization of them from the Boneh-Shoup[^BS23] textbook.
+
+### Related work
+
+Everything started with Ronald Cramer, who introduced the notion of $\Sigma$-protocols[^Cra97].
+Later on, Maurer noticed that most $\Sigma$-protocols can be framed as a (and this is a mouthful) _proof-of-knowledge of a preimage on a homomorphism_[^Maur09].
+Boneh and Shoup[^BS23] summarize many important aspects of $\Sigma$-protocols, including this homomorphism viewpoint.
 
 ## Preliminaries
 

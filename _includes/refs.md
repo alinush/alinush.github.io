@@ -610,6 +610,8 @@
 
 [^BL12]: **Computing small discrete logarithms faster**, by Daniel Bernstein and Tanja Lange, 2012, [[URL]](https://cr.yp.to/dlog/cuberoot-20120919.pdf)
 
+[^BL17e]: **Montgomery curves and the Montgomery ladder**, by Daniel J.  Bernstein and Tanja Lange, *in Cryptology {ePrint} Archive, Paper 2017/293*, 2017, [[URL]](https://eprint.iacr.org/2017/293)
+
 [^BL19]: **On the Multi-User Security of Short Schnorr Signatures**, by Jeremiah Blocki and Seunghoon Lee, *in Cryptology ePrint Archive, Report 2019/1105*, 2019, [[URL]](https://eprint.iacr.org/2019/1105)
 
 [^BL19e]: **On the Multi-User Security of Short Schnorr Signatures with Preprocessing**, by Jeremiah Blocki and Seunghoon Lee, *in Cryptology {ePrint} Archive, Paper 2019/1105*, 2019, [[URL]](https://eprint.iacr.org/2019/1105)
@@ -2202,6 +2204,8 @@
 
 [^JT19]: **Trading Accumulation Size for Witness Size: A Merkle Tree Based Universal Accumulator Via Subset Differences**, by Mahabir Prasad Jhanwar and Pratyush Ranjan Tiwari, *in Cryptology ePrint Archive, Report 2019/1186*, 2019, [[URL]](https://eprint.iacr.org/2019/1186)
 
+[^JY03]: **The Montgomery Powering Ladder**, by Joye, Marc and Yen, Sung-Ming, *in Cryptographic Hardware and Embedded Systems - CHES 2002*, 2003
+
 [^JY09]: **Boneh-Boyen signatures and the Strong Diffie-Hellman problem**, by David Jao and Kayo Yoshida, *in Cryptology ePrint Archive, Report 2009/221*, 2009, [[URL]](https://eprint.iacr.org/2009/221)
 
 [^Jage15]: **Verifiable Random Functions from Weaker Assumptions**, by Jager, Tibor, *in Theory of Cryptography*, 2015
@@ -2556,6 +2560,10 @@
 
 [^LZ22]: **Matproofs**, by Jing Liu and Liang Feng Zhang, *in Proceedings of the 2022 {ACM} {SIGSAC} Conference on Computer and Communications Security*, 2022, [[URL]](https://doi.org/10.1145%2F3548606.3560591)
 
+[^LZLplus24e]: **HyperPianist}: Pianist with Linear-Time Prover and Logarithmic Communication Cost**, by Chongrong Li and Pengfei Zhu and Yun Li and Cheng Hong and Wenjie Qu and Jiaheng Zhang, *in Cryptology {ePrint} Archive, Paper 2024/1273*, 2024, [[URL]](https://eprint.iacr.org/2024/1273)
+
+[^LZLplus25e]: **Soloist: Distributed {SNARKs} for Rank-One Constraint System**, by Weihan Li and Zongyang Zhang and Yun Li and Pengfei Zhu and Cheng Hong and Jianwei Liu, *in Cryptology {ePrint} Archive, Paper 2025/557*, 2025, [[URL]](https://eprint.iacr.org/2025/557)
+
 [^LZWplus24e]: **Scalable Collaborative zk-{SNARK}: Fully Distributed Proof Generation and Malicious Security**, by Xuanming Liu and Zhelei Zhou and Yinghao Wang and Bingsheng Zhang and Xiaohu Yang, *in Cryptology {ePrint} Archive, Paper 2024/143*, 2024, [[URL]](https://eprint.iacr.org/2024/143)
 
 [^Lach18]: **Security of BLS and BGLS signatures in a multi-user setting**, by Lacharité, Marie-Sarah, *in Cryptography and Communications*, 2018, [[URL]](https://doi.org/10.1007/s12095-017-0253-6)
@@ -2713,6 +2721,8 @@
 [^Mall18Groth]: **A proof of security for the Sapling generation of zkSNARK parameters in the generic group model**, by Mary Maller, 2018, [[URL]](https://github.com/zcash/sapling-security-analysis/blob/master/MaryMallerUpdated.pdf)
 
 [^Maur05]: **Abstract Models of Computation in Cryptography**, by Ueli Maurer, *in Cryptography and Coding 2005*, 2005
+
+[^Maur09]: **Unifying Zero-Knowledge Proofs of Knowledge**, by Maurer, Ueli, *in Progress in Cryptology -- AFRICACRYPT 2009*, 2009
 
 [^Maur15]: **Zero-knowledge proofs of knowledge for group homomorphisms**, by Maurer, Ueli, *in Designs, Codes and Cryptography*, 2015, [[URL]](https://doi.org/10.1007/s10623-015-0103-5)
 
@@ -3461,6 +3471,8 @@
 [^WSCplus23e]: **Practical Security Analysis of Zero-Knowledge Proof Circuits**, by Hongbo Wen and Jon Stephens and Yanju Chen and Kostas Ferles and Shankara Pailoor and Kyle Charbonnet and Isil Dillig and Yu Feng, *in Cryptology {ePrint} Archive, Paper 2023/190*, 2023, [[URL]](https://eprint.iacr.org/2023/190)
 
 [^WSRplus15]: **Efficient RAM and control flow in verifiable outsourced computation**, by Wahby, Riad S. and Setty, Srinath and Ren, Zuocheng and Blumberg, Andrew J. and Walfish, Michael, *in Network & Distributed System Security Symposium (NDSS)*, 2015, [[URL]](https://www.microsoft.com/en-us/research/publication/efficient-ram-and-control-flow-in-verifiable-outsourced-computation/)
+
+[^WSVZ24e]: **$\mathsf{Cirrus}$: Performant and Accountable Distributed {SNARK**, by Wenhao Wang and Fangyan Shi and Dani Vilardell and Fan Zhang, *in Cryptology {ePrint} Archive, Paper 2024/1873*, 2024, [[URL]](https://eprint.iacr.org/2024/1873)
 
 [^WTSplus18]: **Doubly-Efficient zkSNARKs Without Trusted Setup**, by R. S. Wahby and I. Tzialla and A. Shelat and J. Thaler and M. Walfish, *in 2018 IEEE Symposium on Security and Privacy (SP)*, 2018
 
