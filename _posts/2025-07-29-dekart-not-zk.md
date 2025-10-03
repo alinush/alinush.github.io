@@ -7,7 +7,7 @@ tags:
 title: "Negative result: Non-ZK DeKART range proof"
 #date: 2020-11-05 20:45:59
 #published: false
-permalink: dekart-not-zk
+permalink: dekart
 #sidebar:
 #    nav: cryptomat
 #article_header:

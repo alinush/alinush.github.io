@@ -2,7 +2,7 @@
 tags:
 title: "Smaller and faster-to-verify DeKART ZK range proofs"
 #date: 2020-11-05 20:45:59
-#published: false
+published: false
 permalink: dekart-v2
 #sidebar:
 #    nav: cryptomat
