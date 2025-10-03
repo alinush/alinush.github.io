@@ -1,5 +1,6 @@
 ---
 tags:
+ - aptos
  - keyless
  - zero-knowledge proofs (ZKPs)
  - groth16

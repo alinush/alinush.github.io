@@ -1,5 +1,6 @@
 ---
 tags:
+ - aptos
  - distributed key generation (DKG)
  - BLS
  - ECDSA

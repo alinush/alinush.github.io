@@ -1,5 +1,6 @@
 ---
 tags:
+ - aptos
  - ElGamal
  - zero-knowledge proofs (ZKPs)
  - range proofs
