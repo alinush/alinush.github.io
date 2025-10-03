@@ -1,9 +1,9 @@
 ---
 tags:
-title: "Smaller and faster-to-verify DeKART ZK range proofs"
+title: "DeKART: ZK range proofs from univariate polynomials"
 #date: 2020-11-05 20:45:59
+permalink: dekart
 published: false
-permalink: dekart-v2
 #sidebar:
 #    nav: cryptomat
 #article_header:
@@ -13,7 +13,7 @@ permalink: dekart-v2
 ---
 
 {: .info}
-**tl;dr:** Trading off prover time for smaller and faster verification in our previous [DeKART](/dekart) scheme.
+**tl;dr:** We fix up our previous [non-ZK, univariate DeKART](/dekart-not-zk) scheme and also speed up its verifier by trading off prover time.
 
 <!--more-->
 
@@ -22,210 +22,249 @@ permalink: dekart-v2
 
 <!-- Here you can define LaTeX macros -->
 <div style="display: none;">$
-\def\correlate#1{\mathsf{CorrelatedRandomness}(#1)}
+\def\crs#1{\textcolor{green}{#1}}
+\def\tauOne{\crs{\one{\tau}}}
+\def\tauTwo{\crs{\two{\tau}}}
+%
 \def\dekart{\mathsf{DeKART}}
 \def\dekartUni{\dekart^\mathsf{FFT}}
-\def\tildeDekartUni{\widetilde{\dekart}^\mathsf{FFT}}
-\def\dekartMulti{\dekart^{\vec{X}}}
-\def\H{\mathbb{H}}
-\def\L{\mathbb{L}}
+\def\dekartSetup{\dekart.\mathsf{Setup}}
+\def\dekartProve{\dekart.\mathsf{Prove}}
+%
 \def\bad#1{\textcolor{red}{\text{#1}}}
 \def\good#1{\textcolor{green}{\text{#1}}}
-\def\vanish{\frac{X^{n+1} - 1}{X - \omega^n}}
+%
+\def\crsH{\crs{H}}
+%
+\def\S{\mathbb{S}}
+\def\lagrS{\mathcal{S}}
+\def\sOne#1{\crs{\one{\lagrS_{#1}(\tau)}}}
+\def\VS{V^*_\S}
+\def\vanishS{\frac{X^{n+1} - 1}{X - 1}}
+\def\vanishSTwo{\crs{\two{\frac{\tau^{n+1} - 1}{\tau-1}}}}
+%
+\def\L{\mathbb{L}}
+\def\lagrL{\mathcal{L}}
+\def\lOne#1{\crs{\one{\lagrL_{#1}(\tau)}}}
+\def\VL{V^*_\L}
+\def\vanishL{\frac{X^L - 1}{X - 1}}
+%
+\def\bkzgSetup{\mathsf{BKZG.Setup}}
+\def\bkzgCommit{\mathsf{BKZG.Commit}}
+\def\bkzgOpen{\mathsf{BKZG.Open}}
+\def\bkzgVerify{\mathsf{BKZG.Verify}}
+%
+\def\piPok{\pi_\mathsf{PoK}}
+\def\zkpokProve{\Sigma_\mathsf{PoK}.\mathsf{Prove}}
+\def\zkpokVerify{\Sigma_\mathsf{PoK}.\mathsf{Verify}}
+\def\relPok{\mathcal{R}_\mathsf{pok}}
 $</div> <!-- $ -->
 
 ## Preliminaries
 
-You can read the original [blog post on DeKART](/dekart) for proving that a vector of values all lie in $[0,2^\ell)$.
+The notation for this blog post is [the same as in the old post](/dekart-not-zk#preliminaries).
 
-The notation for this blog post is [the same as there](/dekart#preliminaries), except we rely on **polynomial interactive oracle proofs (PIOP)** notation to describe our range proof protocol more abstractly, independent of the choice of **polynomial commitment scheme (PCS)**.
-Later on, [our concrete construction](#mathsfdekart_bmathsffftmathsfsetup1lambda-b-nrightarrow-mathsfprkmathsfvk) will use the [KZG PCS](/kzg).
+### ZKPoKs
 
-## Univariate batched ZK range proof
-
-{: .note}
-We're going to describe the range proof protocol as a PIOP below.
-
-Let:
- - $\term{b}$ denote the **chunk size** or **radix**.
- - $\term{\ell}$ denote the **number of chunks** in each value.
- - $\term{z_0}, \ldots, \term{z_{n-1}}\in\emph{[b^\ell)}$ denote $\term{n}$ **different values**.
- - $\term{z_{i,j}}\in\emph{[b)}$ denote the $j$th chunk of $z_i$, for all $j\in[\ell)$.
-
-The values are represented as a blinded, degree-$n$ polynomial $\term{f(X)}\in\F[X]$:
+We assume a ZK PoK for the following relation:
 \begin{align}
-\label{eq:f-batched}
-f(\omega^i) &= z_i,\forall i\in[n)\\\\\
-f(\omega^n) &= \term{r}
-\end{align}
-where $\emph{r}\randget \F$ is a blinding factor and $\term{\omega}$ is a $(n+1)$th primitive root of unity in $\F$.
-
-In other words, the **prover** starts with $f(X)$ and the **verifier** has an **oracle** $[[f(X)]]$.
-The prover aims to convince the verifier that the committed $z_i$'s are in $[b^\ell)$.
-
-Let $\H\bydef\\{\omega^0,\omega^1,\ldots,\omega^n\\}$ denote the set of all $(n+1)$th roots of unity.
-
-{: .note}
-We will (a bit awkwardly) require that exists $k\in\N$ s.t. $n + 1= 2^k$, since many fields $\F$ of interest have prime order $p$ where $p-1$ is divisible by $2^k$ and thus will admit an $(n+1)$th primitive root of unity. e.g., [BLS12-381](/pairings#bls12-381-performance) admits a root of unity for $k=32$.
-As we shall see later, our construction will also need a $(bn)$th primitive roots of unity.
-
-First, the prover represents the $j$th chunk of all $n$ values as a blinded, degree-$n$ polynomial $\term{f_j(X)}$:
-\begin{align}
-f_j(\omega^i) &= z_{i,j},\forall i\in[n)\\\\\
-f_j(\omega^n) &= \term{r_j}
-\end{align}
-where the prover picks the $\emph{r_j}$’s randomly, but correlates them such that:
-\begin{align}
-\label{eq:correlate}
-r = \sum_{j\in[\ell)} b^j\cdot r_j
-\end{align}
-We denote this by $(r_j)_{j\in[\ell)}\randget \term{\correlate{r, b, \ell}}$.
-
-As a result, the following **radix-$b$ representation** relation will hold for these $f$ and $f_j$ polynomials:
-\begin{align}
-\label{eq:radix-b}
-f(X) = \sum_{j\in[\ell)} b^j \cdot f_j(X)
+\term{\relPok}(X, X_1, X_2; w_1, w_2) = 1 \Leftrightarrow X = w_1 \cdot X_1 + w_2 \cdot X_2 
 \end{align}
 
-The prover sends $[[f_j]]$ oracles to the verifier, who can easily check Eq. \ref{eq:radix-b} holds against them.
+{: .todo}
+What kind of soundness assumption do we need?
+Define $\zkpokProve$ and $\zkpokVerify$.
 
-The remaining task is to prove that $f_j$ stores $b$-sized chunks; i.e.:
+### Blinded KZG 
+
+#### $\bkzgSetup(1^\lambda, d) \rightarrow (\vk,\ck)$
+
+{: .todo}
+Pick root of unity.
+Define Lagrange polys here instead of the DeKART setup.
+
+#### $\bkzgCommit(\ck, f; \rho) \rightarrow C$
+
+Parse the commitment key:
 \begin{align}
-f_j(X) \in \\{0,1,\ldots,b-1\\}, \forall X\in \H\setminus\\{\omega^n\\}\Leftrightarrow
-\end{align}
-The **key observation** is that this is equivalent to:
-\begin{align}
-\left. \vanish\ \middle|\ f_j(X)\left(f_j(X) - 1\right)\ldots\left(f_j(X) - (b-1)\right) \right.
-\end{align}
-This, in turn, is equivalent to proving there exists a quotient polynomial $\term{h_j(X)}$ of degree $bn - n = \emph{(b-1)n}$ such that:
-\begin{align}
-\label{eq:unbatched-zero-check}
-\vanish\cdot \emph{h_j(X)} = f_j(X)\left(f_j(X) - 1\right)\ldots\left(f_j(X) - (b-1)\right) 
-\end{align}
-
-The verifier picks random $\emph{\beta_j}$'s and sends them to the prover.
-
-The prover computes $\term{h(X)}\bydef \sum_{j\in[\ell)} \beta_j \cdot h_j(X)$ and sends back an $\[[h(X)]]$ oracle.
-
-The verifier picks a random $\term{\gamma}$ and queries the oracles for $h(\gamma)$ and $(f_j(\gamma))_{j\in[\ell]}$.
-
-Lastly, the verifier checks, for each $j\in[\ell)$, that Eq. \ref{eq:unbatched-zero-check} holds at a random $X=\gamma$ point:
-\begin{align}
-\frac{\gamma^{n+1} - 1}{\gamma - \omega^n} \cdot \sum_{j\in[\ell)} {\beta_j} \cdot h_j(\gamma) &= \sum_{j\in[\ell)} {\beta_j} \cdot f_j(\gamma)\left(f_j(\gamma) - 1\right)\ldots\left(f_j(\gamma) - (b-1)\right)\Leftrightarrow\\\\\
-\frac{\gamma^{n+1} - 1}{\gamma - \omega^n} \cdot h(\gamma) &= \sum_{j\in[\ell)} {\beta_j} \cdot f_j(\gamma)\left(f_j(\gamma) - 1\right)\ldots\left(f_j(\gamma) - (b-1)\right)
+    \left(\crsH, \left(\crs{\one{\lagr_i(\tau)}}\right)\_{i\in[m)}\right) \parse\ck
 \end{align}
 
-We call this scheme $\term{\dekartUni_b}$ and describe its [prover](#mathsfdekart_bmathsffftmathsfprovemathcalfscdotmathsfprk-c-ell-z_0ldotsz_n-1-rrightarrow-pi) and [verifier](#mathsfdekart_bmathsffftmathsfverifymathcalfscdotmathsfvk-c-ell-pirightarrow-01) algorithms below, which instantiate the PIOP above with the [KZG PCS](/kzg).
+Commit to $f$, but additively blind by $\rho\cdot \crsH$:
+\begin{align}
+C &\gets   \rho \cdot \crsH + \sum_{i\in[m)} z_i \cdot \crs{\one{\lagr_i(\tau)}}
+    \bydef \rho \cdot \crsH + \one{f(\tau)} 
+\end{align}
+
+{: .todo}
+Explain that it commits as $\one{f(\tau)} + \rho\cdot \crsH$, for $\rho\randget\F$. 
+Explain how it opens since it's a bit different.
+
+## The scheme
+
+A few notes:
+ - Values are represented in **radix $\term{b}$**
+    - e.g., $\term{z_{i,j}}\in[b)$ denotes the $j$th **chunk** of $z_i \bydef \sum_{j\in[\ell)} \emph{z_{i,j}} \cdot b^{j}$ 
+ - The goal is to prove that each value $z_i \in [b^\ell)$ by exhibiting a valid **radix-$b$ decomposition** as shown above
+    + $\term{\ell}$ is the number of chunks ($z_{i,j}$'s) in this decomposition
+ - We will have $\term{n}$ values we want to prove ($z_i$'s)
+ - The degrees of committed polynomials will be either $n$ or $(b-1)n$
+ - We will work with two kinds of vanishing polynomials:
+    + $\term{\VS(X)}\bydef \vanishS$ of degree $n$
+    + $\term{\VL(X)}\bydef \vanishL$ of degree $\term{L}-1 \bydef \emph{b(n+1)} - 1$
 
 ### $\mathsf{Dekart}\_b^\mathsf{FFT}.\mathsf{Setup}(1^\lambda, b, n)\rightarrow \mathsf{prk},\mathsf{vk}$
 
-<!-- Here you can define LaTeX macros -->
-<div style="display: none;">$
-\def\crs#1{\textcolor{green}{#1}}
-\def\tauOne{\crs{\one{\tau}}}
-\def\tauTwo{\crs{\two{\tau}}}
-\def\vanishTwo{\crs{\two{\frac{\tau^{n+1} - 1}{\tau-\omega^n}}}}
-\def\ellOne#1{\crs{\one{\ell_{#1}(\tau)}}}
-\def\sOne#1{\crs{\one{s_{#1}(\tau)}}}
-$</div> <!-- $ -->
+{: .todo}
+Should we use $b_\max$ and $n_\max$ here?
+If we do, then this setup should output just powers-of-$\tau$ of max degree $L-1 = b(n+1) - 1$ instead of Lagrange commitments.
+Then, a $\dekart.\mathsf{Specialize}$ algorithm can be used to get a CRS for a specific $n = 2^c$ or even non-power of two?
+This would actually be informative and nice to deal with, notationally.
 
-Let:
+Assume $n=2^c$ for some $c\in\N$[^power-of-two-n] and let:
 
- - $\term{N} \bydef b(n+1) = 2^c$
-    - (i.e., if $(n+1)$ and $b$ are powers of two $\Rightarrow N$ is a power of two too)
-    + Ideally, we would have preferred to use a slightly-smaller $N$ value.
-        + i.e., the highest-degree polynomial is $(b-1)n$ so $N' = (b-1)n + 1 = bn - (n - 1)$ would suffice
-        + Ours is bigger: $N - N' = b(n+1) - (bn - (n-1)) = b + n - 1$
-    - However, the field may not admit such an $N$th primitive root of unity when $N\ne 2^c$
-    - Plus, FFTs for $N\ne 2^c$ would be trickier too.
- - $\term{\omega} \gets$ a primitive $(n+1)$th root of unity in $\F$
- - $\term{\H}\bydef\\{\omega^0,\omega^1,\ldots,\omega^n\\}$
- - $\term{\zeta} \gets$ a primitive $N$th root of unity in $\F$
- - $\term{\L}\bydef\\{\zeta^0,\zeta^1,\ldots,\zeta^{N-1}\\}$
+ - $\term{\S}\bydef\\{\omega^0,\omega^1,\ldots,\omega^{\emph{n}}\\}$, where $\term{\omega}$ is a primitive $(n+1)$th root of unity in $\F$
+ - $\term{L} \bydef b(n+1) = 2^{d}$, for some $d\in\N$
+ - $\term{\L}\bydef\\{\zeta^0,\zeta^1,\ldots,\zeta^{\emph{L-1}}\\}$, where $\term{\zeta}$ is a primitive $L$th root of unity in $\F$
 
-Generate powers of $\tau$ up to and including $\tau^{(b-1)n}$:
+{: .note}
+For efficiency, we restrict ourselves to $(n+1)$ and $b$ that are powers of two, so that $L \bydef b(n+1)$ is a power of two as well.
+Ideally though, since the highest-degree polynomial involved in our scheme is $(b-1)n$, we could have used a smaller $L = (b-1)n + 1$ $= bn - (n - 1)$.
+But this $L$ may not be a power of two, which means FFTs would be trickier.
 
- - $\term{\tau}\randget\F$
-
-_Note:_ This scheme is for proving values are in $[b^\ell)$.
-The highest degree of any committed polynomial in this scheme is $(b-1)n$.
-The vanishing polynomial $\vanish$ will have degree $n$.
-
-Let $\term{\ell_i(X)} \bydef \prod_{j\in\H, j\ne i} \frac{X - \omega^j}{\omega^i - \omega^j}$ denote the $i$th degre-$n$ [Lagrange polynomial](/lagrange-interpolation), for $i\in[0, n]$, w.r.t. the $\H$ domain.
-
-Let $\term{s_i(X)} \bydef \prod_{j\in\L, j\ne i} \frac{X - \zeta^j}{\zeta^i - \zeta^j}$ denote the $i$th degre-$(N-1)$ [Lagrange polynomial](/lagrange-interpolation), for $i\in[N)$, w.r.t. the $\L$ domain.
+Define the $i$th [Lagrange polynomials](/lagrange-interpolation) w.r.t. the $\S$ and $\L$ domains:
+ - $\forall i\in[0,n], \term{\lagrS_i(X)} \bydef \prod_{j\in\S, j\ne i} \frac{X - \omega^j}{\omega^i - \omega^j}$ of degree $n$ 
+ - $\forall i\in[L), \term{\lagrL_i(X)} \bydef \prod_{j\in\L, j\ne i} \frac{X - \zeta^j}{\zeta^i - \zeta^j}$ of degree $L-1$
 
 Return the public parameters:
- - $\vk\gets \left(b, \tauTwo,\vanishTwo\right)$
- - $\prk\gets \left(\vk, \left(\ellOne{i})\right)_{i\in[0,n]}, \left(\sOne{i}\right)\_{i\in[N)}\right)$
+ - $\term{\tau}\randget\F$
+ - $\term{\crsH}\randget \Gr_1$
+ - $\vk\gets \left(b, \crsH, \tauTwo,\vanishSTwo\right)$
+ - $\ck_\S \gets \left(\crsH, \left(\sOne{i}\right)\_{i\in[0,n]}\right)$
+ - $\ck_\L \gets \left(\crsH, \left(\lOne{i}\right)\_{i\in[L)}\right)$
+ - $\prk\gets \left(\vk, \ck_\S, \ck_\L\right)$
 
-### $\mathsf{Dekart}\_b^\mathsf{FFT}.\mathsf{Commit}(\mathsf{prk},z_0,\ldots,z_{n-1}; r)\rightarrow C$
+{: .note}
+When $b=2$, we will be able to simplify by letting $L = n+1$ and $\S = \L$.
 
-This is just a [KZG commitment](/kzg) to the vector $\vec{z}\bydef [z_0,\ldots,z_{n-1}]$:
+### $\mathsf{Dekart}\_b^\mathsf{FFT}.\mathsf{Commit}(\ck_\S,z_1,\ldots,z_{n}; \rho)\rightarrow C$
 
- - $\left(\cdot, (\ellOne{i},\cdot)\_{i\in[0,n]}\right)\parse\prk$
- - $C \gets r\cdot \ellOne{n} + \sum_{i\in[n)} z_i \cdot \ellOne{i} \bydef \one{\emph{f(\tau)}}$ (as per Eq. \ref{eq:f-batched})
-
-### $\mathsf{Dekart}\_b^\mathsf{FFT}.\mathsf{Prove}^{\mathcal{FS}(\cdot)}(\mathsf{prk}, C, \ell; z_0,\ldots,z_{n-1}, r)\rightarrow \pi$
-
-Recall $\emph{z_{i,j}}\in[b)$ denotes the $j$th chunk of $z_i\in[0,b^\ell)$.
-
-**Step 1:** Parse the proving key:
+Parse the commitment key:
 \begin{align}
-\left((b,\cdot,\cdot), \left(\ellOne{i}\right)_{i\in[0,n]}, \bluedashedbox{\left(\sOne{i}\right)\_{i\in[N)}}\right) &\parse\prk\\\\\
+    \left(\crsH, \left(\sOne{i}\right)\_{i\in[0,n]}\right) \parse\ck_\S
 \end{align}
 
-**Step 2:** Commit to $f_j(X)$, which stores the $j$th bits of each value:
+<!-- $\term{\vec{z}}\bydef[0, z_1,\ldots,z_{n}]$: -->
+Represent the $n$ values and a prepended $0$ value as a degree-$n$ polynomial:
 \begin{align}
-(\emph{r\_j})\_{j\in[n)} &\randget \correlate{r, \ell}\\\\\
-\term{C\_j} &\gets r\_j\cdot \ellOne{n} + \sum\_{i\in[n)} z\_{i,j}\cdot \ellOne{i} \bydef \one{\emph{f\_j(\tau)}},\forall j\in[\ell)
+\term{f(X)} \bydef 0\cdot \lagrS_0(X) + \sum_{i\in[n]} z_i \cdot \lagrS_i(X)
 \end{align}
 
-*Note:* The $\ell$ size-$(n+1)$ MSMs here can be carefully-optimized: the scalars are in $[b)$.
-
-**Step 3a:** Interpolate a quotient polynomial arguing that $f_j(\omega^i) \in \bluedashedbox{[b)}$, except at $\omega^n$: 
+Commit to the polynomial via [blinded KZG](#blinded-kzg):
 \begin{align}
-\emph{h_j(X)}
-    &\gets \frac{f_j(X)(f_j(X) - 1)\bluedashedbox{\ldots(f_j(X) - (b-1))}}{(X^{n+1} - 1) / (X-\omega^n)}\\\\\
-    &= \frac{(X-\omega^n)f_j(X)(f_j(X) - 1)\bluedashedbox{\ldots(f_j(X)-(b-1))}}{X^{n+1} - 1},\forall j \in[\ell)
+\term{\rho} &\randget \F\\\\\
+C &\gets \bkzgCommit(\ck_\S, f; \rho) \bydef \rho \cdot \crsH + \one{f(\tau)} = \rho\cdot \crsH + \sum_{i\in[n]} z_i \cdot \sOne{i}
 \end{align}
 
-*Note:* Numerator is degree $\bluedashedbox{bn}$ and denominator is degree $n \Rightarrow h_j(X)$ is degree $\bluedashedbox{(b-1)n}$
+{: .note}
+Note that $f(\omega^i) = z_i,\forall i\in[n]$ but the $f(\omega^0)$ evaluation is set to zero.
 
-**Step 3b:** Add $(\vk, C, \ell, (C\_j)\_{j\in[\ell})$ to the $\FS$ transcript.
+### $\mathsf{Dekart}\_b^\mathsf{FFT}.\mathsf{Prove}^{\mathcal{FS}(\cdot)}(\mathsf{prk}, C, \ell; z_1,\ldots,z_{n}, \rho)\rightarrow \pi$
 
-**Step 4a:** Combine all $h_j$'s into a single polynomial using random challenges from the verifier:
+
+**Step 1**a**:** Parse the public parameters:
 \begin{align}
-(\term{\beta\_j})\_{j\in[\ell)}
+ \left(\vk, \ck_\S, \ck_\L\right)\parse \prk\\\\\
+ \left(\crsH, \left(\sOne{i}\right)\_{i\in[0,n]}\right) \parse \ck_\S\\\\\
+ \left(\crsH, \left(\lOne{i}\right)\_{i\in[L)}\right)\parse \ck_\L
+\end{align}
+
+**Step 1**b**:** Add $(\vk, C, \ell)$ to the $\FS$ transcript.
+
+**Step 2**a**:** Re-randomize the commitment $C\bydef \rho\cdot \crsH+\one{f(\tau)}$ **and** mask the degree-$n$ committed polynomial $f(X)$:
+\begin{align}
+\term{r}, \term{\Delta{\rho}} &\randget \F\\\\\
+\term{\hat{f}(X)} &\bydef r \cdot \lagrS_0(X) + \emph{f(X)}\\\\\
+\term{\hat{C}} &\gets \Delta{\rho} \cdot \crsH + r\cdot \sOne{0} + \emph{C}\\\\\
+               &\bydef \bkzgCommit(\ck_\S, \hat{f}; \rho + \Delta{\rho})
+\end{align}
+
+**Step 2**b**:** Add $\hat{C}$ to the $\FS$ transcript.
+
+**Step 3:** Prove knowledge of $r$ and $\Delta{\rho}$ such that $\hat{C} - C = \Delta{\rho} \cdot \crsH + r\cdot \sOne{0}$.
+\begin{align}
+    \term{\piPok} \gets \zkpokProve^\FSo\left(\underbrace{(\hat{C}-C, \crsH, \sOne{0})}\_{\text{statement}}; \underbrace{(\Delta{\rho}, r)}\_{\text{witness}}\right)
+\end{align}
+
+{: .todo}
+Say this was a $\Sigma$-protocol. Do we add the final proof to the transcript too?
+It feels like we should add at least the final message from the prover to the transcript. 
+So we could do that implicitly by (redundantly) adding the whole proof.
+
+**Step 4**a**:** Represent all $j$th chunks $(z_{1,j},\ldots,z_{n,j})$ as a degree-$n$ polynomial and commit to it:
+\begin{align}
+\term{r\_j}, \term{\rho\_j} &\randget \F\\\\\
+\term{\hat{f}\_j(X)} &\bydef r\_j \cdot \lagrS_0(X) + \sum\_{i\in[n]} z\_{i,j}\cdot \lagrS_i(X)\\\\\
+\term{\hat{C}\_j} &\gets \rho_j \cdot \crsH + r\_j\cdot \sOne{0} + \sum\_{i\in[n]} z\_{i,j}\cdot \sOne{i}\\\\\
+            &\bydef \bkzgCommit(\ck\_\S, \hat{f}\_j; \rho\_j)
+\end{align}
+
+*Note:* The $\ell$ size-$(n+2)$ MSMs here can be carefully-optimized: $n$ of the scalars are in $[b)$.
+
+**Step 4**b**:** Add $(\hat{C}\_j)\_{j\in[\ell)}$ to the $\FS$ transcript.
+
+**Step 5**a**:** For each $j\in[\ell)$, define a quotient polynomial, whose existence would show that, $\forall i\in[n]$, $f_j(\omega^i) \in [b)$:
+\begin{align}
+\forall j\in[\ell), \term{h_j(X)}
+    &\bydef \frac{f_j(X)(f_j(X) - 1) \cdots \left(f_j(X) - (b-1)\right)}{\VS(X)}\\\\\
+\end{align}
+
+*Note:* Numerator is degree $bn$ and denominator is degree $n \Rightarrow h_j(X)$ is degree $(b-1)n$
+
+**Step 5**b**:** Define a(nother) quotient polynomial, whose existence would show that, $\forall i\in[n]$, $f(\omega^i) = \sum_{j\in[\ell)} 2^j \cdot f_j(\omega^i)$:
+\begin{align}
+\term{g(X)}
+    &\bydef \frac{f(X) - \sum_{j\in[\ell)} 2^j \cdot f_j(X)}{\VS(X)}\\\\\
+\end{align}
+
+*Note:* Numerator is degree $n$ and denominator is degree $n \Rightarrow g(X)$ is degree 0! (A constant!)
+
+**Step 6:** Combine all the quotients into a single one, using random challenges from the verifier:
+\begin{align}
+\term{\beta,\beta\_0, \ldots,\beta_{\ell-1}}
     &\fsget \\{0,1\\}^\lambda\\\\\
 \term{h(X)} 
-    &\gets \sum\_{j\in[\ell)} \emph{\beta\_j} \cdot h\_j(X)
+    &\gets \beta \cdot g(X) + \sum\_{j\in[\ell)} \beta\_j \cdot h\_j(X)
     %= \frac{\sum\_{j\in[\ell)}\beta\_j (X-\omega^n)f\_j(X)(f\_j(X) - 1)\ldots(f_j(X)-(b-1))}{X^{n+1} - 1}
 \end{align}
 
-*Note:* $h(X)$ is of degree $\bluedashedbox{(b-1)n}$ too, just like the $h_j(X)$'s.
-
-**Step 4b:** Commit to $h(X)$:
+**Step 7**a**:** Commit to $h(X)$, of degree $(b-1)n$, by interpolating it over the larger $\L$ domain:
 \begin{align}
 \label{eq:D}
-\term{D} \gets \bluedashedbox{\sum\_{i\in[N)} h(\zeta^i) \cdot \sOne{i}} \bydef \one{\emph{h(\tau)}}
+\term{\rho_h} &\randget \F\\\\\
+\term{D} &\gets \rho_h\cdot \crsH + \sum\_{i\in[L)} h(\zeta^i) \cdot \lOne{i}\\\\\
+    &\bydef \bkzgCommit(\ck_\L, h; \rho_h)
 \end{align}
 
 _Note:_ We discuss [how to interpolate $h(\zeta^i)$'s efficiently](#appendix-computing-hx) in the appendix.
 
-**Step 4c:** Add $D$ to the $\FS$ transcript.
+**Step 7**b**:** Add $D$ to the $\FS$ transcript.
 
-**Step 5a:** The verifier asks us to take a random linear combination of $h(X)$ and the $f_j(X)$'s:
+**Step 8:** The verifier asks us to take a random linear combination of $h(X)$, $f(X)$ and the $f_j(X)$'s:
 \begin{align}
-\left(\left(\term{\xi\_j}\right)\_{j\in[0,\ell]}\right) &\fsget \left(\\{0,1\\}^\lambda\right)^{\ell+1}\\\\\
-\term{u(X)} &\bydef \sum\_{j\in[\ell)} \emph{\xi\_j} f\_j(X) + \emph{\xi\_\ell} h(X)
+\term{\xi, \xi_h, \xi\_0,\ldots,\xi\_{\ell-1}} &\fsget \\{0,1\\}^\lambda\\\\\
+\term{u(X)} &\bydef
+  \xi \cdot f(X) +
+  \xi\_h\cdot h(X) +
+  \sum\_{j\in[\ell)} \xi\_j\cdot f\_j(X) 
 \end{align}
 
-**Step 6:** We get a random $\term{\gamma}\in\F$ from the verifier and evaluate (fast via [the Barycentric formula](/dekart#lagrange-polynomials)):
+**Step 9:** We get a random challenge from the verifier and open $u(X)$ at it (fast via [the Barycentric formula](/lagrange-interpolation#barycentric-formula)):
 \begin{align}
-    \emph{\gamma} &\fsget \F\\\\\
-    \term{e\_{j,\gamma}} &\gets f\_j(\gamma),\forall j\in[\ell)\\\\\
-    \term{e_\gamma} &\gets h(\gamma)
+    \term{\gamma} &\fsget \F\\\\\
+    \term{a} &\gets f(\gamma)\\\\\
+    \term{a\_h} &\gets h(\gamma)\\\\\
+    \term{a\_j} &\gets f\_j(\gamma),\forall j\in[\ell)\\\\\
 \end{align}
 
 **Step 7:** We compute a KZG proof for $u(\gamma)$:
@@ -233,27 +272,30 @@ _Note:_ We discuss [how to interpolate $h(\zeta^i)$'s efficiently](#appendix-com
     \term{\pi_\gamma} \gets \one{\frac{u(\tau) - u(\gamma)}{\tau-\gamma}}
 \end{align}
 
-_Note:_ By definition of the quotient polynomial above, $\emph{\pi_\gamma}$ can be computed in a size-$\bluedashedbox{((b-1)n+1)}$ MSM as $\bluedashedbox{\sum_{i\in[N)} \frac{u(\zeta^i) - u(\zeta)}{\zeta^i - \gamma} \cdot \sOne{i}}$[^kzg-lagrange-no-ffts].
+_Note:_ By definition of the quotient polynomial above, $\emph{\pi_\gamma}$ can be computed in a size-$((b-1)n+1$ MSM as $\sum_{i\in[L)} \frac{u(\zeta^i) - u(\gamma)}{\zeta^i - \gamma} \cdot \lOne{i}$[^kzg-lagrange-no-ffts].
 
 {: .todo}
-Evaluating $u(\zeta^i),i\in[N)$ requires evaluating all $f_j(\zeta^i)$'s, which we do not have; we only have $f_j(\omega^i)$'s.
-So, for each $j\in[\ell)$, this would reuse the size-$(n+1)$ inverse FFT over $\H$ to get $f_j$'s coefficients from the [$h(X)$ computation](#appendix-computing-hx), but would add 1 size-$N$ FFT on $\sum_j \xi_j f_j(X)$ over $\L$ to get the extra evaluations at the $\zeta^i$'s.
+Evaluating $u(\zeta^i),i\in[L)$ requires evaluating all $f_j(\zeta^i)$'s, which we do not have; we only have $f_j(\omega^i)$'s.
+So, for each $j\in[\ell)$, this would reuse the size-$(n+1)$ inverse FFT over $\S$ to get $f_j$'s coefficients from the [$h(X)$ computation](#appendix-computing-hx), but would add 1 size-$L$ FFT on $\sum_j \xi_j f_j(X)$ over $\L$ to get the extra evaluations at the $\zeta^i$'s.
 
-Return the proof $\pi\in\Gr_1^{\ell+2} \times \F^{\ell+1}$:
+Return the proof $\pi$:
 \begin{align}
-\term{\pi}\gets \left((C\_j)\_{j\in[\ell)}, D, (e\_{j,\gamma})\_{j\in[\ell)}, e\_\gamma, \pi\_\gamma\right)
+\term{\pi}\gets \left(\hat{C}, \piPok, (\hat{C}\_j)\_{j\in[\ell)}, D, a, a_h, (a\_j)\_{j\in[\ell)}, \pi\_\gamma\right)
 \end{align}
 
 #### Proof size and prover time
 
-**Proof size** is _trivial_: $(\ell+2)\Gr_1 + (\ell+1)\F$ $\Rightarrow$ independent of the batch size $n$, but linear in the number of chunks $\ell$ of the values.
+**Proof size**:
+ - $(\ell+3)\Gr_1$ for the $\hat{C}$, $\hat{C}\_j$'s, $D$ and $\pi\_\gamma$
+ - $(\ell+2)\F$ for $a, a_h$ and the $a_j$'s (i.e., for $f(\gamma), h(\gamma)$, and the $f_j(\gamma)$'s)
+ - **TODO:** ? for $\piPok$
 
-**Prover time** is dominated by:
+**TODO:** **Prover time** is dominated by:
 
  - $\ell n$ $\Gr_1$ $\textcolor{green}{\text{additions}}$ for each $c_j, j\in[\ell)$
-    + Assuming precomputed $[2\cdot \ell_i(\tau), \ldots, (b-1)\cdot \ell_i(\tau)]$
+    + Assuming precomputed $[2\cdot \lagrS_i(\tau), \ldots, (b-1)\cdot \lagrS_i(\tau)]$
  - $\ell$ $\Gr_1$ scalar multiplications to blind each $c_j$ with $r_j$
- - $O(\ell N\log{N})$ $\F$ multiplications to interpolate $h(X)$, where $N\bydef bn$
+ - $O(\ell L\log{L})$ $\F$ multiplications to interpolate $h(X)$, where $L\bydef bn$
     + See [break down here](#time-complexity).
  - 1 size-$((b-1)n+1)$ L-MSM for committing to $h(X)$
  - 1 size-$((b-1)n+1)$ L-MSM for committing to the KZG proof in $\pi_\gamma$
@@ -264,7 +306,7 @@ Include Barycentric interpolation work too.
 ### $\mathsf{Dekart}\_b^\mathsf{FFT}.\mathsf{Verify}^{\mathcal{FS}(\cdot)}(\mathsf{vk}, C, \ell; \pi)\rightarrow \\{0,1\\}$
 
 **Step 1:** Parse the $\vk$ and the proof $\pi$:
- - $\left(b, \tauTwo,\vanishTwo\right) \parse \vk$
+ - $\left(b, \tauTwo,\vanishSTwo\right) \parse \vk$
  - $\left((C_j)_{j\in[\ell)}, D, (e\_{j,\gamma})\_{j\in[\ell)}, e\_\gamma, \pi\_\gamma\right) \parse \pi$
 
 **Step 2:** Make sure the radix-$b$ decomposition is correct:
@@ -311,10 +353,10 @@ Your thoughts or comments are welcome on [this thread](https://x.com/alinush407/
 {: .note}
 This assumes $b=2$ but we will generalize it to any $b$ later.
 
-We borrow [differentiation tricks](/2025/01/24/Polynomial-differentiation-tricks.html) from [Groth16](/groth16#computing-hx) to ensure we only do size-$N$ FFTs.
+We borrow [differentiation tricks](/2025/01/24/Polynomial-differentiation-tricks.html) from [Groth16](/groth16#computing-hx) to ensure we only do size-$L$ FFTs.
 (Otherwise, we'd have to use size-$2N$ FFTs to compute the $\ell$ different $f_j(X)(f_j(X) - 1)\ldots(f_j(X) - (b-1))$ multiplications.)
 
-Our goal will be to obtain all $(h(\zeta^i))_{i\in[N)}$ evaluations and then do a size-$N$ L-MSM to commit to it and obtain $\emph{D}$ from Eq: \ref{eq:D}.
+Our goal will be to obtain all $(h(\zeta^i))_{i\in[L)}$ evaluations and then do a size-$L$ L-MSM to commit to it and obtain $\emph{D}$ from Eq: \ref{eq:D}.
 
 Recall that:
 \begin{align}
@@ -339,11 +381,11 @@ h(X) &= \frac{\sum_{j\in[\ell)} \beta_j \cdot N_j'(X) - h'(X)(X^{n+1} - 1)}{(n+1
 \label{eq:h}
 \emph{h(\omega^i)} &= \frac{\sum_{j\in[\ell)} \beta_j \cdot N_j'(\omega^i)}{(n+1)\omega^{in}}
 \end{align}
-...it does **not** necessarily help with computing all $h(\zeta^i)$'s for $i\in[N)$.
+...it does **not** necessarily help with computing all $h(\zeta^i)$'s for $i\in[L)$.
 
 Depending on how $\zeta$ is related to $\omega$, not all hope may be lost.
-Obviously, if $\zeta = \omega$ and $N = n$, we are in the previous case.
-But $N = b(n+1)$ for $b \ge 2$.
+Obviously, if $\zeta = \omega$ and $L = n$, we are in the previous case.
+But $L = b(n+1)$ for $b \ge 2$.
 
 ### Time complexity
 
@@ -368,7 +410,8 @@ Doing this $h(X)$ interpolation faster is an open problem, which is why in the p
 
 ## References
 
-[^kzg-lagrange-no-ffts]: When $\gamma\notin\H$, we can use [a simple trick](https://ethresear.ch/t/kate-commitments-from-the-lagrange-basis-without-ffts/6950). However, when $\gamma = \omega^i \in \H$, we can use [differentiation tricks](/2025/01/24/Polynomial-differentiation-tricks.html) to compute the otherwise-uncomputable $\frac{u(\omega^i) - u(\omega^i)}{\omega^i - \omega^i}$ scalar by evaluating the derivative of $\frac{u(X) - u(\omega^i)}{X - \omega^i}$ at $X = \omega^i$. So, by evaluating $u'(X)$ at $X = \omega^i$, which should give $\sum_{j\ne i, j\in[0,n]} \frac{\omega^{j - i} (u(\omega^i) - u(\omega^j))}{\omega^j - \omega^i}$.
+[^kzg-lagrange-no-ffts]: When $\gamma\notin\S$, we can use [a simple trick](https://ethresear.ch/t/kate-commitments-from-the-lagrange-basis-without-ffts/6950). However, when $\gamma = \omega^i \in \S$, we can use [differentiation tricks](/2025/01/24/Polynomial-differentiation-tricks.html) to compute the otherwise-uncomputable $\frac{u(\omega^i) - u(\omega^i)}{\omega^i - \omega^i}$ scalar by evaluating the derivative of $\frac{u(X) - u(\omega^i)}{X - \omega^i}$ at $X = \omega^i$. So, by evaluating $u'(X)$ at $X = \omega^i$, which should give $\sum_{j\ne i, j\in[0,n]} \frac{\omega^{j - i} (u(\omega^i) - u(\omega^j))}{\omega^j - \omega^i}$.
+[^power-of-two-n]: To use DeKART for non-powers of two $n$'s, just run the $\dekartSetup$ algorithm with the smallest $n' > n$ such that $n'$ is a power of two. Then, run the $\dekartProve$ algorithm with a vector of $n'$ values such that (1) the first $n$ values are the values you want to prove and (2) the last $n'-n$ values are set to zero.
 [^pr1]: Pull request: [Add univariate DeKART range proof](https://github.com/aptos-labs/aptos-core/pull/17531/files)
 [^Borg20]: [Membership proofs from polynomial commitments](https://solvable.group/posts/membership-proofs-from-polynomial-commitments/), William Borgeaud, 2020
 
