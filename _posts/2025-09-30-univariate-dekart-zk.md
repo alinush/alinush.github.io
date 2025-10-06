@@ -3,7 +3,7 @@ tags:
 title: "Draft: DeKART: ZK range proofs from univariate polynomials"
 #date: 2020-11-05 20:45:59
 permalink: dekart
-published: false
+#published: false
 #sidebar:
 #    nav: cryptomat
 #article_header:
@@ -76,7 +76,71 @@ We assume a ZK PoK for the following relation:
 
 {: .todo}
 What kind of soundness assumption do we need?
-Define $\zkpokProve$ and $\zkpokVerify$.
+
+#### $\Sigma_\mathsf{PoK}.\mathsf{Prove}^\FSo(X, X_1, X_2; w_1, w_2)\rightarrow \pi$
+
+**Step 1:** Add $(X, X_1, X_2)$ to the $\FS$ transcript.
+
+**Step 2:** Compute the commitment:
+\begin{align}
+x_1, x_2 &\randget \F\\\\\
+\term{A} &\gets x_1 \cdot X_1 + x_2 \cdot X_2
+\end{align}
+
+**Step 3**: Add $A$ to the $\FS$ transcript.
+
+**Step 4:** Derive the challenge pseudo-randomly via Fiat-Shamir:
+\begin{align}
+\term{e} &\fsget \F
+\end{align}
+
+**Step 5:** Compute the response
+\begin{align}
+\term{\sigma_1} &\gets x_1 - e \cdot w_1\\\\\
+\term{\sigma_2} &\gets x_2 - e \cdot w_2
+\end{align}
+
+**Step 6:** Add the response $(\sigma_1,\sigma_2)$ to the $\FS$ transcript.
+
+{: .todo}
+I think this is necessary for composability, no?
+
+The final proof is:
+\begin{align}
+    \pi \gets (A, \sigma_1, \sigma_2) \in \Gr\times \F^2
+\end{align}
+
+#### $\Sigma_\mathsf{PoK}.\mathsf{Verify}^\FSo(X, X_1, X_2; \pi)$
+
+**Step 0:** Parse the proof as:
+\begin{align}
+    (A, \sigma_1, \sigma_2) \parse \pi
+\end{align}
+
+**Step 1:** Add $(X, X_1, X_2)$ to the $\FS$ transcript.
+
+**Step 2**: Add $A$ to the $\FS$ transcript.
+
+**Step 3:** Derive the challenge pseudo-randomly via Fiat-Shamir:
+\begin{align}
+\term{e} &\fsget \F
+\end{align}
+
+**Step 4**: Add $(\sigma_1,\sigma_2)$ to the $\FS$ transcript.
+
+**Step 5:** Check the proof:
+\begin{align}
+    \textbf{assert}\ A \equals e\cdot X + \sigma_1 \cdot X_1 + \sigma_2 \cdot X_2
+\end{align}
+
+Correctness holds because:
+\begin{align}
+A &\equals e\cdot X + \sigma_1 \cdot X_1 + \sigma_2 \cdot X_2\Leftrightarrow\\\\\
+x_1 X_1 + x_2 X_2 &\equals e\cdot (w_1 X_1 + w_2 X_2) + (x_1 - e w_1) \cdot X_1 + (x_2 - e w_2) \cdot X_2\Leftrightarrow\\\\\
+x_1 X_1 + x_2 X_2 &\equals e w_1 X_1 + e w_2 X_2 + x_1 X_1 - e w_1 X_1 + x_2 X_2 - e w_2 X_2\Leftrightarrow\\\\\
+x_1 X_1 + x_2 X_2 &\equals x_1 X_1 + x_2 X_2\Leftrightarrow 1 \stackrel{!}{=} 1
+\end{align}
+{: .note}
 
 ### Hiding KZG 
 
@@ -183,13 +247,7 @@ A few notes:
 <!--  We will work with two kinds of vanishing polynomials:
      $\term{\VL(X)}\bydef \vanishL$ of degree $\term{L}-1 \bydef \emph{b(n+1)} - 1$ -->
 
-### $\mathsf{Dekart}\_b^\mathsf{FFT}.\mathsf{Setup}(b, n; \mathcal{G})\rightarrow \mathsf{prk},\mathsf{vk}$
-
-{: .todo}
-Should we use $b_\max$ and $n_\max$ here?
-If we do, then this setup should output just powers-of-$\tau$ of max degree $L-1 = b(n+1) - 1$ instead of Lagrange commitments.
-Then, a $\dekart.\mathsf{Specialize}$ algorithm can be used to get a CRS for a specific $n = 2^c$ or even non-power of two?
-This would actually be informative and nice to deal with, notationally.
+### $\mathsf{Dekart}\_b^\mathsf{FFT}.\mathsf{Setup}(n; \mathcal{G})\rightarrow \mathsf{prk},\mathsf{vk}$
 
 Assume $n=2^c$ for some $c\in\N$[^power-of-two-n] and let $\term{L} \bydef b(n+1) = 2^{d}$, for some $d\in\N$.
 
@@ -205,14 +263,13 @@ Pick random trapdoors for the [hiding KZG](#hiding-kzg) scheme:
 
 Compute KZG public parameters for committing to polynomials interpolated from $n+1$ evaluations:
 \begin{align}
-(\term{\vk}, \term{\ck_\S}) \gets \bkzgSetup(n+1; \mathcal{G}, \xi, \tau)
+((\xiTwo,\tauTwo), \term{\ck_\S}) \gets \bkzgSetup(n+1; \mathcal{G}, \xi, \tau)
 \end{align}
 where:
  + $\term{\S}\bydef\\{\omega^0,\omega^1,\ldots,\omega^{\emph{n}}\\}$
  + $\term{\omega}$ is a primitive $(n+1)$th root of unity in $\F$
  - $\term{\lagrS_i(X)} \bydef \prod_{j\in\S, j\ne i} \frac{X - \omega^j}{\omega^i - \omega^j}, \forall i\in[0,n]$
  + $\term{\VS(X)}\bydef \vanishS$ is a vanishing polynomial of degree $n$ whose $n$ roots are in $\S\setminus\\{\omega^0\\}$ 
- - $\vk \bydef \left(\xiTwo, \tauTwo\right)$, as per [$\bkzgSetup(\cdot)$](#bkzgsetupm-mathcalg-xi-tau-rightarrow-vkck)
 
 Compute KZG public parameters, reusing the same $(\xi,\tau)$, for committing to polynomials interpolated from $L$ evaluations:
 \begin{align}
@@ -227,7 +284,8 @@ _Note:_ The [Lagrange polynomial](/lagrange-interpolation) $\lagrS_i(X)$ is of d
 
 Compute the range proof's proving key:
 \begin{align}
-\term{\prk}\gets \left(\vk, \ck_\S, \ck_\L\right)
+\term{\vk}  &\gets \left(b, \xiTwo, \tauTwo\right)\\\\\
+\term{\prk} &\gets \left(\vk, \ck_\S, \ck_\L\right)
 \end{align}
 
 {: .note}
@@ -281,11 +339,6 @@ Note that $f(\omega^i) = z_i,\forall i\in[n]$ but the $f(\omega^0)$ evaluation i
     \term{\piPok} \gets \zkpokProve^\FSo\left(\underbrace{(\hat{C}-C, \xiOne, \sOne{0})}\_{\text{statement}}; \underbrace{(\Delta{\rho}, r)}\_{\text{witness}}\right)
 \end{align}
 
-{: .todo}
-Say this was a $\Sigma$-protocol. Do we add the final proof to the transcript too?
-It feels like we should add at least the final message from the prover to the transcript. 
-So we could do that implicitly by (redundantly) adding the whole proof.
-
 **Step 4**a**:** Represent all $j$th chunks $(z_{1,j},\ldots,z_{n,j})$ as a degree-$n$ polynomial and commit to it:
 \begin{align}
 \term{r\_j}, \term{\rho\_j} &\randget \F\\\\\
@@ -304,10 +357,10 @@ So we could do that implicitly by (redundantly) adding the whole proof.
 
 *Note:* Numerator is degree $bn$ and denominator is degree $n \Rightarrow h_j(X)$ is degree $(b-1)n$
 
-**Step 5**b**:** Define a(nother) quotient polynomial, whose existence would show that, $\forall i\in[n]$, $\hat{f}(\omega^i) = \sum_{j\in[\ell)} 2^j \cdot f_j(\omega^i)$:
+**Step 5**b**:** Define a(nother) quotient polynomial, whose existence would show that, $\forall i\in[n]$, $\hat{f}(\omega^i) = \sum_{j\in[\ell)} b^j \cdot f_j(\omega^i)$:
 \begin{align}
 \term{g(X)}
-    &\bydef \frac{\hat{f}(X) - \sum_{j\in[\ell)} 2^j \cdot f_j(X)}{\VS(X)}\\\\\
+    &\bydef \frac{\hat{f}(X) - \sum_{j\in[\ell)} b^j \cdot f_j(X)}{\VS(X)}\\\\\
 \end{align}
 
 *Note:* Numerator is degree $n$ and denominator is degree $n \Rightarrow g(X)$ is degree 0! (A constant!)
@@ -324,7 +377,7 @@ So we could do that implicitly by (redundantly) adding the whole proof.
 *Note:* The goal of the prover is to convince the verifier that:
 \begin{align}
 \label{eq:hx-check}
-h(X) \cdot \VS(X) \equals \beta \cdot \left(\hat{f}(X) - \sum_{j\in[\ell)} 2^j \cdot f_j(X)\right) + \sum_{j\in[\ell)} \beta_j\cdot f_j(X)(f_j(X) - 1) \cdots \left(f_j(X) - (b-1)\right)\\\\\
+h(X) \cdot \VS(X) \equals \beta \cdot \left(\hat{f}(X) - \sum_{j\in[\ell)} b^j \cdot f_j(X)\right) + \sum_{j\in[\ell)} \beta_j\cdot f_j(X)(f_j(X) - 1) \cdots \left(f_j(X) - (b-1)\right)\\\\\
 \end{align}
 
 
@@ -352,7 +405,7 @@ _Note:_ We discuss [how to interpolate $h(\zeta^i)$'s efficiently](#appendix-com
 
 **Step 9:** We get a (pseudo)random challenge from the verifier and open $u(X)$ at it: 
 \begin{align}
-    \term{\gamma} &\fsget \F\\\\\
+    \term{\gamma} &\fsget \F\setminus\S\\\\\
     \term{a} &\gets \hat{f}(\gamma)\\\\\
     \term{a\_h} &\gets h(\gamma)\\\\\
     \term{a\_j} &\gets f\_j(\gamma),\forall j\in[\ell)\\\\\
@@ -371,8 +424,10 @@ where $\emph{\rho_u} \bydef \mu \cdot (\rho + \Delta{\rho}) + \mu_h \cdot \rho_h
 \end{align}
 
 {: .todo}
-Evaluating $u(\zeta^i),i\in[L)$ requires evaluating all $f_j(\zeta^i)$'s, which we do not have; we only have $f_j(\omega^i)$'s.
-So, for each $j\in[\ell)$, this would reuse the size-$(n+1)$ inverse FFT over $\S$ to get $f_j$'s coefficients from the [$h(X)$ computation](#appendix-computing-hx), but would add 1 size-$L$ FFT on $\sum_j \mu_j f_j(X)$ over $\L$ to get the extra evaluations at the $\zeta^i$'s.
+Evaluating $u(\zeta^i),i\in[L)$ requires evaluating all $f_j(\zeta^i)$'s.
+Unfortunately, we only have $f_j(\omega^i)$'s.
+**But**, since we do a size-$(n+1)$ inverse FFT over $\S$ to get $f_j$'s coefficients for the [$h(X)$ computation](#appendix-computing-hx), we can leverage that.
+Specifically, we can do 1 size-$L$ FFT on $\sum_j \mu_j f_j(X)$ over $\L$ to get the needed evaluations at the $\zeta^i$'s.
 
 Return the proof $\pi$:
 \begin{align}
@@ -384,32 +439,34 @@ Return the proof $\pi$:
 **Proof size**:
  - $(\ell+2)\Gr_1$ for the $\hat{C}$, $C\_j$'s and $D$
  - $2$ $\Gr_1$ for $\pi\_\gamma$
- - **TODO:** $\|\piPok\|$
+ - $1 \Gr_1 + 2\F$ for $\|\piPok\|$
  - $(\ell+2)\F$ for $a, a_h$ and the $a_j$'s (i.e., for $\hat{f}(\gamma), h(\gamma)$, and the $f_j(\gamma)$'s)
 
-**TODO:** **Prover time** is dominated by:
+$\Rightarrow$ in **total**, $\emph{\|\pi\|=(\ell+5)\Gr_1 + (\ell+4)\F}$,
+
+**Prover time** is dominated by:
 
  - $\GaddOne{\ell n}$ for all $C_j$'s
     + Assuming precomputed $2\cdot \sOne{i}, \ldots, (b-1)\cdot \sOne{i},\forall i\in[n]$
     - i.e., one for each possible chunk value in $[b)$
  - $1$ $\fmsmOne{2}$ MSM to blind $\hat{C}$ with $\rho$ and $\Delta{r}$
  - $(\ell+1)$ $\fmsmOne{2}$ MSMs to blind all $C_j$'s with $r_j$ and $\rho_j$
- - **TODO:** time for $\zkpokProve$
+ - $1 \fmsmOne{2}$ for $\zkpokProve$
  - $\Fmul{O(\ell L\log{L})}$ to interpolate $h(X)$, where $L\bydef bn$
     + See [more fine-grained break down here](#time-complexity).
-    + **TODO: more precise?**
  - 1 $\fmsmOne{L+1}$ MSM for committing to $h(X)$
- - $\Fmul{O(n)}$ to interpolate $\hat{f}(\gamma)$ and $f_j(\gamma)$ evals via [the Barycentric formula](/lagrange-interpolation#barycentric-formula)
-    + $h(\gamma)$ can be evaluated directly via Eq. \ref{eq:hx}
-    + **TODO: more precise?**
+ - $\Fmul{O(\ell n)}$ to interpolate $\hat{f}(\gamma)$ and $f_j(\gamma)$ evals via [the Barycentric formula](/lagrange-interpolation#barycentric-formula)
+    + (_Note:_ $h(\gamma)$ can be evaluated directly via Eq. \ref{eq:hx}.)
+    + there will be $(\ell+1)$ size-$n$ Barycentric interpolations
+    - the following need only be done once: 
+        + batch invert all $\frac{1}{\gamma -\omega^i}$'s $\Rightarrow \Fmul{O(n)}$
+        - compute $\frac{\gamma^n - 1}{n}$ in $\Fmul{\log_2{n}} + 1$
+    - each interpolation will then involve:
+        - do $\Fmul{2n}$ and $\Fadd{n}$ (i.e., two $\F$ multiplication for each $y_i \cdot \omega^i \cdot \frac{1}{\gamma-\omega^i}$)
+        - do $\Fmul{1}$ to accumulate $\frac{\gamma^n - 1}{n}$
  - 1 $\fmsmOne{L+1}$ MSM for computing $\pi_\gamma$ via [$\bkzgOpen(\cdot)$](#bkzgopenck-f-rho-x-s-rightarrow-pi)
 
 ### $\mathsf{Dekart}\_b^\mathsf{FFT}.\mathsf{Verify}^{\mathcal{FS}(\cdot)}(\mathsf{vk}, C, \ell; \pi)\rightarrow \\{0,1\\}$
-
-{: .todo}
-$b$ should be an input here
-Checked for being smaller than in the setup.(Or just check that $b$ and $n$ "match" $L$? Could we allow for larger $b$ while shrinking $n$?)
-Added to the FS transcript.
 
 **Step 1:** Parse the $\vk$ and the proof $\pi$:
 \begin{align}
@@ -454,8 +511,8 @@ Added to the FS transcript.
 
 **Step 9:** Make sure that the radix-$b$ representation holds and that chunks are $<b$ as per Eq. \ref{eq:hx-check}:
 \begin{align}
-\textbf{assert}\ h(\gamma) \cdot \VS(\gamma) &\equals \beta \cdot \left(\hat{f}(\gamma) - \sum\_{j\in[\ell)} 2^j \cdot f\_j(\gamma)\right) + \sum\_{j\in[\ell)} \beta\_j\cdot f\_j(\gamma)(f\_j(\gamma) - 1) \cdots (f\_j(\gamma)- (b-1))\Leftrightarrow\\\\\
-\Leftrightarrow \textbf{assert}\ a\_h \cdot \VS(\gamma) &\equals \beta \cdot \left(a - \sum\_{j\in[\ell)} 2^j \cdot a\_j\right) + \sum\_{j\in[\ell)} \beta\_j\cdot a\_j(a\_j - 1) \cdots (a\_j - (b-1))
+\textbf{assert}\ h(\gamma) \cdot \VS(\gamma) &\equals \beta \cdot \left(\hat{f}(\gamma) - \sum\_{j\in[\ell)} b^j \cdot f\_j(\gamma)\right) + \sum\_{j\in[\ell)} \beta\_j\cdot f\_j(\gamma)(f\_j(\gamma) - 1) \cdots (f\_j(\gamma)- (b-1))\Leftrightarrow\\\\\
+\Leftrightarrow \textbf{assert}\ a\_h \cdot \VS(\gamma) &\equals \beta \cdot \left(a - \sum\_{j\in[\ell)} b^j \cdot a\_j\right) + \sum\_{j\in[\ell)} \beta\_j\cdot a\_j(a\_j - 1) \cdots (a\_j - (b-1))
 \end{align}
 
 #### Verifier time
@@ -537,6 +594,20 @@ Lastly, to compute all the $h(\omega^i)$'s, we do:
 {: .note}
 Doing this $h(X)$ interpolation faster is an open problem, which is why in the paper we explore a multinear variant of DeKART[^BDFplus25e].
 -->
+
+## TODOs
+
+{: .todo}
+Should we use $b_\max$ and $n_\max$ in $\dekartSetup$? (i.e., remove the $b$ subscript from $\mathsf{Dekart}_b$)
+If we do, then this setup should output just powers-of-$\tau$ of max degree $L-1 = b(n+1) - 1$ instead of Lagrange commitments.
+Then, a $\dekart.\mathsf{Specialize}$ algorithm can be used to get a CRS for a specific $n = 2^c$ or even non-power of two?
+This would actually be informative and nice to deal with, notationally.
+
+{: .todo}
+Once $b$ is an input to the setup, prove and verification algorithm, it should be checked for being smaller than in the setup.
+(Or just check that $b$ and $n$ "match" $L$? Could we allow for larger $b$ while shrinking $n$?)
+
+
 
 ## References
 
