@@ -14,6 +14,7 @@ permalink: dekart
 
 {: .info}
 **tl;dr:** We fix up our previous [non-ZK, univariate DeKART](/dekart-not-zk) scheme and also speed up its verifier by trading off prover time.
+This is joint work with Dan Boneh, Trisha Datta, Kamilla Nazirkhanova and Rex Fernando.
 
 <!--more-->
 
@@ -165,7 +166,7 @@ Return the public parameters:
     \ck &\gets (\xiOne, \tauOne, (\crs{\one{\ell_i(\tau)}})_{i\in[m)})
 \end{align}
 
-_Note:_ We assume the the bilinear group $\mathcal{G}$ is implicitly part of the VK and CK above.
+_Note:_ We assume that the bilinear group $\mathcal{G}$ is implicitly part of the VK and CK above.
 
 #### $\hkzgCommit(\ck, f; \rho) \rightarrow C$
 
@@ -198,7 +199,7 @@ Assuming $x\notin\mathbb{H}$, commit to a blinded quotient polynomial:
 \end{align}
 
 {: .note}
-When $x\notin \mathbb{H}$, we can evaluate $f(x)$ in $\Fmul{n}$ operations given the $f(\theta^i)$'s via [the Barycentric formula](/lagrange-interpolation#barycentric-formula) and create the proof via Eq. \ref{eq:kzg-pi-1}.
+When $x\notin \mathbb{H}$, we can evaluate $f(x)$ in $\Fmul{O(n)}$ operations given the $f(\theta^i)$'s via [the Barycentric formula](/lagrange-interpolation#barycentric-formula) and create the proof via Eq. \ref{eq:kzg-pi-1}.
 ([Batch inversion](/batch-inversion) should be used to compute all the $(\theta^i - x)^{-1}$'s fast.)
 When $x\in \mathbb{H}$, we could use [differentiation tricks](/differentiation-tricks#opening-a-lagrange-basis-kzg-commitment-at-a-root-of-unity) to interpolate the quotient $\frac{f(X) - f(x)}{X - x}$ in Lagrange basis and create the proof via Eq. \ref{eq:kzg-pi-2}.
 
@@ -228,10 +229,10 @@ Parse the proof $(\pi_1,\pi_2)\parse\pi$ and assert that:
 
 Correctness holds since, assuming that $C \bydef \hkzgCommit(\ck, f; \rho)$ and $\pi \bydef \hkzgOpen(\ck, f, \rho, x; s)$, then the paring check in $\hkzgVerify(\ck, C, x, f(x); \pi)$ is equivalent to:
 \begin{align}
-    e(\bluebox{\rho\cdot\xiOne} + \one{f(\tau)} - \one{f(x)}, \two{1}) &\equals \pair{s \cdot \xiOne + \one{\frac{f(\tau) - f(x)}{\tau - x}}}{ \tauTwo - \two{x}} + e(\bluebox{\one{\rho}}-s\cdot(\tauOne-\one{x}),\bluebox{\xiTwo})\Leftrightarrow\\\\\
-    e(\one{f(\tau)} - \one{f(x)}, \two{1}) &\equals \pair{s \cdot \xiOne + \one{\frac{f(\tau) - f(x)}{\tau - x}}}{ \tauTwo - \two{x}} - e(s\cdot(\tauOne-\one{x}), \xiTwo)\Leftrightarrow\\\\\
-    e(\one{f(\tau)} - \one{f(x)}, \two{1}) &\equals \pair{\one{\frac{f(\tau) - f(x)}{\tau - x}}}{ \tauTwo - \two{x}} + \bluedashedbox{\pair{s\cdot\xiOne}{\tauTwo - \two{x}}} - \bluedashedbox{e(s\cdot(\tauOne-\one{x}), \xiTwo)}\Leftrightarrow\\\\\
-    e(\one{f(\tau)} - \one{f(x)}, \two{1}) &\equals \pair{\one{\frac{f(\tau) - f(x)}{\tau - x}}}{ \tauTwo - \two{x}}\Leftrightarrow\\\\\
+    e(\cancel{\rho\cdot\xiOne} + \one{f(\tau)} - \one{f(x)}, \two{1}) &\equals \pair{s \cdot \xiOne + \one{\frac{f(\tau) - f(x)}{\tau - x}}}{ \tauTwo - \two{x}} + e(\cancel{\one{\rho}}-s\cdot(\tauOne-\one{x}),\cancel{\xiTwo})\Leftrightarrow\\\\\
+    e(\one{f(\tau)} - \one{f(x)}, \two{1}) &\equals \bluedashedbox{\pair{s \cdot \xiOne + \one{\frac{f(\tau) - f(x)}{\tau - x}}}{ \tauTwo - \two{x}}} - e(s\cdot(\tauOne-\one{x}), \xiTwo)\Leftrightarrow\\\\\
+    e(\one{f(\tau)} - \one{f(x)}, \two{1}) &\equals \bluedashedbox{\pair{\one{\frac{f(\tau) - f(x)}{\tau - x}}}{ \tauTwo - \two{x}} + \cancel{\pair{s\cdot\xiOne}{\tauTwo - \two{x}}}} - \cancel{e(s\cdot(\tauOne-\one{x}), \xiTwo)}\Leftrightarrow\\\\\
+    e(\one{f(\tau)} - \one{f(x)}, \two{1}) &\equals \pair{\one{\frac{f(\tau) - f(x)}{\cancel{\tau - x}}}}{\cancel{\tauTwo - \two{x}}}\Leftrightarrow\\\\\
     e(\one{f(\tau)} - \one{f(x)}, \two{1}) &\stackrel{!}{=} \pair{\one{f(\tau) - f(x)}}{\two{1}}\\\\\
 \end{align}
 
@@ -239,7 +240,7 @@ Correctness holds since, assuming that $C \bydef \hkzgCommit(\ck, f; \rho)$ and 
 
 A few notes:
  - Values are represented in **radix $\term{b}$**
-    - e.g., $\term{z_{i,j}}\in[b)$ denotes the $j$th **chunk** of $z_i \bydef \sum_{j\in[\ell)} \emph{z_{i,j}} \cdot b^{j}$ 
+    - e.g., $\term{z_{i,j}}\in[b)$ denotes the $j$th **chunk** of $z_i \bydef \sum_{j\in[\ell)} b^j \cdot \emph{z_{i,j}}$
  - The goal is to prove that each value $z_i \in [b^\ell)$ by exhibiting a valid **radix-$b$ decomposition** as shown above
     + $\term{\ell}$ is the number of chunks ($z_{i,j}$'s) in this decomposition
  - We will have $\term{n}$ values we want to prove ($z_i$'s)
@@ -250,7 +251,7 @@ A few notes:
 
 ### $\mathsf{Dekart}\_b^\mathsf{FFT}.\mathsf{Setup}(n; \mathcal{G})\rightarrow \mathsf{prk},\mathsf{vk}$
 
-Assume $n=2^c$ for some $c\in\N$[^power-of-two-n] and let $\term{L} \bydef b(n+1) = 2^{d}$, for some $d\in\N$.
+Assume $n=2^c$ for some $c\in\N$[^power-of-two-n] s.t. $n \mid p-1$ (where $p$ is the order of the bilinear group $\mathcal{G}$) and let $\term{L} \bydef b(n+1) = 2^{d}$, for some $d\in\N$ s.t. $L \mid p-1$ as well.
 
 {: .note}
 For efficiency, we restrict ourselves to $(n+1)$ and $b$ that are powers of two, so that $L \bydef b(n+1)$ is a power of two as well.
@@ -269,7 +270,7 @@ Compute KZG public parameters for committing to polynomials interpolated from $n
 where:
  + $\term{\S}\bydef\\{\omega^0,\omega^1,\ldots,\omega^{\emph{n}}\\}$
  + $\term{\omega}$ is a primitive $(n+1)$th root of unity in $\F$
- - $\term{\lagrS_i(X)} \bydef \prod_{j\in\S, j\ne i} \frac{X - \omega^j}{\omega^i - \omega^j}, \forall i\in[0,n]$
+ - $\term{\lagrS_i(X)} \bydef \prod_{j\in\S, j\ne i} \frac{X - \omega^j}{\omega^i - \omega^j}, \forall i\in[n+1)$
  + $\term{\VS(X)}\bydef \vanishSfrac$ is a vanishing polynomial of degree $n$ whose $n$ roots are in $\S\setminus\\{\omega^0\\}$ 
 
 Compute KZG public parameters, reusing the same $(\xi,\tau)$, for committing to polynomials interpolated from $L$ evaluations:
@@ -285,7 +286,7 @@ _Note:_ The [Lagrange polynomial](/lagrange-interpolation) $\lagrS_i(X)$ is of d
 
 Compute the range proof's proving key:
 \begin{align}
-\term{\vk}  &\gets \left(b, \xiTwo, \tauTwo\right)\\\\\
+\term{\vk}  &\gets \left(\xiTwo, \tauTwo\right)\\\\\
 \term{\prk} &\gets \left(\vk, \ck_\S, \ck_\L\right)
 \end{align}
 
@@ -296,7 +297,7 @@ When $b=2$, we will be able to simplify by letting $L = n+1$ and thus $\S = \L$ 
 
 Parse the commitment key:
 \begin{align}
-    \left(\xiOne, \tauOne, \left(\sOne{i}\right)\_{i\in[0,n]}\right) \parse\ck_\S
+    \left(\xiOne, \tauOne, \left(\sOne{i}\right)\_{i\in[n+1)}\right) \parse\ck_\S
 \end{align}
 
 Represent the $n$ values and a prepended $0$ value as a degree-$n$ polynomial:
@@ -319,11 +320,11 @@ Note that $f(\omega^i) = z_i,\forall i\in[n]$ but the $f(\omega^0)$ evaluation i
 **Step 1**a**:** Parse the public parameters:
 \begin{align}
  \left(\vk, \ck_\S, \ck_\L\right)\parse \prk\\\\\
- \left(\xiOne, \tauOne, \left(\sOne{i}\right)\_{i\in[0,n]}\right) \parse \ck_\S\\\\\
+ \left(\xiOne, \tauOne, \left(\sOne{i}\right)\_{i\in[n+1)}\right) \parse \ck_\S\\\\\
  \left(\xiOne, \tauOne, \left(\lOne{i}\right)\_{i\in[L)}\right)\parse \ck_\L
 \end{align}
 
-**Step 1**b**:** Add $(\vk, C, \ell)$ to the $\FS$ transcript.
+**Step 1**b**:** Add $(\vk, C, b, \ell)$ to the $\FS$ transcript.
 
 **Step 2**a**:** Re-randomize the commitment $C\bydef \rho\cdot \xiOne+\one{f(\tau)}$ **and** mask the degree-$n$ committed polynomial $f(X)$:
 \begin{align}
@@ -384,8 +385,8 @@ h(X) \cdot \VS(X) \equals \beta \cdot \left(\hat{f}(X) - \sum_{j\in[\ell)} b^j \
 
 **Step 7**a**:** Commit to $h(X)$, of degree $(b-1)n$, by interpolating it over the larger $\L$ domain:
 \begin{align}
-\label{eq:D}
 \term{\rho_h} &\randget \F\\\\\
+\label{eq:D}
 \term{D} &\gets \rho_h\cdot \xiOne + \sum\_{i\in[L)} h(\zeta^i) \cdot \lOne{i}\\\\\
     &\bydef \hkzgCommit(\ck_\L, h; \rho_h)
 \end{align}
@@ -425,10 +426,11 @@ where $\emph{\rho_u} \bydef \mu \cdot (\rho + \Delta{\rho}) + \mu_h \cdot \rho_h
 \end{align}
 
 {: .todo}
-Evaluating $u(\zeta^i),i\in[L)$ requires evaluating all $f_j(\zeta^i)$'s.
-Unfortunately, we only have $f_j(\omega^i)$'s.
-**But**, since we do a size-$(n+1)$ inverse FFT over $\S$ to get $f_j$'s coefficients for the [$h(X)$ computation](#appendix-computing-hx-for-b2), we can leverage that.
-Specifically, we can do 1 size-$L$ FFT on $\sum_j \mu_j f_j(X)$ over $\L$ to get the needed evaluations at the $\zeta^i$'s.
+Evaluating $u(\zeta^i),i\in[L)$ requires evaluating $\hat{f}(\cdot)$ and the $f_j(\cdot)$'s at all $\zeta^i$'s.
+Unfortunately, we only have $f(\omega^i)$'s and $f_j(\omega^i)$'s.
+**But**, since we already do a size-$(n+1)$ inverse FFT over $\S$ to get $f$ and $f_j$'s coefficients for the differentiation-based [$h(X)$ interpolation](#appendix-computing-hx-for-b2), we can leverage that.
+Specifically, we can do 1 size-$L$ FFT on $\mu \hat{f}(X) + \sum_j \mu_j f_j(X)$ over $\L$ to get the needed evaluations at the $\zeta^i$'s.
+(Or, do we already have these evaluations from the $h(X)$ interpolation to begin with?)
 
 Return the proof $\pi$:
 \begin{align}
@@ -471,11 +473,11 @@ $\Rightarrow$ in **total**, $\emph{\|\pi\|=(\ell+5)\Gr_1 + (\ell+4)\F}$,
 
 **Step 1:** Parse the $\vk$ and the proof $\pi$:
 \begin{align}
-\left(b, \xiTwo, \tauTwo,\right) &\parse \vk\\\\\
+\left(\xiTwo, \tauTwo,\right) &\parse \vk\\\\\
 \left(\hat{C}, \piPok, (C_j)_{j\in[\ell)}, D, a, a_h, (a\_{j})\_{j\in[\ell)}, \pi\_\gamma\right) &\parse \pi
 \end{align}
  
-**Step 2**a**:** Add $(\vk, C, \ell)$ to the $\FS$ transcript.
+**Step 2**a**:** Add $(\vk, C, b, \ell)$ to the $\FS$ transcript.
 
 **Step 2**b**:** Add $(\hat{C})$ to the $\FS$ transcript.
 
@@ -534,11 +536,13 @@ Your thoughts or comments are welcome on [this thread](https://x.com/alinush407/
 ## Appendix: Computing $h(X)$ for $b=2$
 
 {: .warning}
-Recall that, when $b=2$, the degree of $h(X)$ is $n$ and that we no longer need two different FFT domains: i.e., $\S = \L$ and $L = n + 1$.
+Recall that, when $b=2$, the degree of $h(X)$ is $n \Rightarrow$ we no longer need two different FFT domains: i.e., $\S = \L$ and $L = n + 1$.
+This is why the algorithm below can stay rather simple.
 
-We borrow [differentiation tricks](/differentiation-tricks) from [Groth16](/groth16#computing-hx-for-b2) to avoid doing FFT-based polynomial multiplication, ensuring we only do size-$(n+1)$ FFTs (as opposed to size $2(n+1)$).
+We borrow [differentiation tricks](/differentiation-tricks) from [Groth16](/groth16#computing-hx-for-b2) to avoid doing FFT-based polynomial multiplication.
+This keeps our FFTs of size $(n+1)$, as opposed to size $2(n+1)$.
 
-Our goal will be to obtain all $(h(\omega^i))_{i\in[0,n]}$ evaluations and then do a $\fmsmOne{n+2}$ MSM to commit to it and obtain $\emph{D}$ from Eq. \ref{eq:D}.
+Our goal will be to obtain all $(h(\omega^i))_{i\in[n+1)}$ evaluations and then do a $\fmsmOne{n+2}$ MSM to commit to it and obtain $\emph{D}$ from Eq. \ref{eq:D}.
 
 Recall that:
 \begin{align}
@@ -547,7 +551,7 @@ h(X)
     &= \frac{\beta \cdot \hat{f}(X) + \sum_{j\in[\ell)} \beta_j\cdot \overbrace{f_j(X)(f_j(X) - 1) - 2^j \cdot f_j(X)}^{\bydef \term{N_j(X)}}}{\vanishS}\\\\\
     &= \frac{\beta \cdot \hat{f}(X) - \sum_{j\in[\ell)} \beta_j\cdot N_j(X)}{\vanishS}
 \end{align}
-If we try and compute $h(\omega^i)$ using the formula above, we fall in a 0/0 case, so we can apply [differentiation tricks](/differentiation-tricks#interpolating-fxgx-in-lagrange-basis), which tell us that:
+If we try and compute $h(\omega^i)$ using the formula above, we fall in a 0/0 case, so we can apply [differentiation tricks](/differentiation-tricks#interpolating-fxgx-in-lagrange-basis), which tell us that, $\forall i\in[n+1)$:
 \begin{align}
 \label{eq:h_omega_i}
 h(\omega^i)
@@ -556,7 +560,7 @@ h(\omega^i)
 
 So, as long as we can evaluate the derivatives highlighted above efficiently, we can interpolate $h(X)$!
 
-**Step 1:** The derivative of the denominator $\VS(X)$ is straightforward:
+**Step 1:** The derivative of the denominator $\VS(X)$ can be evaluated as follows:
 \begin{align}
 (\VS(X))' = \left(\vanishS\right)'
     &= \frac{(X^{n+1} - 1)'(X-1) - (X-1)'(X^{n+1} - 1)}{(X-1)^2}\\\\\
@@ -570,16 +574,17 @@ Plugging in any root of unity $\omega^i\ne \omega^0$, we get:
     &= \frac{(n+1)(\omega^i)^n(\omega^i-1) - (\overbrace{(\omega^i)^{n+1}}^{1} - 1)}{(\omega^i-1)^2}\\\\\
     &= \frac{(n+1)(\omega^i)^n(\omega^i-1)}{(\omega^i-1)^2}\\\\\
     &= \frac{(n+1)(\omega^i)^n}{\omega^i-1}\\\\\
+    \label{eq:vanishSprime_0}
     &= \frac{(n+1)\omega^{-i}}{\omega^i-1} = \emph{\frac{n+1}{\omega^i(\omega^i - 1)}}\\\\\
     %&= \frac{-(n+1)(\omega^i)^n + 1}{(\omega^i-1)^2}\\\\\
     %&= \frac{-(n+1)\omega^{-i} + 1}{(\omega^i-1)^2}\\\\\
 \end{align}
 
-We can use this expression to evaluate the derivative for all $i\ne0$.
-In fact, these can be **precomputed!**
-(In fact, their inverses should be precomputed, so we can evaluate Eq. \ref{eq:h_omega_i} without the need for a batch inversion.)
+The expression above can only be used to evaluate the derivative at $\omega^i$ when $i\ne0$.
+In fact, the **inverses** of these evaluations should be **precomputed** during the setup!
+(It is wiser to precompute the inverses so that we can evaluate Eq. \ref{eq:h_omega_i} without the need for a batch inversion.)
 
-Unfortunately, at $i=0$, we'd get a division by zero.
+Unfortunately, at $i=0$, we'd get a division by zero in Eq. \ref{eq:vanishSprime_0}.
 Fortunately, we can use a different expression to deal with $i=0$.
 \begin{align}
 \vanishSfrac &= 1 + X + X^2 + \ldots + X^n\Rightarrow\\\\\
@@ -587,7 +592,7 @@ Fortunately, we can use a different expression to deal with $i=0$.
 %=\sum_{k\in[1, n-1]} k X^{k-1}\Rightarrow\\\\\
 \emph{\left.\left(\vanishS\right)'\right|_{X=\omega^0}} &= 1 + 2 + 3 + \ldots + n = \emph{\frac{n(n+1)}{2}}
 \end{align}
-This can also be **precomputed!** (Same point about inverting them.)
+This **inverted** evaluation should also be **precomputed!**
 
 **Step 2:** The derivative of $\hat{f}(X)$ must be obtained manually.
 First, a size-$(n+1)$ inverse FFT can be used to get the coefficients $\term{\hat{f}\_i}$ of $\hat{f}(X)$ s.t.:
@@ -595,12 +600,12 @@ First, a size-$(n+1)$ inverse FFT can be used to get the coefficients $\term{\ha
 \hat{f}(X) = \sum\_{i\in [n+1)} \hat{f}\_i \cdot X^i
 \end{align}
 
-Second, $\Fmul{n}$ operations to compute the derivative's coefficients as:
+Second, the derivative's coefficients can be computed in time $\Fmul{n}$ as:
 \begin{align}
 \hat{f}'(X) = \sum_{i\in [1, n+1)} i \cdot \hat{f}_i \cdot X^{i-1}
 \end{align}
 
-Third, a size-$(n+1)$ FFT to compute all evaluations of $\hat{f}'(X)$ at the roots of unity:
+Third, a size-$(n+1)$ FFT can be used to compute all evaluations of $\hat{f}'(X)$ at the roots of unity:
 \begin{align}
 \hat{f}'(\omega^0), 
 \hat{f}'(\omega^1), 
@@ -620,8 +625,8 @@ Recall that:
     &= 2f_j(X)f_j'(X) - (2^j + 1) \cdot f_j'(X)\\\\\
     &= f_j'(X) \left[ 2f_j(X) - (2^j + 1) \right]
 \end{align}
-Since we can evaluate $f_j'(X)$ at all the roots of unity (as per **Step 2** above for $\hat{f}'(X)$), it follows that we  we can evaluate $N_j'(X)$ at all roots of unity.
-Given all $f_j(\omega^i)$'s, each evaluation will cost $\Fmul{2}$ and $\Fadd{1}$.
+Since we can use the same algorithm as in **Step 2** to evaluate $f_j'(X)$ at all the roots of unity, it follows that we can evaluate $N_j'(X)$ at all roots of unity.
+Concretely, given $f_j'(\omega^i)$, computing  $N_j'(\omega^i)$ will cost $\Fmul{2}$ and $\Fadd{1}$.
 
 ### Time complexity
 
@@ -635,7 +640,7 @@ Then, to compute **all** $N_j'(\omega^i)$'s:
  1. $\Fadd{\ell (n+1)}$
 
 Then, to evaluate **all** $h(\omega^i)$':
- 1. $\Fmul((\ell+2)(n+1))$ 
+ 1. $\Fmul{(\ell+2)(n+1)}$ 
  1. $\Fadd{(\ell+1)(n+1)}$
 
 {: .note}
@@ -718,7 +723,9 @@ This would actually be informative and nice to deal with, notationally.
 Once $b$ is an input to the setup, prove and verification algorithm, it should be checked for being smaller than in the setup.
 (Or just check that $b$ and $n$ "match" $L$? Could we allow for larger $b$ while shrinking $n$?)
 
+### Acknowledgements
 
+This is joint work with Dan Boneh, Trisha Datta, Kamilla Nazirkhanova and Rex Fernando.
 
 ## References
 
