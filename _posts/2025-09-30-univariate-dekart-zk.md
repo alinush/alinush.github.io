@@ -41,7 +41,8 @@ permalink: dekart
 \def\lagrS{\mathcal{S}}
 \def\sOne#1{\crs{\one{\lagrS_{#1}(\tau)}}}
 \def\VS{V^*_\S}
-\def\vanishS{\frac{X^{n+1} - 1}{X - 1}}
+\def\vanishSfrac{\frac{X^{n+1} - 1}{X - 1}}
+\def\vanishS{(X^{n+1} - 1)/(X - 1)}
 %
 \def\L{\mathbb{L}}
 \def\lagrL{\mathcal{L}}
@@ -75,7 +76,7 @@ We assume a ZK PoK for the following relation:
 \end{align}
 
 {: .todo}
-What kind of soundness assumption do we need?
+What kind of soundness assumption do we need? Is the 2-special soundness of $\Sigma_\mathsf{PoK}$ enough?
 
 #### $\Sigma_\mathsf{PoK}.\mathsf{Prove}^\FSo(X, X_1, X_2; w_1, w_2)\rightarrow \pi$
 
@@ -269,7 +270,7 @@ where:
  + $\term{\S}\bydef\\{\omega^0,\omega^1,\ldots,\omega^{\emph{n}}\\}$
  + $\term{\omega}$ is a primitive $(n+1)$th root of unity in $\F$
  - $\term{\lagrS_i(X)} \bydef \prod_{j\in\S, j\ne i} \frac{X - \omega^j}{\omega^i - \omega^j}, \forall i\in[0,n]$
- + $\term{\VS(X)}\bydef \vanishS$ is a vanishing polynomial of degree $n$ whose $n$ roots are in $\S\setminus\\{\omega^0\\}$ 
+ + $\term{\VS(X)}\bydef \vanishSfrac$ is a vanishing polynomial of degree $n$ whose $n$ roots are in $\S\setminus\\{\omega^0\\}$ 
 
 Compute KZG public parameters, reusing the same $(\xi,\tau)$, for committing to polynomials interpolated from $L$ evaluations:
 \begin{align}
@@ -389,7 +390,7 @@ h(X) \cdot \VS(X) \equals \beta \cdot \left(\hat{f}(X) - \sum_{j\in[\ell)} b^j \
     &\bydef \bkzgCommit(\ck_\L, h; \rho_h)
 \end{align}
 
-_Note:_ We discuss [how to interpolate $h(\zeta^i)$'s efficiently](#appendix-computing-hx) in the appendix.
+_Note:_ We discuss [how to interpolate $h(\zeta^i)$'s efficiently](#appendix-computing-hx-for-b2) in the appendix.
 
 **Step 7**b**:** Add $D$ to the $\FS$ transcript.
 
@@ -426,7 +427,7 @@ where $\emph{\rho_u} \bydef \mu \cdot (\rho + \Delta{\rho}) + \mu_h \cdot \rho_h
 {: .todo}
 Evaluating $u(\zeta^i),i\in[L)$ requires evaluating all $f_j(\zeta^i)$'s.
 Unfortunately, we only have $f_j(\omega^i)$'s.
-**But**, since we do a size-$(n+1)$ inverse FFT over $\S$ to get $f_j$'s coefficients for the [$h(X)$ computation](#appendix-computing-hx), we can leverage that.
+**But**, since we do a size-$(n+1)$ inverse FFT over $\S$ to get $f_j$'s coefficients for the [$h(X)$ computation](#appendix-computing-hx-for-b2), we can leverage that.
 Specifically, we can do 1 size-$L$ FFT on $\sum_j \mu_j f_j(X)$ over $\L$ to get the needed evaluations at the $\zeta^i$'s.
 
 Return the proof $\pi$:
@@ -530,17 +531,129 @@ The verifier work is dominated by:
 
 Your thoughts or comments are welcome on [this thread](https://x.com/alinush407/status/1950600327066980693).
 
-## Appendix: Computing $h(X)$
+## Appendix: Computing $h(X)$ for $b=2$
 
-{: .todo}
-Uncomment and edit.
+{: .warning}
+Recall that, when $b=2$, the degree of $h(X)$ is $n$ and that we no longer need two different FFT domains: i.e., $\S = \L$ and $L = n + 1$.
+
+We borrow [differentiation tricks](/differentiation-tricks) from [Groth16](/groth16#computing-hx-for-b2) to avoid doing FFT-based polynomial multiplication, ensuring we only do size-$(n+1)$ FFTs (as opposed to size $2(n+1)$).
+
+Our goal will be to obtain all $(h(\omega^i))_{i\in[0,n]}$ evaluations and then do a $\fmsmOne{n+2}$ MSM to commit to it and obtain $\emph{D}$ from Eq. \ref{eq:D}.
+
+Recall that:
+\begin{align}
+h(X)
+    &= \frac{\beta \cdot \left(\hat{f}(X) - \sum_{j\in[\ell)} 2^j \cdot f_j(X)\right) + \sum_{j\in[\ell)} \beta_j\cdot f_j(X)(f_j(X) - 1)}{\VS(X)}\\\\\
+    &= \frac{\beta \cdot \hat{f}(X) + \sum_{j\in[\ell)} \beta_j\cdot \overbrace{f_j(X)(f_j(X) - 1) - 2^j \cdot f_j(X)}^{\bydef \term{N_j(X)}}}{\vanishS}\\\\\
+    &= \frac{\beta \cdot \hat{f}(X) - \sum_{j\in[\ell)} \beta_j\cdot N_j(X)}{\vanishS}
+\end{align}
+If we try and compute $h(\omega^i)$ using the formula above, we fall in a 0/0 case, so we can apply [differentiation tricks](/differentiation-tricks#interpolating-fxgx-in-lagrange-basis), which tell us that:
+\begin{align}
+\label{eq:h_omega_i}
+h(\omega^i)
+    &= \left.\frac{\beta \cdot \emph{\hat{f}'(X)} - \sum_{j\in[\ell)}\beta_j\cdot \emph{N_j'(X)}}{\emph{\left(\vanishS\right)'}}\right|_{X=\omega^i}
+\end{align}
+
+So, as long as we can evaluate the derivatives highlighted above efficiently, we can interpolate $h(X)$!
+
+**Step 1:** The derivative of the denominator $\VS(X)$ is straightforward:
+\begin{align}
+(\VS(X))' = \left(\vanishS\right)'
+    &= \frac{(X^{n+1} - 1)'(X-1) - (X-1)'(X^{n+1} - 1)}{(X-1)^2}\\\\\
+    &= \frac{(n+1)X^n(X-1) - (X^{n+1} - 1)}{(X-1)^2}\\\\\
+    %&= \frac{(n+\cancel{1})X^{n+1} - (n+1)X^n - (\cancel{X^{n+1}} - 1)}{(X-1)^2}\\\\\
+    %&= \frac{nX^{n+1} - (n+1)X^n + 1}{(X-1)^2}\\\\\
+\end{align}
+Plugging in any root of unity $\omega^i\ne \omega^0$, we get:
+\begin{align}
+\emph{\left.\left(\vanishS\right)'\right|_{X=\omega^i}}
+    &= \frac{(n+1)(\omega^i)^n(\omega^i-1) - (\overbrace{(\omega^i)^{n+1}}^{1} - 1)}{(\omega^i-1)^2}\\\\\
+    &= \frac{(n+1)(\omega^i)^n(\omega^i-1)}{(\omega^i-1)^2}\\\\\
+    &= \frac{(n+1)(\omega^i)^n}{\omega^i-1}\\\\\
+    &= \frac{(n+1)\omega^{-i}}{\omega^i-1} = \emph{\frac{n+1}{\omega^i(\omega^i - 1)}}\\\\\
+    %&= \frac{-(n+1)(\omega^i)^n + 1}{(\omega^i-1)^2}\\\\\
+    %&= \frac{-(n+1)\omega^{-i} + 1}{(\omega^i-1)^2}\\\\\
+\end{align}
+
+We can use this expression to evaluate the derivative for all $i\ne0$.
+In fact, these can be **precomputed!**
+(In fact, their inverses should be precomputed, so we can evaluate Eq. \ref{eq:h_omega_i} without the need for a batch inversion.)
+
+Unfortunately, at $i=0$, we'd get a division by zero.
+Fortunately, we can use a different expression to deal with $i=0$.
+\begin{align}
+\vanishSfrac &= 1 + X + X^2 + \ldots + X^n\Rightarrow\\\\\
+\left(\vanishSfrac\right)' &= 1 + 2X + 3X^2 + \ldots + nX^{n-1}\Rightarrow\\\\\
+%=\sum_{k\in[1, n-1]} k X^{k-1}\Rightarrow\\\\\
+\emph{\left.\left(\vanishS\right)'\right|_{X=\omega^0}} &= 1 + 2 + 3 + \ldots + n = \emph{\frac{n(n+1)}{2}}
+\end{align}
+This can also be **precomputed!** (Same point about inverting them.)
+
+**Step 2:** The derivative of $\hat{f}(X)$ must be obtained manually.
+First, a size-$(n+1)$ inverse FFT can be used to get the coefficients $\term{\hat{f}\_i}$ of $\hat{f}(X)$ s.t.:
+\begin{align}
+\hat{f}(X) = \sum\_{i\in [n+1)} \hat{f}\_i \cdot X^i
+\end{align}
+
+Second, $\Fmul{n}$ operations to compute the derivative's coefficients as:
+\begin{align}
+\hat{f}'(X) = \sum_{i\in [1, n+1)} i \cdot \hat{f}_i \cdot X^{i-1}
+\end{align}
+
+Third, a size-$(n+1)$ FFT to compute all evaluations of $\hat{f}'(X)$ at the roots of unity:
+\begin{align}
+\hat{f}'(\omega^0), 
+\hat{f}'(\omega^1), 
+\ldots
+\hat{f}'(\omega^n)
+\end{align}
+
+**Step 3:** The derivative of $N_j(X)$ must be obtained.
+Recall that:
+\begin{align}
+\emph{N_j(X)} 
+    &\bydef f_j(X)(f_j(X) - 1) - 2^j \cdot f_j(X)\Rightarrow\\\\\
+\term{N_j'(X)}
+    &= \left(f_j(X)(f_j(X) - 1)\right)' - 2^j \cdot f_j'(X)\Rightarrow\\\\\
+    &= f_j(X)(f_j(X) - 1)' + f_j'(X)(f_j(X) - 1) - 2^j \cdot f_j'(X)\Rightarrow\\\\\
+    &= f_j(X)f_j'(X) + f_j'(X)f_j(X) - f_j'(X) - 2^j \cdot f_j'(X)\Rightarrow\\\\\
+    &= 2f_j(X)f_j'(X) - (2^j + 1) \cdot f_j'(X)\\\\\
+    &= f_j'(X) \left[ 2f_j(X) - (2^j + 1) \right]
+\end{align}
+Since we can evaluate $f_j'(X)$ at all the roots of unity (as per **Step 2** above for $\hat{f}'(X)$), it follows that we  we can evaluate $N_j'(X)$ at all roots of unity.
+Given all $f_j(\omega^i)$'s, each evaluation will cost $\Fmul{2}$ and $\Fadd{1}$.
+
+### Time complexity
+
+To compute **all** $\hat{f}'(\omega^i)$'s and $f_j'(\omega^i)$'s:
+ 1. $\ell+1$ size-$(n+1)$ inverse FFT for the coefficients in monomial basis 
+ 2. $\Fmul{(\ell+1)n}$ for doing the differentiation on the coefficients
+ 3. $\ell+1$ size-$(n+1)$ FFT for the evaluations
+
+Then, to compute **all** $N_j'(\omega^i)$'s:
+ 1. $\Fmul{\ell \cdot 2(n+1)}$
+ 1. $\Fadd{\ell (n+1)}$
+
+Then, to evaluate **all** $h(\omega^i)$':
+ 1. $\Fmul((\ell+2)(n+1))$ 
+ 1. $\Fadd{(\ell+1)(n+1)}$
+
+{: .note}
+Doing this $h(X)$ interpolation faster is an open problem, which is why in the paper we explore a multinear variant of DeKART[^BDFplus25e].
 
 <!--
-{: .note}
-This assumes $b=2$ but we will generalize it to any $b$ later.
+Recall that:
+\begin{align}
+h(X)
+    &= 
+\frac{\beta \cdot \left(\hat{f}(X) - \sum_{j\in[\ell)} b^j \cdot f_j(X)\right) + \sum_{j\in[\ell)} \beta_j\cdot f_j(X)(f_j(X) - 1) \cdots \left(f_j(X) - (b-1)\right)}{\VS(X)}\\\\\
+    &= \frac{\sum_{j\in[\ell)}\beta_j \cdot \overbrace{(X-\omega^n)f_j(X)(f_j(X) - 1)\cdots(f_j(X)-(b-1))}^{\term{N_j(X)}}}{X^{n+1} - 1}
+    \\\\\
+-->
 
-We borrow [differentiation tricks](/differentiation-tricks) from [Groth16](/groth16#computing-hx) to ensure we only do size-$L$ FFTs.
-(Otherwise, we'd have to use size-$2N$ FFTs to compute the $\ell$ different $f_j(X)(f_j(X) - 1)\cdots(f_j(X) - (b-1))$ multiplications.)
+<!--
+
+## hx for any b\ne 2
 
 Our goal will be to obtain all $(h(\zeta^i))_{i\in[L)}$ evaluations and then do a size-$L$ L-MSM to commit to it and obtain $\emph{D}$ from Eq: \ref{eq:D}.
 
@@ -591,8 +704,6 @@ Lastly, to compute all the $h(\omega^i)$'s, we do:
  5. $\ell n$ $\F$ multiplications to compute the $n$ different numerators from Eq. \ref{eq:h}, one for each evaluation $h(\omega^i)$
  6. $n$ $\F$ multiplications, to divide the $n$ numerators by (the precomputed) $(n+1)\omega^{-in}$'s
 
-{: .note}
-Doing this $h(X)$ interpolation faster is an open problem, which is why in the paper we explore a multinear variant of DeKART[^BDFplus25e].
 -->
 
 ## TODOs
