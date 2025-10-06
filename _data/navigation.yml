@@ -205,7 +205,7 @@ cryptomat:
       #- title: PST polynomial commitments
       #  url: /pst
       - title: Differentiation tricks
-        url: /2025/01/24/Polynomial-differentiation-tricks.html
+        url: /differentiation-tricks
       - title: Univariate sumcheck
         url: /univariate-sumcheck
       - title: Multivariate sumcheck

@@ -16,7 +16,7 @@
 \def\Gmul#1#2{#2\ \orange{#1}^\orange{\times}}
 % #2 is the MSM size
 \def\msm#1#2{\red{#1}^{#2}} % do not use directly use either \fmsm or \vmsm
-\def\vmsm#1#2{\green{\mathsf{var}}\text{-}\msm{#1}{#2}}
+\def\vmsm#1#2{\red{\mathsf{var}}\text{-}\msm{#1}{#2}}
 \def\fmsm#1#2{\msm{#1}{#2}}
 \def\fmsmSmall#1#2#3{\fmsm{#1}{#2}/{#3}}
 % ...#3 is the max scalar size
