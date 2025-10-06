@@ -50,10 +50,10 @@ permalink: dekart
 \def\VL{V^*_\L}
 \def\vanishL{\frac{X^L - 1}{X - 1}}
 %
-\def\bkzgSetup{\mathsf{BKZG.Setup}}
-\def\bkzgCommit{\mathsf{BKZG.Commit}}
-\def\bkzgOpen{\mathsf{BKZG.Open}}
-\def\bkzgVerify{\mathsf{BKZG.Verify}}
+\def\hkzgSetup{\mathsf{HKZG.Setup}}
+\def\hkzgCommit{\mathsf{HKZG.Commit}}
+\def\hkzgOpen{\mathsf{HKZG.Open}}
+\def\hkzgVerify{\mathsf{HKZG.Verify}}
 %
 \def\piPok{\pi_\mathsf{PoK}}
 \def\zkpokProve{\Sigma_\mathsf{PoK}.\mathsf{Prove}}
@@ -147,7 +147,7 @@ x_1 X_1 + x_2 X_2 &\equals x_1 X_1 + x_2 X_2\Leftrightarrow 1 \stackrel{!}{=} 1
 
 This **hiding** [KZG](/kzg) variant was (first?) introduced in the Zeromorph paper[^KT23e].
 
-#### $\bkzgSetup(m; \mathcal{G}, \xi, \tau) \rightarrow (\vk,\ck)$
+#### $\hkzgSetup(m; \mathcal{G}, \xi, \tau) \rightarrow (\vk,\ck)$
 
 The algorithm is given:
 1. a bilinear group $\term{\mathcal{G}}$ with generators $\one{1},\two{1},\three{1}$ and associated field $\F$, as explained in the [preliminaries](#preliminaries) 
@@ -167,7 +167,7 @@ Return the public parameters:
 
 _Note:_ We assume the the bilinear group $\mathcal{G}$ is implicitly part of the VK and CK above.
 
-#### $\bkzgCommit(\ck, f; \rho) \rightarrow C$
+#### $\hkzgCommit(\ck, f; \rho) \rightarrow C$
 
 Parse the commitment key:
 \begin{align}
@@ -181,7 +181,7 @@ C
     &\bydef \rho \cdot \xiOne + \one{f(\tau)} 
 \end{align}
 
-#### $\bkzgOpen(\ck, f, \rho, x; s) \rightarrow \pi$
+#### $\hkzgOpen(\ck, f, \rho, x; s) \rightarrow \pi$
 
 Parse the commitment key:
 \begin{align}
@@ -194,7 +194,7 @@ Assuming $x\notin\mathbb{H}$, commit to a blinded quotient polynomial:
 \pi_1 &\leftarrow s \cdot \xiOne + \sum_{i \in [m)} \frac{f(\theta^i) - f(x)}{\theta^i - x} \cdot \crs{\one{\ell_i(\tau)}}\\\\\
     &\bydef s \cdot \xiOne + \one{\frac{f(\tau) - f(x)}{\tau - x}}\\\\\
 \label{eq:kzg-pi-2}
-    &\bydef \bkzgCommit\left(\ck, \frac{f(X) - f(x)}{(X - x)}; s\right)
+    &\bydef \hkzgCommit\left(\ck, \frac{f(X) - f(x)}{(X - x)}; s\right)
 \end{align}
 
 {: .note}
@@ -212,7 +212,7 @@ Return the proof:
 \pi\gets (\pi_1,\pi_2)
 \end{align}
 
-#### $\bkzgVerify(\vk, C, x, y; \pi) \rightarrow \\{0,1\\}$
+#### $\hkzgVerify(\vk, C, x, y; \pi) \rightarrow \\{0,1\\}$
 
 Parse the verification key:
 \begin{align}
@@ -226,7 +226,7 @@ Parse the proof $(\pi_1,\pi_2)\parse\pi$ and assert that:
 
 #### Correctness of openings
 
-Correctness holds since, assuming that $C \bydef \bkzgCommit(\ck, f; \rho)$ and $\pi \bydef \bkzgOpen(\ck, f, \rho, x; s)$, then the paring check in $\bkzgVerify(\ck, C, x, f(x); \pi)$ is equivalent to:
+Correctness holds since, assuming that $C \bydef \hkzgCommit(\ck, f; \rho)$ and $\pi \bydef \hkzgOpen(\ck, f, \rho, x; s)$, then the paring check in $\hkzgVerify(\ck, C, x, f(x); \pi)$ is equivalent to:
 \begin{align}
     e(\bluebox{\rho\cdot\xiOne} + \one{f(\tau)} - \one{f(x)}, \two{1}) &\equals \pair{s \cdot \xiOne + \one{\frac{f(\tau) - f(x)}{\tau - x}}}{ \tauTwo - \two{x}} + e(\bluebox{\one{\rho}}-s\cdot(\tauOne-\one{x}),\bluebox{\xiTwo})\Leftrightarrow\\\\\
     e(\one{f(\tau)} - \one{f(x)}, \two{1}) &\equals \pair{s \cdot \xiOne + \one{\frac{f(\tau) - f(x)}{\tau - x}}}{ \tauTwo - \two{x}} - e(s\cdot(\tauOne-\one{x}), \xiTwo)\Leftrightarrow\\\\\
@@ -264,7 +264,7 @@ Pick random trapdoors for the [hiding KZG](#hiding-kzg) scheme:
 
 Compute KZG public parameters for committing to polynomials interpolated from $n+1$ evaluations:
 \begin{align}
-((\xiTwo,\tauTwo), \term{\ck_\S}) \gets \bkzgSetup(n+1; \mathcal{G}, \xi, \tau)
+((\xiTwo,\tauTwo), \term{\ck_\S}) \gets \hkzgSetup(n+1; \mathcal{G}, \xi, \tau)
 \end{align}
 where:
  + $\term{\S}\bydef\\{\omega^0,\omega^1,\ldots,\omega^{\emph{n}}\\}$
@@ -274,7 +274,7 @@ where:
 
 Compute KZG public parameters, reusing the same $(\xi,\tau)$, for committing to polynomials interpolated from $L$ evaluations:
 \begin{align}
-(\cdot, \term{\ck_\L}) \gets \bkzgSetup(L; \mathcal{G}, \xi, \tau)
+(\cdot, \term{\ck_\L}) \gets \hkzgSetup(L; \mathcal{G}, \xi, \tau)
 \end{align}
 where:
  + $\term{\L}\bydef\\{\zeta^0,\zeta^1,\ldots,\zeta^{\emph{L-1}}\\}$
@@ -307,7 +307,7 @@ Represent the $n$ values and a prepended $0$ value as a degree-$n$ polynomial:
 Commit to the polynomial via [hiding KZG](#hiding-kzg):
 \begin{align}
 \term{\rho} &\randget \F\\\\\
-C &\gets \bkzgCommit(\ck_\S, f; \rho) \bydef \rho \cdot \xiOne + \one{f(\tau)} = \rho\cdot \xiOne + \sum_{i\in[n]} z_i \cdot \sOne{i}
+C &\gets \hkzgCommit(\ck_\S, f; \rho) \bydef \rho \cdot \xiOne + \one{f(\tau)} = \rho\cdot \xiOne + \sum_{i\in[n]} z_i \cdot \sOne{i}
 \end{align}
 
 {: .note}
@@ -330,7 +330,7 @@ Note that $f(\omega^i) = z_i,\forall i\in[n]$ but the $f(\omega^0)$ evaluation i
 \term{r}, \term{\Delta{\rho}} &\randget \F\\\\\
 \term{\hat{f}(X)} &\bydef r \cdot \lagrS_0(X) + \emph{f(X)}\\\\\
 \term{\hat{C}} &\gets \Delta{\rho} \cdot \xiOne + r\cdot \sOne{0} + \emph{C}\\\\\
-               &\bydef \bkzgCommit(\ck_\S, \hat{f}; \rho + \Delta{\rho})
+               &\bydef \hkzgCommit(\ck_\S, \hat{f}; \rho + \Delta{\rho})
 \end{align}
 
 **Step 2**b**:** Add $\hat{C}$ to the $\FS$ transcript.
@@ -345,7 +345,7 @@ Note that $f(\omega^i) = z_i,\forall i\in[n]$ but the $f(\omega^0)$ evaluation i
 \term{r\_j}, \term{\rho\_j} &\randget \F\\\\\
 \term{f\_j(X)} &\bydef r\_j \cdot \lagrS_0(X) + \sum\_{i\in[n]} z\_{i,j}\cdot \lagrS_i(X)\\\\\
 \term{C\_j} &\gets \rho_j \cdot \xiOne + r\_j\cdot \sOne{0} + \sum\_{i\in[n]} z\_{i,j}\cdot \sOne{i}\\\\\
-            &\bydef \bkzgCommit(\ck\_\S, f\_j; \rho\_j)
+            &\bydef \hkzgCommit(\ck\_\S, f\_j; \rho\_j)
 \end{align}
 
 **Step 4**b**:** Add $(C\_j)\_{j\in[\ell)}$ to the $\FS$ transcript.
@@ -387,7 +387,7 @@ h(X) \cdot \VS(X) \equals \beta \cdot \left(\hat{f}(X) - \sum_{j\in[\ell)} b^j \
 \label{eq:D}
 \term{\rho_h} &\randget \F\\\\\
 \term{D} &\gets \rho_h\cdot \xiOne + \sum\_{i\in[L)} h(\zeta^i) \cdot \lOne{i}\\\\\
-    &\bydef \bkzgCommit(\ck_\L, h; \rho_h)
+    &\bydef \hkzgCommit(\ck_\L, h; \rho_h)
 \end{align}
 
 _Note:_ We discuss [how to interpolate $h(\zeta^i)$'s efficiently](#appendix-computing-hx-for-b2) in the appendix.
@@ -415,13 +415,13 @@ _Note:_ We discuss [how to interpolate $h(\zeta^i)$'s efficiently](#appendix-com
 **Step 7:** We compute a hiding KZG opening proof for $u(\gamma)$:
 \begin{align}
     \term{s} &\randget \F\\\\\
-    \term{\pi_\gamma} &\gets \bkzgOpen(\ck_\L, u, \term{\rho_u}, \gamma; s)
+    \term{\pi_\gamma} &\gets \hkzgOpen(\ck_\L, u, \term{\rho_u}, \gamma; s)
 \end{align}
 where $\emph{\rho_u} \bydef \mu \cdot (\rho + \Delta{\rho}) + \mu_h \cdot \rho_h + \sum_{j\in[\ell)} \mu_j\cdot \rho_j$ is the blinding factor for the implicit commitment to $u(X)$, which the prover need not compute: 
 \begin{align}
 \term{U} 
     &\bydef \mu \cdot \hat{C} + \mu_h \cdot D + \sum_{j\in[\ell)} \mu_j\cdot C_j\\\\\
-    &\bydef \bkzgCommit(\ck\_\L, u; \rho\_u)
+    &\bydef \hkzgCommit(\ck\_\L, u; \rho\_u)
 \end{align}
 
 {: .todo}
@@ -465,7 +465,7 @@ $\Rightarrow$ in **total**, $\emph{\|\pi\|=(\ell+5)\Gr_1 + (\ell+4)\F}$,
     - each interpolation will then involve:
         - do $\Fmul{2n}$ and $\Fadd{n}$ (i.e., two $\F$ multiplication for each $y_i \cdot \omega^i \cdot \frac{1}{\gamma-\omega^i}$)
         - do $\Fmul{1}$ to accumulate $\frac{\gamma^n - 1}{n}$
- - 1 $\fmsmOne{L+1}$ MSM for computing $\pi_\gamma$ via [$\bkzgOpen(\cdot)$](#bkzgopenck-f-rho-x-s-rightarrow-pi)
+ - 1 $\fmsmOne{L+1}$ MSM for computing $\pi_\gamma$ via [$\hkzgOpen(\cdot)$](#hkzgopenck-f-rho-x-s-rightarrow-pi)
 
 ### $\mathsf{Dekart}\_b^\mathsf{FFT}.\mathsf{Verify}^{\mathcal{FS}(\cdot)}(\mathsf{vk}, C, \ell; \pi)\rightarrow \\{0,1\\}$
 
@@ -507,7 +507,7 @@ $\Rightarrow$ in **total**, $\emph{\|\pi\|=(\ell+5)\Gr_1 + (\ell+4)\F}$,
 \begin{align}
 \label{eq:kzg-batch-verify}
 \term{a_u} &\gets \mu \cdot a + \mu_h \cdot a_h + \sum_{j\in[\ell)} \mu_j\cdot a_j\\\\\
-\textbf{assert}\ &\bkzgVerify(\vk, U, \gamma, a_u; \pi_\gamma) \equals 1 
+\textbf{assert}\ &\hkzgVerify(\vk, U, \gamma, a_u; \pi_\gamma) \equals 1 
 \end{align}
 
 **Step 9:** Make sure that the radix-$b$ representation holds and that chunks are $<b$ as per Eq. \ref{eq:hx-check}:
@@ -521,9 +521,9 @@ $\Rightarrow$ in **total**, $\emph{\|\pi\|=(\ell+5)\Gr_1 + (\ell+4)\F}$,
 The verifier work is dominated by:
 
  - 1 $\vmsmOne{\ell+2}$ MSM for $U$
- - $\GmulOne{1} + \GaddOne{1}$ for computing $\one{\tau - a_u}$ inside [$\bkzgVerify(\cdot)$](#bkzgverifyvk-c-x-y-pi-rightarrow-01)
- - $\GmulTwo{1} + \GaddTwo{1}$ for computing $\two{\tau - \gamma}$ inside $\bkzgVerify(\cdot)$
- - size-$3$ multipairing for the rest of $\bkzgVerify(\cdot)$
+ - $\GmulOne{1} + \GaddOne{1}$ for computing $\one{\tau - a_u}$ inside [$\hkzgVerify(\cdot)$](#hkzgverifyvk-c-x-y-pi-rightarrow-01)
+ - $\GmulTwo{1} + \GaddTwo{1}$ for computing $\two{\tau - \gamma}$ inside $\hkzgVerify(\cdot)$
+ - size-$3$ multipairing for the rest of $\hkzgVerify(\cdot)$
  - $\Fmul{\ell+2}$ for computing $a_u$ 
  - $\Fmul{1 + (\ell+1) + \ell(b+1)}$ for the final check
 
