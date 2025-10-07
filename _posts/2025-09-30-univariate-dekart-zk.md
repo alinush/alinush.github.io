@@ -102,11 +102,6 @@ x_1, x_2 &\randget \F\\\\\
 \term{\sigma_2} &\gets x_2 - e \cdot w_2
 \end{align}
 
-**Step 6:** Add the response $(\sigma_1,\sigma_2)$ to the $\FS$ transcript.
-
-{: .todo}
-I think this is necessary for composability, no?
-
 The final proof is:
 \begin{align}
     \pi \gets (A, \sigma_1, \sigma_2) \in \Gr\times \F^2
@@ -336,10 +331,12 @@ Note that $f(\omega^i) = z_i,\forall i\in[n]$ but the $f(\omega^0)$ evaluation i
 
 **Step 2**b**:** Add $\hat{C}$ to the $\FS$ transcript.
 
-**Step 3:** Prove knowledge of $r$ and $\Delta{\rho}$ such that $\hat{C} - C = \Delta{\rho} \cdot \xiOne + r\cdot \sOne{0}$.
+**Step 3a:** Prove knowledge of $r$ and $\Delta{\rho}$ such that $\hat{C} - C = \Delta{\rho} \cdot \xiOne + r\cdot \sOne{0}$.
 \begin{align}
     \term{\piPok} \gets \zkpokProve^\FSo\left(\underbrace{(\hat{C}-C, \xiOne, \sOne{0})}\_{\text{statement}}; \underbrace{(\Delta{\rho}, r)}\_{\text{witness}}\right)
 \end{align}
+
+**Step 3**b**:** Add $\piPok$ to the $\FS$ transcript.
 
 **Step 4**a**:** Represent all $j$th chunks $(z_{1,j},\ldots,z_{n,j})$ as a degree-$n$ polynomial and commit to it:
 \begin{align}
@@ -481,7 +478,9 @@ $\Rightarrow$ in **total**, $\emph{\|\pi\|=(\ell+5)\Gr_1 + (\ell+4)\F}$,
 
 **Step 2**b**:** Add $(\hat{C})$ to the $\FS$ transcript.
 
-**Step 2**c**:** Add $((C_j)_{j\in[\ell})$ to the $\FS$ transcript.
+**Step 2**c**:** Add $\piPok$ to the $\FS$ transcript.
+
+**Step 2**d**:** Add $((C_j)_{j\in[\ell})$ to the $\FS$ transcript.
  
 **Step 3:** Generate (pseudo)random challenges for combing the quotient polynomials:
 \begin{align}
