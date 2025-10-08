@@ -410,7 +410,7 @@ _Note:_ We discuss [how to interpolate $h(\zeta^i)$'s efficiently](#appendix-com
     \term{a\_j} &\gets f\_j(\gamma),\forall j\in[\ell)\\\\\
 \end{align}
 
-**Step 7:** We compute a hiding KZG opening proof for $u(\gamma)$:
+**Step 10:** We compute a hiding KZG opening proof for $u(\gamma)$:
 \begin{align}
     \term{s} &\randget \F\\\\\
     \term{\pi_\gamma} &\gets \hkzgOpen(\ck_\L, u, \term{\rho_u}, \gamma; s)
