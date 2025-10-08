@@ -726,11 +726,11 @@ Lastly, to compute all the $h(\omega^i)$'s, we do:
 {: .todo}
 Fiat-Shamir syntax is ambiguous now: the inner $\Sigma_\mathsf{PoK}$ should not reuse the FS transcript of the outer $\dekartProve$.
 
-{: .todo}
-Should we use $b_\max$ and $n_\max$ in $\dekartSetup$? (i.e., remove the $b$ subscript from $\mathsf{Dekart}_b$)
-If we do, then this setup should output just powers-of-$\tau$ of max degree $L-1 = b(n+1) - 1$ instead of Lagrange commitments.
-Then, a $\dekart.\mathsf{Specialize}$ algorithm can be used to get a CRS for a specific $n = 2^c$ or even non-power of two?
-This would actually be informative and nice to deal with, notationally.
+## Future work
+
+We could accept a $b_\max$ and $n_\max$ as arguments to $\dekartSetup$ and change the $b$ subscript from $\mathsf{Dekart}_b$ to be an actual argument.
+If we do, then this setup should only output powers-of-$\tau$ of max degree $L-1 = b(n+1) - 1$ instead of Lagrange commitments.
+Then, a $\dekart.\mathsf{Specialize}$ algorithm can be introduce to obtain a CRS for a specific $n$, including dealing with non-powers of two.
 
 {: .todo}
 Once $b$ is an input to the setup, prove and verification algorithm, it should be checked for being smaller than in the setup.
