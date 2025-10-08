@@ -1,9 +1,9 @@
 ---
 tags:
- - papers
  - range proofs
  - zero-knowledge proofs (ZKPs)
  - KZG
+ - negative result
 title: "Negative result: Non-ZK DeKART range proof"
 #date: 2020-11-05 20:45:59
 #published: false

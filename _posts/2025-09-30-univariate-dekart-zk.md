@@ -1,5 +1,9 @@
 ---
 tags:
+ - papers
+ - range proofs
+ - zero-knowledge proofs (ZKPs)
+ - KZG
 title: "Draft: DeKART: ZK range proofs from univariate polynomials"
 #date: 2020-11-05 20:45:59
 permalink: dekart
@@ -545,8 +549,10 @@ Our goal will be to obtain all $(h(\omega^i))_{i\in[n+1)}$ evaluations and then 
 
 Recall that:
 \begin{align}
+\label{eq:hx-njx}
 h(X)
     &= \frac{\beta \cdot \left(\hat{f}(X) - \sum_{j\in[\ell)} 2^j \cdot f_j(X)\right) + \sum_{j\in[\ell)} \beta_j\cdot f_j(X)(f_j(X) - 1)}{\VS(X)}\\\\\
+\label{eq:njx}
     &= \frac{\beta \cdot \hat{f}(X) - \beta\cdot\sum_{j\in[\ell)} 2^j \cdot f_j(X) + \sum_{j\in[\ell)} \beta_j\cdot \overbrace{f_j(X)(f_j(X) - 1)}^{\bydef \term{N_j(X)}}}{\vanishS}\\\\\
     &= \frac{\beta \cdot \hat{f}(X) - \beta\cdot \sum_{j\in[\ell)} 2^j \cdot f_j(X) + \sum_{j\in[\ell)} \beta_j\cdot \term{N_j(X)}}{\vanishS}
 \end{align}
@@ -656,70 +662,27 @@ Then, to evaluate **all** $h(\omega^i)$', given the above:
 {: .note}
 Doing this $h(X)$ interpolation faster is an open problem, which is why in the paper we explore a multinear variant of DeKART[^BDFplus25e].
 
-<!--
-Recall that:
+## Appendix: Computing $h(X)$ for $b\ne 2$
+
+Recall that, when $b > 2$, the formula for $h(X)$ in Eq. \ref{eq:hx-njx} changes to:
 \begin{align}
 h(X)
-    &= 
-\frac{\beta \cdot \left(\hat{f}(X) - \sum_{j\in[\ell)} b^j \cdot f_j(X)\right) + \sum_{j\in[\ell)} \beta_j\cdot f_j(X)(f_j(X) - 1) \cdots \left(f_j(X) - (b-1)\right)}{\VS(X)}\\\\\
-    &= \frac{\sum_{j\in[\ell)}\beta_j \cdot \overbrace{(X-\omega^n)f_j(X)(f_j(X) - 1)\cdots(f_j(X)-(b-1))}^{\term{N_j(X)}}}{X^{n+1} - 1}
-    \\\\\
--->
-
-<!--
-
-## hx for any b\ne 2
-
-Our goal will be to obtain all $(h(\zeta^i))_{i\in[L)}$ evaluations and then do a size-$L$ L-MSM to commit to it and obtain $\emph{D}$ from Eq: \ref{eq:D}.
-
-Recall that:
-\begin{align}
-h(X)
-    &= \frac{\sum_{j\in[\ell)}\beta_j \cdot \overbrace{(X-\omega^n)f_j(X)(f_j(X) - 1)\cdots(f_j(X)-(b-1))}^{\term{N_j(X)}}}{X^{n+1} - 1}
-    \\\\\
-    &\bydef \frac{\sum_{j\in[\ell)} \beta_j \cdot \emph{N_j(X)}}{X^{n+1} - 1}
-\Leftrightarrow\\\\\
-\Leftrightarrow
-h(X) (X^{n+1} - 1)
-    &=
-\sum_{j\in[\ell)} \beta_j \cdot N_j(X)
+    &= \frac{\beta \cdot \left(\hat{f}(X) - \sum_{j\in[\ell)} \emph{b}^j \cdot f_j(X)\right) + \sum_{j\in[\ell)} \beta_j\cdot f_j(X)(f_j(X) - 1)\emph{\ldots(f_j(X) - (b-1))}}{\VS(X)}\\\\\
+    &= \frac{\beta \cdot \hat{f}(X) - \beta\cdot\sum_{j\in[\ell)} b^j \cdot f_j(X) + \sum_{j\in[\ell)} \beta_j\cdot \overbrace{f_j(X)(f_j(X) - 1)\ldots(f_j(X) - (b-1))}^{\bydef \term{N_j(X)}}}{\vanishS}\\\\\
+    &= \frac{\beta \cdot \hat{f}(X) - \beta\cdot \sum_{j\in[\ell)} b^j \cdot f_j(X) + \sum_{j\in[\ell)} \beta_j\cdot \term{N_j(X)}}{\vanishS}
 \end{align}
-Differentiating the above expression:
-\begin{align}
-h'(X)(X^{n+1} - 1) + h(X) (n+1)X^n &= \sum_{j\in[\ell)} \beta_j \cdot N_j'(X)\Leftrightarrow\\\\\
-\Leftrightarrow
-h(X) &= \frac{\sum_{j\in[\ell)} \beta_j \cdot N_j'(X) - h'(X)(X^{n+1} - 1)}{(n+1)X^n}
-\end{align}
-**Problem:** While this would reduce computing all $h(\omega^i)$'s, $i\in[n)$, to computing all $N_j'(\omega^i)$'s:
-\begin{align}
-\label{eq:h}
-\emph{h(\omega^i)} &= \frac{\sum_{j\in[\ell)} \beta_j \cdot N_j'(\omega^i)}{(n+1)\omega^{in}}
-\end{align}
-...it does **not** necessarily help with computing all $h(\zeta^i)$'s for $i\in[L)$.
 
-Depending on how $\zeta$ is related to $\omega$, not all hope may be lost.
-Obviously, if $\zeta = \omega$ and $L = n$, we are in the previous case.
-But $L = b(n+1)$ for $b \ge 2$.
+As a result, the degree of $N_j(X)$ is $bn$.
+Thus, the degree of $h(X)$ becomes $(b-1)n$ 
 
-### Time complexity
+So, to interpolate $h(X)$, we would have to evaluate it over the larger size-$L$ domain $\L$ (instead of the size-$(n+1)$ domain $\S$ used in Eq. \ref{eq:h_omega_i}).
 
-To compute all $f_j'(\omega^i)$'s for a single $j$:
- 1. 1 size-$(n+1)$ inverse FFT, for $f_j$'s coefficients in monomial basis 
- 2. $n$ $\F$ multiplications, for the coefficients of the derivative $f_j'$
- 3. 1 size-$(n+1)$ FFT, for all $f_j'(\omega^i)$'s.
+Our **new challenge** is that the 0/0 trick used before, when $b=2$, will no longer apply here: some of the $\zeta^i\in\L$ will not necessarily fall in the $h(\zeta^i) = 0/0$ case, while others will.
 
-Then, to compute all $N_j'(\omega^i)$'s for a single $j$:
- 4. $2n+1$ $\F$ multiplications, for all $N'_j(\omega^i)$'s as per Eq. \ref{eq:nj-prime}
-    + (Assuming all $\pm (\omega^i - \omega^n)$ are precomputed.)
-
-{: .note}
-All the numbers above get multipled by $\ell$, since we are doing this for every $j\in[\ell)$.
-
-Lastly, to compute all the $h(\omega^i)$'s, we do:
- 5. $\ell n$ $\F$ multiplications to compute the $n$ different numerators from Eq. \ref{eq:h}, one for each evaluation $h(\omega^i)$
- 6. $n$ $\F$ multiplications, to divide the $n$ numerators by (the precomputed) $(n+1)\omega^{-in}$'s
-
--->
+{: .todo}
+Our approach will have two parts.
+First, we'll use similar differentiation tricks as in the $b=2$ case to compute $h(\zeta^i)$ for $i$'s that give us 0/0.
+Then, we'll re-use the coefficient form of the $\hat{f}$ and $f_j$ polynomials from the first part and do size-$L$ FFTs to get the $\hat{f}(\zeta^i)$ and $f_j(\zeta^i)$ evaluations that do not give us division by 0 errors.
 
 ## TODOs
 
