@@ -547,14 +547,14 @@ Recall that:
 \begin{align}
 h(X)
     &= \frac{\beta \cdot \left(\hat{f}(X) - \sum_{j\in[\ell)} 2^j \cdot f_j(X)\right) + \sum_{j\in[\ell)} \beta_j\cdot f_j(X)(f_j(X) - 1)}{\VS(X)}\\\\\
-    &= \frac{\beta \cdot \hat{f}(X) + \sum_{j\in[\ell)} \beta_j\cdot \overbrace{f_j(X)(f_j(X) - 1) - 2^j \cdot f_j(X)}^{\bydef \term{N_j(X)}}}{\vanishS}\\\\\
-    &= \frac{\beta \cdot \hat{f}(X) - \sum_{j\in[\ell)} \beta_j\cdot N_j(X)}{\vanishS}
+    &= \frac{\beta \cdot \hat{f}(X) - \beta\cdot\sum_{j\in[\ell)} 2^j \cdot f_j(X) + \sum_{j\in[\ell)} \beta_j\cdot \overbrace{f_j(X)(f_j(X) - 1)}^{\bydef \term{N_j(X)}}}{\vanishS}\\\\\
+    &= \frac{\beta \cdot \hat{f}(X) - \beta\cdot \sum_{j\in[\ell)} 2^j \cdot f_j(X) + \sum_{j\in[\ell)} \beta_j\cdot \term{N_j(X)}}{\vanishS}
 \end{align}
 If we try and compute $h(\omega^i)$ using the formula above, we fall in a 0/0 case, so we can apply [differentiation tricks](/differentiation-tricks#interpolating-fxgx-in-lagrange-basis), which tell us that, $\forall i\in[n+1)$:
 \begin{align}
 \label{eq:h_omega_i}
 h(\omega^i)
-    &= \left.\frac{\beta \cdot \emph{\hat{f}'(X)} - \sum_{j\in[\ell)}\beta_j\cdot \emph{N_j'(X)}}{\emph{\left(\vanishS\right)'}}\right|_{X=\omega^i}
+    &= \left.\frac{\beta \cdot \emph{\hat{f}'(X)} - \beta\cdot\sum_{j\in[\ell)} 2^j \cdot \emph{f_j'(X)} + \sum_{j\in[\ell)}\beta_j\cdot \emph{N_j'(X)}}{\emph{\left(\vanishS\right)'}}\right|_{X=\omega^i}
 \end{align}
 
 So, as long as we can evaluate the derivatives highlighted above efficiently, we can interpolate $h(X)$!
@@ -593,7 +593,7 @@ Fortunately, we can use a different expression to deal with $i=0$.
 \end{align}
 This **inverted** evaluation should also be **precomputed!**
 
-**Step 2:** The derivative of $\hat{f}(X)$ must be obtained manually.
+**Step 2:** The derivative of $\hat{f}(X)$ must be evaluated at all the roots of unity:
 First, a size-$(n+1)$ inverse FFT can be used to get the coefficients $\term{\hat{f}\_i}$ of $\hat{f}(X)$ s.t.:
 \begin{align}
 \hat{f}(X) = \sum\_{i\in [n+1)} \hat{f}\_i \cdot X^i
@@ -612,20 +612,31 @@ Third, a size-$(n+1)$ FFT can be used to compute all evaluations of $\hat{f}'(X)
 \hat{f}'(\omega^n)
 \end{align}
 
-**Step 3:** The derivative of $N_j(X)$ must be obtained.
+**Step 3:** The derivatives of $f_j(X)$ must be evaluated at all the roots of unity:
+
+This can be done just like for $\hat{f}(X)$ in _Step 3_ above: an inverse FFT, a differentiation, followed by an FFT.
+
+{: .warning}
+We will compute each $f_j'(X)$ derivative _individually_, rather than compute one derivative for the $\sum_j 2^j\cdot f_j(X)$ polynomial.
+This is because we will need the individual $f_j'(X)$ derivatives anyway in _Step 4_ below.
+
+**Step 4:** The derivative of $N_j(X)$ must be evaluated at all the roots of unity:
 Recall that:
 \begin{align}
 \emph{N_j(X)} 
-    &\bydef f_j(X)(f_j(X) - 1) - 2^j \cdot f_j(X)\Rightarrow\\\\\
+    &\bydef f_j(X)(f_j(X) - 1)\Rightarrow\\\\\
 \term{N_j'(X)}
-    &= \left(f_j(X)(f_j(X) - 1)\right)' - 2^j \cdot f_j'(X)\Rightarrow\\\\\
-    &= f_j(X)(f_j(X) - 1)' + f_j'(X)(f_j(X) - 1) - 2^j \cdot f_j'(X)\Rightarrow\\\\\
-    &= f_j(X)f_j'(X) + f_j'(X)f_j(X) - f_j'(X) - 2^j \cdot f_j'(X)\Rightarrow\\\\\
-    &= 2f_j(X)f_j'(X) - (2^j + 1) \cdot f_j'(X)\\\\\
-    &= f_j'(X) \left[ 2f_j(X) - (2^j + 1) \right]
+    &= \left(f_j(X)(f_j(X) - 1)\right)'\Rightarrow\\\\\
+    &= f_j(X)(f_j(X) - 1)' + f_j'(X)(f_j(X) - 1)\Rightarrow\\\\\
+    &= f_j(X)f_j'(X) + f_j'(X)f_j(X) - f_j'(X)\Rightarrow\\\\\
+    &= 2f_j(X)f_j'(X) - f_j'(X)\\\\\
+    &= f_j'(X) \left[ 2f_j(X) - 1 \right]
 \end{align}
-Since we can use the same algorithm as in **Step 2** to evaluate $f_j'(X)$ at all the roots of unity, it follows that we can evaluate $N_j'(X)$ at all roots of unity.
-Concretely, given $f_j'(\omega^i)$, computing  $N_j'(\omega^i)$ will cost $\Fmul{2}$ and $\Fadd{1}$.
+Since we have the $f_j'(X)$ evaluations at all the roots of unity from _Step 3_, it follows that we can evaluate $N_j'(X)$ at all roots of unity.
+Since $\forall i \in [n], f_j(\omega^i)\in\\{0,1\\}$, it follows that $2f_j(X) - 1\in \\{-1,1\\}$ 
+In this case, computing  $N_j'(\omega^i)$ will cost at most $\Fadd{1}$ in the case that $N_j'(\omega^i) = f_j'(\omega^i)\cdot (-1)$.
+When $i = 0$, $N_j'(\omega^0) = f_j'(\omega^0) \left[ 2 r_j - 1 \right]$, so this costs $\Fmul{2}$ and $\Fadd{1}$.
+
 
 ### Time complexity
 
@@ -634,11 +645,11 @@ To compute **all** $\hat{f}'(\omega^i)$'s and $f_j'(\omega^i)$'s:
  2. $\Fmul{(\ell+1)n}$ for doing the differentiation on the coefficients
  3. $\ell+1$ size-$(n+1)$ FFT for the evaluations
 
-Then, to compute **all** $N_j'(\omega^i)$'s:
- 1. $\Fmul{\ell \cdot 2(n+1)}$
+Then, to compute **all** $N_j'(\omega^i)$'s, given the above:
+ 1. $\Fmul{2\ell}$
  1. $\Fadd{\ell (n+1)}$
 
-Then, to evaluate **all** $h(\omega^i)$':
+Then, to evaluate **all** $h(\omega^i)$', given the above:
  1. $\Fmul{(\ell+2)(n+1)}$ 
  1. $\Fadd{(\ell+1)(n+1)}$
 
