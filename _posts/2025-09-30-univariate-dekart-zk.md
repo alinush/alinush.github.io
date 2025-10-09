@@ -482,40 +482,49 @@ $\Rightarrow$ in **total**, $\emph{\|\pi\|=(\ell+5)\Gr_1 + (\ell+4)\F}$,
 
 **Step 2**b**:** Add $(\hat{C})$ to the $\FS$ transcript.
 
-**Step 2**c**:** Add $\piPok$ to the $\FS$ transcript.
+**Step 3:** Verify ZKPoK:
+\begin{align}
+\textbf{assert}\
+    \zkpokVerify^\FSo\left(\hat{C}-C, \xiOne, \sOne{0}; \piPok\right) \equals 1
+\end{align}
 
-**Step 2**d**:** Add $((C_j)_{j\in[\ell})$ to the $\FS$ transcript.
+{: .todo}
+Add $\sOne{0}$ to the VK, which will no longer be an HKZG VK.
+
+**Step 4**a**:** Add $\piPok$ to the $\FS$ transcript.
+
+**Step 4**b**:** Add $((C_j)_{j\in[\ell})$ to the $\FS$ transcript.
  
-**Step 3:** Generate (pseudo)random challenges for combing the quotient polynomials:
+**Step 5:** Generate (pseudo)random challenges for combing the quotient polynomials:
 \begin{align}
 \beta,\beta_0,\ldots,\beta_{\ell-1} &\fsget \\{0,1\\}^\lambda
 \end{align}
  
-**Step 4:** Add $D$ to the $\FS$ transcript.
+**Step 6:** Add $D$ to the $\FS$ transcript.
  
-**Step 5:** Generate (pseudo)random challenges for the batch KZG opening on $\hat{f}(X), h(X)$ and the $f_j(X)$'s:
+**Step 7:** Generate (pseudo)random challenges for the batch KZG opening on $\hat{f}(X), h(X)$ and the $f_j(X)$'s:
 \begin{align}
 \mu,\mu_h,\mu_0,\ldots,\mu_{\ell-1}\fsget \\{0,1\\}^\lambda
 \end{align}
 
-**Step 6:** Reconstruct the commitment to $u(X)$ from Eq. \ref{eq:ux} 
+**Step 8:** Reconstruct the commitment to $u(X)$ from Eq. \ref{eq:ux} 
 \begin{align}
 \term{U} \gets \mu\cdot \hat{C} + \mu_h\cdot D + \sum\_{j\in[\ell)} \mu_j \cdot C_j
 \end{align}
 
-**Step 7:** Generate a (pseudo)random evaluation point for the batch KZG opening:
+**Step 9:** Generate a (pseudo)random evaluation point for the batch KZG opening:
 \begin{align}
 \gamma \fsget \F
 \end{align}
 
-**Step 8:** Verify that $a \equals \hat{f}(\gamma$), $a_h \equals h(\gamma)$ and $a_j \equals f_j(\gamma),\forall j\in[\ell)$:
+**Step 10:** Verify that $a \equals \hat{f}(\gamma$), $a_h \equals h(\gamma)$ and $a_j \equals f_j(\gamma),\forall j\in[\ell)$:
 \begin{align}
 \label{eq:kzg-batch-verify}
 \term{a_u} &\gets \mu \cdot a + \mu_h \cdot a_h + \sum_{j\in[\ell)} \mu_j\cdot a_j\\\\\
 \textbf{assert}\ &\hkzgVerify(\vk, U, \gamma, a_u; \pi_\gamma) \equals 1 
 \end{align}
 
-**Step 9:** Make sure that the radix-$b$ representation holds and that chunks are $<b$ as per Eq. \ref{eq:hx-check}:
+**Step 11:** Make sure that the radix-$b$ representation holds and that chunks are $<b$ as per Eq. \ref{eq:hx-check}:
 \begin{align}
 \textbf{assert}\ h(\gamma) \cdot \VS(\gamma) &\equals \beta \cdot \left(\hat{f}(\gamma) - \sum\_{j\in[\ell)} b^j \cdot f\_j(\gamma)\right) + \sum\_{j\in[\ell)} \beta\_j\cdot f\_j(\gamma)(f\_j(\gamma) - 1) \cdots (f\_j(\gamma)- (b-1))\Leftrightarrow\\\\\
 \Leftrightarrow \textbf{assert}\ a\_h \cdot \VS(\gamma) &\equals \beta \cdot \left(a - \sum\_{j\in[\ell)} b^j \cdot a\_j\right) + \sum\_{j\in[\ell)} \beta\_j\cdot a\_j(a\_j - 1) \cdots (a\_j - (b-1))
@@ -532,9 +541,42 @@ The verifier work is dominated by:
  - $\Fmul{\ell+2}$ for computing $a_u$ 
  - $\Fmul{1 + (\ell+1) + \ell(b+1)}$ for the final check
 
+<!--
+### Benchmarks for $b=2$ over BLS12-381
+
+{: .note}
+These benchmarks are from our TBA implementation in `arkworks v0.5.0`.
+
+{: .note}
+The verifier time only varies with $\ell$, not $n$.
+
+| Scheme         | $\ell$ |  $n$ | Proving time ($\mu$s) | Verify time ($\mu$s) | Total time ($\mu$s) | Proof size (bytes) |
+|:---------------|-------:|-----:|:----------------------|:---------------------|:--------------------|:-------------------|
+| $\dekartUni_2$ |        |      |                       |                      |                     |                    |
+-->
+
 ## Conclusion
 
 Your thoughts or comments are welcome on [this thread](https://x.com/alinush407/status/1950600327066980693).
+
+### Acknowledgements
+
+This is joint work with Dan Boneh, Trisha Datta, Kamilla Nazirkhanova and Rex Fernando.
+
+### Future work
+
+{: .todo}
+Fiat-Shamir syntax is ambiguous now: the inner $\Sigma_\mathsf{PoK}$ should not reuse the FS transcript of the outer $\dekartProve$.
+
+{: .todo}
+We could accept a $b_\max$ and $n_\max$ as arguments to $\dekartSetup$ and change the $b$ subscript from $\mathsf{Dekart}_b$ to be an actual argument.
+If we do, then this setup should only output powers-of-$\tau$ of max degree $L-1 = b(n+1) - 1$ instead of Lagrange commitments.
+Then, a $\dekart.\mathsf{Specialize}$ algorithm can be introduce to obtain a CRS for a specific $n$, including dealing with non-powers of two.
+
+{: .todo}
+Once $b$ is an input to the setup, prove and verification algorithm, it should be checked for being smaller than in the setup.
+(Or just check that $b$ and $n$ "match" $L$? Could we allow for larger $b$ while shrinking $n$?)
+
 
 ## Appendix: Computing $h(X)$ for $b=2$
 
@@ -683,25 +725,6 @@ Our **new challenge** is that the 0/0 trick used before, when $b=2$, will no lon
 Our approach will have two parts.
 First, we'll use similar differentiation tricks as in the $b=2$ case to compute $h(\zeta^i)$ for $i$'s that give us 0/0.
 Then, we'll re-use the coefficient form of the $\hat{f}$ and $f_j$ polynomials from the first part and do size-$L$ FFTs to get the $\hat{f}(\zeta^i)$ and $f_j(\zeta^i)$ evaluations that do not give us division by 0 errors.
-
-## TODOs
-
-{: .todo}
-Fiat-Shamir syntax is ambiguous now: the inner $\Sigma_\mathsf{PoK}$ should not reuse the FS transcript of the outer $\dekartProve$.
-
-## Future work
-
-We could accept a $b_\max$ and $n_\max$ as arguments to $\dekartSetup$ and change the $b$ subscript from $\mathsf{Dekart}_b$ to be an actual argument.
-If we do, then this setup should only output powers-of-$\tau$ of max degree $L-1 = b(n+1) - 1$ instead of Lagrange commitments.
-Then, a $\dekart.\mathsf{Specialize}$ algorithm can be introduce to obtain a CRS for a specific $n$, including dealing with non-powers of two.
-
-{: .todo}
-Once $b$ is an input to the setup, prove and verification algorithm, it should be checked for being smaller than in the setup.
-(Or just check that $b$ and $n$ "match" $L$? Could we allow for larger $b$ while shrinking $n$?)
-
-### Acknowledgements
-
-This is joint work with Dan Boneh, Trisha Datta, Kamilla Nazirkhanova and Rex Fernando.
 
 ## References
 
