@@ -66,14 +66,14 @@ This is joint work with Dan Boneh, Trisha Datta, Kamilla Nazirkhanova and Rex Fe
 \def\relPok{\mathcal{R}_\mathsf{pok}}
 $</div> <!-- $ -->
 
-## Preliminaries
+## Notation
 
 The notation for this blog post is [the same as in the old post](/dekart-not-zk#preliminaries).
 
 {% include pairings-prelims.md %}
 {% include time-complexities-prelims-pairings.md %}
 
-### ZKPoKs
+## Preliminary: ZKPoKs
 
 We assume a ZK PoK for the following relation:
 \begin{align}
@@ -83,7 +83,7 @@ We assume a ZK PoK for the following relation:
 {: .todo}
 What kind of soundness assumption do we need? Is the 2-special soundness of $\Sigma_\mathsf{PoK}$ enough?
 
-#### $\Sigma_\mathsf{PoK}.\mathsf{Prove}^\FSo(X, X_1, X_2; w_1, w_2)\rightarrow \pi$
+### $\Sigma_\mathsf{PoK}.\mathsf{Prove}^{\mathcal{FS}(\cdot)}(X, X_1, X_2; w_1, w_2)\rightarrow \pi$
 
 **Step 1:** Add $(X, X_1, X_2)$ to the $\FS$ transcript.
 
@@ -111,7 +111,7 @@ The final proof is:
     \pi \gets (A, \sigma_1, \sigma_2) \in \Gr\times \F^2
 \end{align}
 
-#### $\Sigma_\mathsf{PoK}.\mathsf{Verify}^\FSo(X, X_1, X_2; \pi)$
+### $\Sigma_\mathsf{PoK}.\mathsf{Verify}^{\mathcal{FS}(\cdot)}(X, X_1, X_2; \pi)$
 
 **Step 0:** Parse the proof as:
 \begin{align}
@@ -143,11 +143,11 @@ x_1 X_1 + x_2 X_2 &\equals x_1 X_1 + x_2 X_2\Leftrightarrow 1 \stackrel{!}{=} 1
 \end{align}
 {: .note}
 
-### Hiding KZG 
+## Preliminary: Hiding KZG 
 
 This **hiding** [KZG](/kzg) variant was (first?) introduced in the Zeromorph paper[^KT23e].
 
-#### $\hkzgSetup(m; \mathcal{G}, \xi, \tau) \rightarrow (\vk,\ck)$
+### $\mathsf{HKZG.Setup}(m; \mathcal{G}, \xi, \tau) \rightarrow (\mahtsf{vk},\mathsf{ck})$
 
 The algorithm is given:
 1. a bilinear group $\term{\mathcal{G}}$ with generators $\one{1},\two{1},\three{1}$ and associated field $\F$, as explained in the [preliminaries](#preliminaries) 
@@ -167,7 +167,7 @@ Return the public parameters:
 
 _Note:_ We assume that the bilinear group $\mathcal{G}$ is implicitly part of the VK and CK above.
 
-#### $\hkzgCommit(\ck, f; \rho) \rightarrow C$
+### $\mathsf{HKZG.Commit}(\mathsf{ck}, f; \rho) \rightarrow C$
 
 Parse the commitment key:
 \begin{align}
@@ -181,7 +181,7 @@ C
     &\bydef \rho \cdot \xiOne + \one{f(\tau)} 
 \end{align}
 
-#### $\hkzgOpen(\ck, f, \rho, x; s) \rightarrow \pi$
+### $\mathsf{HKZG.Open}(\mathsf{ck}, f, \rho, x; s) \rightarrow \pi$
 
 Parse the commitment key:
 \begin{align}
@@ -212,7 +212,7 @@ Return the proof:
 \pi\gets (\pi_1,\pi_2)
 \end{align}
 
-#### $\hkzgVerify(\vk, C, x, y; \pi) \rightarrow \\{0,1\\}$
+### $\mathsf{HKZG.Verify}(\mathsf{vk}, C, x, y; \pi) \rightarrow \\{0,1\\}$
 
 Parse the verification key:
 \begin{align}
