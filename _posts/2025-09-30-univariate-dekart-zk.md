@@ -55,6 +55,7 @@ This is joint work with Dan Boneh, Trisha Datta, Kamilla Nazirkhanova and Rex Fe
 \def\VL{V^*_\L}
 \def\vanishL{\frac{X^L - 1}{X - 1}}
 %
+\def\vkHkzg{\vk_\mathsf{HKZG}}
 \def\hkzgSetup{\mathsf{HKZG.Setup}}
 \def\hkzgCommit{\mathsf{HKZG.Commit}}
 \def\hkzgOpen{\mathsf{HKZG.Open}}
@@ -248,7 +249,7 @@ A few notes:
 <!--  We will work with two kinds of vanishing polynomials:
      $\term{\VL(X)}\bydef \vanishL$ of degree $\term{L}-1 \bydef \emph{b(n+1)} - 1$ -->
 
-### $\mathsf{Dekart}\_b^\mathsf{FFT}.\mathsf{Setup}(n; \mathcal{G})\rightarrow \mathsf{prk},\mathsf{vk}$
+### $\mathsf{Dekart}\_b^\mathsf{FFT}.\mathsf{Setup}(n; \mathcal{G})\rightarrow (\mathsf{prk},\mathsf{ck},\mathsf{vk})$
 
 Assume $n=2^c$ for some $c\in\N$[^power-of-two-n] s.t. $n \mid p-1$ (where $p$ is the order of the bilinear group $\mathcal{G}$) and let $\term{L} \bydef b(n+1) = 2^{d}$, for some $d\in\N$ s.t. $L \mid p-1$ as well.
 
@@ -271,6 +272,7 @@ where:
  + $\term{\omega}$ is a primitive $(n+1)$th root of unity in $\F$
  - $\term{\lagrS_i(X)} \bydef \prod_{j\in\S, j\ne i} \frac{X - \omega^j}{\omega^i - \omega^j}, \forall i\in[n+1)$
  + $\term{\VS(X)}\bydef \vanishSfrac$ is a vanishing polynomial of degree $n$ whose $n$ roots are in $\S\setminus\\{\omega^0\\}$ 
+ - $\emph{\ck_\S} \bydef \left(\xiOne,\tauOne, (\sOne{i})_{i\in[n+1)}\right)$
 
 Compute KZG public parameters, reusing the same $(\xi,\tau)$, for committing to polynomials interpolated from $L$ evaluations:
 \begin{align}
@@ -285,18 +287,19 @@ _Note:_ The [Lagrange polynomial](/lagrange-interpolation) $\lagrS_i(X)$ is of d
 
 Compute the range proof's proving key:
 \begin{align}
-\term{\vk}  &\gets \left(\xiTwo, \tauTwo\right)\\\\\
+\term{\vk}  &\gets \left(\overbrace{\xiTwo, \tauTwo}^{\term{\vkHkzg}}, \xiOne, \sOne{0}\right)\\\\\
+\term{\ck} &\gets \ck_\S\\\\\
 \term{\prk} &\gets \left(\vk, \ck_\S, \ck_\L\right)
 \end{align}
 
 {: .note}
 When $b=2$, we will be able to simplify by letting $L = n+1$ and thus $\S = \L$ and $\ck_\L = \ck_\S$.
 
-### $\mathsf{Dekart}\_b^\mathsf{FFT}.\mathsf{Commit}(\ck_\S,z_1,\ldots,z_{n}; \rho)\rightarrow C$
+### $\mathsf{Dekart}\_b^\mathsf{FFT}.\mathsf{Commit}(\ck,z_1,\ldots,z_{n}; \rho)\rightarrow C$
 
 Parse the commitment key:
 \begin{align}
-    \left(\xiOne, \tauOne, \left(\sOne{i}\right)\_{i\in[n+1)}\right) \parse\ck_\S
+    \left(\xiOne, \tauOne, \left(\sOne{i}\right)\_{i\in[n+1)}\right) \parse\ck
 \end{align}
 
 Represent the $n$ values and a prepended $0$ value as a degree-$n$ polynomial:
@@ -474,7 +477,7 @@ $\Rightarrow$ in **total**, $\emph{\|\pi\|=(\ell+5)\Gr_1 + (\ell+4)\F}$,
 
 **Step 1:** Parse the $\vk$ and the proof $\pi$:
 \begin{align}
-\left(\xiTwo, \tauTwo,\right) &\parse \vk\\\\\
+\left(\vkHkzg, \xiOne, \sOne{0}\right) &\parse \vk\\\\\
 \left(\hat{C}, \piPok, (C_j)_{j\in[\ell)}, D, a, a_h, (a\_{j})\_{j\in[\ell)}, \pi\_\gamma\right) &\parse \pi
 \end{align}
  
@@ -521,7 +524,7 @@ Add $\sOne{0}$ to the VK, which will no longer be an HKZG VK.
 \begin{align}
 \label{eq:kzg-batch-verify}
 \term{a_u} &\gets \mu \cdot a + \mu_h \cdot a_h + \sum_{j\in[\ell)} \mu_j\cdot a_j\\\\\
-\textbf{assert}\ &\hkzgVerify(\vk, U, \gamma, a_u; \pi_\gamma) \equals 1 
+\textbf{assert}\ &\hkzgVerify(\vkHkzg, U, \gamma, a_u; \pi_\gamma) \equals 1 
 \end{align}
 
 **Step 11:** Make sure that the radix-$b$ representation holds and that chunks are $<b$ as per Eq. \ref{eq:hx-check}:
@@ -534,7 +537,8 @@ Add $\sOne{0}$ to the VK, which will no longer be an HKZG VK.
 
 The verifier work is dominated by:
 
- - 1 $\vmsmOne{\ell+2}$ MSM for $U$
+ - 1 $\vmsmOne{3}$ MSM for verifying $\piPok$
+ - 1 $\vmsmOne{\ell+2}$ MSM for deriving the KZG commitment $U$
  - $\GmulOne{1} + \GaddOne{1}$ for computing $\one{\tau - a_u}$ inside [$\hkzgVerify(\cdot)$](#hkzgverifyvk-c-x-y-pi-rightarrow-01)
  - $\GmulTwo{1} + \GaddTwo{1}$ for computing $\two{\tau - \gamma}$ inside $\hkzgVerify(\cdot)$
  - size-$3$ multipairing for the rest of $\hkzgVerify(\cdot)$
