@@ -491,9 +491,6 @@ $\Rightarrow$ in **total**, $\emph{\|\pi\|=(\ell+5)\Gr_1 + (\ell+4)\F}$,
     \zkpokVerify^\FSo\left(\hat{C}-C, \xiOne, \sOne{0}; \piPok\right) \equals 1
 \end{align}
 
-{: .todo}
-Add $\sOne{0}$ to the VK, which will no longer be an HKZG VK.
-
 **Step 4**a**:** Add $\piPok$ to the $\FS$ transcript.
 
 **Step 4**b**:** Add $((C_j)_{j\in[\ell})$ to the $\FS$ transcript.
