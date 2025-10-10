@@ -958,6 +958,8 @@
 
 [^CES21e]: **Optimizing Registration Based Encryption**, by Kelong Cong and Karim Eldefrawy and Nigel P.  Smart, *in Cryptology ePrint Archive, Paper 2021/499*, 2021, [[URL]](https://eprint.iacr.org/2021/499)
 
+[^CETplus24]: **SoK: What don't we know? Understanding Security Vulnerabilities in SNARKs**, by Stefanos Chaliasos and Jens Ernstberger and David Theodore and David Wong and Mohammad Jahanara and Benjamin Livshits, 2024
+
 [^CF02]: **Optimal Black-Box Secret Sharing over Arbitrary Abelian Groups**, by Ronald Cramer and Serge Fehr, *in Cryptology ePrint Archive, Paper 2002/036*, 2002, [[URL]](https://eprint.iacr.org/2002/036)
 
 [^CF13]: **Vector Commitments and Their Applications**, by Catalano, Dario and Fiore, Dario, *in PKC'13*, 2013
@@ -1851,6 +1853,8 @@
 [^GMW87]: **How to Play ANY Mental Game**, by Goldreich, O. and Micali, S. and Wigderson, A., *in Proceedings of the Nineteenth Annual ACM Symposium on Theory of Computing*, 1987, [[URL]](http://doi.acm.org/10.1145/28395.28420)
 
 [^GMW91]: **Proofs That Yield Nothing but Their Validity or All Languages in NP Have Zero-knowledge Proof Systems**, by Goldreich, Oded and Micali, Silvio and Wigderson, Avi, *in J. ACM*, 1991, [[URL]](http://doi.acm.org/10.1145/116825.116852)
+
+[^GMY03e]: **Strengthening Zero-Knowledge Protocols using Signatures**, by Juan A.  Garay and Philip MacKenzie and Ke Yang, *in Cryptology {ePrint} Archive, Paper 2003/037*, 2003, [[URL]](https://eprint.iacr.org/2003/037)
 
 [^GNPR07]: **Cryptographic and Physical Zero-Knowledge Proof Systems for Solutions of Sudoku Puzzles**, by Gradwohl, Ronen and Naor, Moni and Pinkas, Benny and Rothblum, Guy N., *in Fun with Algorithms*, 2007
 
