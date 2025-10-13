@@ -221,7 +221,7 @@ For example:
 HyperPLONK[^CBBZ22e] gives a technique to reduce the proof size.
 For example, when using KZG commitments, the proof is reduced to (1) $\mu\times \Gr_1 + \mu\times \F$ elements and (2) a batch evaluation proof[^BDFG20], IIUC.
 
-## Academic work
+## Related work
 
 There have been many interesting advances on sumcheck, some of which I ran into recently:
  
@@ -234,6 +234,11 @@ There have been many interesting advances on sumcheck, some of which I ran into 
 {: .note}
 This list is by no means exhaustive, nor is it meant to be inclusive.
 I'm just trying to keep track of _some_ interesting works.
+
+Other relevant resources on sumchecks:
+
+ - [Optimizing the Sumcheck Prover: Small Values and Equality Polynomials](https://hackmd.io/@tcoratger/S1gl1ucheg)
+ - [Optimizing the Sumcheck Protocol](https://hackmd.io/04fkpdFhTFOCJ-GYMU6UbQ)
 
 ## Conclusion
 
