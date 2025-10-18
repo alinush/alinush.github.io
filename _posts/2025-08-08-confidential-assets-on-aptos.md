@@ -376,9 +376,19 @@ Because we can nonetheless achieve competitively-small TXN sizes and cheap verif
 3. The implementation is much easier to get right
     + We can sleep well at night knowing our users' funds are safe
 
-## Appendix: Other resources
+## Appendix: Links
 
+Documentation:
  - [aptos.dev docs](https://aptos.dev/build/smart-contracts/confidential-asset)
+
+Implementation:
+ - [$\Sigma$-protocols in Move](https://github.com/aptos-labs/aptos-core/pull/17660/)
+ - [Move module](https://github.com/aptos-labs/aptos-core/blob/main/aptos-move/framework/aptos-experimental/sources/confidential_asset/confidential_asset.move )
+ - [TypeScript SDK](https://github.com/aptos-labs/aptos-ts-sdk/tree/main/confidential-assets)
+ - [Confidential payments demo](https://github.com/aptos-labs/confidential-payments-example)
+
+Apps:
+ - [Confidential payments demo (deployed)](https://confidential.aptoslabs.com)
 
 ## Appendix: Benchmarks
 
