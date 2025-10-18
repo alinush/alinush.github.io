@@ -48,9 +48,41 @@ Naively, computing the discrete log $a$ on $a \cdot G$, when $a\in[2^\ell)$ coul
 The BSGS algorithm allows for **reducing the table** size to $\sqrt{2^\ell} = 2^{\ell/2}$ while _increasing the time_ to $\GaddG{2^{\ell/2}}$. 
 
 {: .todo}
+Write down algorithm.
+
+## Related work
+
+There is a long line of work on confidential asset-like protocols, both in Bitcoin's UTXO model, and in Ethereum's account model.
+Our work builds-and-improves upon these works:
+
+ - 2015, Confidential assets[^Maxw15]
+ - 2018, Zether[^BAZB20]
+ - 2020, PGC[^CMTA19e]
+ - 2025, [Taurus Releases Open-Source Private Security Token for Banks, Powered by Aztec](https://www.taurushq.com/blog/taurus-releases-open-source-private-security-token-for-banks-powered-by-aztec/), see [repo here](https://github.com/taurushq-io/private-CMTAT-aztec?tab=readme-ov-file)
+ - 2025, [Solana's confidential transfers](https://solana.com/docs/tokens/extensions/confidential-transfer)
+
 Explain the algorithm.
 
 ## FAQ
+
+### How does auditing currently work?
+
+Aptos governance can decide, for each token type, who is the auditor for TXNs for that token:
+```rust
+    /// Sets the auditor's public key for the specified token.
+    public fun set_auditor(
+        aptos_framework: &signer, token: Object<Metadata>, new_auditor_ek: vector<u8>
+    ) acquires FAConfig, FAController
+```
+
+### Why 16-bit chunk sizes?
+
+We chose 16-bit chunks to ensure that the max pending balance chunks never exceed $2^{32}$ after around $2^{16}$ incoming transfers.
+This, in turn, ensures fast decryption times.
+
+Why do we think there could be so many incoming transfers?
+They may arise in some use cases, such as payment processors, where it would be important to seamlessly receive many transfers.
+In fact, $2^{16}$ may not even be enough there.
 
 ### Why not go for a general-purpose zkSNARK-based design?
 
@@ -83,21 +115,11 @@ Because we can nonetheless achieve competitively-small TXN sizes and cheap verif
 3. The implementation is much easier to get right
     + We can sleep well at night knowing our users' funds are safe
 
-## Construction
+## Appendix
 
-### Chunk sizes
-
-We chose 16-bit chunks to ensure that the max pending balance chunks never exceed $2^{32}$ after around $2^{16}$ incoming transfers.
-This, in turn, ensures fast decryption times.
-
-Why so many incoming transfers?
-There could be use cases, such as payment processors, where seamlessly receiving many transfers is necessary.
-
-## Resources
+### Other resources
 
  - [aptos.dev docs](https://aptos.dev/build/smart-contracts/confidential-asset)
-
-## Appendix
 
 ### BL DL benchmarks for Ristretto255
 
@@ -114,17 +136,6 @@ These were run on a Macbook M3.
 {: .warning}
 Something is off here: BL should be **much** faster than [BSGS](#baby-step-giant-step-bsgs-discrete-log-algorithm).
 e.g., on 32 bit values, BL takes $30.86$ ms on average, while BSGS similarly takes $2^{16}$ group operations $\Rightarrow$ 0.5 microseconds $\times 2^{16} \approx 32$ ms.
-
-## Related work
-
-There is a long line of work on confidential asset-like protocols, both in Bitcoin's UTXO model, and in Ethereum's account model.
-Our work builds-and-improves upon these works:
-
- - 2015, Confidential assets[^Maxw15]
- - 2018, Zether[^BAZB20]
- - 2020, PGC[^CMTA19e]
- - 2025, [Taurus Releases Open-Source Private Security Token for Banks, Powered by Aztec](https://www.taurushq.com/blog/taurus-releases-open-source-private-security-token-for-banks-powered-by-aztec/), see [repo here](https://github.com/taurushq-io/private-CMTAT-aztec?tab=readme-ov-file)
- - 2025, [Solana's confidential transfers](https://solana.com/docs/tokens/extensions/confidential-transfer)
 
 ## References
 
