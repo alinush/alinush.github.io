@@ -108,7 +108,7 @@ In general, Rogaway fears that, as a community, we may be somewhat-oblivious to 
 >
 > That cryptographic work is deeply tied to politics is a claim so obvious that only a cryptographer could fail to see it.
 
-### Ingoring the real adversary
+### Ignoring the real adversary
 
  > In a declassified trip-report about Eurocrypt 1992[^eurocrypt-1992], the NSA author opines: 
  > _"There were no proposals of cryptosystems, no novel cryptanalysis of old designs, even very little on hardware design. I really don’t see how things could have been better for our purposes.”_
