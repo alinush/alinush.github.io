@@ -7,7 +7,7 @@ titles:
 key: page-papers
 ---
 
-**DekartProof: Efficient Vector Range Proofs and Their Applications**, Dan Boneh, Trisha Datta, Rex Fernando, Kamilla Nazirkhanova, Alin Tomescu, _in Cryptology ePrint Archive_, <a class="button button--success button--rounded button--sm" href="https://eprint.iacr.org/2025/1159.pdf"><i class="fas fa-download"></i>PDF</a>
+**DekartProof: Efficient Vector Range Proofs and Their Applications**, Dan Boneh, Trisha Datta, Rex Fernando, Kamilla Nazirkhanova, Alin Tomescu, _in Cryptology ePrint Archive_, <a class="button button--success button--rounded button--sm" href="https://eprint.iacr.org/2025/1159.pdf"><i class="fas fa-download"></i>PDF</a>, [SBC'25 talk](https://youtu.be/Gf8YdXh3uZ0?list=PLS01nW3RtgorIUziK9tBT9ybvuUw38kD0&t=1893)
 
 **Distributed Randomness using Weighted VRFs**, by Sourav Das and Benny Pinkas and Alin Tomescu and Zhuolun Xiang, _EUROCRYPT'25_, <a class="button button--success button--rounded button--sm" href="https://eprint.iacr.org/2024/198"><i class="fas fa-download"></i>PDF</a>
 
@@ -15,7 +15,7 @@ key: page-papers
 
 **UTT: Decentralized Ecash with Accountable Privacy**, Alin Tomescu, Adithya Bhat, Benny Applebaum, Ittai Abraham, Guy Gueta, Benny Pinkas, Avishay Yanai, _in Cryptology ePrint Archive_, <a class="button button--success button--rounded button--sm" href="https://eprint.iacr.org/2022/452.pdf"><i class="fas fa-download"></i>PDF</a>, [Code](https://github.com/definitelyNotFBI/utt), [SBC'23 slides](https://docs.google.com/presentation/d/1gROYWWXabwqbxFVGLV4KKOMuQbmvoGjqo502I0W6W7Q/edit#slide=id.g277ae8ab1df_0_0), [a16z slides](https://docs.google.com/presentation/d/1frfS8K7RIDQIej4-pz9YSta5dH7dboyTssnvpIjpIHo/edit?usp=sharing), [Yale slides](https://docs.google.com/presentation/d/1WW7qqnM8GCX7x8pLGk2IbB1xc1TZPO6jTCtRmXYpbfY/edit?usp=sharing)
 
-**Hyperproofs: Aggregating and Maintaining Proofs in Vector Commitments**, Shravan Srinivasan, Alex Chepurnoy, Charalampos Papamanthou, Alin Tomescu, Yupeng Zhang, _USENIX Security 2022_, <a class="button button--success button--rounded button--sm" href="https://eprint.iacr.org/2021/599.pdf"><i class="fas fa-download"></i>PDF</a>, [Code](https://github.com/hyperproofs/hyperproofs), [USENIX presentation](https://www.usenix.org/conference/usenixsecurity22/presentation/srinivasan)
+**Hyperproofs: Aggregating and Maintaining Proofs in Vector Commitments**, Shravan Srinivasan, Alex Chepurnoy, Charalampos Papamanthou, Alin Tomescu, Yupeng Zhang, _USENIX Security 2022_, <a class="button button--success button--rounded button--sm" href="https://eprint.iacr.org/2021/599.pdf"><i class="fas fa-download"></i>PDF</a>, [Code](https://github.com/hyperproofs/hyperproofs), [USENIX talk](https://www.usenix.org/conference/usenixsecurity22/presentation/srinivasan)
 
 **No-Commit Proofs: Defeating Livelock in BFT**, Neil Giridharan, Heidi Howard, Ittai Abraham, Natacha Crooks, and Alin Tomescu, _in Cryptology ePrint Archive_, <a class="button button--success button--rounded button--sm" href="https://eprint.iacr.org/2021/1308.pdf"><i class="fas fa-download"></i>PDF</a>
 
