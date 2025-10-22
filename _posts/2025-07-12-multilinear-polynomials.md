@@ -49,7 +49,7 @@ We typically denote all the variables as a vector $\X\bydef(X_0,\ldots,X_{s-1})$
 
 This means that $f$ can be expressed as:
 \begin{align}
-f(\X) \bydef \sum_{\b\in\binS} c_\b \prod_{i\in[s)} X_{b_i}
+f(\X) \bydef \sum_{\b\in\binS} c_\b \prod_{i\in[s)} X_i^{b_i}
 \end{align}
 
 Note that the $c_\b$'s are the polynomial's **coefficients**.
