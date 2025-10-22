@@ -40,8 +40,11 @@ article_header:
 
 <!-- ![](/pictures/tbow-th.jpg){: .align-right} -->
 
-I was born and raised in [Pitești](https://en.wikipedia.org/wiki/Pitesti), a small city in Romania, and moved to the US in 2008.
-I was always fascinated with computers: playing on them, fixing them & programming them.
+I was born and raised in [Pitești](https://en.wikipedia.org/wiki/Pitesti), a small city in Romania.
+I moved to the US in 2008 to attend college.
+
+I was always fascinated with computers: playing games on them, fixing them & programming them.
+
 I like to read and write.
 In fact, you can see some of my writing on [this website](/archive.html) and on [Decentralized Thoughts](https://decentralizedthoughts.github.io/about-alin).
 
@@ -55,9 +58,9 @@ Before MIT, I was building tamper-proof clouds and end-to-end encrypted outsourc
 
 ### ...and some of my research
 
-My cryptography research interests are best reflected in my [papers](/papers.html), some of my [posts](/archive.html) and [talks](/talks.html), my ["cryptomat"](/cryptomat) and this [Call for Research](/please-solve).
+My [papers](/papers.html), [posts](/archive.html), [talks](/talks.html), [the "cryptomat"](/cryptomat) and this [call for research](/please-solve) best reflect my research interest.
 
-I've led and thoroughly enjoyed research on:
+But, if you're looking for a list, I've led (and thoroughly enjoyed) research on:
  1. [keyless blockchain accounts](/2024/06/13/Keyless-blockchain-accounts-on-Aptos.html)
  1. [anonymous cryptocurrencies](https://eprint.iacr.org/2022/452)
  1. **Herkle trees**, or _homomorphic_ Merkle trees: [AMTs](https://www.computer.org/csdl/proceedings-article/sp/2020/349700b367/1j2LgjE3Q6Q) and [Hyperproofs](https://www.usenix.org/system/files/sec22fall_srinivasan.pdf)
@@ -92,4 +95,4 @@ or, in Winnemucca, Nevada on October 14th, 2023;
 or, in <a href="/motorcycling-from-ca-to-tx">Austin, Texas, on April 8th, 2024</a></strike>
 Spain, on August 12th, 2026.</p>
 
-Alin's has two superpowers: finding the worst spot to see solar eclipses and summoning clouds that cover the entire sky.
+Alin has an amazing superpower which only manifests during total solar eclipses: no matter how much he plans, he will find himself in the **one spot** where the eclipse is covered by clouds.
