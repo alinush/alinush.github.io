@@ -88,6 +88,55 @@ Put differently, Google can **protect** these users' keyless accounts much, **mu
 {: .note}
 Google's own bottom line depends on their ability to protect their OpenID Connect (OIDC) secret keys which secure your keyless account because **those same keys secure the widely-used "Sign in with Google" flow** all across the web!
 
+### I have a very fast [zk]VM, why don't you use it?
+
+Switching to an (actual) zkVM[^zkzk] would be amazing for a lot of reasons:
+ 1. **NP relation implementation is trivial**[^actually] and likely bug-free
+ 1. It would allow us to do **client-side proving** by removing the training wheels
+ 1. It would most-likely only need a **one-time universal setup** (or even a **transparent setup**!)
+
+Currently, we use [Groth16](/groth16) to prove our $\approx$ 1.5 million[^unreasonable-confidence] R1CS [NP relation](#zk-relation-keyless-authentication).
+The main reasons we chose this **circuit-based** zkSNARK, in order of relevance, are:
+ 1. **Fast verification time**
+    - Currently, a size-3 multipairing and a size-14 Poseidon-BN254 hash
+    - In a way, even this is too slow for us
+    - We cannot afford to make it slower because it translates to higher TXN gas costs for our users
+ 2. **Small proofs**: currently $2\cdot 32 + 64 = 128$ bytes
+
+Unfortunately, circuit-based SNARKs have a few drawbacks:
+ 1. **Extremely bug-prone circuit implementation** of the NP relation
+    - $\Rightarrow$ need to formally-verify circuit $\Rightarrow$ need additional FV expertise, adds complexity and slows down our circuit development time
+    - Until FV is ready, we have to enable [training wheels](/training-wheels) and rely on a proving service
+ 2. **Slow proving time** 
+    - $\Rightarrow$ horrendously-slow to auto-scale our proving service $\Rightarrow$ must over-provision resources $\Rightarrow$ drives up costs (plus, DoS risks) 
+    + e.g., it takes 25 seconds to prove the keyless relation using `snarkjs` on a Macbook M1 Pro in the browser
+        + $\Rightarrow$ even if we remove the training wheels, we need faster proving time to do client-side proving
+ 3. Some schemes, such as Groth16, require a **circuit-specific trusted setup**
+    - $\Rightarrow$ need MPC ceremony $\Rightarrow$ this adds operational complexity (e.g., find a high # of participants, spin up MPC coordination services, offer support to people who are having trouble contributing, publicly-reveal ceremony transcript)
+
+Therefore, switching to [zk]VMs would only make sense if it:
+ - [ ] preserves the **fast verification time**
+      + There is a bit of wiggle room here, but not too much: maybe 1.5x to 2x slower
+ - [ ] preserves the **small proofs** of Groth16
+      + There is more wiggle room here: maybe we can 10-50x the proof size
+ - [ ] **speeds up proving time** (over Groth16)
+ - [ ] preserves the **zero-knowedge** property
+ - [ ] adds **no new exotic security assumptions**
+      + e.g., a SNARK-friendly hash function that has been published less than 5 years ago
+ - [x] it is a universal setup scheme
+      + All [zk]VMs seem to meet this requirement
+
+#### Why not wrap a nozkVM proof?
+
+Note that "wrapping" a nozkVM proof will likely not satisfy the fast proving time requirement.
+Why?
+Wrapping only makes sense if it does not add too much overhead: e.g., when proving really large relations (e.g., 15M R1CS constraints)
+But the keyless relation is small: 1.5M R1CS constraints.
+As a result, most of the proving time would be spent wrapping.
+Furthermore, parameterizing the nozkVM to be more wrapping-friendly (e.g., via SNARK-friendly hashes) would likely slow down the nozkVM proving and/or add funky assumptions to our system.
+
+This, of course, could change very soon. (And I hope it does!)
+
 <!--
 #### But what if I am really important and Google steals my keyless account?
 
@@ -582,3 +631,7 @@ For cited works, see below 👇👇
 [^triviality]: We are not interested in trivially checking that the empty string is a sub-string, nor that $b$ is a substring of itself. In fact, we may even get into trouble if we accidentally check that in the keyless relation.
 
 {% include refs.md %}
+
+[^actually]: In practice, what is more likely to happen is that the zkVM is not fast enough, even for our small keyless relation. As a result, we will try to "express" the NP relation more efficiently: e.g., it is much easier to take as input $(n,p,q)$ and output `true` if $p$ and $q$ are prime and if $n = pq$ rather than take $n$ as input, factor it into primes $p$ and $q$ and output $(p,q)$ if you succeed. Many such optimizations may be possible for the keyless relation. But they may be much more complicated than the example above, which means they could be misimplmented (even if we write Rust) and lead to a soundness bug.
+[^unreasonable-confidence]: I am pretty confident the constraint count can be reduced to 1 million.
+[^zkzk]: Sorry, I cannot, in good faith, call it a _"zkzkVM"_: it is simply too confusing. I would call the initial thing what it should've been called: a **"nozkVM"** and call the real thing zkVM!
