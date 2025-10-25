@@ -31,17 +31,19 @@ header:
   - titles:
       en      : &EN       Papers
     url: /papers.html
- 
   - titles:
       en      : &EN       Cryptomat
     url: /cryptomat
-  
   - titles:
-      en      : &EN       Paraphernalia
-    url: /paraphernalia.html
+      en      : &EN       To read
+    url: /to-read
 
   - titles:
-      en      : &EN       Please solve!
+      en      : &EN       Paraphernalia
+    url: /paraphernalia
+
+  - titles:
+      en      : &EN       To solve
     url: /please-solve
 
   - titles:

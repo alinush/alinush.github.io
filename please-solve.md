@@ -1,6 +1,6 @@
 ---
 layout: article
-title: Please solve!
+title: Solve?
 key: page-please-solve
 aside:
   toc: true
