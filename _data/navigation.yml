@@ -202,8 +202,8 @@ cryptomat:
         url: /hyrax
       - title: KZH polynomial commitments
         url: /kzh
-      #- title: PST polynomial commitments
-      #  url: /pst
+      - title: PST polynomial commitments
+        url: /pst
       - title: Differentiation tricks
         url: /differentiation-tricks
       - title: Univariate sumcheck
