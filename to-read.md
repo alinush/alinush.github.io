@@ -20,6 +20,7 @@ This is some of the stuff I plan to read or I have already read.
  1. Lasso explanation by Distributed Labs[^FL25e]
  1. All of the MLE PCSs in my [RobertoFest slides](https://docs.google.com/presentation/d/1aKFLECpi4nikzU3qzCx51xl1fmuJQq183jEdWbcks-k)[^Lee21]$^,$[^BCHO22]$^,$[^KT23e]$^,$[^GPS25e]$^,$[^EG25e]
  1. Goldreich's short tutorial on ZK[^Gold10]
+ 1. Mutator sets[^SV23e]
 
 ## Already read
 
