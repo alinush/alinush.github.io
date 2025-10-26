@@ -904,6 +904,8 @@
 
 [^CCNplus23e]: **vetKeys: How a Blockchain Can Keep Many Secrets**, by Andrea Cerulli and Aisling Connolly and Gregory Neven and Franz-Stefan Preiss and Victor Shoup, *in Cryptology ePrint Archive, Paper 2023/616*, 2023, [[URL]](https://eprint.iacr.org/2023/616)
 
+[^CCN21e]: **Homomorphic decryption in blockchains via compressed discrete-log lookup tables**, by Panagiotis Chatzigiannis and Konstantinos Chalkias and Valeria Nikolaenko, *in Cryptology {ePrint} Archive, Paper 2021/899*, 2021, [[URL]](https://eprint.iacr.org/2021/899)
+
 [^CCS08]: **Efficient Protocols for Set Membership and Range Proofs**, by Camenisch, Jan and Chaabouni, Rafik and shelat, abhi, *in Advances in Cryptology - ASIACRYPT 2008*, 2008
 
 [^CCW18]: **On cycles of pairing-friendly elliptic curves**, by Alessandro Chiesa and Lynn Chua and Matthew Weidner, 2018
@@ -2245,6 +2247,8 @@
 [^KC20]: **Characterizing the Root Landscape of Certificate Transparency Logs**, by Nikita Korzhitskii and Niklas Carlsson, 2020
 
 [^KCLM21]: **Aggregating hash-based signatures using STARKs**, by Irakliy Khaburzaniya and Konstantinos Chalkias and Kevin Lewi and Harjasleen Malvai, *in Cryptology ePrint Archive, Report 2021/1048*, 2021, [[URL]](https://ia.cr/2021/1048)
+
+[^KDT24e]: **Verifying Jolt {zkVM} Lookup Semantics**, by Carl Kwan and Quang Dao and Justin Thaler, *in Cryptology {ePrint} Archive, Paper 2024/1841*, 2024, [[URL]](https://eprint.iacr.org/2024/1841)
 
 [^KF20]: **Getting Rid of Linear Algebra in Number Theory Problems**, by Paul Kirchner and Pierre-Alain Fouque, *in Cryptology ePrint Archive, Report 2020/1619*, 2020, [[URL]](https://eprint.iacr.org/2020/1619)
 

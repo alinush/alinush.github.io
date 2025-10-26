@@ -1,0 +1,1 @@
+_posts/open-post.sh
