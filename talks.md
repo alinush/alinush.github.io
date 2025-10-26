@@ -5,7 +5,18 @@ titles:
   en      : &EN       Talks
   # @end locale config
 key: page-talks
+permalink: talks
 ---
+
+#### How I Learned to Stop Hashing and  Love the Accumulator (from Roberto) 
+
+This was a talk that celebrated [Roberto Tamassia]()'s work on authenticated data structures over the last 40 years, at [RobertoFest](https://cs.gmu.edu/~evgenios/robertofest/).
+
+<a href="https://docs.google.com/presentation/d/1aKFLECpi4nikzU3qzCx51xl1fmuJQq183jEdWbcks-k/edit?usp=sharing">
+    <img height="250" src="/pictures/robertofest.png" />
+</a>
+
+For now, only [slides](https://docs.google.com/presentation/d/1aKFLECpi4nikzU3qzCx51xl1fmuJQq183jEdWbcks-k/edit?usp=sharing) are available.
 
 #### Aptos randomness using weighted VRFs (SBC'24)
 

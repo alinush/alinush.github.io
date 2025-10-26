@@ -27,7 +27,7 @@ header:
 
   - titles:
       en      : &EN       Talks
-    url: /talks.html
+    url: /talks
   - titles:
       en      : &EN       Papers
     url: /papers.html

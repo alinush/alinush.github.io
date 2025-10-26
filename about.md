@@ -58,7 +58,7 @@ Before MIT, I was building tamper-proof clouds and end-to-end encrypted outsourc
 
 ### ...and some of my research
 
-My [papers](/papers.html), [posts](/archive.html), [talks](/talks.html), [the "cryptomat"](/cryptomat) and this [call for research](/please-solve) best reflect my research interest.
+My [papers](/papers.html), [posts](/archive.html), [talks](/talks), [the "cryptomat"](/cryptomat) and this [call for research](/please-solve) best reflect my research interest.
 
 But, if you're looking for a list, I've led (and thoroughly enjoyed) research on:
  1. [keyless blockchain accounts](/2024/06/13/Keyless-blockchain-accounts-on-Aptos.html)
