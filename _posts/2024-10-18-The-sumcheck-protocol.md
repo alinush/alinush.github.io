@@ -239,6 +239,8 @@ Other relevant resources on sumchecks:
 
  - [Optimizing the Sumcheck Prover: Small Values and Equality Polynomials](https://hackmd.io/@tcoratger/S1gl1ucheg)
  - [Optimizing the Sumcheck Protocol](https://hackmd.io/04fkpdFhTFOCJ-GYMU6UbQ)
+ - [Multilinear polynomials survival kit](https://blog.lambdaclass.com/multilinear-polynomials-survival-kit/)
+ - [Optimizing sumcheck](https://blog.lambdaclass.com/optimizing-sumcheck/)
 
 ## Conclusion
 

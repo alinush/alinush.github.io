@@ -216,8 +216,11 @@ cryptomat:
         url: /fri
       #-title: STIR
       #  url: /stir
+      #-title: Basefold
+      #  url: /basefold
       #-title: WHIR
       #  url: /whir
+      #  https://blog.lambdaclass.com/whirlaway-multilinear-starks-using-whir-as-polynomial-commitment-scheme/
 
   - title: Secret sharing
     children:
@@ -239,6 +242,7 @@ cryptomat:
         url: /marlin
     #  - title: PLONK
     #    url: /plonk
+    #    https://cs355.stanford.edu/lectures/Lecture12-plonk.pdf
       - title: $\Sigma$-protocols
         url: /sigma
     #  - title: Simulation
