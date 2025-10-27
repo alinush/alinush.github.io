@@ -18,7 +18,7 @@ permalink: confidential-assets
 ---
 
 {: .info}
-**tl;dr:** Confidential assets are in town! But first, a moment of silence for [veiled coins](https://github.com/aptos-labs/aptos-core/pull/3444).
+**tl;dr:** Confidential fungible assets (CFAs) are in town! But first, a moment of silence for [veiled coins](https://github.com/aptos-labs/aptos-core/pull/3444).
 
 <!--more-->
 
@@ -164,6 +164,84 @@ Our work builds-and-improves upon these works:
  - 2025, [Solana's confidential transfers](https://solana.com/docs/tokens/extensions/confidential-transfer)
 
 Explain the algorithm.
+
+## Upgradeability
+
+There will be many reasons to upgrade our confidential asset protocol (CFA):
+
+1. Performance improvements
+2. Bugs in $\Sigma$-protocols or ZK range proof
+3. Post-quantum security
+
+Depending on which aspect of the protocol must change, upgrades can range from trivial to very tricky.
+
+<!-- Notes:
+Will be difficult to change some things
+
+- Encryption scheme
+    - When we add a new encryption scheme, say [CL15], we would need to support sending from the old scheme to the new one
+        - $\Rightarrow$ we at least need a new equality ZK proof between ElGamal-encrypted transferred amounts & [CL15]-encrypted ones
+    - As we add more, we end up with $n$ schemes and I think $O(n^2)$ protocols to support sending from any two schemes
+        - e.g., if $n = 4$, we need $1→2, 1→3, 1→4, 2→3, 2→4,3→4$
+- Chunking of available/pending balance
+    - If we change the chunking on the available balance, then the verifier needs to support proofs for both kinds of chunking. Or reject the proofs for the old kind & ask the sender to re-chunk its balance.
+        - Maybe there’s a hope to just re-chunk automatically on the Move side during a send? But this may create some large field elements that will be difficult to decrypt for the sender 😬
+-->
+
+### Upgrading ZKPs
+
+This can be done trivially: just add a new enum variant while maintaining the old one for a while.
+
+If there is a soundness bug, the old variant must be disallowed.
+
+This will break old dapps, unfortunately, but that is inherent in order to protect against theft.
+
+{: .todo}
+Define the CFA algorithms so as to reason about upgradeability more easily.
+
+### Upgrading encryption scheme
+
+We may want to upgrade our encryption scheme for efficiency reasons or for security (e.g., post-quantum).
+
+#### Option 1: Force users to upgrade balance ciphertext
+
+One way[^hm] to support such an upgrade is to force the owning user to re-encrypt their old balance under the new encryption scheme.
+Then, we'd only allow transfers between users who are upgraded to the new scheme.
+(Option two would be to implement support for sending confidential assets from an old balance into a new balance.)
+
+Such upgrades may happen repeatedly, so we must ensure complexity does not get out of hand: e.g., if over the years we've upgraded our encryption scheme $n-1$ times, then there may be a total of $n$ ciphertext types flying around ($n\ge 1$).
+
+Naively, we'd want to support converting any old scheme to any new scheme, but that would require too many re-encryption implementations: $(n-1) + (n-2) + \ldots + 2 + 1 = O(n^2)$.
+
+A solution would be to only implement re-encryption from scheme $i$ to scheme $i+1$, for any $i\in[n-1]$.
+This could be slow, since it requires $n-1$ re-encryptions.
+If so, we can do it in $O(\log{n})$ re-encryption in a skip list-like fashion.
+(By allowing upgrades to skip intermediate schemes, we would reduce the number of required re-encryptions.)
+
+**Another challenge:** post-upgrade, existing dapps, now with an out-of-date SDK, will not know how to handle the new encryption scheme. So, such upgrades are **backwards incompatible.**
+
+For example, old dapps will be "surprised" to see that the user's balance is no longer encrypted under the old scheme (i.e., the SDK sees that the balance enum is a new unrecognized variant).
+If so, the SDK should display a user-friendly error like _"This dapp must be upgraded to support new confidential asset features."_
+
+It's unclear whether there's something better we could do to maintain backwards compatibility.
+I think the main problematic scenario is:
+1. Alice used a new dapp that converted her entire balance to the new scheme
+2. Alice uses an old dapp that panics when it cannot handle the new scheme
+
+We may want to strongly recommend that dapps/wallets only allow the user to manually upgrade their ciphertexts?
+This way, at least users understand that upgrading may make their assets inaccessible on older dapps.
+
+### Option 2: Universal transfers
+
+Again, the assumption is that, over the years, we've upgraded our encryption scheme $n-1$ time $\Rightarrow$ there may be a total of $n$ ciphertext types flying around ($n\ge 1$).
+
+To deal with this, we could simply build functionality that allows to transfer CFAs between any scheme $i,j\in[n]$.
+
+During a send, the SDK should prefer encrypting the amounts for the recipient under the highest supported scheme $j$ their account supports.
+(Or, encrypt for the max $j$ supported by the contract; it's just that the user, depending on what dapp/wallet they are using, may not be able to access that balance.)
+
+The key question is: should we enforce "progress" by only allowing to send from a scheme $i$ to a scheme $j$ when $j\ge i$? 
+This way, we would ensure that older ciphertexts don't proliferate?
 
 ## FAQ
 
@@ -496,6 +574,8 @@ Annoying.
 ## References
 
 For cited works, see below 👇👇
+
+[^hm]: I wonder if this is generally true...
 
 [^sok]: Writing efficient and secure ZK circuits is extremely difficult. I quote from a recent survey paper[^CETplus24] on implementing general-purpose zkSNARK-based systems: _"We find that developers seem to struggle in correctly implementing arithmetic circuits that are free of vulnerabilities, especially due to most tools exposing a low-level programming interface that can easily lead to misuse without extensive domain knowledge in cryptography."_
 
