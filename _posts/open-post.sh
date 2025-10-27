@@ -1,11 +1,15 @@
 #!/bin/bash
 
-scriptdir=$(cd "$(dirname "$0")"; pwd -P)
+scriptdir=$(cd "$(dirname "$(readlink -f $0)")"; pwd -P)
+#echo "$scriptdir"
 postdir="$scriptdir/"
+#echo "$postdir"
 cd "$postdir/"
 
 # Gather and filter markdown files
 files=$(find . -name "*.md" | grep -vE "/_drafts/|/files/|/templ.md|/TODO.md|/refs.md|/*welcome.md|/*header-image.md" | cut -c 3- | sort -r)
+
+#echo "$files"
 
 # Arrays
 index_keys=()

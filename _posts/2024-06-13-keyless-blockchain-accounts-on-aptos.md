@@ -125,9 +125,11 @@ Therefore, switching to [zk]VMs would only make sense if it:
       + e.g., a SNARK-friendly hash function that has been published less than 5 years ago
  - [x] it is a universal setup scheme
       + All [zk]VMs seem to meet this requirement
+ - [ ] the zkVM design is described comprehensively in an academic paper / technical document
  - [ ] the zkVM stack is formally-verified
       + The approach taken by Jolt[^KDT24e] of verifying the crucial components could suffice
       + This includes components such as Groth16 circuits that wrap the zkVM proof
+
 
 #### Why not wrap a nozkVM proof?
 
