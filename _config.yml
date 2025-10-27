@@ -185,6 +185,8 @@ highlighter : rouge
 permalink   : date
 
 exclude:
+  - open-post.sh
+  - _posts/open-post.sh
   - CHANGELOG.md
   - HOW_TO_RELEASE.md
   - Gemfile

@@ -51,7 +51,7 @@ Return the public parameters:
 \left(\crs{\one{\tau_1^{\alpha_1} \tau_2^{\alpha_2} \cdots \tau_\ell^{\alpha_\ell}}}\right)\_{\alpha_1\in[0,d_1],\ldots,\alpha_\ell\in[0,d_\ell]}
 \\\\\
 \prk &\gets
-\left(\crs{\one{\tau_i^{\alpha_i} \tau_{i+1}^{\alpha_{i+1}} \cdots \tau_\ell^{\alpha_\ell}}}\right)\_{i\in[\ell],\alpha_i\in[0,d_1),\ldots,\alpha_\ell\in[0,d_\ell)}
+\left(\crs{\one{\tau_i^{\alpha_i} \tau_{i+1}^{\alpha_{i+1}} \cdots \tau_\ell^{\alpha_\ell}}}\right)\_{i\in[\ell],\alpha_i\in[0,d_1),\alpha_{i+1}\in[0,d_{i+1}],\ldots,\alpha_\ell\in[0,d_\ell]}
 \\\\\
 \vk &\gets
 \left(\crs{\two{\tau_i}}\right)\_{i\in[\ell]}
