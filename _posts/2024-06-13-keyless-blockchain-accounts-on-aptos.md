@@ -88,6 +88,72 @@ Put differently, Google can **protect** these users' keyless accounts much, **mu
 {: .note}
 Google's own bottom line depends on their ability to protect their OpenID Connect (OIDC) secret keys which secure your keyless account because **those same keys secure the widely-used "Sign in with Google" flow** all across the web!
 
+### What is the ideal zkSNARK scheme for Keyless?
+
+Ideally, we need several properties from the zkSNARK scheme that proves the [keyless relation](#zk-relation-keyless-authentication).
+
+1. [zkVM-based](#i-have-a-very-fast-zkvm-why-dont-you-use-it), to mitigate against bugs in the keyless relation implementation
+1. fast client-side proving on **all** mobile (and desktop) browsers (i.e., $\le 5$ seconds)
+1. transparent or universal setup, to minimize deployment complexities
+1. small proof sizes (i.e., hundreds of bytes)
+1. fast verification time (i.e., 1-2 ms in 1 thread) 
+
+Additional useful properties that the zkSNARK scheme could have:
+1. **PIOP-based**, which may allow us to expose "randomness" inside the circuit
+2. **Commit and prove**, which may allow us to compose with techniques such as FREpack[^SZ23e]
+
+Relaxations that could allow for:
+1. Higher proof sizes (1-3 KiB)
+2. $\omega(1)$ verification time, because the witness may be small enough
+
+Fallacies:
+1. **Not true:** "Once we have a stable, formally-verified circuit, we may not be changing it much anyway."
+1. **Not true:** "The SNARK will not change."
+    - New elliptic curve $\Rightarrow$ redo SNARK universal or trusted setup.
+    - New SNARK $\Rightarrow$ redo setup
+
+### Why Groth16?
+
+Given the current SoTA zkSNARK schemes, we must settle for [Groth16](/groth16).
+Groth16 gives us the fastest verifier we can get without making proving unnecessarily slow.
+
+Unfortunately, it only meets some of our requirements:
+1. ❌ R1CS-based zkSNARKs
+   - $\Rightarrow$ need to formally-verify the keyless relation DSL implementation
+   - $\Rightarrow$ need [training wheels](/training-wheels) $\Rightarrow$ need proving service
+1. ❌ slow client-side proving (25-37 seconds)
+   - $\Rightarrow$ need proving service
+1. ❌ trusted setup ceremonies whenever the keyless relation DSL implementation is upgraded
+1. ✅ small proof sizes (e.g., $128-192$ bytes)
+1. ✅ fast verification time (e.g., 1.4 ms in 1 thread)
+
+
+### Why not universal setup zkSNARKs?
+
+We cannot yet find one with a fast verifier and a fast prover.
+We can only get one or the other.
+
+Benefits:
+
+ 1. No more MPC setup ceremony
+    + $\Rightarrow$ less code 
+    + $\Rightarrow$ less complexity
+    + $\Rightarrow$ less human coordination
+ 1. Seamless to upgrade on-chain VK after bug fixes
+ 1. Could allow for setting up **families of circuits** rather than a single circuit
+    - $\Rightarrow$ this could mitigate against their slower proving time
+ 1. Easier to orchestrate prover service (PS) deployment
+    - Just point it to the DSL implementation code
+    - PS will compute the PRK on its own and cache it in the cloud
+
+Challenges:
+
+ 1. Slower ZKP verification time on-chain (e.g., custom gates in PLONK)
+ 1. Larger ZKP proofs in TXNs
+ 1. Even with _families of circuits_, browser clients must download a potentially-large PRK
+    + The alternative is to compute the PRK from the (likey-smaller) circuit code (e.g., R1CS or PLONK constraints)
+ 1. Slower proving time, typically (but maybe we make up for it via the "family of circuits trick")
+
 ### I have a very fast [zk]VM, why don't you use it?
 
 Switching to an (actual) zkVM[^zkzk] would be amazing for a lot of reasons:
@@ -129,7 +195,6 @@ Therefore, switching to [zk]VMs would only make sense if it:
  - [ ] the zkVM stack is formally-verified
       + The approach taken by Jolt[^KDT24e] of verifying the crucial components could suffice
       + This includes components such as Groth16 circuits that wrap the zkVM proof
-
 
 #### Why not wrap a nozkVM proof?
 
@@ -229,7 +294,7 @@ For a 100-feet view of it, see [this AIP-61 sub-section](https://github.com/apto
 
 ### Flow: End-to-end keyless transacting 
 
-Depicts the full keyless flow: the user generating an ESK and EPK, the user signing into the dapp with the EPK as the OIDC `nonce`, the dapp getting a JWT, exchanging it for a pepper, getting a ZKP from the prover service, the user signing a TXN with their ESK, the dapp sending the TXN containing the ZKP and ephemeral signature, and finally the blockchain verifying everything.
+Depicts the full keyless flow: the user generating an ESK and EPK, the user signing into the dapp with the EPK as the OIDC `nonce`, the dapp getting a JWT, exchanging it for a pepper, getting a ZKP from the prover service (PS), the user signing a TXN with their ESK, the dapp sending the TXN containing the ZKP and ephemeral signature, and finally the blockchain verifying everything.
 
 <div align="center"><img style="width:95%" src="/pictures/keyless-overview.png" /></div>
 
