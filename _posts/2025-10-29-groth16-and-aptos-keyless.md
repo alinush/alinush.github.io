@@ -27,6 +27,22 @@ $</div> <!-- $ -->
 
 ## Performance
 
+## Circuit size
+
+As of October 29th, 2025:
+
+ - 1,438,805 constraints
+ - 1,406,686 variables
+
+Not relevant for Groth16, but for other zkSNARKs like Spartan:
+ - The matrix $A$ has 4,203,190 non-zero terms
+ - The matrix $B$ has 3,251,286 non-zero terms
+ - The matrix $C$ has 2,055,196 non-zero terms
+ - Total number of nonzero terms: 9,509,672
+
+{: .note}
+I think our `task.sh` script in [the keyless-zk-proofs repo](https://github.com/aptos-labs/keyless-zk-proofs/tree/main/scripts) can be used to reproduce these "# of non-zero entries" numbers.
+
 ### Proving time breakdown
 
 These are the times taken on a [`t2d-standard-4`](https://gcloud-compute.com/t2d-standard-4.html) VM for an older version of the circuit with 1.3M constraints and variables. 
@@ -52,6 +68,18 @@ These are the times taken on a [`t2d-standard-4`](https://gcloud-compute.com/t2d
 | ABC time                       |               21  |
 | MSM $h(X)$ time                |            2,785  |
 | **Total**                      |         **6,209** |
+
+## Appendix: PLONK
+
+\# of “PLONK constraints” for the keyless relation is 6,421,050 (addition + multiplication gates, I believe.)
+
+Set up a PLONK proving key using a larger 12 GiB powers-of-tau file:
+```
+node --max-old-space-size=$((8192*2)) $(which snarkjs) plonk setup  main.r1cs ~/Downloads/powersOfTau28_hez_final_23.ptau plonk.zkey
+```
+
+{: .todo}
+Benchmark PLONK proving time.
 
 ## References
 
