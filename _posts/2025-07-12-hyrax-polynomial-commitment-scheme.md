@@ -33,6 +33,9 @@ article_header:
 Hyrax is constructed from _Pedersen vector commitments_ and _Bulletproofs_ inner product arguments (IPAs).
 Hyrax has _information-theoretic hiding_ commitments and _honest verifier zero-knowledge (HVZK)_ PCS openings.
 
+{: .note}
+This post has an accompanying [Twitter thread](https://x.com/alinush407/status/1947662884961477017).
+
 <!--more-->
 
 <!-- Here you can define LaTeX macros -->
@@ -435,10 +438,6 @@ Recall that $\emph{t}\le nm$ denotes the # of non-zero entries in the MLE $f$ or
 | $\hyraxnm$     | $\bot$                | $\msmG{n}$     |
 | $\hyraxSqN$    | $\bot$                | $\msmG{\sqN}$  |
 |----------------+-----------------------+---------------|
-
-## Conclusion
-
-Your thoughts or comments are welcome on [this thread](https://x.com/alinush407/status/1947662884961477017).
 
 ## References
 

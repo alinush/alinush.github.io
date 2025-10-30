@@ -71,15 +71,220 @@ These are the times taken on a [`t2d-standard-4`](https://gcloud-compute.com/t2d
 
 ## Appendix: PLONK
 
+
+### snarkjs compiler
+
 \# of “PLONK constraints” for the keyless relation is 6,421,050 (addition + multiplication gates, I believe.)
 
-Set up a PLONK proving key using a larger 12 GiB powers-of-tau file:
-```
-node --max-old-space-size=$((8192*2)) $(which snarkjs) plonk setup  main.r1cs ~/Downloads/powersOfTau28_hez_final_23.ptau plonk.zkey
+{: .info}
+How?
+Set up a PLONK proving key using a downloaded BN254 12 GiB powers-of-tau file and used ran a `snarkjs` command:
+`node --max-old-space-size=$((8192*2)) $(which snarkjs) plonk setup  main.r1cs ~/Downloads/powersOfTau28_hez_final_23.ptau plonk.zkey`
+
+### Benchmarks
+
+{: .note}
+These were run on my 10-core Macbook Pro M1 Max.
+
+#### EspressoSystems/jellyfish
+
+For `jellyfish`, I modified the benchmarks to [fix a bug](https://github.com/EspressoSystems/jellyfish/issues/413), exclude batch verification benches and increase the circuit size to $2^{22}$.
+(I tried using the exact 6.4M circuit size, but `jellyfish` borked. Maybe it only likes powers of two.)
+The `git` diff shows:
+```diff
+diff --git a/plonk/benches/bench.rs b/plonk/benches/bench.rs
+index 256f0d53..9b8aec21 100644
+--- a/plonk/benches/bench.rs
++++ b/plonk/benches/bench.rs
+@@ -12,6 +12,7 @@ use ark_bls12_377::{Bls12_377, Fr as Fr377};
+ use ark_bls12_381::{Bls12_381, Fr as Fr381};
+ use ark_bn254::{Bn254, Fr as Fr254};
+ use ark_bw6_761::{Fr as Fr761, BW6_761};
++use ark_serialize::{CanonicalSerialize, Compress};
+ use ark_ff::PrimeField;
+ use jf_plonk::{
+     errors::PlonkError,
+@@ -22,8 +23,9 @@ use jf_plonk::{
+ use jf_relation::{Circuit, PlonkCircuit};
+ use std::time::Instant;
+ 
++const NUM_PROVE_REPETITIONS: usize = 1;
+ const NUM_REPETITIONS: usize = 10;
+-const NUM_GATES_LARGE: usize = 32768;
++const NUM_GATES_LARGE: usize = 4_194_304;
+ const NUM_GATES_SMALL: usize = 8192;
+ 
+ fn gen_circuit_for_bench<F: PrimeField>(
+@@ -58,31 +60,33 @@ macro_rules! plonk_prove_bench {
+ 
+         let start = Instant::now();
+ 
+-        for _ in 0..NUM_REPETITIONS {
++        for _ in 0..NUM_PROVE_REPETITIONS {
+             let _ = PlonkKzgSnark::<$bench_curve>::prove::<_, _, StandardTranscript>(
+                 rng, &cs, &pk, None,
+             )
+             .unwrap();
+         }
+ 
++        let elapsed = start.elapsed();
++        println!(
++            "proving time total {}, {}: {} milliseconds",
++            stringify!($bench_curve),
++            stringify!($bench_plonk_type),
++            elapsed.as_millis() / NUM_PROVE_REPETITIONS as u128
++        );
++
+         println!(
+             "proving time for {}, {}: {} ns/gate",
+             stringify!($bench_curve),
+             stringify!($bench_plonk_type),
+-            start.elapsed().as_nanos() / NUM_REPETITIONS as u128 / $num_gates as u128
++            elapsed.as_nanos() / NUM_PROVE_REPETITIONS as u128 / $num_gates as u128
+         );
+     };
+ }
+ 
+ fn bench_prove() {
+-    plonk_prove_bench!(Bls12_381, Fr381, PlonkType::TurboPlonk, NUM_GATES_LARGE);
+-    plonk_prove_bench!(Bls12_377, Fr377, PlonkType::TurboPlonk, NUM_GATES_LARGE);
+     plonk_prove_bench!(Bn254, Fr254, PlonkType::TurboPlonk, NUM_GATES_LARGE);
+-    plonk_prove_bench!(BW6_761, Fr761, PlonkType::TurboPlonk, NUM_GATES_SMALL);
+-    plonk_prove_bench!(Bls12_381, Fr381, PlonkType::UltraPlonk, NUM_GATES_LARGE);
+-    plonk_prove_bench!(Bls12_377, Fr377, PlonkType::UltraPlonk, NUM_GATES_LARGE);
+     plonk_prove_bench!(Bn254, Fr254, PlonkType::UltraPlonk, NUM_GATES_LARGE);
+-    plonk_prove_bench!(BW6_761, Fr761, PlonkType::UltraPlonk, NUM_GATES_SMALL);
+ }
+ 
+ macro_rules! plonk_verify_bench {
+@@ -91,7 +95,7 @@ macro_rules! plonk_verify_bench {
+         let cs = gen_circuit_for_bench::<$bench_field>($num_gates, $bench_plonk_type).unwrap();
+ 
+         let max_degree = $num_gates + 2;
+-        let srs = PlonkKzgSnark::<$bench_curve>::universal_setup(max_degree, rng).unwrap();
++        let srs = PlonkKzgSnark::<$bench_curve>::universal_setup_for_testing(max_degree, rng).unwrap();
+ 
+         let (pk, vk) = PlonkKzgSnark::<$bench_curve>::preprocess(&srs, &cs).unwrap();
+ 
+@@ -99,6 +103,14 @@ macro_rules! plonk_verify_bench {
+             PlonkKzgSnark::<$bench_curve>::prove::<_, _, StandardTranscript>(rng, &cs, &pk, None)
+                 .unwrap();
+ 
++        let mut bytes = Vec::with_capacity(proof.serialized_size(Compress::Yes));
++        proof.serialize_with_mode(&mut bytes, Compress::Yes).unwrap();
++
++        println!(
++            "proof size: {} bytes",
++            bytes.len()
++        );
++
+         let start = Instant::now();
+ 
+         for _ in 0..NUM_REPETITIONS {
+@@ -117,14 +129,8 @@ macro_rules! plonk_verify_bench {
+ }
+ 
+ fn bench_verify() {
+-    plonk_verify_bench!(Bls12_381, Fr381, PlonkType::TurboPlonk, NUM_GATES_LARGE);
+-    plonk_verify_bench!(Bls12_377, Fr377, PlonkType::TurboPlonk, NUM_GATES_LARGE);
+-    plonk_verify_bench!(Bn254, Fr254, PlonkType::TurboPlonk, NUM_GATES_LARGE);
+-    plonk_verify_bench!(BW6_761, Fr761, PlonkType::TurboPlonk, NUM_GATES_SMALL);
+-    plonk_verify_bench!(Bls12_381, Fr381, PlonkType::UltraPlonk, NUM_GATES_LARGE);
+-    plonk_verify_bench!(Bls12_377, Fr377, PlonkType::UltraPlonk, NUM_GATES_LARGE);
+-    plonk_verify_bench!(Bn254, Fr254, PlonkType::UltraPlonk, NUM_GATES_LARGE);
+-    plonk_verify_bench!(BW6_761, Fr761, PlonkType::UltraPlonk, NUM_GATES_SMALL);
++    plonk_verify_bench!(Bn254, Fr254, PlonkType::TurboPlonk, NUM_GATES_SMALL);
++    plonk_verify_bench!(Bn254, Fr254, PlonkType::UltraPlonk, NUM_GATES_SMALL);
+ }
+ 
+ macro_rules! plonk_batch_verify_bench {
+@@ -168,19 +174,7 @@ macro_rules! plonk_batch_verify_bench {
+     };
+ }
+ 
+-fn bench_batch_verify() {
+-    plonk_batch_verify_bench!(Bls12_381, Fr381, PlonkType::TurboPlonk, 1000);
+-    plonk_batch_verify_bench!(Bls12_377, Fr377, PlonkType::TurboPlonk, 1000);
+-    plonk_batch_verify_bench!(Bn254, Fr254, PlonkType::TurboPlonk, 1000);
+-    plonk_batch_verify_bench!(BW6_761, Fr761, PlonkType::TurboPlonk, 1000);
+-    plonk_batch_verify_bench!(Bls12_381, Fr381, PlonkType::UltraPlonk, 1000);
+-    plonk_batch_verify_bench!(Bls12_377, Fr377, PlonkType::UltraPlonk, 1000);
+-    plonk_batch_verify_bench!(Bn254, Fr254, PlonkType::UltraPlonk, 1000);
+-    plonk_batch_verify_bench!(BW6_761, Fr761, PlonkType::UltraPlonk, 1000);
+-}
+-
+ fn main() {
+-    bench_prove();
++    // bench_prove();
+     bench_verify();
+-    bench_batch_verify();
+ }
 ```
 
+<!--
+`espressosystems/jellyfish` PLONK proof verification times:
+```
+verifying time for Bn254, PlonkType::TurboPlonk: 1356712 ns ==> 1.35 ms
+verifying time for Bn254, PlonkType::UltraPlonk: 1405920 ns ==> 1.40 ms
+
+RAYON_NUM_THREADS=1
+verifying time for Bn254, PlonkType::TurboPlonk: 1548500 ns
+verifying time for Bn254, PlonkType::UltraPlonk: 1721287 ns
+
+proving time total Bn254, PlonkType::TurboPlonk: 104160 milliseconds
+proving time for Bn254, PlonkType::TurboPlonk: 24833 ns/gate
+proving time total Bn254, PlonkType::UltraPlonk: 190865 milliseconds
+proving time for Bn254, PlonkType::UltraPlonk: 45505 ns/gate
+```
+-->
+
+Then, to run the benchmarks, in the root of the repo as per the [README](https://github.com/EspressoSystems/jellyfish/?tab=readme-ov-file#plonk-proof-generationverification), I ran:
+```
+time cargo bench --bench plonk-benches --features=test-srs
+```
+To run single-threaded:
+```
+time RAYON_NUM_THREADS=1 cargo bench --bench plonk-benches --features=test-srs
+```
+
+Notes:
+
+ 1. It generates a circuit with just addition gates
+    + It just insert $n$ gates where gate $i$ simply adds 1 to gate $i-1$
+ 1. By default runs multithread on all cores (judging from `htop` output)
+ 1. Single-threaded verification is a little bit slower
+ 1. TurboPLONK has custom gates and UltraPLONK adds lookups
+    
+**Uncertainties:**
+
+ 1. What is the relation being proved? The public input in the code is the empty vector.
+ 1. What values do the gates get assigned? Otherwise, hard to understand the MSM work being done.
+    + It is unclear what gate 0 is initialized to: note that `cs.zero()` does not mean the gate is given the value 0!
+ 1. Will the UltraPLONK verifier costs always be 1.36 ms no matter what the circuit is?
+ 1. What overhead do custom gates add over vanilla PLONK?
+
+| **Library** | Scheme     | # gates  | # threads | **Prove**   | **Verify** | **Proof**   |
+| ----------- | ---------- | -------- | --------- | ----------- | ---------- | -----------:|
+| jellyfish   | TurboPLONK | $2^{22}$ | default   | 104.16 secs | 1.36 ms    | 769 bytes   |
+| jellyfish   | UltraPLONK | $2^{22}$ | default   | 190.86 secs | 1.41 ms    | 1,481 bytes |
+| jellyfish   | TurboPLONK | $2^{13}$ | 1         | don't care  | 1.55 ms    | 769 bytes   |
+| jellyfish   | UltraPLONK | $2^{13}$ | 1         | don't care  | 1.72 ms    | 1,481 bytes |
+
+
 {: .todo}
-Benchmark PLONK proving time.
+Benchmark single-thread `jellyfish` proving times.
+Play with the witness size: figure out how to initialize the first gate to 0 vs. $p/2$.
+Benchmark the [CAP library](https://github.com/EspressoSystems/cap) to get a sense if custom gates add more verifier time.
+
+### EspressoSystems/hyperplonk
+
+{: .todo}
+Run some benchmarks [here](https://github.com/EspressoSystems/hyperplonk/blob/main/hyperplonk/benches/bench.rs)
+
+### dusk-network/plonk
+
+{: .todo}
+Benchmark `dusk-network/plonk` PLONK.
 
 ## References
 
