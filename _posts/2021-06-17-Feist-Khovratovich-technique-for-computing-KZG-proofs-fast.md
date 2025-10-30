@@ -16,6 +16,11 @@ sidebar:
 **tl;dr:** Given a polynomial $f(X)$ of degree $m$, can we compute all $n$ [KZG](/kzg) proofs for $f(\omega^k), k\in[0,n-1]$ in $O(n\log{n})$ time, where $\omega$ is a primitive $n$th root of unity?
 Dankrad Feist and Dmitry Khovratovich[^FK20] give a resounding 'yes!'
 
+
+{: .warning} 
+There may now be improvements over FK that are faster[^CJLplus24e]$^,$[^LJGK25e].
+This blog post still only explains the **original** FK algorithm.
+
 <!--more-->
 
 <p hidden>$$
