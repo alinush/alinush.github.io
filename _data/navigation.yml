@@ -234,6 +234,9 @@ cryptomat:
         url: /np-relations 
       - title: QAPs & R1CS
         url: /r1cs
+      #- title: PIOPs
+      #  url: /piop
+      #  originally introduced in DARK, https://eprint.iacr.org/2019/1229 (but AHPs introduced in Marlin are very similar but additionally need "holography")
       - title: Groth16
         url: /groth16
       - title: Spartan
