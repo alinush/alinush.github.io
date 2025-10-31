@@ -86,6 +86,9 @@ In fact, no matter which way we go, there may be some common work:
 ### PLONK-based
 
 See some [PLONK explorations below](#plonk).
+ 
+ 1. **Research:**
+    - Evaluate prover times on circuit sizes and inputs representative of keyless
 
 ### HyperPLONK-based (PQ)
 
