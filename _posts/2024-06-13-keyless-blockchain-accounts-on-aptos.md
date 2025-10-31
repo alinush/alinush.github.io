@@ -92,11 +92,12 @@ Google's own bottom line depends on their ability to protect their OpenID Connec
 
 Ideally, we need several properties from the zkSNARK scheme that proves the [keyless relation](#zk-relation-keyless-authentication).
 
-1. [zkVM-based](#i-have-a-very-fast-zkvm-why-dont-you-use-it), to mitigate against bugs in the keyless relation implementation
-1. fast client-side proving on **all** mobile (and desktop) browsers (i.e., $\le 5$ seconds)
-1. transparent or universal setup, to minimize deployment complexities
-1. small proof sizes (i.e., hundreds of bytes)
 1. fast verification time (i.e., 1-2 ms in 1 thread) 
+1. transparent or universal setup, to minimize deployment complexities
+1. mitigates against bugs in the keyless relation implementation $\Rightarrow$ [zkVM-based](#i-have-a-very-fast-zkvm-why-dont-you-use-it)
+1. fast client-side proving on **all** mobile (and desktop) browsers (i.e., $\le 5$ seconds)
+1. small proof sizes (i.e., hundreds of bytes)
+1. post-quantum upgradeable[^how-pq]
 
 Additional useful properties that the zkSNARK scheme could have:
 1. **PIOP-based**, which may allow us to expose "randomness" inside the circuit
@@ -118,15 +119,15 @@ Given the current SoTA zkSNARK schemes, we must settle for [Groth16](/groth16).
 Groth16 gives us the fastest verifier we can get without making proving unnecessarily slow.
 
 Unfortunately, it only meets some of our requirements:
+1. ✅ fast verification time (e.g., 1.4 ms in 1 thread)
+1. ❌ trusted setup ceremonies whenever the keyless relation DSL implementation is upgraded
 1. ❌ R1CS-based zkSNARKs
    - $\Rightarrow$ need to formally-verify the keyless relation DSL implementation
    - $\Rightarrow$ need [training wheels](/training-wheels) $\Rightarrow$ need proving service
 1. ❌ slow client-side proving (25-37 seconds)
    - $\Rightarrow$ need proving service
-1. ❌ trusted setup ceremonies whenever the keyless relation DSL implementation is upgraded
 1. ✅ small proof sizes (e.g., $128-192$ bytes)
-1. ✅ fast verification time (e.g., 1.4 ms in 1 thread)
-
+1. ❌ not PQ upgradeable
 
 ### Why not universal setup zkSNARKs?
 
@@ -195,6 +196,7 @@ Therefore, switching to [zk]VMs would only make sense if it:
  - [ ] the zkVM stack is formally-verified
       + The approach taken by Jolt[^KDT24e] of verifying the crucial components could suffice
       + This includes components such as Groth16 circuits that wrap the zkVM proof
+ - [ ] the zkVM stack is PQ upgradeable[^how-pq]
 
 #### Why not wrap a nozkVM proof?
 
@@ -699,9 +701,9 @@ For cited works, see below 👇👇
 [^omit-padding]: First, observe that there is no possible last input chunk size that has a 1-character output chunk: the smallest input chunk size is 1 byte, which requires 2 base64 characters (after padding this input chunk to 12 bits). The other cases are when the last output chunk is either 2 or 3 characters. But those correspond to exactly the edge cases when $\ell \bmod 3 = 1$ and $\ell \bmod 3 = 2$.
 [^optionality]: Plus, you can anyway later give optionality to your users and allow them to rotate their account to self-custody. Or, to have a backup secret key. Or, to only rely on Google as a recovery method with a timeout, as per the "highly-secure mode" [here](#can-google-steal-my-account). It's just like in the Web 2 world, users can add a 2nd authentication factor to their accounts.
 [^triviality]: We are not interested in trivially checking that the empty string is a sub-string, nor that $b$ is a substring of itself. In fact, we may even get into trouble if we accidentally check that in the keyless relation.
-
-{% include refs.md %}
-
 [^actually]: In practice, what is more likely to happen is that the zkVM is not fast enough, even for our small keyless relation. As a result, we will try to "express" the NP relation more efficiently: e.g., it is much easier to take as input $(n,p,q)$ and output `true` if $p$ and $q$ are prime and if $n = pq$ rather than take $n$ as input, factor it into primes $p$ and $q$ and output $(p,q)$ if you succeed. Many such optimizations may be possible for the keyless relation. But they may be much more complicated than the example above, which means they could be misimplmented (even if we write Rust) and lead to a soundness bug.
 [^unreasonable-confidence]: I am pretty confident the constraint count can be reduced to 1 million.
 [^zkzk]: Sorry, I cannot, in good faith, call it a _"zkzkVM"_: it is simply too confusing. I would call the initial thing what it should've been called: a **"nozkVM"** and call the real thing zkVM!
+[^how-pq]: Imagine we instantiate a PQ-secure scheme like Spartan, HyperPLONK or WHIR with a PQ-secure PCS, but we wrap everything in Groth16 or UltraPLONK. Then, we could easily remove the wrapping and get a PQ-secure scheme.
+
+{% include refs.md %}

@@ -2,10 +2,10 @@
 tags:
  - keyless
  - Groth16
-title: Groth16 and Aptos Keyless
+title: Zero-knowledge proofs for Aptos Keyless
 #date: 2020-11-05 20:45:59
 #published: false
-permalink: keyless-groth16
+permalink: keyless-zkp
 #sidebar:
 #    nav: cryptomat
 #article_header:
@@ -15,7 +15,7 @@ permalink: keyless-groth16
 ---
 
 {: .info}
-**tl;dr:** Notes on our use of Groth16 for [Aptos Keyless](/keyless).
+**tl;dr:** Notes on our current use of Groth16 for [Aptos Keyless](/keyless) and how we might improve upon it.
 
 <!--more-->
 
@@ -25,9 +25,97 @@ permalink: keyless-groth16
 <div style="display: none;">$
 $</div> <!-- $ -->
 
-## Performance
+## Research roadmap
 
-## Circuit size
+Recall the goals discussed [before](/keyless#what-is-the-ideal-zksnark-scheme-for-keyless):
+
+ 1. $\le$ 1.4 ms single-threaded individual ZKP verification time
+ 1. make it trivial to upgrade the keyless NP relation
+    * trusted setups are cumbersome
+    * universal setups are less cumbersome
+    * transparent are amazing
+ 1. safely implement the NP relation so as to avoid relying on [training wheels](/training-wheels)
+ 1. client-side proving
+    + or at least, minimize costs of running a prover service
+ 1. small proof sizes (1.5 KiB?)
+
+Some pains that we have today:
+
+ 1. **Security:** Switch to zkVM $\Rightarrow$ re-implement keyless relation in Rust; no more circuits
+ 1. **Simplicity & costs:** Remove proving service
+ 1. **Simplicity:** Remove circuit-specific trusted setup
+ 1. **Privacy:** Make proving service oblivious via wrapping
+ 1. **Efficiency:** Make circuit smaller, from 1.5M to 1M
+
+There are **several directions** 👇 for replacing the keyless ZKP.
+In fact, no matter which way we go, there may be some common work:
+ 1. **Security:** formally-verify Keyless circuits, or zkVM implementation, or ZKP wrapping circuits
+ 1. **Upgradability:** registration-based, monetarily-incentivized, curve-agnostic, on-chain universal or trusted setups
+    + e.g., if Groth16 is involed, or if a KZG-like scheme is involved
+
+### Groth16-based
+
+ 1. **Temporary prover service scalability:** deploy VKs for different SHA2-message lengths
+    + Inform optimal message lengths by building a histogram of `iss`-specific JWT sizes
+ 4. **Client-side only proving:** 
+    + _Milestone 0:_ Upgrade to UltraGroth16 $\Rightarrow$ no more Fiat-Shamir
+        + _Path 1:_ modify `ark-groth16` into `ark-ultra-groth16` and rewrite circuit
+        + _Path 2_: modify `circom`
+    + _Milestone 1:_ Combine with FREpack-like techniques
+    + _Milestone 2:_ faster EC arithmetic in JavaScript (How optimized is `snarkjs`? I suspect very well-optimized.) $\Rightarrow$ could prove in under 10 seconds
+    + _Milestone 3:_ Faster prover implementation via WebGPU $\Rightarrow$ prove $<5$ seconds
+
+### Spartan-based (PQ)
+
+ 1. **Research:**
+    - ZK sumcheck
+        - _Path 1:_ DeKART's ZK sumcheck
+    - Dense MLE ZK PCS:
+        + _Path 1:_ Survey ZK MLE PCS and pick one whose verification involves a constant-number of pairings and minimizes opening time over MLEs with small entries
+    - Sparse MLE PCS:
+        * _Path 1:_ Implement and iterate over [Cinder](/cinder)
+        * _Path 2:_ KZH + GIPA
+        * _Path 3:_ WHIR?
+        - _Path 4:_ Leverage uniformity in R1CS matrices
+ 1. **Client-side proving:**
+    - _Milestone 1:_ 
+        * can prove sumcheck and dense ZK MLE PCS opening client-side in < 5s
+        + can prove sparse MLE PCS opening server-side < 1s
+    - _Milestone 2_: can prove fully client-side < 5s
+
+### PLONK-based
+
+See some [PLONK explorations below](#plonk).
+
+### HyperPLONK-based (PQ)
+
+ 1. **Research:**
+    - ZK sumcheck
+    - Dense (ZK?) MLE PCS (similar difficulty as in Spartan)
+    - Choice of custom gates to reduce prover time
+    - Wrap sumcheck
+ 1. **Client-side proving:** < 5s
+
+### WHIR-based (PQ)
+
+ 1. **Research:**
+    1. WHIR for R1CS
+    1. Add ZK
+    1. Wrapping WHIR fast
+ 1. **Client-side proving:** <
+    - _Milestone 1:_
+        + prove WHIR client-side in < 5s
+        + wrap server-side < 1s
+    - _Milestone 2_: can prove fully client-side < 5s
+
+### zkVM-based (PQ)
+
+{: .todo}
+Jolt, Ligero could be viable options very soon.
+
+## Groth16 
+
+### Circuit size
 
 As of October 29th, 2025:
 
@@ -43,7 +131,7 @@ Not relevant for Groth16, but for other zkSNARKs like Spartan:
 {: .note}
 I think our `task.sh` script in [the keyless-zk-proofs repo](https://github.com/aptos-labs/keyless-zk-proofs/tree/main/scripts) can be used to reproduce these "# of non-zero entries" numbers.
 
-### Proving time breakdown
+### rapidsnark (modified) proving time
 
 These are the times taken on a [`t2d-standard-4`](https://gcloud-compute.com/t2d-standard-4.html) VM for an older version of the circuit with 1.3M constraints and variables. 
 
@@ -69,8 +157,10 @@ These are the times taken on a [`t2d-standard-4`](https://gcloud-compute.com/t2d
 | MSM $h(X)$ time                |            2,785  |
 | **Total**                      |         **6,209** |
 
-## Appendix: PLONK
+## PLONK
 
+{: .note}
+All benchmarks were run on my 10-core Macbook Pro M1 Max.
 
 ### snarkjs compiler
 
@@ -81,12 +171,7 @@ How?
 Set up a PLONK proving key using a downloaded BN254 12 GiB powers-of-tau file and used ran a `snarkjs` command:
 `node --max-old-space-size=$((8192*2)) $(which snarkjs) plonk setup  main.r1cs ~/Downloads/powersOfTau28_hez_final_23.ptau plonk.zkey`
 
-### Benchmarks
-
-{: .note}
-These were run on my 10-core Macbook Pro M1 Max.
-
-#### EspressoSystems/jellyfish
+### EspressoSystems/jellyfish
 
 For `jellyfish`, I modified the benchmarks to [fix a bug](https://github.com/EspressoSystems/jellyfish/issues/413), exclude batch verification benches and increase the circuit size to $2^{22}$.
 (I tried using the exact 6.4M circuit size, but `jellyfish` borked. Maybe it only likes powers of two.)
