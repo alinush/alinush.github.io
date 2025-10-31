@@ -102,6 +102,8 @@ See some [PLONK explorations below](#plonk).
 
 ### WHIR-based (PQ)
 
+See some [WHIR explorations below](#whir).
+
  1. **Research:**
     1. WHIR for R1CS
     1. Add ZK
@@ -374,6 +376,11 @@ Run some benchmarks [here](https://github.com/EspressoSystems/hyperplonk/blob/ma
 
 {: .todo}
 Benchmark `dusk-network/plonk` PLONK.
+
+## WHIR
+
+{: .todo}
+Include Yinuo's numbers.
 
 ## References
 
