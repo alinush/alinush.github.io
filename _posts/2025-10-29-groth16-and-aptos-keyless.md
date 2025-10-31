@@ -44,7 +44,7 @@ Our goals for keyless that would remove a lot of pain:
  1. Implement keyless relation safely in Rust, not as a circuit (**security**) $\Rightarrow$ zkVMs
  1. Remove circuit-specific trusted setup (**tame complexity**) $\Rightarrow$ WHIR, Spartan, [Hyper]PLONK
  1. Remove proving service (**tame complexity**, **reduce costs**)
- 1. Prove obliviously via wrapping (**privacy**) $\Rightarrow$ Sparatan, wrapped WHIR, [wrapped] HyperPLONK
+ 1. Prove obliviously via wrapping (**privacy**) $\Rightarrow$ Spartan, wrapped WHIR, [wrapped] HyperPLONK
  1. Reduce circuit size from 1.5M to 1M (**efficiency**)
 
 There are **several directions** 👇 for replacing the keyless ZKP.
