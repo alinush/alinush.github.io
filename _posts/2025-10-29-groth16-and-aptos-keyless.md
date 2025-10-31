@@ -382,8 +382,26 @@ Benchmark `dusk-network/plonk` PLONK.
 {: .todo}
 Include Yinuo's numbers.
 
+## Ligetron
+
+Notes from the ZKProof presentation[^muthu-zkproof7] below:
+
+ - Proving WASM executions.
+ - ZK by default.
+ - WebGPU acceleration.
+ - Hash-based + code-interleaving.
+ - Streaming prover ("witness and constraints can be streamed").
+ - Proving key is allegedly small.
+ - Based on MPCitH. See (Simons?) Berkley talk for more depth, potentially.
+ - Prover is memory efficient: memory usage is proportional to what the WASM program uses.
+ - To get memory efficiency they sacrifice proof length (otherwise, it's hard due to inherent time-space trade-offs in error-correcting codes based on the distance of the code).
+ - Encodes full witness as a $\sqrt{n}$ by $\sqrt{n}$ matrix
+ - Can "stream the matrix" into the IOP to ensure memory is $O(\sqrt{n})$
+
 ## References
 
 For cited works, see below 👇👇
+
+[^muthu-zkproof]: [ZKVM - To Compile Or Precompile - Muthu Venkitasubramaniam](https://youtu.be/eZEwcOxSsj0?t=447)
 
 {% include refs.md %}
