@@ -48,8 +48,8 @@ If we were to prioritize the problem we'd like solved first / pain points:
 
 There are **several directions** 👇 for replacing the keyless ZKP.
 In fact, no matter which way we go, there may be some common work:
- 1. **Security:** formally-verify Keyless circuits, or zkVM implementation, or ZKP wrapping circuits
- 1. **Research:** MLE PCSs, zkSNARKs, efficient circuit representations, etc.
+ 1. **Formal verification:** formally-verify Keyless circuits, or zkVM implementation, or ZKP wrapping circuits
+ 1. **Cryptography:** MLE PCSs, zkSNARKs, efficient circuit representations, etc.
 
 ### Groth16-based
 
