@@ -39,32 +39,60 @@ Recall the goals discussed [before](/keyless#what-is-the-ideal-zksnark-scheme-fo
     + or at least, minimize costs of running a prover service
  1. small proof sizes (1.5 KiB?)
 
-Our goals for keyless that would remove a lot of pain:
+If we were to prioritize the problem we'd like solved first / pain points:
 
  1. Implement keyless relation safely in Rust, not as a circuit (**security**) $\Rightarrow$ zkVMs
  1. Remove circuit-specific trusted setup (**tame complexity**) $\Rightarrow$ WHIR, Spartan, [Hyper]PLONK
  1. Remove proving service (**tame complexity**, **reduce costs**)
  1. Prove obliviously via wrapping (**privacy**) $\Rightarrow$ Spartan, wrapped WHIR, [wrapped] HyperPLONK
- 1. Reduce circuit size from 1.5M to 1M (**efficiency**)
 
 There are **several directions** 👇 for replacing the keyless ZKP.
 In fact, no matter which way we go, there may be some common work:
  1. **Security:** formally-verify Keyless circuits, or zkVM implementation, or ZKP wrapping circuits
- 1. **Upgradability:** registration-based, monetarily-incentivized, curve-agnostic, on-chain universal or trusted setups
-    + e.g., if Groth16 is involed, or if a KZG-like scheme is involved
  1. **Research:** MLE PCSs, zkSNARKs, efficient circuit representations, etc.
 
 ### Groth16-based
 
- 1. **Temporary prover service scalability:** deploy VKs for different SHA2-message lengths
-    + Inform optimal message lengths by building a histogram of `iss`-specific JWT sizes
- 4. **Client-side only proving:** 
+ 1. **Faster delegated proving:**
     + _Milestone 0:_ Upgrade to UltraGroth16 $\Rightarrow$ no more Fiat-Shamir
         + _Path 1:_ modify `ark-groth16` into `ark-ultra-groth16` and rewrite circuit
         + _Path 2_: modify `circom`
-    + _Milestone 1:_ Combine with FREpack-like techniques
-    + _Milestone 2:_ faster EC arithmetic in JavaScript (How optimized is `snarkjs`? I suspect very well-optimized.) $\Rightarrow$ could prove in under 10 seconds
-    + _Milestone 3:_ Faster prover implementation via WebGPU $\Rightarrow$ prove $<5$ seconds
+    + _Milestone 1:_ Combine with FREpack/Zinc techniques
+    - _Mileston 2:_ Deploy VKs for different SHA2-message lengths
+        + Inform optimal message lengths by building a histogram of `iss`-specific JWT sizes
+
+Other directions we can explore here:
+
+ 1. GPU-based Groth16 prover service
+    - We'd need to optimize the cloud costs
+        + Cheaper CPU instance + add one or more GPUs to it? Compare:
+            + [32-core CPU instance](https://gcloud-compute.com/t2d-standard-32.html?utm_source=chatgpt.com) is \$1.63 / hour
+            + vs. [4-core CPU instance](https://gcloud-compute.com/t2d-standard-4.html?utm_source=chatgpt.com) is \$0.20 / hour plus [older NVIDIA T4 GPU](https://cloud.google.com/compute/gpus-pricing?utm_source=chatgpt.com&hl=en) is \$0.35 / hour
+            + $\Rightarrow$ 3x cheaper, maybe
+    - Ingonyama has made [great progress on this](https://medium.com/@ingonyama/icicle-snark-the-fastest-groth16-implementation-in-the-world-00901b39a21f); repo [here](https://github.com/ingonyama-zk/icicle-snark/tree/master)
+ 1. There may be a small $\le 10\%$ proving time reduction via a different way to make Groth16 ZK
+
+#### Dismissed directions
+
+**Client-side proving:**
+Even if we reduce the # of constraints $n$ to 100,000, there will likely still be $m \approx n$ variables $\Rightarrow$ [proving key](/groth16#mathsfgroth16setup_mathcalg1lambda-r-rightarrow-mathsfprkvktd) size will be $\approx 2m \Gr_1 + m\Gr_2 + n\Gr_1 \approx 2m\Gr_1 + 2m\Gr_1 + m\Gr_1 = 5m\Gr_1 \Rightarrow$ 500,000 $\times$ 32 bytes $\approx$ 15 MiB.
+
+If we ignore the proving key issues, there'd be a few ways to speed up client proving:
+ - Faster EC arithmetic in JavaScript/WASM
+    + How optimized is `snarkjs`? I suspect very well-optimized.
+ - Faster prover implementation via WebGPU $\Rightarrow$ prove $<5$ seconds
+
+**Outsource 50% of the Groth16 proving to the client:**
+In principle, the server could do any subset of the proving work while the client could do the rest.
+For example, the client could do FFTs and MSM for $h(X)$, server could do MSMs for $\one{A},\two{B},\one{C}$
+
+The **show stopper** is, once again, that we need to ensure the proving key is small on the client because webapps would need to download it.
+So, this means the client can only do $\Gr_1$ MSMs of size $\min{(m,n)}$, where $m = $ # of R1CS variables and $n = $ # of constraints.
+So, for $2^{20}$ constraints, this gives $2^{20} \times$ 32 bytes = 32 MiB prover key.
+Too much communication.
+
+We'd also have to be very carefu; with the TW signature, which should only be computed over valid proofs.
+The client should not trick server into signing a bad proof.
 
 ### Spartan-based (PQ)
 
@@ -79,6 +107,8 @@ In fact, no matter which way we go, there may be some common work:
         * _Path 3:_ WHIR?
         - _Path 4:_ Leverage uniformity in R1CS matrices
  1. **Client-side proving:**
+    - <u>Main blocker</u>: the size-$(m-2)$ PCS SRS, where $m$ is the # of R1CS variables
+        + Assuming the worst case where the public statement $(\mathbf{x}, 1)$ is of size 2 and the witness $\mathbf{w}$ takes up the rest of the R1CS variables
     - _Milestone 1:_ 
         * can prove sumcheck and dense ZK MLE PCS opening client-side in < 5s
         + can prove sparse MLE PCS opening server-side < 1s
@@ -90,6 +120,10 @@ See some [PLONK explorations below](#plonk).
  
  1. **Research:**
     - Evaluate prover times on circuit sizes and inputs representative of keyless
+ 1. **Client-side proving:**
+    - <u>Main blocker</u>: size-$n$ PCS SRS, where $n$ is the size of the circuit (# of additions + # of multiplications)
+        + Currently, $n \approx$ 6.4 million
+        - HyperPLONK has the same challenge
 
 ### HyperPLONK-based (PQ)
 
@@ -98,17 +132,19 @@ See some [PLONK explorations below](#plonk).
     - Dense (ZK?) MLE PCS (similar difficulty as in Spartan)
     - Choice of custom gates to reduce prover time
     - Wrap sumcheck
- 1. **Client-side proving:** < 5s
+ 1. **Client-side proving:**
+    + Same as in PLONK [above](#plonk-based), except maybe custom gates don't have as big of an impact on prover time
+    + (Note: in univariate PLONK, custom gates affect quotient poylnomial degree but do not affect KZG SRS size because, apparently, PLONK splits up the quotient polynomial into size-$n$ chunks)
 
 ### WHIR-based (PQ)
 
 See some [WHIR explorations below](#whir).
 
  1. **Research:**
-    1. WHIR for R1CS
+    1. Understand what the $\Sigma$-IOP for (G)R1CS in the WHIR paper looks like.
     1. Add ZK
     1. Wrapping WHIR fast
- 1. **Client-side proving:** <
+ 1. **Client-side proving:** < 5s
     - _Milestone 1:_
         + prove WHIR client-side in < 5s
         + wrap server-side < 1s
@@ -118,6 +154,13 @@ See some [WHIR explorations below](#whir).
 
 {: .todo}
 Jolt, Ligero could be viable options very soon.
+
+## Engineering roadmap
+
+There's several things that, if we, spend effort on they are likely to be fruitful no matter what research direction we take:
+ 
+ 1. Reducing circuit size from 1.5M to 1M
+ 1. Registration-based, monetarily-incentivized, curve-agnostic, on-chain powers-of-$\tau$ and Groth16 setups
 
 ## Groth16 
 
@@ -402,6 +445,6 @@ Notes from the ZKProof presentation[^muthu-zkproof7] below:
 
 For cited works, see below 👇👇
 
-[^muthu-zkproof]: [ZKVM - To Compile Or Precompile - Muthu Venkitasubramaniam](https://youtu.be/eZEwcOxSsj0?t=447)
+[^muthu-zkproof7]: [ZKVM - To Compile Or Precompile - Muthu Venkitasubramaniam](https://youtu.be/eZEwcOxSsj0?t=447)
 
 {% include refs.md %}
