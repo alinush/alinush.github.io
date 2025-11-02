@@ -34,7 +34,7 @@ Hyrax is constructed from _Pedersen vector commitments_ and _Bulletproofs_ inner
 Hyrax has _information-theoretic hiding_ commitments and _honest verifier zero-knowledge (HVZK)_ PCS openings.
 
 {: .note}
-This post has an accompanying [Twitter thread](https://x.com/alinush407/status/1947662884961477017).
+This post has an accompanying [Twitter thread](https://x.com/alinush/status/1947662884961477017).
 
 <!--more-->
 

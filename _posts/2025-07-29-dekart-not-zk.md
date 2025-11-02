@@ -363,7 +363,7 @@ Therefore, the simulator $\sim$ yields a homomorphism $\Rightarrow$ symmetric ex
 
 ## Conclusion
 
-Your thoughts or comments are welcome on [this thread](https://x.com/alinush407/status/1950600327066980693).
+Your thoughts or comments are welcome on [this thread](https://x.com/alinush/status/1950600327066980693).
 
 ## Appendix: Computing $h(X)$
 

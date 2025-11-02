@@ -555,7 +555,7 @@ The verifier time only varies with $\ell$, not $n$.
 
 ## Conclusion
 
-Your thoughts or comments are welcome on [this thread](https://x.com/alinush407/status/1950600327066980693).
+Your thoughts or comments are welcome on [this thread](https://x.com/alinush/status/1950600327066980693).
 
 ### Acknowledgements
 

@@ -624,7 +624,7 @@ For cited works, see below 👇👇
 [^foia]: [New NIST/NSA relevelations](https://web.archive.org/web/20200229145033/https://catless.ncl.ac.uk/Risks/14/59#subj7), Dave Banisar, 1993
 [^hasse]: [Hasse's theorem on elliptic curves](https://en.wikipedia.org/wiki/Hasse%27s_theorem_on_elliptic_curves), Wikipedia
 [^i-confirmed]: See my [StackExchange post](https://crypto.stackexchange.com/questions/113745/ecdsa-without-field-inversion-during-verification/113749#113749) double-checking the sanity of avoiding the field inversion and asking why it hasn't been done before.
-[^inv-tweet]: [Today, I f***** around and \[re\]found out how slow inverting a field elements is](https://x.com/alinush407/status/1836912804902682625), Alin Tomescu, 2024
+[^inv-tweet]: [Today, I f***** around and \[re\]found out how slow inverting a field elements is](https://x.com/alinush/status/1836912804902682625), Alin Tomescu, 2024
 [^libsecp256k1]: [Crate libsecp256k1 0.7.1](https://docs.rs/libsecp256k1/0.7.1/libsecp256k1/)
 [^minerva]: [Minerva attack](https://minerva.crocs.fi.muni.cz/), 2020
 [^modified-ecda]: [This](https://crypto.stackexchange.com/questions/53025/what-is-customizable-in-ecdsa-signature-and-verification) StackExchange post suggests that signing as $(g^k, k^{-1}(H(m)+\sk\cdot r))$ can be useful when combining ECDSA with other algorithms.

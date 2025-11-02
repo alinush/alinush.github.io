@@ -788,7 +788,7 @@ Thanks to Justin Thaler, Kabir Peshawaria and Guru Vamsi Policharla for explaini
 
 ## Conclusion
 
-Your thoughts or comments are welcome on [this thread](https://x.com/alinush407/status/1933978751324262671).
+Your thoughts or comments are welcome on [this thread](https://x.com/alinush/status/1933978751324262671).
 
 ## References
 

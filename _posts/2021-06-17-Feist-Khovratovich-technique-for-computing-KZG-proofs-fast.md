@@ -323,7 +323,7 @@ To summarize, to compute all proofs $\pi_i$ for $f(\omega^i)$, the _Feist-Khovra
 A few things that we could still talk about, but we are out of time:
 
  - Implementing this efficiently (see one attempt [here](https://github.com/alinush/libpolycrypto/blob/fk/libpolycrypto/bench/BenchFk.cpp))
- - Optimizing part of the implementation (see Dankrad's observation's in [this tweet](https://twitter.com/alinush407/status/1360228894851305475))
+ - Optimizing part of the implementation (see Dankrad's observation's in [this tweet](https://twitter.com/alinush/status/1360228894851305475))
  - Other techniques for computing proofs on multiple polynomials from the FK paper[^FK20]
  - Decreasing KZG verifier time when opening multiple polynomials $(f_i)_{i\in[t]}$ at the same point $x=z^t$, also via the power of DFTs[^GW21]
 

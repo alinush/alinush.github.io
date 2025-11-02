@@ -448,7 +448,7 @@ Such a trivial scheme is excluded by our **unpredictability** definition.
 [^higher-than-n]: A multilinear map of size $n' > n$ inputs would also work by forcing the last $n' - n$ inputs to be some predetermined values from a common-reference string.
 [^multiverse]: This gets into the recently-introduced notion of a **multiverse signature scheme**, where players can enter and leave as they please, allowing for any subset of the current $N$ players to form a $t$-out-of-$n$ committee (for any $t,n$ with $n \le N$).
 [^roll]: **Roll with Move: Secure, instant randomness on Aptos**, by Alin Tomescu and Zhuolun Xiang, 2024, [URL](https://aptoslabs.medium.com/roll-with-move-secure-instant-randomness-on-aptos-c0e219df3fb1)
-[^sudoku]: [What is a ZK proof?](https://twitter.com/alinush407/status/1661461336797380611), Alin Tomescu
+[^sudoku]: [What is a ZK proof?](https://twitter.com/alinush/status/1661461336797380611), Alin Tomescu
 [^sui]: [Sui DKG](https://blog.sui.io/secure-native-randomness-testnet/)
 [^vdf]: Although **verifiable delay functions (VDFs)** also give rise to efficent distributed randomness beacons, we do not of VDF-based beacons that are _responsive_: i.e., they produce beacon values as fast as the network speed.
 

@@ -24,7 +24,7 @@ $</div> <!-- $ -->
 
 ## Tweet summary
 
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Today, I f***** around and [re]found out how slow inverting a field elements is 😱<br><br>Avoid it like the plague!<br><br>Or, use batch inversion, if applicable (e.g., <a href="https://t.co/8fgH1dtEzl">https://t.co/8fgH1dtEzl</a> 👇)<br><br>Or, if inverting a root of unity, don&#39;t do it; do this: 1/w^i = w^{n - i} <a href="https://t.co/slawvvp89r">pic.twitter.com/slawvvp89r</a></p>&mdash; alin.apt (@alinush407) <a href="https://twitter.com/alinush407/status/1836912804902682625?ref_src=twsrc%5Etfw">September 19, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Today, I f***** around and [re]found out how slow inverting a field elements is 😱<br><br>Avoid it like the plague!<br><br>Or, use batch inversion, if applicable (e.g., <a href="https://t.co/8fgH1dtEzl">https://t.co/8fgH1dtEzl</a> 👇)<br><br>Or, if inverting a root of unity, don&#39;t do it; do this: 1/w^i = w^{n - i} <a href="https://t.co/slawvvp89r">pic.twitter.com/slawvvp89r</a></p>&mdash; alin.apt (@alinush) <a href="https://twitter.com/alinush/status/1836912804902682625?ref_src=twsrc%5Etfw">September 19, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 ## Conclusion and acknowledgements
 

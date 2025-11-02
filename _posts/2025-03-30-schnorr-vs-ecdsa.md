@@ -143,7 +143,7 @@ There are other aspects that I did not have time to look enough into but the rea
 
  1. Daniel J. Bernstein argues that [Ed25519 is more robust against implementation failures](https://blog.cr.yp.to/20191024-eddsa.html)
 
-Your thoughts or comments are welcome on [this thread](https://x.com/alinush407/status/1913592499228299395).
+Your thoughts or comments are welcome on [this thread](https://x.com/alinush/status/1913592499228299395).
 
 ## References
 

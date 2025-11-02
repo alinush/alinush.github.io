@@ -261,6 +261,6 @@ This may be fixable though.
 
 [^can-we]: Unclear why this would be reasonable, since powers-of-$\tau$ ceremonies do not output such commitments. And if the verifier has to compute an AFGHO-style commitment to the $\ptau$ it is game-over in terms of verifier-efficiency.
 [^pp-phase-2]: I made this observation in the [Groth16 blogpost too](/groth16#post-processing-phase-1-and-phase-2-into-a-bgm17-prk-and-vk).
-[^tweet]: Twitte replies [here](https://x.com/alinush407/status/1899310471930576978) and [here](https://x.com/alinush407/status/1899314608688832928).
+[^tweet]: Twitte replies [here](https://x.com/alinush/status/1899310471930576978) and [here](https://x.com/alinush/status/1899314608688832928).
 
 {% include refs.md %}

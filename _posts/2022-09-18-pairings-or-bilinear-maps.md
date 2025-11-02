@@ -20,7 +20,7 @@ In this post, I'll teach you a little about the properties of pairings, their cr
 In fact, by the end of this post, [some of you might want to spend a year or two in jail](#history).
 
 {: .warning}
-**Twitter correction:** The [original tweet announcing this blog post](https://twitter.com/alinush407/status/1612518576862408705) stated that _"**S**NARKs would not be possible without [pairings]"_, with the highlighted **S** meant to emphasize the "succinctness" of such SNARKs. However, [thanks to several folks on Twitter](#acknowledgements), I realized this is **not** exactly true and depends on what one means by "succinct." Specifically, "succinct" SNARKs, in the _polylogarithmic proof size_ sense defined by Gentry and Wichs[^GW10], exist from a plethora of assumptions, including discrete log[^BCCplus16] or random oracles[^Mica98]. Furthermore, "succinct" SNARKs, in the sense of $O(1)$ group elements proof size, exist from RSA assumptions too[^LM18]. What pairings do give us, currently, are SNARKs with the smallest, concrete proof sizes (i.e., in # of bytes).
+**Twitter correction:** The [original tweet announcing this blog post](https://twitter.com/alinush/status/1612518576862408705) stated that _"**S**NARKs would not be possible without [pairings]"_, with the highlighted **S** meant to emphasize the "succinctness" of such SNARKs. However, [thanks to several folks on Twitter](#acknowledgements), I realized this is **not** exactly true and depends on what one means by "succinct." Specifically, "succinct" SNARKs, in the _polylogarithmic proof size_ sense defined by Gentry and Wichs[^GW10], exist from a plethora of assumptions, including discrete log[^BCCplus16] or random oracles[^Mica98]. Furthermore, "succinct" SNARKs, in the sense of $O(1)$ group elements proof size, exist from RSA assumptions too[^LM18]. What pairings do give us, currently, are SNARKs with the smallest, concrete proof sizes (i.e., in # of bytes).
 
 <p hidden>$$
 \def\idt{\mathbb{1}_{\Gr_T}}
@@ -178,7 +178,7 @@ Interestingly, the same pattern also arose in the development of lattice-based c
 
 {: .note}
 The recent 40-year celebration of elliptic curve cryptography includes many interesting historical accounts in talks by Victor Miller, Neal Koblitz, Dan Boneh and Kristin Lauter[^forty-years].
-While it was happening, I could not help myself but [tweet all the little gems I found](https://x.com/alinush407/status/1955010288845197673).
+While it was happening, I could not help myself but [tweet all the little gems I found](https://x.com/alinush/status/1955010288845197673).
 
 ## Arithmetic tricks with pairings
 
