@@ -18,6 +18,11 @@ permalink: pst
 ---
 
 
+{: .info}
+**tl;dr:** The 1st multivariate polynomial commitment scheme based on a non-trivial generalization of [KZG](/kzg).
+
+<!--more-->
+
 {% include pairings.md %}
 {% include mle.md %}
 {% include time-complexities.md %}
@@ -26,11 +31,6 @@ permalink: pst
 <div style="display: none;">$
 \def\crs#1{\textcolor{green}{#1}}
 $</div> <!-- $ -->
-
-{: .info}
-**tl;dr:** The 1st multivariate polynomial commitment scheme based on a non-trivial generalization of [KZG](/kzg).
-
-<!--more-->
 
 ## Introduction
 
