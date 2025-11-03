@@ -173,9 +173,11 @@ cryptomat:
       - title: Bilinear accumulators
         url: /bilinear-accumulators
 
-  - title: Vector commitments
+  - title: (Vector) commitments
     url: /vc
     children:
+      - title: Pedersen
+        url: /pedersen
       - title: Merkle trees
         url: /merkle
       - title: Feist-Khovratovich (FK) precomputation
