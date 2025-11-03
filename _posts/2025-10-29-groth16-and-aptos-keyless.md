@@ -39,10 +39,10 @@ Recall the goals discussed [before](/keyless#what-is-the-ideal-zksnark-scheme-fo
     + or at least, minimize costs of running a prover service
  1. small proof sizes (1.5 KiB?)
 
-If we were to prioritize the problem we'd like solved first / pain points:
+If we were to prioritize the problem we'd like solved first (our pain points) while accounting for likelihood of solving things:
 
+ 1. Remove circuit-specific trusted setup (**tame complexity**)
  1. Implement keyless relation safely in Rust, not as a circuit (**security**) $\Rightarrow$ zkVMs
- 1. Remove circuit-specific trusted setup (**tame complexity**) $\Rightarrow$ WHIR, Spartan, [Hyper]PLONK
  1. Remove proving service (**tame complexity**, **reduce costs**)
  1. Prove obliviously via wrapping (**privacy**) $\Rightarrow$ Spartan, wrapped WHIR, [wrapped] HyperPLONK
 
@@ -157,7 +157,7 @@ Jolt, Ligero could be viable options very soon.
 
 ## Engineering roadmap
 
-There's several things that, if we, spend effort on they are likely to be fruitful no matter what research direction we take:
+There's several things that, if we spend effort on, they are likely to be fruitful no matter what research direction we take:
  
  1. Reducing circuit size from 1.5M to 1M
  1. Registration-based, monetarily-incentivized, curve-agnostic, on-chain powers-of-$\tau$ and Groth16 setups

@@ -50,6 +50,11 @@ Commit:
     C \gets m G + rH
 \end{align}
 
+{: .warning}
+The randomness $r$ must be picked freshly for every $m$!
+Committing to different messages $m_1$ and $m_2$ using the same randomness $r$ would leak!
+i.e., Given a commitment $m_1 G + rH$ and another commitment $m_2 G + rH$ with the same randomness, one can subtract and obtain $(m_1 - m_2)G$ which leaks the difference!
+
 ## Security
 
 ### Binding
