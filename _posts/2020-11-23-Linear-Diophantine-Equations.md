@@ -164,7 +164,7 @@ This could also be simplified in terms of the _lowest common multiple (LCM)_, si
 
 #### An example
 
-In a Catalano-Fiore vector commitment (VC)[^CF13e] of size $n=3$, collision resistance is implied by the fact that the following equation with $(\ell+1)$-bit primes $e_1,e_2,e_3$ does not have any $\ell$-bit integer solutions:
+In a [Catalano-Fiore vector commitment](/catalano-fiore) (VC)[^CF13e] of size $n=3$, collision resistance is implied by the fact that the following equation with $(\ell+1)$-bit primes $e_1,e_2,e_3$ does not have any $\ell$-bit integer solutions:
 
 $$e_2 e_3 v_1 + e_1 e_3 v_2 + e_1 e_2 v_3 = 0$$
 

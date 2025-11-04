@@ -183,7 +183,7 @@ cryptomat:
       - title: Feist-Khovratovich (FK) precomputation
         url: /feist-khovratovich 
       - title: Catalano-Fiore VCs
-        url: /2020/11/24/Catalano-Fiore-Vector-Commitments.html
+        url: catalano-fiore
       - title: Hyperproofs
         url: hyperproofs
     #  - title: Libert-Yung

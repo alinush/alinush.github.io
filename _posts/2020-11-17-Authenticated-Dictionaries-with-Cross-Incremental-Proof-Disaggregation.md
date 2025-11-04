@@ -24,7 +24,7 @@ This is joint work with my brilliant (ex-)labmates from MIT, [Alex (Yu) Xia](htt
 
 **Authenticated dictionaries (ADs)** are an important cryptographic primitive which lies at the core of cryptocurrencies such as _Ethereum_ and of transparency logs such as _Certificate Transparency (CT)_.
 Typically, ADs are constructed by Merkleizing a lexicographically-ordered data structure such as a binary search tree, a prefix tree or a skip list.
-However, our work takes a different, more algebraic direction, building upon the [Catalano-Fiore (CF) vector commitment (VC) scheme](/2020/11/24/Catalano-Fiore-Vector-Commitments.html).
+However, our work takes a different, more algebraic direction, building upon the [Catalano-Fiore (CF) vector commitment (VC) scheme](/catalano-fiore).
 This has the advantage of giving us _constant-sized_ proofs which are updatable and aggregatable, with a novel notion of **cross-incrementality**.
 Importantly, this combination of feautres is not supported by Merkle trees or any other previous VC scheme.
 
@@ -82,7 +82,7 @@ This post assumes knowledge of:
     - To verify it, just check $w_i^{e_i} = a$.
     + Recall all RSA membership witnesses can be computed using an algorithm by _Sander et al._[^SSY01] baptised as $$\rootfactor$$ by _Boneh et al._[^BBF18].
     + Specifically, $$\rootfactor(g, (e_i)_{i\in[n]}) = (w_i)_{i\in[n]} = (a^{1/e_i})_{i\in[n]} = \left((g^{\prod_{j\in[n]} e_j})^{1/e_i}\right)_{i\in[n]}$$
- - [Catalano-Fiore Vector Commitments](/2020/11/24/Catalano-Fiore-Vector-Commitments.html)
+ - [Catalano-Fiore Vector Commitments](/catalano-fiore)
     + Let $H$ be a collision-resistant hash function that maps a vector position $i$ to an $\ell+1$ bit prime $e_i$ such that $2^\ell < e_i < 2^{\ell+1}$
     - The digest of a vector $\vect{v} = [v_1, \dots, v_n]$ is $d(\vect{v}) = (S, \Lambda)$ where:
         + $S = g^{\prod_{i\in[n]} e_i}$ (i.e., an RSA accumulator over all vector indices $i$)
@@ -96,8 +96,8 @@ This post assumes knowledge of:
         - Again, note that $\Lambda_I$ is a multi-exponentiation, where:
             + The bases are RSA witnesses $S_I^{1/e_i}$ for each $i\in[n]\setminus I$ (but w.r.t. $S_I$)
             + The exponents are elements $v_i$ for all $i\in[n]\setminus I$
-    - Digests and proofs are [updatable](/2020/11/24/Catalano-Fiore-Vector-Commitments.html#updating-digest)
-    - Proofs are [incrementally _(dis)aggregatable_](/2020/11/24/Catalano-Fiore-Vector-Commitments.html#disaggregating-proofs)
+    - Digests and proofs are [updatable](/catalano-fiore#updating-digest)
+    - Proofs are [incrementally _(dis)aggregatable_](/catalano-fiore#disaggregating-proofs)
 
 ## Authenticated dictionary (AD) schemes
 
@@ -161,7 +161,7 @@ One new feature we add is updating the digest after a key and its value are _rem
 This is very easy to do thanks to the versatility of CF VCs.
 First, recall that the proof for $(k,v)$ is just the digest of the dictionary $D$ but without $(k,v)$ in it.
 Thus, if we remove $(k,v)$ from $D$, the new digest is just the proof for $(k,v)$!
-If we do multiple removals, we can simply [aggregate](/2020/11/24/Catalano-Fiore-Vector-Commitments.html#aggregating-proofs) the proofs of all removed keys, which is just the digest of $D$ without those keys in it.
+If we do multiple removals, we can simply [aggregate](/catalano-fiore#aggregating-proofs) the proofs of all removed keys, which is just the digest of $D$ without those keys in it.
 Thus, the new digest after multiple removals is simply this aggregated proof!
 
 ### Updating proofs after removals

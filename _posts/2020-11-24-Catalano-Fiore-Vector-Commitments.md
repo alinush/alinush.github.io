@@ -7,6 +7,7 @@ tags:
  - hidden-order groups
 title: Catalano-Fiore Vector Commitments
 #published: false
+permalink: catalano-fiore
 sidebar:
     nav: cryptomat
 ---
