@@ -191,6 +191,11 @@ Cannot do more than $2^{17}$ field multiplications
 The large verification time will be a big issue.
 I think it can be addressed but it re-introduce the size-$n$ SRS problem.
 
+### GKR
+
+{: .todo}
+Log-space uniform circuits.
+
 ## Engineering roadmap
 
 There's several things that, if we spend effort on, they are likely to be fruitful no matter what research direction we take:
