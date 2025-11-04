@@ -16,6 +16,7 @@ permalink: keyless-zkp
 
 {: .info}
 **tl;dr:** Notes on our current use of Groth16 for [Aptos Keyless](/keyless) and how we might improve upon it.
+Should have applications to anonymous payments, confidential assets, zkVM proof wrapping etc.
 
 <!--more-->
 
@@ -38,6 +39,7 @@ Recall the goals discussed [before](/keyless#what-is-the-ideal-zksnark-scheme-fo
  1. client-side proving
     + or at least, minimize costs of running a prover service
  1. small proof sizes (1.5 KiB?)
+ 1. somewhat easily-upgradeable to post-quantum security
 
 If we were to prioritize the problem we'd like solved first (our pain points) while accounting for likelihood of solving things.
 
@@ -47,10 +49,21 @@ If we were to prioritize the problem we'd like solved first (our pain points) wh
  1. **Milestone 2:** Prove obliviously via wrapping on a prover service (**privacy**) $\Rightarrow$ Spartan, wrapped WHIR, [wrapped] HyperPLONK
  1. **Milestone 3:** Formally-verify keyless relation DSL implementation (**security**)
 
+{: .info}
+_Possible success paths:_
+Optimal SNARK choice + FREpack/Zinc.
+Perhaps using the scheme above to wrap a transparent zkSNARK like WHIR.
+
 **Path 2:** VM-based (higher technical risk, slower timelines):
 
- 1. **Milestone 1:** Prover service with similar cost to Groth16 (**cost**)
+ 1. **Milestone 1:** Proving time, proof size and verification time similar to Groth16 (**cost**)
  1. **Milestone 2:** Client-side oblivious proving via wrapping with a lower-cost prover service (**privacy**) 
+ 1. **Milestone 3:** Formally-verify zkVM implementation (**security**)
+
+{: .info}
+_Possible success paths:_
+Ligero + Groth16 wrapping.
+Jolt + Groth16 wrapping.
 
 There are **several directions** 👇 for replacing the keyless ZKP.
 In fact, no matter which way we go, there may be some common work:
