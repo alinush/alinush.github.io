@@ -39,27 +39,35 @@ Recall the goals discussed [before](/keyless#what-is-the-ideal-zksnark-scheme-fo
     + or at least, minimize costs of running a prover service
  1. small proof sizes (1.5 KiB?)
 
-If we were to prioritize the problem we'd like solved first (our pain points) while accounting for likelihood of solving things:
+If we were to prioritize the problem we'd like solved first (our pain points) while accounting for likelihood of solving things.
 
- 1. Remove circuit-specific trusted setup (**tame complexity**)
- 1. Implement keyless relation safely in Rust, not as a circuit (**security**) $\Rightarrow$ zkVMs
- 1. Prove obliviously via wrapping (**privacy**) $\Rightarrow$ Spartan, wrapped WHIR, [wrapped] HyperPLONK
- 1. Remove proving service (**tame complexity**, **reduce costs**)
+**Path 1:** Circuit-based (less technical risk):
+
+ 1. **Milestone 1:** Remove circuit-specific trusted setup (**tame complexity**)
+ 1. **Milestone 2:** Prove obliviously via wrapping on a prover service (**privacy**) $\Rightarrow$ Spartan, wrapped WHIR, [wrapped] HyperPLONK
+ 1. **Milestone 3:** Formally-verify keyless relation DSL implementation (**security**)
+
+**Path 2:** VM-based (higher technical risk, slower timelines):
+
+ 1. **Milestone 1:** Prover service with similar cost to Groth16 (**cost**)
+ 1. **Milestone 2:** Client-side oblivious proving via wrapping with a lower-cost prover service (**privacy**) 
 
 There are **several directions** 👇 for replacing the keyless ZKP.
 In fact, no matter which way we go, there may be some common work:
  1. **Formal verification:** formally-verify Keyless circuits, or zkVM implementation, or ZKP wrapping circuits
  1. **Cryptography:** MLE PCSs, zkSNARKs, efficient circuit representations, etc.
 
-### Groth16-based
+### [Ultra]Groth16-based
 
  1. **Faster delegated proving:**
     + _Milestone 0:_ Upgrade to UltraGroth16 $\Rightarrow$ no more Fiat-Shamir
         + _Path 1:_ modify `ark-groth16` into `ark-ultra-groth16` and rewrite circuit
         + _Path 2_: modify `circom`
     + _Milestone 1:_ Combine with FREpack/Zinc techniques
-    - _Mileston 2:_ Deploy VKs for different SHA2-message lengths
+    - _Milestone 2:_ Deploy VKs for different SHA2-message lengths
         + Inform optimal message lengths by building a histogram of `iss`-specific JWT sizes
+ 1. Moonshot client-side proving (dismissed):
+    - _Milestone 0:_ UltraGroth + FREpack/Zinc such that the # of R1CS constraints for a wrapping circuit is 10,000 (e.g., a circuit that verifies a WHIR proof).
 
 Other directions we can explore here:
 
@@ -72,7 +80,7 @@ Other directions we can explore here:
     - Ingonyama has made [great progress on this](https://medium.com/@ingonyama/icicle-snark-the-fastest-groth16-implementation-in-the-world-00901b39a21f); repo [here](https://github.com/ingonyama-zk/icicle-snark/tree/master)
  1. There may be a small $\le 10\%$ proving time reduction via a different way to make Groth16 ZK
 
-#### Dismissed directions
+#### Somewhat-dismissed directions
 
 **Client-side proving:**
 Even if we reduce the # of constraints $n$ to 100,000, there will likely still be $m \approx n$ variables $\Rightarrow$ [proving key](/groth16#mathsfgroth16setup_mathcalg1lambda-r-rightarrow-mathsfprkvktd) size will be $\approx 2m \Gr_1 + m\Gr_2 + n\Gr_1 \approx 2m\Gr_1 + 2m\Gr_1 + m\Gr_1 = 5m\Gr_1 \Rightarrow$ 500,000 $\times$ 32 bytes $\approx$ 15 MiB.
@@ -81,6 +89,10 @@ If we ignore the proving key issues, there'd be a few ways to speed up client pr
  - Faster EC arithmetic in JavaScript/WASM
     + How optimized is `snarkjs`? I suspect very well-optimized.
  - Faster prover implementation via WebGPU $\Rightarrow$ prove $<5$ seconds
+
+The only way we can succeed is with a moonshot combination of:
+1. Right inner SNARK (e.g., WHIR + Poseidon & blake3b + right arity + right rate + right conjecture)
+2. Super-efficient constraint system for the inner SNARK verification algorithm
 
 **Outsource 50% of the Groth16 proving to the client:**
 In principle, the server could do any subset of the proving work while the client could do the rest.
@@ -91,7 +103,7 @@ So, this means the client can only do $\Gr_1$ MSMs of size $\min{(m,n)}$, where 
 So, for $2^{20}$ constraints, this gives $2^{20} \times$ 32 bytes = 32 MiB prover key.
 Too much communication.
 
-We'd also have to be very carefu; with the TW signature, which should only be computed over valid proofs.
+We'd also have to be very careful; with the TW signature, which should only be computed over valid proofs.
 The client should not trick server into signing a bad proof.
 
 ### Spartan-based (PQ)
@@ -154,6 +166,17 @@ See some [WHIR explorations below](#whir).
 
 {: .todo}
 Jolt, Ligero could be viable options very soon.
+
+### $\langle\langle$ new transparent SNARK with $\omega(\mathsf{polylog{n}})$ proof size and $o(n)$ verification time $\rangle\rangle$
+
+{: .todo}
+Cannot do more than $2^{17}$ field multiplications
+
+### Bulletproofs
+
+{: .todo}
+The large verification time will be a big issue.
+I think it can be addressed but it re-introduce the size-$n$ SRS problem.
 
 ## Engineering roadmap
 
