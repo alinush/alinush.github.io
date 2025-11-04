@@ -43,8 +43,8 @@ If we were to prioritize the problem we'd like solved first (our pain points) wh
 
  1. Remove circuit-specific trusted setup (**tame complexity**)
  1. Implement keyless relation safely in Rust, not as a circuit (**security**) $\Rightarrow$ zkVMs
- 1. Remove proving service (**tame complexity**, **reduce costs**)
  1. Prove obliviously via wrapping (**privacy**) $\Rightarrow$ Spartan, wrapped WHIR, [wrapped] HyperPLONK
+ 1. Remove proving service (**tame complexity**, **reduce costs**)
 
 There are **several directions** 👇 for replacing the keyless ZKP.
 In fact, no matter which way we go, there may be some common work:
