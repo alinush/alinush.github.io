@@ -539,19 +539,85 @@ The verifier work is dominated by:
  - $\Fmul{(\ell+2)} + \Fadd{(\ell+2)}$ for computing $a_u$ 
  - $\Fmul{(1 + (\ell+1) + \ell b)} + \Fadd{(1 + \ell + 1 + \ell)}$ for the final zerocheck
 
-<!--
+## Implementation
+
 ### Benchmarks for $b=2$ over BLS12-381
 
 {: .note}
-These benchmarks are from our TBA implementation in `arkworks v0.5.0`.
+These benchmarks are from our (in-progress) DeKART implementation in `arkworks v0.5.0` [here](https://github.com/aptos-labs/aptos-core/blob/main/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs).
+To reproduce, see this [README](https://github.com/aptos-labs/aptos-core/tree/main/crates/aptos-crypto/benches/README.md).
 
 {: .note}
-The verifier time only varies with $\ell$, not $n$.
+The DeKART verifier time only varies with $\ell$, not $n$.
 
-| Scheme         | $\ell$ |  $n$ | Proving time ($\mu$s) | Verify time ($\mu$s) | Total time ($\mu$s) | Proof size (bytes) |
-|:---------------|-------:|-----:|:----------------------|:---------------------|:--------------------|:-------------------|
-| $\dekartUni_2$ |        |      |                       |                      |                     |                    |
--->
+#### $\ell = 8$ numbers
+
+| Scheme             | n    | Proving time (ms) | Verify time (ms) | Total time (ms) | Proof size (bytes) |
+|--------------------|------|-------------------|------------------|-----------------|--------------------|
+| Bulletproofs       | 2    |              3.24 |             0.52 |            3.76 |                    |
+| DeKART (BLS12-381) | 1    | <span style="color:#dc2626">4.28</span> (0.76x) | <span style="color:#dc2626">3.04</span> (0.17x) | <span style="color:#dc2626">7.32</span> (0.51x) |                    |
+| Bulletproofs       | 4    |              6.25 |             0.89 |            7.14 |                    |
+| DeKART (BLS12-381) | 3    | <span style="color:#15803d; font-weight:700">4.34</span> (1.44x) | <span style="color:#dc2626">2.96</span> (0.30x) | <span style="color:#dc2626">7.30</span> (0.98x) |                    |
+| Bulletproofs       | 8    |             11.66 |             1.40 |           13.06 |                    |
+| DeKART (BLS12-381) | 7    | <span style="color:#15803d; font-weight:700">4.66</span> (2.50x) | <span style="color:#dc2626">2.92</span> (0.48x) | <span style="color:#15803d; font-weight:700">7.58</span> (1.72x) |                    |
+| Bulletproofs       | 16   |             22.32 |             2.48 |           24.80 |                    |
+| DeKART (BLS12-381) | 15   | <span style="color:#15803d; font-weight:700">5.34</span> (4.18x) | <span style="color:#dc2626">2.98</span> (0.83x) | <span style="color:#15803d; font-weight:700">8.32</span> (2.98x) |                    |
+| Bulletproofs       | 32   |             45.50 |             4.44 |           49.94 |                    |
+| DeKART (BLS12-381) | 31   | <span style="color:#15803d; font-weight:700">10.34</span> (4.40x) | <span style="color:#15803d; font-weight:700">2.95</span> (1.51x) | <span style="color:#15803d; font-weight:700">13.29</span> (3.76x) |                    |
+| Bulletproofs       | 2048 |          2,653.50 |           180.76 |        2,834.26 |                    |
+| DeKART (BLS12-381) | 2047 | <span style="color:#15803d; font-weight:700">141.58</span> (18.74x) | <span style="color:#15803d; font-weight:700">2.94</span> (61.48x) | <span style="color:#15803d; font-weight:700">144.52</span> (19.61x) |                    |
+
+#### $\ell = 16$ numbers
+
+| Scheme             | n    | Proving time (ms) | Verify time (ms) | Total time (ms) | Proof size (bytes) |
+|--------------------|------|-------------------|------------------|-----------------|--------------------|
+| Bulletproofs       | 2    |              5.46 |             0.82 |            6.28 |                    |
+| DeKART (BLS12-381) | 1    | <span style="color:#dc2626">6.45</span> (0.85x) | <span style="color:#dc2626">3.21</span> (0.26x) | <span style="color:#dc2626">9.66</span> (0.65x) |                    |
+| Bulletproofs       | 4    |             11.04 |             1.37 |           12.41 |                    |
+| DeKART (BLS12-381) | 3    | <span style="color:#15803d; font-weight:700">6.71</span> (1.65x) | <span style="color:#dc2626">3.36</span> (0.41x) | <span style="color:#15803d; font-weight:700">10.07</span> (1.23x) |                    |
+| Bulletproofs       | 8    |             21.23 |             2.42 |           23.65 |                    |
+| DeKART (BLS12-381) | 7    | <span style="color:#15803d; font-weight:700">7.05</span> (3.01x) | <span style="color:#dc2626">3.20</span> (0.76x) | <span style="color:#15803d; font-weight:700">10.25</span> (2.31x) |                    |
+| Bulletproofs       | 16   |             40.63 |             4.03 |           44.66 |                    |
+| DeKART (BLS12-381) | 15   | <span style="color:#15803d; font-weight:700">8.58</span> (4.74x) | <span style="color:#15803d; font-weight:700">3.18</span> (1.27x) | <span style="color:#15803d; font-weight:700">11.76</span> (3.80x) |                    |
+| Bulletproofs       | 32   |             83.00 |             6.98 |           89.98 |                    |
+| DeKART (BLS12-381) | 31   | <span style="color:#15803d; font-weight:700">16.09</span> (5.16x) | <span style="color:#15803d; font-weight:700">3.22</span> (2.17x) | <span style="color:#15803d; font-weight:700">19.31</span> (4.66x) |                    |
+| Bulletproofs       | 2048 |          4,763.80 |           349.29 |        5,113.09 |                    |
+| DeKART (BLS12-381) | 2047 | <span style="color:#15803d; font-weight:700">205.36</span> (23.20x) | <span style="color:#15803d; font-weight:700">3.15</span> (110.89x) | <span style="color:#15803d; font-weight:700">208.51</span> (24.52x) |                    |
+
+#### $\ell = 32$ numbers
+
+| Scheme             | n    | Proving time (ms) | Verify time (ms) | Total time (ms) | Proof size (bytes) |
+|--------------------|------|-------------------|------------------|-----------------|--------------------|
+| Bulletproofs       | 2    |              9.95 |             1.42 |           11.37 |                    |
+| DeKART (BLS12-381) | 1    | <span style="color:#dc2626">11.32</span> (0.88x) | <span style="color:#dc2626">3.77</span> (0.38x) | <span style="color:#dc2626">15.09</span> (0.75x) |                    |
+| Bulletproofs       | 4    |             19.91 |             2.30 |           22.21 |                    |
+| DeKART (BLS12-381) | 3    | <span style="color:#15803d; font-weight:700">11.61</span> (1.71x) | <span style="color:#dc2626">3.68</span> (0.62x) | <span style="color:#15803d; font-weight:700">15.29</span> (1.45x) |                    |
+| Bulletproofs       | 8    |             40.13 |             3.96 |           44.09 |                    |
+| DeKART (BLS12-381) | 7    | <span style="color:#15803d; font-weight:700">12.11</span> (3.31x) | <span style="color:#15803d; font-weight:700">3.69</span> (1.07x) | <span style="color:#15803d; font-weight:700">15.80</span> (2.79x) |                    |
+| Bulletproofs       | 16   |             76.14 |             6.69 |           82.83 |                    |
+| DeKART (BLS12-381) | 15   | <span style="color:#15803d; font-weight:700">12.74</span> (5.98x) | <span style="color:#15803d; font-weight:700">3.67</span> (1.82x) | <span style="color:#15803d; font-weight:700">16.41</span> (5.05x) |                    |
+| Bulletproofs       | 32   |            149.45 |            11.95 |          161.40 |                    |
+| DeKART (BLS12-381) | 31   | <span style="color:#15803d; font-weight:700">27.80</span> (5.38x) | <span style="color:#15803d; font-weight:700">3.72</span> (3.21x) | <span style="color:#15803d; font-weight:700">31.52</span> (5.12x) |                    |
+| Bulletproofs       | 2048 |          8,911.40 |           663.67 |        9,575.07 |                    |
+| DeKART (BLS12-381) | 2047 | <span style="color:#15803d; font-weight:700">343.12</span> (25.97x) | <span style="color:#15803d; font-weight:700">3.75</span> (176.98x) | <span style="color:#15803d; font-weight:700">346.87</span> (27.60x) |                    |
+
+#### $\ell = 64$ numbers
+
+| Scheme             | n    | Proving time (ms) | Verify time (ms) | Total time (ms) | Proof size (bytes) |
+|--------------------|------|-------------------|------------------|-----------------|--------------------|
+| Bulletproofs       | 2    |             19.59 |             2.42 |           22.01 |                    |
+| DeKART (BLS12-381) | 1    | <span style="color:#dc2626">21.03</span> (0.93x) | <span style="color:#dc2626">4.34</span> (0.56x) | <span style="color:#dc2626">25.37</span> (0.87x) |                    |
+| Bulletproofs       | 4    |             37.80 |             3.89 |           41.69 |                    |
+| DeKART (BLS12-381) | 3    | <span style="color:#15803d; font-weight:700">20.99</span> (1.80x) | <span style="color:#dc2626">4.39</span> (0.89x) | <span style="color:#15803d; font-weight:700">25.38</span> (1.64x) |                    |
+| Bulletproofs       | 8    |             74.05 |             6.67 |           80.72 |                    |
+| DeKART (BLS12-381) | 7    | <span style="color:#15803d; font-weight:700">21.42</span> (3.46x) | <span style="color:#15803d; font-weight:700">4.32</span> (1.54x) | <span style="color:#15803d; font-weight:700">25.74</span> (3.14x) |                    |
+| Bulletproofs       | 16   |            143.14 |            11.62 |          154.76 |                    |
+| DeKART (BLS12-381) | 15   | <span style="color:#15803d; font-weight:700">23.03</span> (6.22x) | <span style="color:#15803d; font-weight:700">4.37</span> (2.66x) | <span style="color:#15803d; font-weight:700">27.40</span> (5.65x) |                    |
+| Bulletproofs       | 32   |            288.07 |            21.73 |          309.80 |                    |
+| DeKART (BLS12-381) | 31   | <span style="color:#15803d; font-weight:700">51.75</span> (5.57x) | <span style="color:#15803d; font-weight:700">4.39</span> (4.95x) | <span style="color:#15803d; font-weight:700">56.14</span> (5.52x) |                    |
+| Bulletproofs       | 2048 |         17,469.00 |         1,307.60 |       18,776.60 |                    |
+| DeKART (BLS12-381) | 2047 | <span style="color:#15803d; font-weight:700">619.91</span> (28.18x) | <span style="color:#15803d; font-weight:700">4.49</span> (291.22x) | <span style="color:#15803d; font-weight:700">624.40</span> (30.07x) |                    |
+
 
 ## Conclusion
 

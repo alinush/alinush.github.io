@@ -287,23 +287,22 @@ The verifier must do:
 
 We implemented $\tildeDekartUni$ in Rust over BLS12-381 using `blstrs` in this pull request[^pr1].
 Our code stands to be further optimized.
-Here are a few benchmarks, for 16-bit ranges, comparing it with Bulletproofs over the **faster** Ristretto255 curve:
+Here are a few benchmarks, for 16-bit ranges, comparing it with **batched** Bulletproofs over the **faster** Ristretto255 curve:
 
 <!--
 | $\tildeDekartUni$ | 16-bit |        |                   |                  |                 |                    |
 -->
 
-| Scheme            | $\ell$ | $n$    | Proving time (ms) | Verify time (ms) | Total time (ms) | Proof size (bytes) |
-| ------------------| -- --- | ------ | ----------------- | ---------------- | --------------- | ------------------ |
-| $\tildeDekartUni$ | 16-bit | $3$    | $\good{3.96}$     | $\bad{8.86}$     | $12.82$         | $\bad{2352}$       |
-| Bulletproofs      | 16-bit | $4$    | $\bad{10.5}$      | $\good{1.4}$     | $11.9$          | $\good{672}$       |
-| $\tildeDekartUni$ | 16-bit | $7$    | $\good{4.26}$     | $\bad{8.66}$     | $\good{12.92}$  | $\bad{2352}$       |
-| Bulletproofs      | 16-bit | $8$    | $\bad{20.6}$      | $\good{2.4}$     | $\bad{23}$      | $\good{736}$       |
-| $\tildeDekartUni$ | 16-bit | $15$   | $\good{4.93}$     | $\bad{8.66}$     | $\good{13.59}$  | $\bad{2352}$       |
-| Bulletproofs      | 16-bit | $16$   | $\bad{41.1}$      | $\good{4}$       | $\bad{45.1}$    | $800$              | 
-| $\tildeDekartUni$ | 16-bit | $31$   | $\good{5.19}$     | $\bad{8.62}$     | $\good{13.81}$  | $\bad{2352}$       |
-| $\tildeDekartUni$ | 16-bit | $4064$ | $\good{123}$      | $\good{5.4}$     | $\good{128}$    | $\bad{2,352}$      |
-| Bulletproofs      | 16-bit | $4064$ | $\bad{5,952}$     | $\bad{412}$      | $\bad{6,364}$   | $\good{1,312}$     |
+| Scheme             | $\ell$ | $n$    | Proving time (ms) | Verify time (ms) | Total time (ms) | Proof size (bytes) |
+| -------------------| -- --- | ------ | ----------------- | ---------------- | --------------- | ------------------ |
+| Batch Bulletproofs | 16-bit | $4$    | $\bad{10.5}$      | $\good{1.4}$     | $11.9$          | $\good{672}$       |
+| Batch Bulletproofs | 16-bit | $8$    | $\bad{20.6}$      | $\good{2.4}$     | $\bad{23}$      | $\good{736}$       |
+| Batch Bulletproofs | 16-bit | $16$   | $\bad{41.1}$      | $\good{4}$       | $\bad{45.1}$    | $800$              | 
+| Batch Bulletproofs | 16-bit | $4064$ | $\bad{5,952}$     | $\bad{412}$      | $\bad{6,364}$   | $\good{1,312}$     |
+| $\tildeDekartUni$  | 16-bit | $3$    | $\good{3.96}$     | $\bad{8.86}$     | $12.82$         | $\bad{2,352}$      |
+| $\tildeDekartUni$  | 16-bit | $7$    | $\good{4.26}$     | $\bad{8.66}$     | $\good{12.92}$  | $\bad{2,352}$      |
+| $\tildeDekartUni$  | 16-bit | $15$   | $\good{4.93}$     | $\bad{8.66}$     | $\good{13.59}$  | $\bad{2,352}$      |
+| $\tildeDekartUni$  | 16-bit | $4064$ | $\good{123}$      | $\good{5.4}$     | $\good{128}$    | $\bad{2,352}$      |
 
 For 32-bit ranges:
 
