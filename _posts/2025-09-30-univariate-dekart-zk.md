@@ -73,6 +73,7 @@ The notation for this blog post is [the same as in the old post](/dekart-not-zk#
 
 {% include pairings-prelims.md %}
 {% include time-complexities-prelims-pairings.md %}
+- We use $a\fsget S$ to denote sampling from a set $S$ in a deterministic manner using the Fiat-Shamir transcript $\FS$ derived so far
 
 ## Preliminary: ZKPoKs
 
@@ -84,7 +85,7 @@ We assume a ZK PoK for the following relation:
 {: .todo}
 What kind of soundness assumption do we need? Is the 2-special soundness of $\Sigma_\mathsf{PoK}$ enough?
 
-### $\Sigma_\mathsf{PoK}.\mathsf{Prove}^{\mathcal{FS}(\cdot)}(X, X_1, X_2; w_1, w_2)\rightarrow \pi$
+### $\Sigma_\mathsf{PoK}.\mathsf{Prove}(X, X_1, X_2; w_1, w_2)\rightarrow \pi$
 
 **Step 1:** Add $(X, X_1, X_2)$ to the $\FS$ transcript.
 
@@ -112,7 +113,7 @@ The final proof is:
     \pi \gets (A, \sigma_1, \sigma_2) \in \Gr\times \F^2
 \end{align}
 
-### $\Sigma_\mathsf{PoK}.\mathsf{Verify}^{\mathcal{FS}(\cdot)}(X, X_1, X_2; \pi)$
+### $\Sigma_\mathsf{PoK}.\mathsf{Verify}(X, X_1, X_2; \pi)$
 
 **Step 0:** Parse the proof as:
 \begin{align}
@@ -316,7 +317,7 @@ C &\gets \hkzgCommit(\ck_\S, f; \rho) \bydef \rho \cdot \xiOne + \one{f(\tau)} =
 {: .note}
 Note that $f(\omega^i) = z_i,\forall i\in[n]$ but the $f(\omega^0)$ evaluation is set to zero.
 
-### $\mathsf{Dekart}\_b^\mathsf{FFT}.\mathsf{Prove}^{\mathcal{FS}(\cdot)}(\mathsf{prk}, C, \ell; z_1,\ldots,z_{n}, \rho)\rightarrow \pi$
+### $\mathsf{Dekart}\_b^\mathsf{FFT}.\mathsf{Prove}(\mathsf{prk}, C, \ell; z_1,\ldots,z_{n}, \rho)\rightarrow \pi$
 
 
 **Step 1**a**:** Parse the public parameters:
@@ -340,7 +341,7 @@ Note that $f(\omega^i) = z_i,\forall i\in[n]$ but the $f(\omega^0)$ evaluation i
 
 **Step 3a:** Prove knowledge of $r$ and $\Delta{\rho}$ such that $\hat{C} - C = \Delta{\rho} \cdot \xiOne + r\cdot \sOne{0}$.
 \begin{align}
-    \term{\piPok} \gets \zkpokProve^\FSo\left(\underbrace{(\hat{C}-C, \xiOne, \sOne{0})}\_{\text{statement}}; \underbrace{(\Delta{\rho}, r)}\_{\text{witness}}\right)
+    \term{\piPok} \gets \zkpokProve\left(\underbrace{(\hat{C}-C, \xiOne, \sOne{0})}\_{\text{statement}}; \underbrace{(\Delta{\rho}, r)}\_{\text{witness}}\right)
 \end{align}
 
 **Step 3**b**:** Add $\piPok$ to the $\FS$ transcript.
@@ -470,7 +471,7 @@ $\Rightarrow$ in **total**, $\emph{\|\pi\|=(\ell+5)\Gr_1 + (\ell+4)\F}$,
         - do $\Fmul{1}$ to accumulate $\frac{\gamma^n - 1}{n}$
  - 1 $\fmsmOne{L+1}$ MSM for computing $\pi_\gamma$ via [$\hkzgOpen(\cdot)$](#hkzgopenck-f-rho-x-s-rightarrow-pi)
 
-### $\mathsf{Dekart}\_b^\mathsf{FFT}.\mathsf{Verify}^{\mathcal{FS}(\cdot)}(\mathsf{vk}, C, \ell; \pi)\rightarrow \\{0,1\\}$
+### $\mathsf{Dekart}\_b^\mathsf{FFT}.\mathsf{Verify}(\mathsf{vk}, C, \ell; \pi)\rightarrow \\{0,1\\}$
 
 **Step 1:** Parse the $\vk$ and the proof $\pi$:
 \begin{align}
@@ -485,7 +486,7 @@ $\Rightarrow$ in **total**, $\emph{\|\pi\|=(\ell+5)\Gr_1 + (\ell+4)\F}$,
 **Step 3:** Verify ZKPoK:
 \begin{align}
 \textbf{assert}\
-    \zkpokVerify^\FSo\left(\hat{C}-C, \xiOne, \sOne{0}; \piPok\right) \equals 1
+    \zkpokVerify\left(\hat{C}-C, \xiOne, \sOne{0}; \piPok\right) \equals 1
 \end{align}
 
 **Step 4**a**:** Add $\piPok$ to the $\FS$ transcript.
@@ -669,9 +670,6 @@ Your thoughts or comments are welcome on [this thread](https://x.com/alinush/sta
 This is joint work with Dan Boneh, Trisha Datta, Kamilla Nazirkhanova and Rex Fernando.
 
 ### Future work
-
-{: .todo}
-Fiat-Shamir syntax is ambiguous now: the inner $\Sigma_\mathsf{PoK}$ should not reuse the FS transcript of the outer $\dekartProve$.
 
 {: .todo}
 We could accept a $b_\max$ and $n_\max$ as arguments to $\dekartSetup$ and change the $b$ subscript from $\mathsf{Dekart}_b$ to be an actual argument.
