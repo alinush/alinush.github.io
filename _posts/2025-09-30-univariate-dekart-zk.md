@@ -546,11 +546,13 @@ The verifier work is dominated by:
 
 {: .note}
 These benchmarks are from our (in-progress) DeKART implementation in `arkworks v0.5.0` [here](https://github.com/aptos-labs/aptos-core/blob/main/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs).
-To reproduce, see this [README](https://github.com/aptos-labs/aptos-core/tree/main/crates/aptos-crypto/benches/README.md).
-
-{: .note}
-The Bulletproof proof size is $32\times \left(9 + 2\cdot \log_2{(n\cdot \ell)}\right)$ bytes.
-The DeKART verifier time only varies with $\ell$, not $n$.
+To reproduce, see this [README](https://github.com/aptos-labs/aptos-core/tree/main/crates/aptos-crypto/benches/README.md).\
+\
+The Bulletproof proof size is $32\times \left(9 + 2\cdot \log_2{(n\cdot \ell)}\right)$ bytes.\
+\
+The DeKART verifier time only varies with $\ell$; not with $n$.
+This means that by using higher $b$, we can decrease $\ell$ (e.g., from $\log_2{\texttt{MAX\_VALUE}}$ to $\log_b{\texttt{MAX\_VALUE}}$) and speed up our verifier by a factor of $\log_2{b}$.
+Although, this will make proving slower by a factor of $b$, it's fine for applications like [confidential assets](/confidential-assets).
 
 #### $\ell = 8$ numbers
 
