@@ -481,7 +481,7 @@ $\Rightarrow$ in **total**, $\emph{\|\pi\|=(\ell+5)\Gr_1 + (\ell+4)\F}$,
  
 **Step 2**a**:** Add $(\vk, C, b, \ell)$ to the $\FS$ transcript.
 
-**Step 2**b**:** Add $(\hat{C})$ to the $\FS$ transcript.
+**Step 2**b**:** Add $\hat{C}$ to the $\FS$ transcript.
 
 **Step 3:** Verify ZKPoK:
 \begin{align}
@@ -534,7 +534,7 @@ The verifier work is dominated by:
 
  - 1 $\vmsmOne{3}$ MSM for verifying $\piPok$
  - 1 $\vmsmOne{\ell+2}$ MSM for deriving the KZG commitment $U$
- - $\GmulOne{1} + \GaddOne{1}$ for computing $\one{\tau - a_u}$ inside [$\hkzgVerify(\cdot)$](#hkzgverifyvk-c-x-y-pi-rightarrow-01)
+ - $\GmulOne{1} + \GaddOne{1}$ for computing $\one{\tau - a_u}$ inside [$\hkzgVerify(\cdot)$](#mathsfhkzgverifymathsfvk-c-x-y-pi-rightarrow-01)
  - $\GmulTwo{1} + \GaddTwo{1}$ for computing $\two{\tau - \gamma}$ inside $\hkzgVerify(\cdot)$
  - size-$3$ multipairing for the rest of $\hkzgVerify(\cdot)$
  - $\Fmul{(\ell+2)} + \Fadd{(\ell+2)}$ for computing $a_u$ 
@@ -669,6 +669,18 @@ Nonetheless, it will be great for applications like [confidential assets](/confi
 ## Conclusion
 
 Your thoughts or comments are welcome on [this thread](https://x.com/alinush/status/1950600327066980693).
+
+Avenues for further reducing proof size and verifier time:
+1. $\approx 300\ \mu$s: Hiding KZG variant that uses 2 pairings instead of 1
+<!-- 
+    approximated by comparing the time for $(\ell+2)$-MSM + 3-MSM vs $(\ell+5)$-MSM on zka.lc 
+        for $\ell = 8$ : (575 μs + 841.00 ns + 413 μs 57.00 ns) - (632 μs + 911.00 ns) = 357 $\mu$s
+        for $\ell = 64$: (413 μs + 57.00 ns + 1 ms + 451.00 μs) - (1 ms + 479.00 μs) = 385 $\mu$s
+-->
+
+2. $\approx 350\ \mu$s Instead of separately computing the $\zkpokVerify$ MSM and the $U$ MSM, could we, in a single MSM, compute $U\cdot A'$ (where $A'$ should equal the commitment $A$ in the $\piPok$ proof) and then divide $A$ out and check the KZG proof against the result? Seems wrong, but should check.
+3. Somehow include a provably-correct $U$ in the proof
+4. Somehow avoid including the scalars (evaluations) in the proof and just commit to them in a single group element
 
 ### Acknowledgements
 
