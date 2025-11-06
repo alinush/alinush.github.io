@@ -551,8 +551,11 @@ To reproduce, see this [README](https://github.com/aptos-labs/aptos-core/tree/ma
 The Bulletproof proof size is $32\times \left(9 + 2\cdot \log_2{(n\cdot \ell)}\right)$ bytes.\
 \
 The DeKART verifier time only varies with $\ell$; not with $n$.
-This means that by using higher $b$, we can decrease $\ell$ (e.g., from $\log_2{\texttt{MAX\_VALUE}}$ to $\log_b{\texttt{MAX\_VALUE}}$) and speed up our verifier by a factor of $\log_2{b}$.
-Although, this will make proving slower by a factor of $b$, it's fine for applications like [confidential assets](/confidential-assets).
+This means that by using higher $b$, we can decrease $\ell$ (e.g., from $\log_2{\texttt{MAX\_VALUE}}$ to $\log_b{\texttt{MAX\_VALUE}}$).
+This will reduce proof size **and** speed up our verifier by a factor of $\log_2{b}$.
+However, it will make proving slower by a factor of $b$
+(e.g., 16x slower proving by for a 4x faster-to-verify and smaller proof 👌).
+Nonetheless, it will be great for applications like [confidential assets](/confidential-assets).
 
 #### $\ell = 8$ numbers
 
