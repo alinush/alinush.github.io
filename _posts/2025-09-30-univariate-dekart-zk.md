@@ -564,6 +564,16 @@ The DeKART verifier time only varies with $\ell$, not $n$.
 | DeKART (BLS12-381) | 15   | <span style="color:#15803d; font-weight:700">5.34</span> (4.18x) | <span style="color:#dc2626">2.98</span> (0.83x) | <span style="color:#15803d; font-weight:700">8.32</span> (2.98x) |                    |
 | Bulletproofs       | 32   |             45.50 |             4.44 |           49.94 |                    |
 | DeKART (BLS12-381) | 31   | <span style="color:#15803d; font-weight:700">10.34</span> (4.40x) | <span style="color:#15803d; font-weight:700">2.95</span> (1.51x) | <span style="color:#15803d; font-weight:700">13.29</span> (3.76x) |                    |
+| Bulletproofs       | 64   |             91.64 |             7.17 |           98.81 |                    |
+| DeKART (BLS12-381) | 63   | <span style="color:#15803d; font-weight:700">11.76</span> (7.79x) | <span style="color:#15803d; font-weight:700">2.89</span> (2.48x) | <span style="color:#15803d; font-weight:700">14.65</span> (6.74x) |                    |
+| Bulletproofs       | 128  |            171.31 |            12.73 |          184.04 |                    |
+| DeKART (BLS12-381) | 127  | <span style="color:#15803d; font-weight:700">18.71</span> (9.16x) | <span style="color:#15803d; font-weight:700">2.93</span> (4.34x) | <span style="color:#15803d; font-weight:700">21.64</span> (8.50x) |                    |
+| Bulletproofs       | 256  |            339.23 |            23.93 |          363.16 |                    |
+| DeKART (BLS12-381) | 255  | <span style="color:#15803d; font-weight:700">31.73</span> (10.69x) | <span style="color:#15803d; font-weight:700">2.89</span> (8.28x) | <span style="color:#15803d; font-weight:700">34.62</span> (10.49x) |                    |
+| Bulletproofs       | 512  |            664.35 |            46.06 |          710.41 |                    |
+| DeKART (BLS12-381) | 511  | <span style="color:#15803d; font-weight:700">42.50</span> (15.63x) | <span style="color:#15803d; font-weight:700">2.90</span> (15.88x) | <span style="color:#15803d; font-weight:700">45.40</span> (15.65x) |                    |
+| Bulletproofs       | 1024 |          1,346.50 |            90.55 |        1,437.05 |                    |
+| DeKART (BLS12-381) | 1023 | <span style="color:#15803d; font-weight:700">75.59</span> (17.81x) | <span style="color:#15803d; font-weight:700">2.91</span> (31.12x) | <span style="color:#15803d; font-weight:700">78.50</span> (18.31x) |                    |
 | Bulletproofs       | 2048 |          2,653.50 |           180.76 |        2,834.26 |                    |
 | DeKART (BLS12-381) | 2047 | <span style="color:#15803d; font-weight:700">141.58</span> (18.74x) | <span style="color:#15803d; font-weight:700">2.94</span> (61.48x) | <span style="color:#15803d; font-weight:700">144.52</span> (19.61x) |                    |
 
@@ -581,6 +591,16 @@ The DeKART verifier time only varies with $\ell$, not $n$.
 | DeKART (BLS12-381) | 15   | <span style="color:#15803d; font-weight:700">8.58</span> (4.74x) | <span style="color:#15803d; font-weight:700">3.18</span> (1.27x) | <span style="color:#15803d; font-weight:700">11.76</span> (3.80x) |                    |
 | Bulletproofs       | 32   |             83.00 |             6.98 |           89.98 |                    |
 | DeKART (BLS12-381) | 31   | <span style="color:#15803d; font-weight:700">16.09</span> (5.16x) | <span style="color:#15803d; font-weight:700">3.22</span> (2.17x) | <span style="color:#15803d; font-weight:700">19.31</span> (4.66x) |                    |
+| Bulletproofs       | 64   |            159.72 |            12.12 |          171.84 |                    |
+| DeKART (BLS12-381) | 63   | <span style="color:#15803d; font-weight:700">17.97</span> (8.89x) | <span style="color:#15803d; font-weight:700">3.20</span> (3.79x) | <span style="color:#15803d; font-weight:700">21.17</span> (8.12x) |                    |
+| Bulletproofs       | 128  |            306.54 |            22.53 |          329.07 |                    |
+| DeKART (BLS12-381) | 127  | <span style="color:#15803d; font-weight:700">28.48</span> (10.76x) | <span style="color:#15803d; font-weight:700">3.15</span> (7.15x) | <span style="color:#15803d; font-weight:700">31.63</span> (10.40x) |                    |
+| Bulletproofs       | 256  |            600.51 |            43.83 |          644.34 |                    |
+| DeKART (BLS12-381) | 255  | <span style="color:#15803d; font-weight:700">48.73</span> (12.32x) | <span style="color:#15803d; font-weight:700">3.18</span> (13.78x) | <span style="color:#15803d; font-weight:700">51.91</span> (12.41x) |                    |
+| Bulletproofs       | 512  |          1,197.00 |            88.54 |        1,285.54 |                    |
+| DeKART (BLS12-381) | 511  | <span style="color:#15803d; font-weight:700">61.91</span> (19.33x) | <span style="color:#15803d; font-weight:700">3.16</span> (28.02x) | <span style="color:#15803d; font-weight:700">65.07</span> (19.76x) |                    |
+| Bulletproofs       | 1024 |          2,369.10 |           171.48 |        2,540.58 |                    |
+| DeKART (BLS12-381) | 1023 | <span style="color:#15803d; font-weight:700">111.55</span> (21.24x) | <span style="color:#15803d; font-weight:700">3.12</span> (54.96x) | <span style="color:#15803d; font-weight:700">114.67</span> (22.16x) |                    |
 | Bulletproofs       | 2048 |          4,763.80 |           349.29 |        5,113.09 |                    |
 | DeKART (BLS12-381) | 2047 | <span style="color:#15803d; font-weight:700">205.36</span> (23.20x) | <span style="color:#15803d; font-weight:700">3.15</span> (110.89x) | <span style="color:#15803d; font-weight:700">208.51</span> (24.52x) |                    |
 
@@ -598,6 +618,16 @@ The DeKART verifier time only varies with $\ell$, not $n$.
 | DeKART (BLS12-381) | 15   | <span style="color:#15803d; font-weight:700">12.74</span> (5.98x) | <span style="color:#15803d; font-weight:700">3.67</span> (1.82x) | <span style="color:#15803d; font-weight:700">16.41</span> (5.05x) |                    |
 | Bulletproofs       | 32   |            149.45 |            11.95 |          161.40 |                    |
 | DeKART (BLS12-381) | 31   | <span style="color:#15803d; font-weight:700">27.80</span> (5.38x) | <span style="color:#15803d; font-weight:700">3.72</span> (3.21x) | <span style="color:#15803d; font-weight:700">31.52</span> (5.12x) |                    |
+| Bulletproofs       | 64   |            288.81 |            22.40 |          311.21 |                    |
+| DeKART (BLS12-381) | 63   | <span style="color:#15803d; font-weight:700">29.82</span> (9.69x) | <span style="color:#15803d; font-weight:700">3.68</span> (6.09x) | <span style="color:#15803d; font-weight:700">33.50</span> (9.29x) |                    |
+| Bulletproofs       | 128  |            572.05 |            42.26 |          614.31 |                    |
+| DeKART (BLS12-381) | 127  | <span style="color:#15803d; font-weight:700">47.78</span> (11.97x) | <span style="color:#15803d; font-weight:700">3.70</span> (11.42x) | <span style="color:#15803d; font-weight:700">51.48</span> (11.93x) |                    |
+| Bulletproofs       | 256  |          1,135.90 |            83.23 |        1,219.13 |                    |
+| DeKART (BLS12-381) | 255  | <span style="color:#15803d; font-weight:700">81.28</span> (13.98x) | <span style="color:#15803d; font-weight:700">3.86</span> (21.56x) | <span style="color:#15803d; font-weight:700">85.14</span> (14.32x) |                    |
+| Bulletproofs       | 512  |          2,240.80 |           167.07 |        2,407.87 |                    |
+| DeKART (BLS12-381) | 511  | <span style="color:#15803d; font-weight:700">102.28</span> (21.91x) | <span style="color:#15803d; font-weight:700">3.86</span> (43.28x) | <span style="color:#15803d; font-weight:700">106.14</span> (22.69x) |                    |
+| Bulletproofs       | 1024 |          4,527.10 |           328.03 |        4,855.13 |                    |
+| DeKART (BLS12-381) | 1023 | <span style="color:#15803d; font-weight:700">180.72</span> (25.05x) | <span style="color:#15803d; font-weight:700">3.66</span> (89.63x) | <span style="color:#15803d; font-weight:700">184.38</span> (26.33x) |                    |
 | Bulletproofs       | 2048 |          8,911.40 |           663.67 |        9,575.07 |                    |
 | DeKART (BLS12-381) | 2047 | <span style="color:#15803d; font-weight:700">343.12</span> (25.97x) | <span style="color:#15803d; font-weight:700">3.75</span> (176.98x) | <span style="color:#15803d; font-weight:700">346.87</span> (27.60x) |                    |
 
@@ -615,9 +645,18 @@ The DeKART verifier time only varies with $\ell$, not $n$.
 | DeKART (BLS12-381) | 15   | <span style="color:#15803d; font-weight:700">23.03</span> (6.22x) | <span style="color:#15803d; font-weight:700">4.37</span> (2.66x) | <span style="color:#15803d; font-weight:700">27.40</span> (5.65x) |                    |
 | Bulletproofs       | 32   |            288.07 |            21.73 |          309.80 |                    |
 | DeKART (BLS12-381) | 31   | <span style="color:#15803d; font-weight:700">51.75</span> (5.57x) | <span style="color:#15803d; font-weight:700">4.39</span> (4.95x) | <span style="color:#15803d; font-weight:700">56.14</span> (5.52x) |                    |
+| Bulletproofs       | 64   |            549.63 |            42.65 |          592.28 |                    |
+| DeKART (BLS12-381) | 63   | <span style="color:#15803d; font-weight:700">53.66</span> (10.24x) | <span style="color:#15803d; font-weight:700">4.35</span> (9.80x) | <span style="color:#15803d; font-weight:700">58.01</span> (10.21x) |                    |
+| Bulletproofs       | 128  |          1,100.30 |            84.91 |        1,185.21 |                    |
+| DeKART (BLS12-381) | 127  | <span style="color:#15803d; font-weight:700">88.91</span> (12.38x) | <span style="color:#15803d; font-weight:700">4.36</span> (19.47x) | <span style="color:#15803d; font-weight:700">93.27</span> (12.71x) |                    |
+| Bulletproofs       | 256  |          2,208.40 |           163.01 |        2,371.41 |                    |
+| DeKART (BLS12-381) | 255  | <span style="color:#15803d; font-weight:700">149.66</span> (14.76x) | <span style="color:#15803d; font-weight:700">4.33</span> (37.65x) | <span style="color:#15803d; font-weight:700">153.99</span> (15.40x) |                    |
+| Bulletproofs       | 512  |          4,351.90 |           329.06 |        4,680.96 |                    |
+| DeKART (BLS12-381) | 511  | <span style="color:#15803d; font-weight:700">182.69</span> (23.82x) | <span style="color:#15803d; font-weight:700">4.28</span> (76.88x) | <span style="color:#15803d; font-weight:700">186.97</span> (25.04x) |                    |
+| Bulletproofs       | 1024 |          8,576.10 |           650.01 |        9,226.11 |                    |
+| DeKART (BLS12-381) | 1023 | <span style="color:#15803d; font-weight:700">320.90</span> (26.73x) | <span style="color:#15803d; font-weight:700">4.29</span> (151.52x) | <span style="color:#15803d; font-weight:700">325.19</span> (28.37x) |                    |
 | Bulletproofs       | 2048 |         17,469.00 |         1,307.60 |       18,776.60 |                    |
 | DeKART (BLS12-381) | 2047 | <span style="color:#15803d; font-weight:700">619.91</span> (28.18x) | <span style="color:#15803d; font-weight:700">4.49</span> (291.22x) | <span style="color:#15803d; font-weight:700">624.40</span> (30.07x) |                    |
-
 
 ## Conclusion
 
