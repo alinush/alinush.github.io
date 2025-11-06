@@ -4,7 +4,7 @@ tags:
  - range proofs
  - zero-knowledge proofs (ZKPs)
  - KZG
-title: "Draft: DeKART: ZK range proofs from univariate polynomials"
+title: "DeKART: ZK range proofs from univariate polynomials"
 #date: 2020-11-05 20:45:59
 permalink: dekart
 #published: false
@@ -671,7 +671,7 @@ Nonetheless, it will be great for applications like [confidential assets](/confi
 Your thoughts or comments are welcome on [this thread](https://x.com/alinush/status/1950600327066980693).
 
 Avenues for further reducing proof size and verifier time:
-1. $\approx 300\ \mu$s: Hiding KZG variant that uses 2 pairings instead of 1
+1. $\approx 300\ \mu$s: Hiding KZG variant that uses 2 pairings instead of 1. (Maybe original KZG but with smaller degree for the blinded polynomial?)
 <!-- 
     approximated by comparing the time for $(\ell+2)$-MSM + 3-MSM vs $(\ell+5)$-MSM on zka.lc 
         for $\ell = 8$ : (575 μs + 841.00 ns + 413 μs 57.00 ns) - (632 μs + 911.00 ns) = 357 $\mu$s
