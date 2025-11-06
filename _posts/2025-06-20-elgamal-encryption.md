@@ -1,5 +1,6 @@
 ---
 tags:
+ - basics
  - ElGamal
  - encryption
 title: ElGamal encryption

@@ -1,5 +1,8 @@
 ---
 tags:
+ - digital signatures
+ - Pedersen
+ - vector commitments (VCs)
 title: Pointcheval-Sanders (PS) signatures
 #date: 2020-11-05 20:45:59
 permalink: pointcheval-sanders
@@ -51,7 +54,7 @@ Let $(g,\tg)$ denote the generators of $\Gr_1$ and $\Gr_2$, respectively.
 
 {: .todo}
 Define re-randomization via $\pedRerand$: $\cm'\gets \cm\cdot h^{\Delta{r}}$.
-Probably move to its own cryptomat page.
+Move to its own cryptomat page [here](/pedersen).
 
 ## The PS signature scheme
 

@@ -1,5 +1,6 @@
 ---
 tags:
+ - basics
  - encryption
 title: Encryption
 #date: 2020-11-05 20:45:59

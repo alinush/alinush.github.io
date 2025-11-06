@@ -1,5 +1,6 @@
 ---
 tags: 
+ - basics
  - polynomials 
  - Lagrange
 title: Lagrange interpolation

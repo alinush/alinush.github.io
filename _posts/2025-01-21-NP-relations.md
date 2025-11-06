@@ -1,5 +1,6 @@
 ---
 tags:
+ - basics
  - zero-knowledge proofs (ZKPs)
 title: NP relations
 #date: 2020-11-05 20:45:59

@@ -206,6 +206,8 @@ cryptomat:
         url: /hyrax
       - title: KZH polynomial commitments
         url: /kzh
+      - title: Ligerito
+        url: /ligerito
       - title: PST polynomial commitments
         url: /pst
       - title: Differentiation tricks

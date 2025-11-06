@@ -1,12 +1,13 @@
 ---
 title: What is a Merkle tree?
+tags:
+ - basics
+ - merkle
+ - vector commitments (VCs)
+ - security proofs
 permalink: merkle
 sidebar:
     nav: cryptomat
-tags:
-- merkle
-- vector commitments (VCs)
-- security proofs
 author: Alin Tomescu
 ---
 

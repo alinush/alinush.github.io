@@ -1,5 +1,6 @@
 ---
 tags:
+ - aptos
  - keyless
  - Groth16
 title: Zero-knowledge proofs for Aptos Keyless
