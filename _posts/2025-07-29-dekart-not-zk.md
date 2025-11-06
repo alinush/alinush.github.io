@@ -289,6 +289,9 @@ We implemented $\tildeDekartUni$ in Rust over BLS12-381 using `blstrs` in this p
 Our code stands to be further optimized.
 Here are a few benchmarks, for 16-bit ranges, comparing it with **batched** Bulletproofs over the **faster** Ristretto255 curve:
 
+{: .note}
+The Bulletproof proof size is $32\times \left(9 + 2\cdot \log_2{(n\cdot \ell)}\right)$ bytes.
+
 <!--
 | $\tildeDekartUni$ | 16-bit |        |                   |                  |                 |                    |
 -->
