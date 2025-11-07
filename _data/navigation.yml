@@ -105,6 +105,15 @@ cryptomat:
       #- title: Elliptic curves
       #  url: /elliptic-curves
 
+  - title: Coding theory
+    children:
+       - title: Error-correcting codes
+         url: /ecc
+  #    - title: Reed-Solomon (RS)
+  #      url: /reed-solomon
+  #    - title: Reed-Muller (RM)
+  #      url: /reed-muller
+
   #- title: Hash functions
   #  url: /hash-functions
   #  children:
@@ -254,13 +263,6 @@ cryptomat:
         url: /sigma
     #  - title: Simulation
     #    url: /2020/05/07/zero-knowledge-simulation.html
-
-  #- title: Error-correcting codes
-  #  children:
-  #    - title: Reed-Solomon (RS)
-  #      url: /reed-solomon
-  #    - title: Reed-Muller (RM)
-  #      url: /reed-muller
 
   #- title: Miscellanea 
   #  children:
