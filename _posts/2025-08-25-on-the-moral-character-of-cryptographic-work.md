@@ -147,7 +147,7 @@ Another incident involves Barton Gellman at Purdue University[^gellman-2015].
 
 ### Mass surveillance misframed as a "privacy" vs. "security" issue
 
-> "I think when they're 100,000+, they're not exactly targets." --Philip Rogaway, USENIX Sec’16
+> "I think when they're 100,000+, they're not exactly targets." --Phillip Rogaway, USENIX Sec’16
 
 Government surveillance **should** be a well-known reality to folks:
 
