@@ -244,6 +244,12 @@ cryptomat:
     children:
       - title: NP relations
         url: /np-relations 
+      - title: IOPs
+        url: /iop
+      - title: IOPPs
+        url: /iopp
+      - title: PIOPs
+        url: /piop
       - title: QAPs & R1CS
         url: /r1cs
       #- title: PIOPs
