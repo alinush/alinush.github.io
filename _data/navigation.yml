@@ -231,9 +231,8 @@ cryptomat:
       #  url: /stir
       #-title: Basefold
       #  url: /basefold
-      #-title: WHIR
-      #  url: /whir
-      #  https://blog.lambdaclass.com/whirlaway-multilinear-starks-using-whir-as-polynomial-commitment-scheme/
+      - title: WHIR
+        url: /whir
 
   - title: Secret sharing
     children:
