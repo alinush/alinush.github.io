@@ -99,7 +99,7 @@ H &= i \cdot (s \cdot G) + j \cdot G\Leftrightarrow\\\\\
 H + i \cdot (\msG) &= \jG{j}
 \end{align}
 
-Now, imagine we have all $(\jG{j})_{j\in[m)}$ and $\msG$ precomputed.
+Now, imagine we have all $(\jG{j})_{j\in[s)}$ and $\msG$ precomputed.
 Then, finding $a$ can be reduced to computing all the left hand sides (LHS) of Eq. $\ref{eq:bsgs-check}$ for all possible $i\in[s)$ and checking if there exists $j\in[s)$ such that the LHS equals the right hand side (RHS).
 If it does, then $a = i\cdot s+ j$!
 
