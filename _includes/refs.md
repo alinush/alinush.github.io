@@ -1998,6 +1998,8 @@
 
 [^Gali05]: **Boneh-Franklin Identity Based Encryption Revisited**, by David Galindo, *in Cryptology ePrint Archive, Report 2005/117*, 2005, [[URL]](https://ia.cr/2005/117)
 
+[^Gao02]: **A New Algorithm for Decoding Reed-Solomon Codes**, by Gao, Shuhong, *in Communications, Information and Network Security*, 2003, [[URL]](https://doi.org/10.1007/978-1-4757-3789-9_5)
+
 [^Geih24e]: **Great-{LaKeys}: An Improved Threshold-{PRF} and a Novel Exponent-{VRF} from {LWR**, by Matthias Geihs, *in Cryptology {ePrint} Archive, Paper 2024/996*, 2024, [[URL]](https://eprint.iacr.org/2024/996)
 
 [^Gentry08]: **Computing Arbitrary Functions of Encrypted Data**, by Craig Gentry, 2008, [[URL]](https://crypto.stanford.edu/craig/easy-fhe.pdf)
