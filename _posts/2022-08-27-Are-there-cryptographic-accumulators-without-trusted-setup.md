@@ -2,7 +2,7 @@
 tags:
  - accumulators
  - trusted setup
- - merkle
+ - Merkle
  - RSA
 title: Are there cryptographic accumulators without trusted setup?
 #date: 2020-11-05 20:45:59

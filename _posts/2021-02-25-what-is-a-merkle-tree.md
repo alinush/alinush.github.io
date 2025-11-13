@@ -2,7 +2,7 @@
 title: What is a Merkle tree?
 tags:
  - basics
- - merkle
+ - Merkle
  - vector commitments (VCs)
  - security proofs
 permalink: merkle

@@ -1,6 +1,6 @@
 ---
 tags:
- - merkle
+ - Merkle
  - nullifier
  - anonymous payments
 title: Notes on scaling nullifier sets

@@ -1,6 +1,6 @@
 ---
 tags:
-- merkle
+ - Merkle
 title: Why you should probably never sort your Merkle tree's leaves
 #date: 2020-11-05 20:45:59
 published: true 
