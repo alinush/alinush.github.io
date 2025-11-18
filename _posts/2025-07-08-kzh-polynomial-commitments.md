@@ -50,7 +50,7 @@ permalink: kzh
 % - Let $\tobin{i}_s$ denote the $s$-bit binary representation of $i$
 $</div> <!-- $_ -->
 
-{% include pairings.md %}
+{% include defs-pairings.md %}
 {% include mle.md %}
 {% include time-complexities.md %}
 

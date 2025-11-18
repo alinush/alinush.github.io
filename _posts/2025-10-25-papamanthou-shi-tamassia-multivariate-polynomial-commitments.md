@@ -23,7 +23,7 @@ permalink: pst
 
 <!--more-->
 
-{% include pairings.md %}
+{% include defs-pairings.md %}
 {% include mle.md %}
 {% include time-complexities.md %}
 

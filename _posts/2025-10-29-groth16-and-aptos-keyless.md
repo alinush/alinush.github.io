@@ -21,7 +21,7 @@ Should have applications to anonymous payments, confidential assets, zkVM proof 
 
 <!--more-->
 
-{% include pairings.md %}
+{% include defs-pairings.md %}
 
 <!-- Here you can define LaTeX macros -->
 <div style="display: none;">$

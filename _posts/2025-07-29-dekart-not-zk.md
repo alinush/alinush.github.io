@@ -22,7 +22,7 @@ This blog post describes a **flawed**, non-ZK range range proof based on univari
 
 <!--more-->
 
-{% include pairings.md %}
+{% include defs-pairings.md %}
 {% include fiat-shamir.md %}
 
 <!-- Here you can define LaTeX macros -->

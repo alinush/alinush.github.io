@@ -22,7 +22,7 @@ This is joint work with Dan Boneh, Trisha Datta, Kamilla Nazirkhanova and Rex Fe
 
 <!--more-->
 
-{% include pairings.md %}
+{% include defs-pairings.md %}
 {% include fiat-shamir.md %}
 {% include time-complexities.md %}
 
