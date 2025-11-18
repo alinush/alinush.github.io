@@ -174,6 +174,10 @@ Big thanks to [Ron Rothblum](https://csaws.cs.technion.ac.il/~rothblum/) for poi
     + Also, it gives a way to stream the computation (but, AFAICT, so does a careful walk through the tree depicted above) 
 2. The faster algorithm from above would immediately reduce the MLE evaluation time from $3n$ $\F$ muls to $2n$, but Remark 1.? from [ARR25e][^ARR25e] can further reduce this to $n$! 🤯
 
+### Links
+
+ - [Multilinear Polynomials and Tensor Products](https://hackmd.io/@tcoratger/BJ2NhofyZe), Thomas Coratger
+
 ## References
 
 For cited works, see below 👇👇

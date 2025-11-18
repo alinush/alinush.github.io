@@ -60,11 +60,6 @@ This is some of the stuff I (plan to) read and think others could find useful.
  - [Do artifacts have politics?](/files/articles/2024-11-01 Langdon Winner - Do Artifacts Have Politics.pdf), Langdon Winner
 <!-- - [Quantum punks](https://quantumpunks.org/) -->
 
-## Academic papers
-
- - [Groth16][^Grot16]
- - [BGM17][^BGM17]
-
 ---
 
 {% include refs.md %}

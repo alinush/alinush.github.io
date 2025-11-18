@@ -130,10 +130,21 @@ cryptomat:
         url: /2020/11/05/cryptographic-assumptions-in-hidden-order-groups.html
     #  - title: DL, CDH, DDH, SXDH, KEA, q-SDH, q-BSDH, q-PKE
 
+  #- title: Lattices
+  #  children:
+  #    - title: SIS
+  #      url: /sis
+  #    - title: LWE
+  #      url: /lwe
+  #    - title: Ajtai
+  #      url: /ajtai
+  #    - title: BFV
+  #      url: /bfv
+  #    - title: CKKS
+  #      url: /ckks
+
   #- title: Commitments
   #  children:
-  #    - title: Pedersen
-  #      url: /pedersen
   #    - title: AFGHO
   #      url: /afgho
 
