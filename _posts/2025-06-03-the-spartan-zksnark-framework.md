@@ -119,7 +119,7 @@ We assume familiarity with:
  - We typically denote the **boolean hypercube** of size $2^s$ as $\binS$
  - We often use $\tilde{V}$ to refer the MLE of a vector or matrix $V$.
  - When clear from context, we switch between the number $b$ and its binary vector representation $\b \bydef [b_0,\ldots,b_{s-1}]\in\binS$, such that $b = \sum_{i\in[s)} b_i 2^i$.
-{% include fiat-shamir-prelims.md %}
+{% include prelims-fiat-shamir.md %}
 
 ### Multilinear extensions (MLEs)
 

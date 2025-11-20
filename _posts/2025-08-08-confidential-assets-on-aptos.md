@@ -36,7 +36,7 @@ $</div> <!-- $ -->
 
 ## Notation
 
-{% include time-complexities-prelims-no-pairings.md %}
+{% include prelims-time-complexities-no-pairings.md %}
  - We assume a prime-order group $\term{\Gr}$ of prime order $\term{p}$
  - We use additive group notation: $a \cdot G$ denotes scalar multiplication in $\Gr$, where $a\in \Zp$ and $G\in\Gr$
 

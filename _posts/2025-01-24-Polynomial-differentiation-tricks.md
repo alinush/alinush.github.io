@@ -32,7 +32,7 @@ $</div> <!-- $ -->
  - Let $\omega$ denote a primitive $n$th root of unity.
  - Let $\mathbb{H} \bydef \\{\omega^0,\omega^1,\ldots,\omega^n\\}$ denote all the $n$th roots of unity 
  - We often use "Lagrange basis" or "FFT basis" to refer to the representation of a polynomial $p(X)$ as its evaluations $p(\omega^0),p(\omega^1),\ldots,p(\omega^{n-1})$ at all the $n$th roots of unity in $\mathbb{H}$.
-{% include time-complexities-prelims.md %}
+{% include prelims-time-complexities.md %}
 
 ## Interpolating $f(X)/g(X)$ in Lagrange basis
 

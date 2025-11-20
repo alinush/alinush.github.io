@@ -38,8 +38,8 @@ PST polynomial commitments[^PST13], originally published as an eprint in 2011[^P
 
 ## Preliminaries
 
-{% include pairings-prelims.md %}
-{% include time-complexities-prelims-pairings.md %}
+{% include prelims-pairings.md %}
+{% include prelims-time-complexities-pairings.md %}
 
 ## Algorithms
 

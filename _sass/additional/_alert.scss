@@ -27,15 +27,17 @@
     border-radius: map-get($base, border-radius);
   }
 
+  /* The todo box has a lighter red */
   p.todo {
     padding: map-get($spacers, 2) map-get($spacers, 3);
-    background-color: rgba($red, .1);
-    border: 1px solid $red;
+    background-color: rgba($red, .025);       // softer fill
+    border: 1px solid rgba($red, .1);        // lighter border
     border-radius: map-get($base, border-radius);
+
     &::before {
       content: "TODO: ";
       font-weight: bold;
-      color: $red;
+      color: rgba($red, .7);
       margin-right: map-get($spacers, 1);
     }
   }
@@ -55,8 +57,8 @@
 
   p.smallnote {
     padding: map-get($spacers, 2) map-get($spacers, 3);
-    background-color: rgba($gray, .1);
-    border: 1px solid $gray;
+    background-color: rgba($gray, .025); // softer fill
+    border: 1px solid rgba($gray, .1); // lighter border
     border-radius: map-get($base, border-radius);
     &::before {
       content: "Note: ";
@@ -92,3 +94,4 @@
     }
   }
 }
+

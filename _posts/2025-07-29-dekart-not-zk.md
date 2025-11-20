@@ -66,7 +66,7 @@ This blog post describes that range proof and explains why it cannot be ZK in Ty
  - $r\randget S$ denotes randomly sampling from a set $S$
  - We use $\one{a}\bydef a\cdot G_1$ and $\two{b}\bydef b\cdot G_2$ and $\three{c}\bydef c\cdot G_\top$ to denote scalar multiplication in bilinear groups $(\Gr_1,\Gr_2,\Gr_\top)$ with generators $G_1,G_2,G_\top$, respectively (i.e., additive group notation).
  - We use "small-MSM" to refer to multi-scalar multiplications (MSMs) where the scalars are small; we use "L-MSM" to refer to ones where the scalars are large
-{% include fiat-shamir-prelims.md %}
+{% include prelims-fiat-shamir.md %}
  - We will often [interpolate polynomials](/lagrange-interpolation) over the FFT basis $\term{\H}\bydef\\{\omega^0,\omega^1,\ldots,\omega^n\\}$, where $\term{\omega}$ is a primitive $(n+1)$th root of unity.
 
 ### Borgeaud's unbatched range proof

@@ -4,4 +4,8 @@ set -e
 
 scriptdir=$(cd $(dirname $0); pwd -P)
 
-vim $scriptdir/_sass/additional/_alert.scss
+path=$scriptdir/_sass/additional/_alert.scss
+
+vim "$path"
+
+echo "$path"

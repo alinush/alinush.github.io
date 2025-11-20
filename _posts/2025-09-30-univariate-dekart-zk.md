@@ -36,8 +36,8 @@ This is joint work with Dan Boneh, Trisha Datta, Kamilla Nazirkhanova and Rex Fe
 %
 \def\dekart{\mathsf{DeKART}}
 \def\dekartUni{\dekart^\mathsf{FFT}}
-\def\dekartSetup{\dekart.\mathsf{Setup}}
-\def\dekartProve{\dekart.\mathsf{Prove}}
+\def\dekartSetup{\dekartUni.\mathsf{Setup}}
+\def\dekartProve{\dekartUni.\mathsf{Prove}}
 %
 \def\bad#1{\textcolor{red}{\text{#1}}}
 \def\good#1{\textcolor{green}{\text{#1}}}
@@ -71,8 +71,8 @@ $</div> <!-- $ -->
 
 The notation for this blog post is [the same as in the old post](/dekart-not-zk#preliminaries).
 
-{% include pairings-prelims.md %}
-{% include time-complexities-prelims-pairings.md %}
+{% include prelims-pairings.md %}
+{% include prelims-time-complexities-pairings.md %}
 - We use $a\fsget S$ to denote sampling from a set $S$ in a deterministic manner using the Fiat-Shamir transcript $\FS$ derived so far
 
 ## Preliminary: ZKPoKs
@@ -252,7 +252,9 @@ A few notes:
 
 ### $\mathsf{Dekart}\_b^\mathsf{FFT}.\mathsf{Setup}(n; \mathcal{G})\rightarrow (\mathsf{prk},\mathsf{ck},\mathsf{vk})$
 
-Assume $n=2^c$ for some $c\in\N$[^power-of-two-n] s.t. $n \mid p-1$ (where $p$ is the order of the bilinear group $\mathcal{G}$) and let $\term{L} \bydef b(n+1) = 2^{d}$, for some $d\in\N$ s.t. $L \mid p-1$ as well.
+Assume $n+1=2^c$ for some $c\in\N$[^power-of-two-n] s.t. $n+1 \mid p-1$ (where $p$ is the order of the bilinear group $\mathcal{G}$).
+
+Let $\term{L} \bydef b(n+1) = 2^{d}$, for some $d\in\N$ s.t. $L \mid p-1$ as well.
 
 {: .note}
 For efficiency, we restrict ourselves to $(n+1)$ and $b$ that are powers of two, so that $L \bydef b(n+1)$ is a power of two as well.
@@ -884,7 +886,7 @@ Then, we'll re-use the coefficient form of the $\hat{f}$ and $f_j$ polynomials f
 
 ## References
 
-[^power-of-two-n]: To use DeKART for non-powers of two $n$'s, just run the $\dekartSetup$ algorithm with the smallest $n' > n$ such that $n'$ is a power of two. Then, run the $\dekartProve$ algorithm with a vector of $n'$ values such that (1) the first $n$ values are the values you want to prove and (2) the last $n'-n$ values are set to zero.
+[^power-of-two-n]: To use DeKART when $\not\exists c$ such that $n+1 = 2^c$, just run the $\dekartSetup$ algorithm with the smallest $n' > n$ such that $n'+1$ is a power of two. Then, run the $\dekartProve$ algorithm with a vector of $n'$ values such that (1) the first $n$ values are the values you want to prove and (2) the last $n'-n$ values are set to zero.
 [^pr1]: Pull request: [Add univariate DeKART range proof](https://github.com/aptos-labs/aptos-core/pull/17531/files)
 [^Borg20]: [Membership proofs from polynomial commitments](https://solvable.group/posts/membership-proofs-from-polynomial-commitments/), William Borgeaud, 2020
 
