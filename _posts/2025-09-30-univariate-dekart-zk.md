@@ -302,7 +302,7 @@ When $b=2$, we will be able to simplify by letting $L = n+1$ and thus $\S = \L$ 
 
 Parse the commitment key:
 \begin{align}
-    \left(\xiOne, \tauOne, \left(\sOne{i}\right)\_{i\in[n+1)}\right) \parse\ck
+    \left(\xiOne, \cdot, \left(\sOne{i}\right)\_{i\in[n+1)}\right) \parse\ck
 \end{align}
 
 Represent the $n$ values and a prepended $0$ value as a degree-$n$ polynomial:
@@ -312,8 +312,7 @@ Represent the $n$ values and a prepended $0$ value as a degree-$n$ polynomial:
 
 Commit to the polynomial via [hiding KZG](#hiding-kzg):
 \begin{align}
-\term{\rho} &\randget \F\\\\\
-C &\gets \hkzgCommit(\ck_\S, f; \rho) \bydef \rho \cdot \xiOne + \one{f(\tau)} = \rho\cdot \xiOne + \sum_{i\in[n]} z_i \cdot \sOne{i}
+C &\gets \hkzgCommit(\ck_\S, f; \emph{\rho}) \bydef \rho \cdot \xiOne + \one{f(\tau)} = \rho\cdot \xiOne + \sum_{i\in[n]} z_i \cdot \sOne{i}
 \end{align}
 
 {: .note}
