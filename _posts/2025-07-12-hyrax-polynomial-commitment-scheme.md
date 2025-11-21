@@ -61,7 +61,7 @@ This post has an accompanying [Twitter thread](https://x.com/alinush/status/1947
 $</div> <!-- $ -->
 
 {% include mle.md %}
-{% include time-complexities.md %}
+{% include defs-time-complexities.md %}
 
 ## Preliminaries
 

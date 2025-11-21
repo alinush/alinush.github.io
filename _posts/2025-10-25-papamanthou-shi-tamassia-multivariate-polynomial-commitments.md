@@ -25,7 +25,7 @@ permalink: pst
 
 {% include defs-pairings.md %}
 {% include mle.md %}
-{% include time-complexities.md %}
+{% include defs-time-complexities.md %}
 
 <!-- Here you can define LaTeX macros -->
 <div style="display: none;">$

@@ -32,7 +32,7 @@ permalink: confidential-assets
 \def\sqm{\ceil{\sqrt{m}}}
 $</div> <!-- $ -->
 
-{% include time-complexities.md %}
+{% include defs-time-complexities.md %}
 
 ## Notation
 

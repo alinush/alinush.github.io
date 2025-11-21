@@ -24,7 +24,7 @@ This is joint work with Dan Boneh, Trisha Datta, Kamilla Nazirkhanova and Rex Fe
 
 {% include defs-pairings.md %}
 {% include fiat-shamir.md %}
-{% include time-complexities.md %}
+{% include defs-time-complexities.md %}
 
 <!-- Here you can define LaTeX macros -->
 <div style="display: none;">$

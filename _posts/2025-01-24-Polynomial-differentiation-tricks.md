@@ -19,7 +19,7 @@ permalink: differentiation-tricks
 
 <!--more-->
 
-{% include time-complexities.md %}
+{% include defs-time-complexities.md %}
 
 <!-- Here you can define LaTeX macros -->
 <div style="display: none;">$

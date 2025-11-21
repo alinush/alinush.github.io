@@ -52,7 +52,7 @@ $</div> <!-- $_ -->
 
 {% include defs-pairings.md %}
 {% include mle.md %}
-{% include time-complexities.md %}
+{% include defs-time-complexities.md %}
 
 ## Preliminaries
 
