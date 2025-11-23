@@ -1,5 +1,12 @@
 ---
 tags:
+ - PVSS
+ - ElGamal
+ - range proofs
+ - polynomials
+ - sigma protocols
+ - distributed key generation (DKG)
+ - KZG
 title: "Chunky: Weighted PVSS for field elements"
 #date: 2020-11-05 20:45:59
 #published: false
