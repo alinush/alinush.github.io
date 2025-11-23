@@ -21,7 +21,7 @@ sidebar:
 
 <!--more-->
 
-{% include zkp.md %}
+{% include defs-zkp.md %}
 {% include mle.md %}
 {% include fiat-shamir.md %}
 

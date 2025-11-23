@@ -24,7 +24,21 @@ permalink: chunky
 \def\setup{\mathsf{Setup}}
 \def\commit{\mathsf{Commit}}
 \def\prove{\mathsf{Prove}}
-\def\verify{\mathsf{Prove}}
+\def\verify{\mathsf{Verify}}
+\def\piRange{\pi_\mathsf{range}}
+%
+\def\idx{\mathsf{idx}}
+%
+\def\enc{\mathsf{Enc}}
+\def\dec{\mathsf{Dec}}
+%
+\def\scrape{\mathsf{SCRAPE}}
+\def\lowdegreetest{\mathsf{LowDegreeTest}}
+%
+\def\Retk{\mathcal{R}_\mathsf{e2k}}
+\def\ctx{\mathsf{ctx}}
+\def\sok{\mathsf{SoK}}
+\def\piSok{\pi_\mathsf{SoK}}
 %
 \def\maxTotalWeight{W_\mathsf{max}}
 \def\totalWeight{W}
@@ -46,30 +60,39 @@ $</div> <!-- $ -->
 
 {% include defs-pairings.md %}
 {% include defs-time-complexities.md %}
+{% include defs-zkp.md %}
 
 ## Preliminaries
 
-Assuming familiarity with:
+We assume familiarity with:
+ - PVSS, as an abstract cryptographic primitive.
+    + In particular, the notion of a **PVSS transcript** will be used a lot.
 
- - Chunked verifiable ElGamal encryption of field elements via ZK range proofs (e.g., see the DeKART paper[^BDFplus25e])
- - PVSS, as an abstract cryptographic primitive
-    + In particular, the notion of a PVSS **transcript** will be used a lot
- - Batched ZK range proofs
-    + We will use [univariate DeKART](/dekart) here
+ - [ElGamal encryption](/elgamal)
+ - Batched range proofs (e.g., [DeKART](/dekart))
+ - ZKSoKs (i.e., [$\Sigma$-protocols](/sigma-protocols) that implicitly sign over a message by feeding it into the Fiat-Shamir transform).
+ - The SCRAPE low-degree test
 
-Pairing-friendly groups notation:
+All of these will be described in more detail in the subsections below.
+
+### Notation
+
+#### Pairing-friendly groups notation
 {% include prelims-pairings.md %}
  - We often use capital letters like $G$ or $H$ to denote group elements in $\Gr_1$
  - We often use $\widetilde{G}$ or $\widetilde{H}$ letters to denote group elements in $\Gr_2$
 
-Time-complexity notation:
+#### Time-complexity notation
 {% include prelims-time-complexities.md %}
 
-PVSS notation:
- - Let $\term{n}$ denote the number of players
- - Let $\term{M}$ denote the maximum number of shares a player can have 
+#### Other notation
 
-### Chunked'n'batched ElGamal encryption
+ - $[n]\bydef \\{1,2,\ldots,n\\}$
+ - $[n) \bydef \\{0,1,2,\ldots,n-1\\}$
+
+### ElGamal encryption
+ 
+Assuming familiarity with [ElGamal encryption](/elgamal):
 
 #### $E.\mathsf{KeyGen}_H()\rightarrow (\mathsf{dk},\mathsf{ek})$
 
@@ -79,45 +102,88 @@ Generate the key-pair:
 \ek &\gets \dk \cdot H
 \end{align}
 
-#### $E.\mathsf{Enc}\_{G,H}\left(\\{\mathsf{ek}\_i\\}\_{i\in[n]}, \\{s\_{i,j}\\}\_{i\in[n],j\in[m]}; \\{r\_j\\}\_{j\in[m]}\right) \rightarrow \left(\\{C\_{i,j}\\}\_{i,j},\\{R\_j\\}\_j\right)$
+#### $E.\mathsf{Enc}\_{G,H}\left(\mathsf{ek}, v; r\right) \rightarrow \left(C, R\right)$
 
-$\forall i\in[n],\forall j\in[m]$, compute:
+Compute:
 \begin{align}
-C_{i,j} &\gets s_{i,j} \cdot G + r_j \cdot \ek_i\\\\\
-R_j &\gets r_j \cdot H
+C &\gets v \cdot G + r \cdot \ek\\\\\
+R &\gets r \cdot H
 \end{align}
 
-#### $E.\mathsf{Dec}\_{G}\left(\mathsf{dk}\_i, \\{C\_{i,j}\\}_{j\in[m]}\right) \rightarrow \\{s\_{i,j}\\}_j$
+#### $E.\mathsf{Dec}\_{G}\left(\mathsf{dk}, (C, R)\right) \rightarrow v$
 
-$\forall j\in[m]$, compute:
 \begin{align}
-s_{i,j} &\gets \log_G\left(C_{i,j} - \dk_i\cdot R_j\right)\\\\\
-        &= \log_G\left((s_{i,j} \cdot G + r_j \cdot \ek_i) - \dk_i\cdot (r_j \cdot H)\right)\\\\\
-        &= \log_G\left(s_{i,j} \cdot G + r_j \cdot \ek_i - r_j \cdot \ek_i\right)\\\\\
-        &= \log_G\left(s_{i,j} \cdot G\right)
+v &\gets \log_G\left(C - \dk\cdot R\right)\\\\\
+        &= \log_G\left((v \cdot G + r \cdot \ek) - \dk\cdot (r \cdot H)\right)\\\\\
+        &= \log_G\left(v \cdot G + r \cdot \ek - (r \cdot \dk) \cdot H\right)\\\\\
+        &= \log_G\left(v \cdot G + r \cdot \ek - r \cdot \ek\right)\\\\\
+        &= \log_G\left(v \cdot G\right) = v\\\\\
 \end{align}
+
+{: .note}
+Decryption will only work for sufficiently "small" values $v$ such that computing discrete logarithms on $v \cdot G$ is feasible (e.g., anywhere from 32 bits to 64 bits).
 
 ### Univariate DeKART batched ZK range proofs
+ 
+Assuming familiarity with batched ZK range proofs[^BBBplus18].
+In particular, we will use [univariate DeKART](/dekart) as our range proof scheme, formalized below.
 
-#### $\dekart_b.\setup(n; \mathcal{G})\rightarrow (\mathsf{prk},\mathsf{ck},\mathsf{vk})$
+#### $\dekart_b.\setup(N; \mathcal{G})\rightarrow (\mathsf{prk},\mathsf{ck},\mathsf{vk})$
 
-Sets up the ZK range proof to prove batches of size $\le n$, returning a proving key, a commitment key and a verification key.
+Sets up the ZK range proof to prove batches of size $\le N$, returning a proving key, a commitment key and a verification key.
 (See implementation [here](/dekart#mathsfdekart_bmathsffftmathsfsetupn-mathcalgrightarrow-mathsfprkmathsfckmathsfvk).)
 
-#### $\dekart_b.\commit(\ck,z_1,\ldots,z_{n}; \rho)\rightarrow C$
+#### $\dekart_b.\commit(\ck,z_1,\ldots,z_N; \rho)\rightarrow C$
 
-Returns a commitment $C$ to a vector of $n$ values using randomness $\rho$.
+Returns a commitment $C$ to a vector of $N$ values using randomness $\rho$.
 (See implementation [here](/dekart#mathsfdekart_bmathsffftmathsfcommitckz_1ldotsz_n-rhorightarrow-c).)
 
-#### $\dekart_b.\prove(\mathsf{prk}, C, \ell; z_1,\ldots,z_{n}, \rho)\rightarrow \pi$
+#### $\dekart_b.\prove(\prk, C, \ell; z_1,\ldots,z_N, \rho)\rightarrow \pi$
 
-Returns a ZK proof $\pi$ that the $n$ values committed in $C$ are all in $[0, b^\ell)$.
+Returns a ZK proof $\pi$ that the $N$ values committed in $C$ are all in $[0, b^\ell)$.
 (See implementation [here](/dekart#mathsfdekart_bmathsffftmathsfprovemathsfprk-c-ell-z_1ldotsz_n-rhorightarrow-pi).)
 
-#### $\dekart_b.\verify(\mathsf{vk}, C, \ell; \pi)\rightarrow \\{0,1\\}$
+#### $\dekart_b.\verify(\vk, C, \ell; \pi)\rightarrow \\{0,1\\}$
 
-Verifies that the $n$ values committed in $C$ are all in $[0, b^\ell)$.
+Verifies that the $N$ values committed in $C$ are all in $[0, b^\ell)$.
 (See implementation [here](/dekart#mathsfdekart_bmathsffftmathsfverifymathsfvk-c-ell-pirightarrow-01).)
+
+### Zero-knowledge Signatures of Knowledge (ZKSoKs)
+
+Assuming familiarity with ZKSoKs[^CL06], which typically consist of two algorithms: 
+
+#### $\sok.\prove(\mathcal{R}, m, \stmt; \witn) \rightarrow \pi$
+
+Returns a ZK proof of knowledge of $\witn$ s.t. $\mathcal{R}(\stmt;\witn) = 1$ and signs the message $m$ in the process.
+
+#### $\sok.\verify(\mathcal{R}, m, \stmt; \pi) \rightarrow \\{0,1\\}$
+
+Verifies a ZK proof of knowledge of some $\witn$ s.t. $\mathcal{R}(\stmt;\witn) = 1$ and that the message $m$ was signed.
+
+### The ElGamal-to-KZG NP relation
+
+One of the key ingredients in our PVSS will be a ZK proof of knowledge of share chunks such that they are both ElGamal-encrypted and [KZG-committed](/kzg).
+
+This is captured via the NP relation below:
+\begin{align}
+\term{\Retk}\left(\begin{array}{l}
+\stmt = \left(G, H, \ck, \\{\ek\_i\\}\_i,\\{C\_{i,j,k}\\}\_{i,j,k}, \\{R_{j,k}\\}\_{j,k}, C\right),\\\\\
+\witn = \left(\\{s\_{i,j,k}\\}\_{i,j,k}, \\{r\_{j,k}\\}\_{j,k}, \rho\right)
+\end{array}\right) = 1\Leftrightarrow\\\\\
+\Leftrightarrow\left\\{\begin{array}{rl} 
+    (C\_{i,j,k}, R_{j,k}) &= E.\enc_{G,H}(\ek_i, s\_{i,j,k}; r\_{j,k})\\\\\
+    C& = \dekart_2.\commit(\ck, \\{s\_{i,j,k}\\}\_{i,j,k}; \rho)
+\end{array}\right.
+\end{align}
+where the $s_{i,j,k}$'s will be "flattened" as a vector (in a specific order) before being input to $\dekart_2.\commit(\cdot)$.
+
+{: .warning}
+We will explain how this flattening works later in the [$\pvssDeal$](#mathsfpvssmathsfdeal_mathsfppleftt-w_i_iinn-mathsfek_i_iin-n-a_0-mathsfssidright-rightarrow-mathsftrs) algorithm.
+
+### The SCRAPE low-degree test
+
+{: .todo}
+Explain!
 
 ## Building a DKG from a non-malleable PVSS
 
@@ -162,23 +228,26 @@ Furthermore, nor can validator $j$ bias the final DKG secret $z$ by appropriatin
 
 Notation:
 
- - Let $\term{\maxTotalWeight}$ denote the maximum total weight $\Leftrightarrow$ maximum # of shares that we will ever want to deal in the PVSS
+ - Let $\term{n}$ denote the number of players
+ - Let $\term{\maxTotalWeight}$ denote the **maximum total weight** $\Leftrightarrow$ maximum # of shares that we will ever want to deal in the PVSS
  - Let $\term{\ell}$ denote the **chunk bit-size** (e.g., $\ell=32$ for 32-bit chunks)
  - Let $\term{m} = \ceil{\log_2{\sizeof{\F}} / \ell}$ denote the **number of chunks per share**
  - Let $\term{B}\bydef 2^\ell$ denote the **maximum value of a chunk** (e.g., $B=2^{32}$ for 32-bit chunks)
 
 The algorithms below describe **Chunky**, a weighted PVSS where only subsets of players with combined weight $> \threshWeight$ can reconstruct the shared secret.
 
-### $\mathsf{PVSS}.\mathsf{Setup}(\ell, W_\mathsf{max}; \mathcal{G}) \rightarrow \mathsf{pp}$
+### $\mathsf{PVSS}.\mathsf{Setup}(\ell, W_\mathsf{max}; \mathcal{G}, \widetilde{G}) \rightarrow \mathsf{pp}$
 
 Recall that $\emph{\maxTotalWeight}$ is the max. total weight, $\emph{\ell}$ is the # of bits per chunk and $\emph{m}$ is the number of chunks a share is split into.
 
-**Step 1:** Set up the chunked'n'batched ElGamal encryption:
+$\term{\widetilde{G}}$ will be the base used to commit to the shares in $\pvssDeal$.
+
+**Step 1:** Set up the ElGamal encryption:
 \begin{align}
 \term{G},\term{H} &\randget \Gr_1
 \end{align}
 
-**Step 2:** Set up the ZK range proof to batch prove that $\le \maxTotalWeight\cdot m$ chunks are all $\ell$-bit wide: 
+**Step 2:** Set up the ZK range proof to batch prove that $\le \maxTotalWeight\cdot m$ share chunks are all $\ell$-bit wide: 
 
 \begin{align}
 (\prk,\ck,\vk) \gets \dekart_2.\setup(\maxTotalWeight\cdot m; \mathcal{G})
@@ -189,7 +258,7 @@ Note that DeKART assumes that the field $\F$ admits a $2^\kappa$-th primitive ro
 
 Return the public parameters:
 \begin{align}
-\pp \gets (\ell, \maxTotalWeight, G, H, \prk,\ck,\vk)
+\pp \gets (\ell, \maxTotalWeight, G, \widetilde{G}, H, \prk,\ck,\vk)
 \end{align}
 
 ### $\mathsf{PVSS}.\mathsf{Deal}\_\mathsf{pp}\left(t, \\{w_i\\}\_{i\in[n]}, \\{\mathsf{ek}_i\\}\_{i\in [n]}, a_0, \mathsf{ssid}\right) \rightarrow \mathsf{trs}$
@@ -202,37 +271,264 @@ $\ssid$ is a session identifier, which will be set to the consensus epoch number
 
 Parse public parameters:
 \begin{align}
-(\ell, \maxTotalWeight, G, H, \prk,\ck,\vk)\parse\pp
+(\ell, \maxTotalWeight, G, \widetilde{G}, H, \prk,\ck,\vk)\parse\pp
 \end{align}
 
 Compute the **total weight** and assert that the public parameters can accomodate it:
 \begin{align}
-\term{W} &\gets \sum_i w_i\\\\\
+\label{eq:W}
+\term{W} &\gets \sum_{i\in[n]} w_i\\\\\
 \textbf{assert}\ W &\le \maxTotalWeight
 \end{align}
 
 Find a $2^\kappa$-th **root of unity** $\term{\omega} \in \F$ such that we can efficiently compute FFTs of size $W$ (i.e., smallest $2^\kappa \ge W$).
 
-Pick the degree-$\threshWeight$ random secret sharing polynomial:
+**Step 1:** Pick the degree-$\threshWeight$ random secret sharing polynomial and compute the $j$th share of player $i$:
 \begin{align}
 \term{a_1,\ldots,a_t} &\randget \F\\\\\
 \term{f(X)} &\bydef \emph{a_0} + a_1 X + a_2 X^2 + \ldots + a_t X^\threshWeight\\\\\
-\emph{a_0}, \term{s_1, s_2,\ldots, s_W} &\gets f(0), f(\omega^0),f(\omega^1),\ldots,f(\omega^{W-1})
+\label{eq:eval}
+\term{s_{i, j}} &\gets f\left(\term{\chi_{i,j}}\right),\forall i\in[n],\forall j\in[w_i]
 \end{align}
 
-_Note:_ The $s_i$'s would be computed fast in $\Fmul{O(W\log{W})}$ via an FFT. 
+_Note:_ Assuming that the set of evaluation points $\emph{\\{\chi_{i,j}\\}}$ are _wisely_ set to be the the first $W$ roots of unity in $\\{\omega^{i'}\\}\_{i'\in [0,W)}$, then the $s_{i,j}$'s would be quickly-computable in $\Fmul{O(W\log{W})}$ via an FFT. 
+
+**Step 2:** Commit to the shares, $\forall i\in[n],\forall j\in[w_i]$:
+\begin{align}
+\term{\widetilde{V}\_{i,j}} &\gets s\_{i,j} \cdot \widetilde{G} \in \Gr\_2\\\\\
+\term{\widetilde{V}_0} &\gets a_0 \cdot \widetilde{G}
+\end{align}
+
+**Step 3:** Split each share $s_{i,j}$ into $\emph{m}\bydef \ceil{\log_2{\sizeof{\F}}} / \ell$ chunks $\term{s_{i,j,k}}$, of $\ell$-bits each, such that:
+\begin{align}
+s_{i,j} 
+    &= \sum_{k\in[m]} (2^\ell)^{k-1} \cdot \emph{s_{i,j,k}}\\\\\
+    &\bydef \sum_{k\in[m]} \emph{B}^{k-1} \cdot s_{i,j,k}\\\\\
+\end{align}
+
+_Note:_ Each $s_{i,j,k} \in [0, B)$, where $B = 2^\ell$.
+
+**Step 4:** $\forall i \in[n], j\in[w_i], k\in[m]$, encrypt the $k$th chunk of the $j$th share of player $i$:
+\begin{align}
+    \term{r_{j,k}} &\randget \F\ \text{s.t.}\ \sum_{k\in[m]} B^{k-1}\cdot r_{j,k} = 0\\\\\
+    \term{(C\_{i,j,k}, R_{j,k})} &\gets E.\enc_{G,H}(\ek_i, s\_{i,j,k}; r\_{j,k})\\\\\
+        &\bydef \left(\begin{array}{l}
+            s\_{i,j,k} \cdot G + r\_{j,k}\cdot \ek_i\\\\\
+            r\_{j,k}\cdot H\end{array}\right)
+\end{align}
+
+_Observation 1:_ The randomness has been correlated such that:
+\begin{align}
+\label{eq:correlated}
+\sum_{k\in[m]} B^{k-1} \cdot C\_{i,j,k} 
+    &= \sum_{k\in[m]} B^{k-1} \cdot (s\_{i,j,k} \cdot G + r_{j,k}\cdot \ek_i)\\\\\
+    &= \underbrace{\sum_{k\in[m]} (B^{k-1} \cdot s\_{i,j,k})}\_{s_{i,j}} \cdot G + \underbrace{\sum_{k\in [m]} (B^{k-1} \cdot r_{j,k})}\_{0}\cdot \ek_i\\\\\
+    &= s_{i,j} \cdot G + 0 \cdot \ek_i = s_{i,j} \cdot G
+\end{align}
+
+_Observation 2:_ Different players $i$ will safely re-use the same $r_{j,k}$ randomness.
+
+_Observation 3:_ $\sizeof{\\{R_{j,k}\\}_{j,k}} = \max\_{i\in[n]}{(w\_i)} \cdot m$
+
+{: .definition}
+The **cumulative weight up to (but excluding) $i$** is $\term{W_i}$ such that $\emph{W_1} = 0$ and 
+<!-- 
+$\term{W_i} = W_{i-1} + w_{i-1}$.
+-->
+$\emph{W_i} = \sum_{i'\in [1, i)} w_i$. 
+(Note that $W \bydef W_{n+1}$.)
+This notion helps us "flatten" all the share chunks $s_{i,j,k}$ into an array $\\{z\_{i'}\\}\_{i'\in [W \cdot m]}$, where $z_{i'} \bydef s_{i,j,k}$ with $i'\gets \left(\emph{W_i} + (j-1)\right)\cdot m + k \bydef \term{\idx(i,j,k)}$ (see [appendix](#appendix-the-igets-mathsfidxijk-indexing) for how the indexing was derived).
+
+**Step 5:** Prove that the share chunks are correctly encrypted **and** are all $\ell$-bit long.
+
+First, "flatten" all the shares into a vector. $\forall i\in[n], j\in[w_i],\forall k\in[m]$:
+\begin{align}
+\term{z_{i'}} \gets s_{i,j, k},\ \text{where}\ i' 
+    &\bydef \emph{\idx}(i,j,k)\in[W\cdot m]
+\end{align}
+
+Second, KZG commit to the share chunks and prove they are all in range:
+\begin{align}
+\rho &\randget \F\\\\\
+\term{C} &\gets \dekart_2.\commit(\ck, z_1, \ldots, z_{W \cdot m}; \rho)\\\\\
+\term{\piRange} &\gets \dekart_2.\prove(\prk, C, \ell, z_1, \ldots, z_{W\cdot m}; \rho) 
+\end{align}
+
+**Step 6:** Compute a signature of knowledge of the dealt secret key $a_0$ over the session ID: 
+\begin{align}
+\term{\ctx} &\gets (t, \\{w_i\\}_i, \ssid)\\\\\
+\term{\piSok} &\gets \sok.\prove\left(\begin{array}{l}
+    \Retk, \emph{\ctx},\\\\\
+    \underbrace{G, H, \ck, \\{\ek\_i\\}\_i,\\{C\_{i,j,k}\\}\_{i,j,k}, \\{R\_{j,k}\\}\_{j,k}, C}\_{\stmt},\\\\\
+    \underbrace{s\_{i,j,k}\\}\_{i,j,k}, \\{r\_{j,k}\\}\_{j,k}, \rho}\_{\witn}
+\end{array}\right)
+\end{align}
 
 Return the transcript:
 \begin{align}
-\trs \gets ?
+\term{\pi}  &\gets \left(C, \piRange, \piSok\right)\\\\\
+\trs &\gets \left(\widetilde{V}\_0, \\{\widetilde{V}\_{i,j}\\}\_{i,j\in[w_i]}, \\{C_{i,j,k}\\}\_{i,j\in[w_i],k}, \\{R\_{j,k}\\}\_{j\in[\max_i{w_i}],k}, \emph{\pi}\right)
 \end{align}
 
 ### $\mathsf{PVSS}.\mathsf{Verify}\_\mathsf{pp}\left(\mathsf{trs}, t, \\{w_i\\}_{i\in[n]}, \\{\mathsf{ek}_i\\}\_{i\in[n]}, \mathsf{ssid}\right) \rightarrow \\{0,1\\}$
 
-### $\mathsf{PVSS}.\mathsf{Decrypt}\_\mathsf{pp}\left(\mathsf{trs}, \mathsf{dk}, i\right) \rightarrow \\{s_{i,j}\\}_j \in \F$ 
+Parse public parameters:
+\begin{align}
+(\ell, \cdot, G, \widetilde{G}, H, \cdot,\cdot,\vk)\parse\pp
+\end{align}
+
+Parse the transcript:
+\begin{align}
+\left(\widetilde{V}\_0, \\{\widetilde{V}\_{i,j}\\}\_{i,j\in[w_i]}, \\{C_{i,j,k}\\}\_{i,j\in[w_i],k}, \\{R\_{j,k}\\}\_{j\in[\max_i{w_i}],k}, \left(C, \piRange, \piSok\right)\right)\parse\trs 
+\end{align}
+
+Let the _total weight_ $W$ be defined as before in Eq. \ref{eq:W}.
+
+**Step 1:** Verify that the committed shares encode a degree-$t$ polynomial via the SCRAPE LDT[^CD17]:
+\begin{align}
+\term{\alpha} &\randget \F\\\\\
+\textbf{assert}\ &\scrape.\lowdegreetest(\\{(0, V_0)\\} \cup \\{(\chi_{i,j}, V_{i,j})\\}_{i,j}, t, W; \emph{\alpha})
+\end{align}
+
+_Note:_ Recall that the $\emph{\chi_{i,j}}$'s are the roots of unity used to evaluate the secret-sharing polynomial $f(X)$ during dealing (see Eq. \ref{eq:eval}).
+
+{: .todo}
+May need to feed in the size of the evaluation domain to SCRAPE for the super-efficient algorithm.
+
+**Step 2:** Check that ciphertexts encrypt the committed shares:
+\begin{align}
+\term{\beta_{i,j}} &\randget\\{0,1\\}^\lambda\\\\\
+\label{eq:multi-pairing-check}
+\textbf{assert}\ 
+    &\pair{\sum_{i\in[n],j\in[w_i],k\in[m]} (B^{k-1}\cdot\emph{\beta_{i,j}})\cdot C_{i,j,k}}{\widetilde{G}} 
+        \equals
+    \pair{G}{\sum_{i\in[n],j\in[w_i]} \emph{\beta_{i,j}}\cdot \widetilde{V}_{i,j}}
+\end{align}
+
+<details>
+ <summary><b>Q:</b> <i>But how was this derived?</i> <b>A:</b> Click to expand and understand...</summary>
+  <p markdown="1" style="margin-left: .3em; border-left: .15em solid black; padding-left: .5em;">
+   First, recall from Eq. \ref{eq:correlated} that the randomness has been correlated such that $\sum_k C\_{i,j,k} = s\_{i,j}\cdot G$.
+   <br />
+   Second, observe that, using a pairing, we can check that the share chunked in the $C\_{i,j,k}$'s is the same as the one committed in $\widetilde{V}\_{i,j}$:
+   \begin{align}
+        \pair{\sum\_{k\in[m]} B^{k-1}\cdot C\_{i,j,k}}{\widetilde{G}} &\equals \pair{G}{\widetilde{V}\_{i,j}}
+   \end{align}
+   <br />
+   Third, observe that we can batch all these pairing checks into one by taking linear combination of the verification equations using random $\beta_{i,j}$'s:
+   \begin{align}
+        \sum\_{i,j}\beta\_{i,j}\cdot\pair{\sum\_{k\in[m]} B^{k-1}\cdot C\_{i,j,k}}{\widetilde{G}} &\equals \sum\_{i,j} \beta\_{i,j}\cdot \pair{G}{\widetilde{V}\_{i,j}}\\\\\
+   \end{align}
+   Moving the sum inside the pairing by leveraging the bilinearity gives exactly Eq. \ref{eq:multi-pairing-check}.
+  </p>
+</details>
+
+**Step 3:** Verify the range proof:
+\begin{align}
+\textbf{assert}\ \dekart_2.\verify(\vk, C, \ell; \piRange) \equals 1 
+\end{align}
+
+**Step 4:** Verify the SoK:
+\begin{align}
+\term{\ctx} &\gets (t, \\{w_i\\}_i, \ssid)\\\\\
+\textbf{assert}\ &\sok.\verify\left(\begin{array}{l}
+    \Retk, \emph{\ctx},\\\\\
+    \underbrace{G, H, \ck, \\{\ek\_i\\}\_i,\\{C\_{i,j,k}\\}\_{i,j,k}, \\{R\_{j,k}\\}\_{j,k}, C}\_{\stmt};\\\\\
+    \piSok
+\end{array}\right) \equals 1
+\end{align}
+
+### $\mathsf{PVSS}.\mathsf{Decrypt}\_\mathsf{pp}\left(\mathsf{trs}, \mathsf{dk}, i, w_i\right) \rightarrow \\{s_{i,j}\\}_j \in \F$ 
 
 {: .smallnote}
 $i\in[n]$ is the ID of the player who is decrypting their share(s) from the transcript.
+Recall that $\emph{m}\bydef \ceil{\log_2{\sizeof{\F}} / \ell}$ is the number of chunks per share.
+
+Parse public parameters:
+\begin{align}
+(\ell, \cdot, G, \cdot, \cdot, \cdot,\cdot,\cdot)\parse\pp
+\end{align}
+
+Parse the transcript:
+\begin{align}
+\left(\cdot, \cdot, \\{C_{i,j,k}\\}\_{i,j\in[w_i],k}, \\{R\_{j,k}\\}\_{j\in[\max_i{w_i}],k},\cdot\right)\parse\trs
+\end{align}
+
+**Step 1:** Decrypt all of player $i$'s share chunks $\\{s\_{i,j,k}\\}\_{i,j\in[w_i],k\in[m]}$:
+\begin{align}
+s_{i,j,k}\gets E.\dec_{G}\left(\dk_i, (C\_{i,j,k}, R\_{j,k})\right)
+\end{align}
+
+**Step 2:** Assemble the chunks back into shares:
+\begin{align}
+s_{i,j}\gets \sum_{k\in[m]} (2^\ell)^{k-1} \cdot s_{i,j,k}
+\end{align}
+
+## Acknowledgements
+
+The weighted PVSS in this blog post has been co-designed with Rex Fernando and Wicher Malten at Aptos Labs.
+
+## Appendix: The $i'\gets \mathsf{idx}(i,j,k)$ indexing
+
+It may be easiest to understand the $\idx(i,j,k) = (W_i + (j-1))\cdot m + k$ formula by considering an example.
+
+Say the number of chunks per share is $m = 4$ and that we have $n=4$ players with weights $[ w_1, w_2, w_3, w_4 ] = [2, 1, 3, 2]$
+
+Then, the cumulative weights will be $[ W_1, W_2, W_3, W_4 ] = [ 0, 2, 3, 6]$
+
+"Flattening out" the shares, we'd get:
+```
+Player 1:
+
+    s_{1,1,1}, s_{1,1,2}, s_{1,1,3},
+    1          2          3         
+
+    s_{1,2,1}, s_{1,2,2}, s_{1,2,3},
+    4          5          6         
+
+Player 2:
+    s_{2,1,1}, s_{2,1,2}, s_{2,1,3},
+    7          8          9         
+
+Player 3:
+    s_{3,1,1}, s_{3,1,2}, s_{3,1,3},
+    10         11         12        
+
+    s_{3,2,1}, s_{3,2,2}, s_{3,2,3},
+    13         14         15        
+
+    s_{3,3,1}, s_{3,3,2}, s_{3,3,3},
+    16         17         18        
+
+Player 4:
+    s_{4,1,1}, s_{4,1,2}, s_{4,1,3},
+    19         20         21        
+
+    s_{4,2,1}, s_{4,2,2}, s_{4,2,3},
+    22         23         24
+```
+
+Observations:
+ 1. Player $i$'s share chunks start at index $W_i\cdot m + 1$.
+ 2. To get to the chunks of the $j$th share (of player $i$) add $(j-1)\cdot m$ to that.
+ 3. To get to the $k$th chunk (of the $j$th share of player i) add $k-1$ to that.
+
+So:
+\begin{align}
+\idx(i,j,k) 
+    &= ((W_i \cdot m + 1) + ((j-1) \cdot m) + (k-1)\\\\\
+    &= ((W_i \cdot m) + ((j-1) \cdot m) + k\\\\\
+    &= (W_i + (j-1)) \cdot m + k\\\\\
+\end{align}
+
+For example, when $i = 3, j = 3, k = 2$, we get:
+\begin{align}
+    (W_i + (j-1)) \cdot m + k
+  &= (W_3 + (3-1)) \cdot 3 + 2\\\\\
+  &= (3 + 2) \cdot 3 + 2\\\\\
+  &= 5 \cdot 3 + 2 = 17
+\end{align}
+as expected for $s_{3,3,2}$.
 
 ## References
 

@@ -25,7 +25,7 @@ NP relations are extremely helpful when formalizing **zero-knowledge proofs** as
 <div style="display: none;">$
 $</div> <!-- $ -->
 
-{% include zkp.md %}
+{% include defs-zkp.md %}
 
 ## What is an NP relation?
 

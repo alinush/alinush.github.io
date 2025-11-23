@@ -114,7 +114,7 @@ Nonetheless, this is **not sufficient**: one should also verify that the VK was 
 \def\hashPok#1{\hashPokNoArg\left(#1\right)}
 $</div> <!-- $ -->
 
-{% include zkp.md %}
+{% include defs-zkp.md %}
 
 ## Background and notation
 

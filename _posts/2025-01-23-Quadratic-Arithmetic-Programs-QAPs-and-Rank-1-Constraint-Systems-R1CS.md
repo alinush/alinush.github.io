@@ -30,7 +30,7 @@ In particular, R1CS is just a reformulation of QAPs as linear equations and, the
 \def\relqap{\mathcal{R}_\mathsf{QAP}}
 $</div> <!-- $ -->
 
-{% include zkp.md %}
+{% include defs-zkp.md %}
 
 This blog post explains two different characterizations of NP, which are useful when building [zero-knowledge proof systems](/zkps): 
 

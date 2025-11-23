@@ -27,7 +27,7 @@ This way, bugs in the ZK DSL implementation cannot be exploited as long as the p
 \def\R{\mathbf{M}}
 $</div> <!-- $ -->
 
-{% include zkp.md %}
+{% include defs-zkp.md %}
 
 A [zero-knowledge proof (ZKP)](/zkps) proves knowledge of $\mathbf{w}$ s.t. $R(\mathbf{x}; \mathbf{w}) = 1$ without leaking any info about $\mathbf{w}$. 
 

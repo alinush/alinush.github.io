@@ -26,7 +26,7 @@ Importantly, the **proof** leaks _nothing_ about the secret witness $\mathbf{w}$
 \def\allrels{\relgen_\lambda}
 $</div> <!-- $ -->
 
-{% include zkp.md %}
+{% include defs-zkp.md %}
 
 ## Introduction
 
