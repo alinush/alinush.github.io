@@ -397,7 +397,7 @@ Let the _total weight_ $W$ be defined as before in Eq. \ref{eq:W}.
 **Step 1:** Verify that the committed shares encode a degree-$t$ polynomial via the SCRAPE LDT[^CD17]:
 \begin{align}
 \term{\alpha} &\randget \F\\\\\
-\textbf{assert}\ &\scrape.\lowdegreetest(\\{(0, V_0)\\} \cup \\{(\chi_{i,j}, V_{i,j})\\}_{i,j}, t, W; \emph{\alpha})
+\textbf{assert}\ &\scrape.\lowdegreetest(\\{(0, V_0)\\} \cup \\{(\chi_{i,j}, V_{i,j})\\}_{i,j}, t, W; \emph{\alpha}) \equals 1
 \end{align}
 
 _Note:_ Recall that the $\emph{\chi_{i,j}}$'s are the roots of unity used to evaluate the secret-sharing polynomial $f(X)$ during dealing (see Eq. \ref{eq:eval}).
