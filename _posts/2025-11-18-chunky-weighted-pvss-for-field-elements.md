@@ -196,40 +196,43 @@ Explain!
 
 Our goal is to get a **weighted DKG**[^DPTX24e] for field elements amongst the validators of a proof-of-stake blockchain, such that the **DKG (final, shared) secret** $\term{z}$ is only reconstructable by a fraction $> \term{f}$ of the stake (e.g., $f = 0.5$ or 50%).
 
-To do this, each validator $i$ will **"contribute"** to $z$ by picking their own secret $\term{z_i} \in \F$ and dealing it to the other validators via $\term{\pvssDeal}$ in a **non-malleable** fashion.
-The DKG secret will be set to $z \bydef \sum_{i\in Q} z_i$, where $\term{Q}$ is the set of validators who correctly dealt their $z_i$ via $\pvssDeal$.
+How?
+Each validator $i$ will **"contribute"** to $z$ by picking their own secret $\term{z_i} \in \F$ and dealing it to the other validators via $\term{\pvssDeal}$ in a **non-malleable** fashion such that only a $> \emph{f}$ fraction of the stake can reconstruct $z_i$.
+The DKG secret will be set to $z \bydef \sum_{i\in Q} z_i$, where $\term{Q}$ is the **eligible (sub)set** of validators who correctly dealt their $z_i$.
 
 Crucially, $Q$ must be large "enough": i.e., it must have "enough" validators to guarantee that no malicious subset of them can learn (or can bias the choice of) $z$.
-For example, we could assume only 33% of the stake is malicious and require that $Q$ have more stake than that.
-In an abundance of caution, in Aptos, we require that $Q$ contains $>$ 66% of the stake.
+For example, we could assume only 33% of the stake[^aptos-Q] is malicious and require that $Q$ have more stake than that.
+We denote the stake of the validators in $Q$ by $\term{\norm{Q}}$.
 
 {: .note}
-The DKG is parameterized by $\sizeof{Q}$ and by $f$.
-Since typically in a DKG the same set of validators will deal a secret amongst themselves, $\sizeof{Q}$ and $f$ are typically set to the same value.
-Otherwise, if $f > \sizeof{Q}$, then the validators in $Q$ which are fewer than required by $f$ could reconstruct the secret, which defeats the point. 
-Or, if $\sizeof{Q} > f$, then you are requiring more validators to contribute than needed for secrecy, since $f < \sizeof{Q}$ can reconstruct.
+The DKG is parameterized by $\norm{Q}$ and by $f$.
+Since, typically in a DKG, the same set of validators will deal a secret amongst themselves, $\norm{Q}$ and $f$ are typically set to the same value.
+Otherwise, if $\norm{Q} < f$, then the validators in $Q$ could reconstruct the secret even though they do not have $> f$ of the stake, which defeats the point. 
+Alternatively, if $\norm{Q} > f$, then the protocol would be requiring more validators to contribute than needed for secrecy, since $f < \norm{Q}$ can reconstruct.
 
 
-_First_, to ensure that $\sizeof{Q}$ is large "enough", we require that, in the DKG protocol, each validator **digitally-sign** their dealt PVSS transcript in a [domain-separated fashion](/domain-separation) (part of the domain separator will be the current consensus epoch number).
+_First_, to publicly-prove that $\norm{Q}$ is large "enough", each validator will **digitally-sign** their dealt PVSS transcript in a [domain-separated fashion](/domain-separation) (part of the domain separator will be the current consensus epoch number).
 Without such authentication, $Q$ could be filled with transcripts from one malicious validator impersonating the other ones.
 Therefore, that malicious validator would have full knowledge of the final DKG secret $z$.
-No es bueno.
+($\Rightarrow$ No es bueno.)
 
 **Implication:** The DKG protocol needs to be carefully crafted to sign the PVSS transcripts.
-If done right, the validators' public keys used for consensus signature can be safely reused as **signing public keys** for the transcript.
+If done right, the validators' public keys used to sign blockchain consensus messages can be safely reused as **signing public keys** for the transcript.
+(If done right.)
 
 _Second_, we require that PVSS transcripts obtained from $\pvssDeal$ be **non-malleable**.
 To see why this is necessary consider the following scenario:
- - two validators $i$ and $j$ have enough stake to make $Q = \\{i,j\\}$ large enough
+ - two validators $i$ and $j$ have enough stake to form an eligible subset $Q = \\{i,j\\}$ with $\norm{Q} > f$ 
  - $j$ by itself does not have enough stake
  - $i$ deals $z_i \in \F$ and signs the transcript
  - $j$ removes $i$'s signature and mauls $i$'s transcript to deal $-z_i + r$ for some $r\randget\F$ it knows
  - $j$ signs this mauled transcript
    + $\Rightarrow j$ would have full knowledge of the final DKG secret $z = z_i + (- z_i + r) = r$.
 
-**Implication:** The PVSS transcript will include a **zero-knowledge signature of knowledge (ZKSoK)** of the dealt secret $z_i$ over the signing public key used to sign the transcript.
+**Implication:** The PVSS transcript will include a **zero-knowledge signature of knowledge (ZKSoK)** of the dealt secret $z_i$.
 This way, the dealt secret cannot be mauled without rendering the transcript invalid.
-Furthermore, nor can validator $j$ bias the final DKG secret $z$ by appropriating validator $i$'s transcript as their own (i.e., by stripping validator $i$'s signature from the transcript and adding their own).
+Importantly, part of the signed message will include the signing public key of the dealer.
+This way, validator $j$ cannot bias the final DKG secret $z$ by appropriating validator $i$'s transcript as their own (i.e., by stripping validator $i$'s signature from the transcript, adding their own signature and leaving the dealt secret $z_i$ untouched).
 
 ## Non-malleable weighted PVSS algorithms
 
@@ -540,5 +543,7 @@ as expected for $s_{3,3,2}$.
 ## References
 
 For cited works, see below 👇👇
+
+[^aptos-Q]: In an abundance of caution, in Aptos, we require that $Q$ contains $>$ 66% of the stake.
 
 {% include refs.md %}
