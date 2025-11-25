@@ -250,7 +250,7 @@ The algorithms below describe **Chunky**, a weighted PVSS where only subsets of 
 
 Recall that $\emph{\maxTotalWeight}$ is the max. total weight, $\emph{\ell}$ is the # of bits per chunk and $\emph{m}$ is the number of chunks a share is split into.
 
-$\term{\widetilde{G}}$ will be the base used to commit to the shares in $\pvssDeal$.
+$\term{\widetilde{G}}\in\Gr_2$ will be the base used to commit to the shares in $\pvssDeal$.
 
 **Step 1:** Set up the ElGamal encryption:
 \begin{align}
