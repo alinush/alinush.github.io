@@ -370,7 +370,7 @@ Second, KZG commit to the share chunks and prove they are all in range:
 \term{\piSok} &\gets \sok.\prove\left(\begin{array}{l}
     \Retk, \emph{\ctx},\\\\\
     \underbrace{G, H, \ck, \\{\ek\_i\\}\_i,\\{C\_{i,j,k}\\}\_{i,j,k}, \\{R\_{j,k}\\}\_{j,k}, C}\_{\stmt},\\\\\
-    \underbrace{s\_{i,j,k}\\}\_{i,j,k}, \\{r\_{j,k}\\}\_{j,k}, \rho}\_{\witn}
+    \underbrace{\\{s\_{i,j,k}\\}\_{i,j,k}, \\{r\_{j,k}\\}\_{j,k}, \rho}\_{\witn}
 \end{array}\right)
 \end{align}
 
