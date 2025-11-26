@@ -7,7 +7,7 @@ tags:
  - sigma protocols
  - distributed key generation (DKG)
  - KZG
-title: "Chunky: Weighted PVSS for field elements"
+title: "Chunky: Weighted PVSS and DKG for field elements"
 #date: 2020-11-05 20:45:59
 #published: false
 permalink: chunky
