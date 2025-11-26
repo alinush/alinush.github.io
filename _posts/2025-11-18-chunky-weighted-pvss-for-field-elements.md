@@ -53,7 +53,8 @@ permalink: chunky
 %
 \def\maxTotalWeight{W_\mathsf{max}}
 \def\totalWeight{W}
-\def\threshWeight{t}
+\def\threshWeight{t_W}
+\def\threshQ{t_Q}
 %
 \def\trs{\mathsf{trs}}
 \def\pp{\mathsf{pp}}
@@ -203,7 +204,7 @@ This is captured via the NP relation below:
 where the $s_{i,j,k}$'s will be "flattened" as a vector (in a specific order) before being input to $\dekart_2.\commit(\cdot)$.
 
 {: .warning}
-We will explain how this flattening works later in the [$\pvssDeal$](#mathsfpvssmathsfdeal_mathsfpplefta_0-t-w_i-mathsfek_i_iin-n-mathsfssidright-rightarrow-mathsftrs) algorithm.
+We will explain how this flattening works later in the [$\pvssDeal$](#mathsfpvssmathsfdeal_mathsfpplefta_0-t_w-w_i-mathsfek_i_iin-n-mathsfssidright-rightarrow-mathsftrs) algorithm.
 
 ### The SCRAPE low-degree test
 
@@ -212,10 +213,10 @@ Explain!
 
 ## Building a DKG from a PVSS
 
-Our goal is to get a **weighted DKG**[^DPTX24e] for field elements amongst the validators of a proof-of-stake blockchain, such that the **DKG (final, shared) secret** $\term{z}$ is only reconstructable by a fraction $> \term{f}$ of the stake (e.g., $f = 0.5$ or 50%).
+Our goal is to get a **weighted DKG**[^DPTX24e] for field elements amongst the validators of a proof-of-stake blockchain, such that the **DKG (final, shared) secret** $\term{z}$ is only reconstructable by a fraction $> \term{\threshQ}$ of the stake (e.g., $\threshQ = 0.5$ or 50%).
 
 How?
-Each validator $i$ will **"contribute"** to $z$ by picking their own secret $\term{z_i} \in \F$ and dealing it to the other validators via $\term{\pvssDeal}$ in a **non-malleable** fashion such that only a $> \emph{f}$ fraction of the stake can reconstruct $z_i$.
+Each validator $i$ will **"contribute"** to $z$ by picking their own secret $\term{z_i} \in \F$ and dealing it to the other validators via $\term{\pvssDeal}$ in a **non-malleable** fashion such that only a $> \emph{\threshQ}$ fraction of the stake can reconstruct $z_i$.
 The DKG secret will be set to $z \bydef \sum_{i\in Q} z_i$, where $\term{Q}$ is the **eligible (sub)set** of validators who correctly dealt their $z_i$.
 
 Crucially, $Q$ must be large "enough": i.e., it must have "enough" validators to guarantee that no malicious subset of them can learn (or can bias the choice of) $z$.
@@ -223,10 +224,10 @@ For example, we could assume only 33% of the stake[^aptos-Q] is malicious and re
 We denote the stake of the validators in $Q$ by $\term{\norm{Q}}$.
 
 {: .note}
-The DKG is parameterized by $\norm{Q}$ and by $f$.
-Since, typically in a DKG, the same set of validators will deal a secret amongst themselves, $\norm{Q}$ and $f$ are typically set to the same value.
-Otherwise, if $\norm{Q} < f$, then the validators in $Q$ could reconstruct the secret even though they do not have $> f$ of the stake, which defeats the point. 
-Alternatively, if $\norm{Q} > f$, then the protocol would be requiring more validators to contribute than needed for secrecy, since $f < \norm{Q}$ can reconstruct.
+The DKG is parameterized by $\norm{Q}$ and by $\threshQ$.
+Since, typically in a DKG, the same set of validators will deal a secret amongst themselves, $\norm{Q}$ and $\threshQ$ are typically set to the same value.
+Otherwise, if $\norm{Q} < \threshQ$, then the validators in $Q$ could reconstruct the secret even though they do not have $> \threshQ$ of the stake, which defeats the point. 
+Alternatively, if $\norm{Q} > \threshQ$, then the protocol would be requiring more validators to contribute than needed for secrecy, since $\threshQ < \norm{Q}$ can reconstruct.
 
 
 _First_, to publicly-prove that $\norm{Q}$ is large "enough", each validator will **digitally-sign** their dealt PVSS transcript in a [domain-separated fashion](/domain-separation) (part of the domain separator will be the current consensus epoch number).
@@ -240,7 +241,7 @@ If done right, the validators' public keys used to sign blockchain consensus mes
 
 _Second_, we require that PVSS transcripts obtained from $\pvssDeal$ be **non-malleable**.
 To see why this is necessary consider the following scenario:
- - two validators $i$ and $j$ have enough stake to form an eligible subset $Q = \\{i,j\\}$ with $\norm{Q} > f$ 
+ - two validators $i$ and $j$ have enough stake to form an eligible subset $Q = \\{i,j\\}$ with $\norm{Q} > \threshQ$ 
  - $j$ by itself does not have enough stake
  - $i$ deals $z_i \in \F$ and signs the transcript
  - $j$ removes $i$'s signature and mauls $i$'s transcript to deal $-z_i + r$ for some $r\randget\F$ it knows
@@ -290,7 +291,7 @@ Return the public parameters:
 \pp \gets (\ell, \maxTotalWeight, G, \widetilde{G}, H, \prk,\ck,\vk)
 \end{align}
 
-### $\mathsf{PVSS}.\mathsf{Deal}\_\mathsf{pp}\left(a_0, t, \\{w_i, \mathsf{ek}_i\\}\_{i\in [n]}, \mathsf{ssid}\right) \rightarrow \mathsf{trs}$
+### $\mathsf{PVSS}.\mathsf{Deal}\_\mathsf{pp}\left(a_0, t_W, \\{w_i, \mathsf{ek}_i\\}\_{i\in [n]}, \mathsf{ssid}\right) \rightarrow \mathsf{trs}$
 
 {: .smallnote}
 $a_0$ is the dealt secret.
@@ -388,7 +389,7 @@ Second, KZG commit to the share chunks and prove they are all in range:
 
 **Step 6:** Compute a signature of knowledge of the dealt secret key $a_0$ over the session ID: 
 \begin{align}
-\term{\ctx} &\gets (t, \\{w_i\\}_i, \ssid)\\\\\
+\term{\ctx} &\gets (\threshWeight, \\{w_i\\}_i, \ssid)\\\\\
 \term{\piSok} &\gets \sok.\prove\left(\begin{array}{l}
     \Retk, \emph{\ctx},\\\\\
     \underbrace{G, H, \ck, \\{\ek\_i\\}\_i,\\{C\_{i,j,k}\\}\_{i,j,k}, \\{R\_{j,k}\\}\_{j,k}, C}\_{\stmt},\\\\\
@@ -404,7 +405,7 @@ Return the transcript:
 \trs &\gets \left(\widetilde{V}\_0, \\{\widetilde{V}\_{i,j}\\}\_{i,j\in[w_i]}, \\{C_{i,j,k}\\}\_{i,j\in[w_i],k}, \\{R\_{j,k}\\}\_{j\in[\max_i{w_i}],k}, \emph{\pi}\right)
 \end{align}
 
-### $\mathsf{PVSS}.\mathsf{Verify}\_\mathsf{pp}\left(\mathsf{trs}, t, \\{w_i, \mathsf{ek}_i\\}\_{i\in[n]}, \mathsf{ssid}\right) \rightarrow \\{0,1\\}$
+### $\mathsf{PVSS}.\mathsf{Verify}\_\mathsf{pp}\left(\mathsf{trs}, t_W, \\{w_i, \mathsf{ek}_i\\}\_{i\in[n]}, \mathsf{ssid}\right) \rightarrow \\{0,1\\}$
 
 Parse public parameters:
 \begin{align}
@@ -418,10 +419,10 @@ Parse the transcript:
 
 Let the _total weight_ $W$ be defined as before in Eq. \ref{eq:W}.
 
-**Step 1:** Verify that the committed shares encode a degree-$t$ polynomial via the SCRAPE LDT[^CD17]:
+**Step 1:** Verify that the committed shares encode a degree-$\threshWeight$ polynomial via the SCRAPE LDT[^CD17]:
 \begin{align}
 \term{\alpha} &\randget \F\\\\\
-\textbf{assert}\ &\scrape.\lowdegreetest(\\{(0, V_0)\\} \cup \\{(\chi_{i,j}, V_{i,j})\\}_{i,j}, t, W; \emph{\alpha}) \equals 1
+\textbf{assert}\ &\scrape.\lowdegreetest(\\{(0, V_0)\\} \cup \\{(\chi_{i,j}, V_{i,j})\\}_{i,j}, \threshWeight, W; \emph{\alpha}) \equals 1
 \end{align}
 
 _Note:_ Recall that the $\emph{\chi_{i,j}}$'s are the roots of unity used to evaluate the secret-sharing polynomial $f(X)$ during dealing (see Eq. \ref{eq:eval}).
@@ -464,7 +465,7 @@ May need to feed in the size of the evaluation domain to SCRAPE for the super-ef
 
 **Step 4:** Verify the SoK:
 \begin{align}
-\term{\ctx} &\gets (t, \\{w_i\\}_i, \ssid)\\\\\
+\term{\ctx} &\gets (\threshWeight, \\{w_i\\}_i, \ssid)\\\\\
 \textbf{assert}\ &\sok.\verify\left(\begin{array}{l}
     \Retk, \emph{\ctx},\\\\\
     \underbrace{G, H, \ck, \\{\ek\_i\\}\_i,\\{C\_{i,j,k}\\}\_{i,j,k}, \\{R\_{j,k}\\}\_{j,k}, C}\_{\stmt};\\\\\
@@ -500,7 +501,7 @@ s_{i,j}\gets \sum_{k\in[m]} (2^\ell)^{k-1} \cdot s_{i,j,k}
 
 ## Weighted DKG protocol
 
-Below, we give a high-level sketch of our $t$-out-of-$\\{w_i\\}_{i\in[n]}$ weighted DKG with contributions from $> \emph{f}$ fraction of the stake.
+Below, we give a high-level sketch of our $\threshWeight$-out-of-$\\{w_i\\}_{i\in[n]}$ weighted DKG with contributions from $> \emph{\threshQ}$ fraction of the stake.
 
 But first, we have to slightly augment our notion of a non-malleable PVSS, denoted by $\pvss$, into a **signed, subaggregatable and non-malleable PVSS**, denoted by $\term{\ssPvss}$.
 This will make building a DKG protocol much easier.
@@ -524,19 +525,19 @@ This way, two subtranscripts $\subtrs_1$ and $\subtrs_2$ dealing secrets $z_1$ a
 We detail the new algorithms for this signed, subaggregatable, non-malleable PVSS below.
 (Note that the $\setup$ and $\decrypt$ algorithms remain the same.)
 
-### $\mathsf{ssPVSS}.\mathsf{Deal}\_\mathsf{pp}\left(\mathsf{sk}, a_0, t, \\{w_i, \mathsf{ek}_i\\}\_{i\in [n]}, \mathsf{ssid}\right) \rightarrow (\mathsf{trs},\sigma)$
+### $\mathsf{ssPVSS}.\mathsf{Deal}\_\mathsf{pp}\left(\mathsf{sk}, a_0, t_W, \\{w_i, \mathsf{ek}_i\\}\_{i\in [n]}, \mathsf{ssid}\right) \rightarrow (\mathsf{trs},\sigma)$
   
-Deal a normal PVSS transcript via [$\pvssDeal$](#mathsfpvssmathsfdeal_mathsfpplefta_0-t-w_i-mathsfek_i_iin-n-mathsfssidright-rightarrow-mathsftrs) and sign over it and the session ID:
+Deal a normal PVSS transcript via [$\pvssDeal$](#mathsfpvssmathsfdeal_mathsfpplefta_0-t_w-w_i-mathsfek_i_iin-n-mathsfssidright-rightarrow-mathsftrs) and sign over it and the session ID:
 \begin{align}
-\trs &\gets \pvssDeal(a_0, t, \\{w\_i,\ek\_i\\}\_{i\in[n]}, \ssid)\\\\\
+\trs &\gets \pvssDeal(a_0, \threshWeight, \\{w\_i,\ek\_i\\}\_{i\in[n]}, \ssid)\\\\\
 \sigma &\gets \sig.\sign(\sk, (\trs, \ssid))
 \end{align}
 
-### $\mathsf{ssPVSS}.\mathsf{Verify}\_\mathsf{pp}\left(\pk, \mathsf{trs}, \sigma, t, \\{w_i, \mathsf{ek}_i\\}\_{i\in[n]}, \mathsf{ssid}\right) \rightarrow \\{0,1\\}$
+### $\mathsf{ssPVSS}.\mathsf{Verify}\_\mathsf{pp}\left(\pk, \mathsf{trs}, \sigma, t_W, \\{w_i, \mathsf{ek}_i\\}\_{i\in[n]}, \mathsf{ssid}\right) \rightarrow \\{0,1\\}$
 
-Deal a normal PVSS transcript verification via [$\pvssVerify$](#mathsfpvssmathsfverify_mathsfppleftmathsftrs-t-w_i-mathsfek_i_iinn-mathsfssidright-rightarrow-01) as well as a signature verification:
+Deal a normal PVSS transcript verification via [$\pvssVerify$](#mathsfpvssmathsfverify_mathsfppleftmathsftrs-t_w-w_i-mathsfek_i_iinn-mathsfssidright-rightarrow-01) as well as a signature verification:
 \begin{align}
-\textbf{assert}\ \pvssVerify(a_0, t, \\{w\_i,\ek\_i\\}\_{i\in[n]}, \ssid) \equals 1\\\\\
+\textbf{assert}\ \pvssVerify(\trs, \threshWeight, \\{w\_i,\ek\_i\\}\_{i\in[n]}, \ssid) \equals 1\\\\\
 \textbf{assert}\ \sig.\verify(\pk, \sigma, (\trs, \ssid)) \equals 1
 \end{align}
 
@@ -549,6 +550,7 @@ Parse the transcript as defined in Eq. \ref{eq:trs}:
 
 Return the _aggregatable_ subtranscript:
 \begin{align}
+\label{eq:subtrs}
 \subtrs &\gets \left(\widetilde{V}\_0, \\{\widetilde{V}\_{i,j}\\}\_{i,j\in[w_i]}, \\{C_{i,j,k}\\}\_{i,j\in[w_i],k}, \\{R\_{j,k}\\}\_{j\in[\max_i{w_i}],k}\right)\\\\\
 \end{align}
 
@@ -577,30 +579,47 @@ Return the aggregated subtranscript:
 A DKG will happen within the context of a consensus epoch $\term{\epoch}$.
 All validators know each other's public keys: every validator $i$ has signing pubkey $\term{\pk_{i'}}$ (with signing secret key $\term{\sk_{i'}}$) and encryption key $\ek_i$[^reuse].
 
-**Dealing phase:** Each validator $i'\in[n]$ deals a random secret $\term{z_{i'}}\in\F$:
+**Dealing phase:** Each validator $i'\in[n]$ picks a random secret $\term{z_{i'}}\in\F$ and computes a PVSS transcript that deals it:
 \begin{align}
     \emph{z_{i'}} &\randget \F\\\\\
     \term{\ssid\_{i'}} &\gets (i', \emph{\pk\_{i'}}, \emph{\epoch})\\\\\
-    \term{\trs\_{i'}, \sigma\_{i'}} &\gets \ssPvssDeal(\emph{\sk_{i'}}, z\_{i'}, t, \\{w\_i,\ek\_i\\}\_{i\in[n]}, \emph{\ssid_{i'}})\\\\\
+    \term{\trs\_{i'}, \sigma\_{i'}} &\gets \ssPvssDeal(\emph{\sk_{i'}}, z\_{i'}, \threshWeight, \\{w\_i,\ek\_i\\}\_{i\in[n]}, \emph{\ssid_{i'}})\\\\\
 \end{align}
+Then, each validator $i'$ (best-effort) disemminates $(\trs_{i'}, \sigma_{i'})$ to all other validators.
+Eventually, each validators $i'$ will have its own view of a set $Q_{i'}$ of validators who correctly-dealt a (single) transcript.
 
-**Agreement phase:** Validators agree on a "large-enough" eligible set $Q$ of validators who correctly-dealt a transcript.
-More formally, a set $Q$ such that:
+**Agreement phase:** In this phase, validators will agree on the same "large-enough" eligible set $Q$ of validators who correctly-dealt transcripts.
+More formally, the goal is to agree on a set $Q$ such that:
 \begin{align}
-   &\forall i' \in Q, \ssPvssVerify(\pk_{i'}, \emph{\trs\_{i'}, \sigma_{i'}}, t, \\{w\_i,\ek\_i\\}\_{i\in[n]}, (\underbrace{i', \pk\_{i'}, \epoch}\_{\emph{\ssid\_{i'}}})) \goddamnequals 1\\\\\
-   &\norm{Q} > f\\\\\
+   \label{eq:trs-verifies}
+   &\forall i' \in Q, \ssPvssVerify(\pk_{i'}, \emph{\trs\_{i'}, \sigma_{i'}}, \threshWeight, \\{w\_i,\ek\_i\\}\_{i\in[n]}, (\underbrace{i', \pk\_{i'}, \epoch}\_{\emph{\ssid\_{i'}}})) \goddamnequals 1\\\\\
+   &\norm{Q} > \threshQ\\\\\
 \end{align}
 
 {: .note}
-This can be done naively by doing an agreement phase for each transcript: i.e., validator $i'$ proposes its $\trs_{i'}$ and if it collects enough votes on it, then $i'$ is added to $Q$ (`#iknownothingaboutconsensusbutsomethinglikethat`).
+Agreement on $Q$ could be reached inefficiently by running a Byzantine agreement phase for each transcript: i.e., validator $i'$ proposes its $(\trs_{i'}, \sigma_{i'})$ and if it collects "enough" votes on it, then $i'$ is accumulated in the set $Q$ so far.
+The difficulty with this approach is that it incurs a lot of latency as it requires one Byzantine agreement per contributing validator.
+For Aptos, specifically, it would also require sending too many [validator TXNs](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-64.md).
 
-**(Implicit) aggregation:** Post-agreement phase, each validator will compute the same **final aggregated subtranscript** induced by the eligible set $Q$:
-\begin{align}
-    \forall i'\in Q, \term{\subtrs_{i'}} &\gets \ssPvssSubtranscript(\trs_{i'})\\\\\
-    \term{\subtrs} &\gets \ssPvssSubaggregate(\\{\emph{\subtrs_{i'}}\\}\_{i'\in Q})
-\end{align}
+To reach agreement on $Q$ efficiently, one of the validators (e.g., the consensus leader) sends a **final DKG subtranscript proposal** containing:
+ 1. an eligible set $Q$ of validators with $\norm{Q} > \threshQ$
+ 2. a substranscript $\subtrs$ allegedly-aggregated from all validators in $Q$
 
-The DKG is now complete:
+Every validator $i'$ will "vote" on this proposal if they can verify that $\subtrs$ was actually aggregated from all $\\{\trs\_{j'}\\}\_{j'\in Q}$ where $\trs_{j'}$ passed PVSS verification as per Eq. \ref{eq:trs-verifies}.
+
+More formally, validator $i'$ will vote _"yes"_ on the $(Q, \subtrs)$ proposal, if and only if:
+ 1. $\forall j'\in Q$, it eventually receives a single $(\trs\_{j'},\sigma\_{j'})$ s.t. $\ssPvssVerify(\pk_{j'}, \trs\_{j'}, \sigma_{j'}, \threshWeight, \\{w\_i,\ek\_i\\}\_{i\in[n]}, (j', \pk\_{j'}, \epoch)) \goddamnequals 1$
+ 1. $\subtrs \equals \ssPvssSubaggregate(\\{\subtrs_{j'}\\}\_{j'\in Q})$
+
+If the $(Q, \subtrs)$ proposal gathers "enough" votes, the proposing validator includes in a(n Aptos validator) TXN.
+This TXN will be succinct as it only contains:
+1. The aggregated subtranscript $\subtrs$
+    - _Note:_ $\sizeof{\subtrs} \bydef \underbrace{64}\_{\widetilde{V}\_0} + \underbrace{64 \cdot W}\_{\widetilde{V}\_{i,j}\text{\'s}} + \underbrace{32 \cdot W\cdot m}\_{C\_{i,j,k}\text{\'s}} + 32\cdot \underbrace{\max_i{w_i}\cdot m}\_{R\_{j,k}\text{\'s}}$ as per Eq. \ref{eq:subtrs}
+    - e.g., for total weight $W = 254$, $m=8$ chunks and $\max_i{w_i} = 5$, the size will be $64 + 64 \cdot 254 + 32 \cdot 254 \cdot 8 + 32 \cdot 5 \cdot 8 = 82,624$ bytes $= 80.6875$ KiB
+    - if we increase $\max_i{w_i}$ to 7, we get $64 + 64 \cdot 254 + 32 \cdot 254 \cdot 8 + 32 \cdot \emph{7} \cdot 8 = 83,136$ bytes $=81.1875$ KiB
+2. Votes from at most all $n$ validators. If using BLS, since they are all voting over the same proposal, the vote signatures can be aggregated into a single multi-signature of 48 bytes.
+
+If this TXN gets included and executed on-chain, the DKG is now complete:
  - The final public key whose corresponding secret key is secret shared is $\widetilde{V}_0$ from $\subtrs$
  - The share commitments $\widetilde{V}\_{i,j}$'s in $\subtrs$ can be made public
     + e.g., if the DKG is for bootstrapping a weighted [threshold BLS signature scheme](/threshold-bls), then $\widetilde{V}\_{i,j}\bydef s\_{i,j}\cdot G$ will act as the verification key for the BLS signature share $H(m)^{s\_{i,j}}$
