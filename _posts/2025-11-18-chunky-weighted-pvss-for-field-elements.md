@@ -643,6 +643,7 @@ If this TXN gets included and executed on-chain, the DKG is now complete:
 ## Acknowledgements
 
 The weighted PVSS in this blog post has been co-designed with Rex Fernando and Wicher Malten at Aptos Labs.
+The weighted DKG built on top of the PVSS has been co-designed with Daniel Xiang and Balaji Arun.
 Thanks to Ittai Abraham for helping me think through the DKG protocol from the lens of validated Byzantine agreement.
 
 ## Appendix: The $i'\gets \mathsf{idx}(i,j,k)$ indexing
