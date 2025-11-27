@@ -513,7 +513,8 @@ Thus, the $\term{\ssPvss.\deal}$ and $\term{\ssPvss.\verify}$ algorithms will di
 
 **Second**, we introduce a useful notion of an **aggregatable PVSS subtranscript** $\term{\subtrs}$ which excludes the non-aggregatable components of the PVSS transcript $\emph{\trs}$ from Eq. \ref{eq:trs} (i.e., the proof $\pi$ from Eq. \ref{eq:proof}). 
 
-**Third,** we define a new $\term{\ssPvssSubtranscript}$ algorithm which returns such a $\subtrs$ consisting of only:
+**Third,** we define a new $\term{\ssPvssSubtranscript}$ algorithm which returns such a $\subtrs$.
+In Chunky's case, this will consist of only:
 
 1. The dealt pubkey $\widetilde{V}_0$ as defined in Eq. \ref{eq:dealt-pubkey}
 2. The share commitments (i.e., all share commitments $\widetilde{V}\_{i,j}$ as defined in Eq. \ref{eq:share-commitments})
@@ -527,7 +528,7 @@ We detail the new algorithms for this signed, subaggregatable, non-malleable PVS
 
 ### $\mathsf{ssPVSS}.\mathsf{Deal}\_\mathsf{pp}\left(\mathsf{sk}, a_0, t_W, \\{w_i, \mathsf{ek}_i\\}\_{i\in [n]}, \mathsf{ssid}\right) \rightarrow (\mathsf{trs},\sigma)$
   
-Deal a normal PVSS transcript via [$\pvssDeal$](#mathsfpvssmathsfdeal_mathsfpplefta_0-t_w-w_i-mathsfek_i_iin-n-mathsfssidright-rightarrow-mathsftrs) and sign over it and the session ID:
+Deal a normal PVSS transcript via [$\pvssDeal$](#mathsfpvssmathsfdeal_mathsfpplefta_0-t_w-w_i-mathsfek_i_iin-n-mathsfssidright-rightarrow-mathsftrs) **but** also sign over it and over the session ID:
 \begin{align}
 \trs &\gets \pvssDeal(a_0, \threshWeight, \\{w\_i,\ek\_i\\}\_{i\in[n]}, \ssid)\\\\\
 \sigma &\gets \sig.\sign(\sk, (\trs, \ssid))
@@ -535,7 +536,7 @@ Deal a normal PVSS transcript via [$\pvssDeal$](#mathsfpvssmathsfdeal_mathsfpple
 
 ### $\mathsf{ssPVSS}.\mathsf{Verify}\_\mathsf{pp}\left(\pk, \mathsf{trs}, \sigma, t_W, \\{w_i, \mathsf{ek}_i\\}\_{i\in[n]}, \mathsf{ssid}\right) \rightarrow \\{0,1\\}$
 
-Deal a normal PVSS transcript verification via [$\pvssVerify$](#mathsfpvssmathsfverify_mathsfppleftmathsftrs-t_w-w_i-mathsfek_i_iinn-mathsfssidright-rightarrow-01) as well as a signature verification:
+Do a normal PVSS transcript verification via [$\pvssVerify$](#mathsfpvssmathsfverify_mathsfppleftmathsftrs-t_w-w_i-mathsfek_i_iinn-mathsfssidright-rightarrow-01) **but** also verify the signature over it and the session ID:
 \begin{align}
 \textbf{assert}\ \pvssVerify(\trs, \threshWeight, \\{w\_i,\ek\_i\\}\_{i\in[n]}, \ssid) \equals 1\\\\\
 \textbf{assert}\ \sig.\verify(\pk, \sigma, (\trs, \ssid)) \equals 1
@@ -554,12 +555,19 @@ Return the _aggregatable_ subtranscript:
 \subtrs &\gets \left(\widetilde{V}\_0, \\{\widetilde{V}\_{i,j}\\}\_{i,j\in[w_i]}, \\{C_{i,j,k}\\}\_{i,j\in[w_i],k}, \\{R\_{j,k}\\}\_{j\in[\max_i{w_i}],k}\right)\\\\\
 \end{align}
 
-### $\mathsf{ssPVSS}.\mathsf{Subaggregate}\left(\\{\mathsf{subtrs}\_{i'}\\}\_{i'}\right) \rightarrow \mathsf{subtrs}$
+### $\mathsf{ssPVSS}.\mathsf{Subaggregate}_\mathsf{pp}\left(\\{\mathsf{subtrs}\_{i'}\\}\_{i'}\right) \rightarrow \mathsf{subtrs}$
+
+Parse public parameters:
+\begin{align}
+(\ell, \cdot, \cdot, \cdot, \cdot, \cdot,\cdot,\cdot)\parse\pp
+\end{align}
 
 Parse all the _aggregatable_ subtranscripts, for all $i'$:
 \begin{align}
 \left(\widetilde{V}^{(i')}\_0, \\{\widetilde{V}^{(i')}\_{i,j}\\}\_{i,j\in[w_i]}, \\{C^{(i')}_{i,j,k}\\}\_{i,j\in[w_i],k}, \\{R^{(i')}\_{j,k}\\}\_{j\in[\max_i{w_i}],k}\right)\parse \subtrs\_{i'}\\\\\
 \end{align}
+
+Recall that $\emph{n}$ denotes the number of players that a transcript deals to and recall that $\emph{m} = \ceil{\log_2{\sizeof{\F}} / \ell}$ denotes the number of chunks per share.
 
 Aggregate:
 \begin{align}
@@ -576,8 +584,9 @@ Return the aggregated subtranscript:
 
 ### DKG overview
 
-A DKG will happen within the context of a consensus epoch $\term{\epoch}$.
-All validators know each other's public keys: every validator $i$ has signing pubkey $\term{\pk_{i'}}$ (with signing secret key $\term{\sk_{i'}}$) and encryption key $\ek_i$[^reuse].
+A DKG will occur within the context of a consensus epoch $\term{\epoch}$.
+All validators know each other's public keys.
+Specifically, every validator $i$ has signing pubkey $\term{\pk_{i'}}$ (with signing secret key $\term{\sk_{i'}}$) and encryption key $\ek_i$[^reuse].
 
 **Dealing phase:** Each validator $i'\in[n]$ picks a random secret $\term{z_{i'}}\in\F$ and computes a PVSS transcript that deals it:
 \begin{align}
@@ -585,42 +594,48 @@ All validators know each other's public keys: every validator $i$ has signing pu
     \term{\ssid\_{i'}} &\gets (i', \emph{\pk\_{i'}}, \emph{\epoch})\\\\\
     \term{\trs\_{i'}, \sigma\_{i'}} &\gets \ssPvssDeal(\emph{\sk_{i'}}, z\_{i'}, \threshWeight, \\{w\_i,\ek\_i\\}\_{i\in[n]}, \emph{\ssid_{i'}})\\\\\
 \end{align}
-Then, each validator $i'$ (best-effort) disemminates $(\trs_{i'}, \sigma_{i'})$ to all other validators.
-Eventually, each validators $i'$ will have its own view of a set $Q_{i'}$ of validators who correctly-dealt a (single) transcript.
 
-**Agreement phase:** In this phase, validators will agree on the same "large-enough" eligible set $Q$ of validators who correctly-dealt transcripts.
+{: .smallnote}
+Our current $\ssPvssDeal$ Rust implementation in `aptos-dkg` returns a `chunky::Transcript` struct that will contain both the actual transcript $\trs$ and its signature $\sigma$.
+
+Then, each validator $i'$ (best-effort) disemminates $(\trs_{i'}, \sigma_{i'})$ to all other validators.
+Eventually, each validators $i'$ will have its own view of a set $\term{Q_{i'}}$ of validators who correctly-dealt a (single) transcript.
+
+**Agreement phase:** In this phase, validators will agree on the same "large-enough" eligible set $\emph{Q}$ of validators who correctly-dealt transcripts.
 More formally, the goal is to agree on a set $Q$ such that:
 \begin{align}
    \label{eq:trs-verifies}
-   &\forall i' \in Q, \ssPvssVerify(\pk_{i'}, \emph{\trs\_{i'}, \sigma_{i'}}, \threshWeight, \\{w\_i,\ek\_i\\}\_{i\in[n]}, (\underbrace{i', \pk\_{i'}, \epoch}\_{\emph{\ssid\_{i'}}})) \goddamnequals 1\\\\\
+   &\forall i' \in Q, \exists (\emph{\trs_{i'},\sigma_{i'}}),\ \text{s.t.}\ \ssPvssVerify(\pk_{i'}, \emph{\trs\_{i'}, \sigma_{i'}}, \threshWeight, \\{w\_i,\ek\_i\\}\_{i\in[n]}, (\underbrace{i', \pk\_{i'}, \epoch}\_{\emph{\ssid\_{i'}}})) \goddamnequals 1\\\\\
    &\norm{Q} > \threshQ\\\\\
 \end{align}
 
 {: .note}
 Agreement on $Q$ could be reached inefficiently by running a Byzantine agreement phase for each transcript: i.e., validator $i'$ proposes its $(\trs_{i'}, \sigma_{i'})$ and if it collects "enough" votes on it, then $i'$ is accumulated in the set $Q$ so far.
-The difficulty with this approach is that it incurs a lot of latency as it requires one Byzantine agreement per contributing validator.
+The  downside of this approach is high latency: it requires one Byzantine agreement per contributing validator.
 For Aptos, specifically, it would also require sending too many [validator TXNs](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-64.md).
 
 To reach agreement on $Q$ efficiently, one of the validators (e.g., the consensus leader) sends a **final DKG subtranscript proposal** containing:
  1. an eligible set $Q$ of validators with $\norm{Q} > \threshQ$
  2. a substranscript $\subtrs$ allegedly-aggregated from all validators in $Q$
 
-Every validator $i'$ will "vote" on this proposal if they can verify that $\subtrs$ was actually aggregated from all $\\{\trs\_{j'}\\}\_{j'\in Q}$ where $\trs_{j'}$ passed PVSS verification as per Eq. \ref{eq:trs-verifies}.
+Every validator $i'$ will "vote" on this proposal if they can verify that $\subtrs$ was actually aggregated from some set $\\{\trs\_{j'}\\}\_{j'\in Q}$ of transcripts that all pass verification as per Eq. \ref{eq:trs-verifies}.
 
 More formally, validator $i'$ will vote _"yes"_ on the $(Q, \subtrs)$ proposal, if and only if:
- 1. $\forall j'\in Q$, it eventually receives a single $(\trs\_{j'},\sigma\_{j'})$ s.t. $\ssPvssVerify(\pk_{j'}, \trs\_{j'}, \sigma_{j'}, \threshWeight, \\{w\_i,\ek\_i\\}\_{i\in[n]}, (j', \pk\_{j'}, \epoch)) \goddamnequals 1$
+ 1. $\norm{Q} > \threshQ$
+ 1. $\forall j'\in Q$, validator $i'$ eventually[^eventually] receives a single[^equivocation] $(\trs\_{j'},\sigma\_{j'})$ s.t. $\ssPvssVerify(\pk_{j'}, \trs\_{j'}, \sigma_{j'}, \threshWeight, \\{w\_i,\ek\_i\\}\_{i\in[n]}, (j', \pk\_{j'}, \epoch)) \goddamnequals 1$
  1. $\subtrs \equals \ssPvssSubaggregate(\\{\subtrs_{j'}\\}\_{j'\in Q})$
 
-If the $(Q, \subtrs)$ proposal gathers "enough" votes, the proposing validator includes in a(n Aptos validator) TXN.
+If the $(Q, \subtrs)$ proposal gathers "enough" votes, the proposing validator includes it in a(n Aptos validator) TXN and sends it on-chain.
 This TXN will be succinct as it only contains:
 1. The aggregated subtranscript $\subtrs$
-    - _Note:_ $\sizeof{\subtrs} \bydef \underbrace{64}\_{\widetilde{V}\_0} + \underbrace{64 \cdot W}\_{\widetilde{V}\_{i,j}\text{\'s}} + \underbrace{32 \cdot W\cdot m}\_{C\_{i,j,k}\text{\'s}} + 32\cdot \underbrace{\max_i{w_i}\cdot m}\_{R\_{j,k}\text{\'s}}$ as per Eq. \ref{eq:subtrs}
-    - e.g., for total weight $W = 254$, $m=8$ chunks and $\max_i{w_i} = 5$, the size will be $64 + 64 \cdot 254 + 32 \cdot 254 \cdot 8 + 32 \cdot 5 \cdot 8 = 82,624$ bytes $= 80.6875$ KiB
-    - if we increase $\max_i{w_i}$ to 7, we get $64 + 64 \cdot 254 + 32 \cdot 254 \cdot 8 + 32 \cdot \emph{7} \cdot 8 = 83,136$ bytes $=81.1875$ KiB
-2. Votes from at most all $n$ validators. If using BLS, since they are all voting over the same proposal, the vote signatures can be aggregated into a single multi-signature of 48 bytes.
+    - _Note:_ Assuming elliptic curves over 256-bit base fields (e.g., BN254), $\sizeof{\subtrs} \bydef \underbrace{64}\_{\widetilde{V}\_0} + \underbrace{64 \cdot W}\_{\widetilde{V}\_{i,j}\text{\'s}} + \underbrace{32 \cdot W\cdot m}\_{C\_{i,j,k}\text{\'s}} + 32\cdot \underbrace{\max_i{w_i}\cdot m}\_{R\_{j,k}\text{\'s}}$ as per Eq. \ref{eq:subtrs}
+    - e.g., for total weight $W = 254$, $m=8$ chunks and $\max_i{w_i} = 5$, the size will be $64 + 64 \cdot 254 + 32 \cdot 254 \cdot 8 + 32 \cdot 5 \cdot 8 =$ 82,624 bytes $=$ 80.6875 KiB
+    - If we increase $\max_i{w_i}$ to 7, we get $64 + 64 \cdot 254 + 32 \cdot 254 \cdot 8 + 32 \cdot \emph{7} \cdot 8 =$ 83,136 bytes $=$ 81.1875 KiB
+2. Votes from at most all $n$ validators. 
+    + e.g., In Aptos, we are using BLS signatures[^BLS01] over BLS12-381 curves[^BLS02e] $\Rightarrow$ since validators are voting by signing over the same proposal $(Q,\subtrs)$, the vote signatures can be aggregated into a single multi-signature of 48 bytes.
 
 If this TXN gets included and executed on-chain, the DKG is now complete:
- - The final public key whose corresponding secret key is secret shared is $\widetilde{V}_0$ from $\subtrs$
+ - The final public key whose corresponding secret key is secret-shared is $\widetilde{V}_0$ from $\subtrs$
  - The share commitments $\widetilde{V}\_{i,j}$'s in $\subtrs$ can be made public
     + e.g., if the DKG is for bootstrapping a weighted [threshold BLS signature scheme](/threshold-bls), then $\widetilde{V}\_{i,j}\bydef s\_{i,j}\cdot G$ will act as the verification key for the BLS signature share $H(m)^{s\_{i,j}}$
  - Each player can use $\pvssDecrypt$ to obtain their shares from $\subtrs$ [^dummy]
@@ -628,6 +643,7 @@ If this TXN gets included and executed on-chain, the DKG is now complete:
 ## Acknowledgements
 
 The weighted PVSS in this blog post has been co-designed with Rex Fernando and Wicher Malten at Aptos Labs.
+Thanks to Ittai Abraham for helping me think through the DKG protocol from the lens of validated Byzantine agreement.
 
 ## Appendix: The $i'\gets \mathsf{idx}(i,j,k)$ indexing
 
@@ -698,5 +714,7 @@ For cited works, see below 👇👇
 [^aptos-Q]: In an abundance of caution, in Aptos, we require that $Q$ contains $>$ 66% of the stake.
 [^reuse]: Recall that in Aptos, we will safely reuse the validator signing keys as encryption keys.
 [^dummy]: Technically, they have to add a dummy proof to the _subtranscript_, obtaining a proper _transcript_, which they can now feed in to $\pvssDecrypt$ in a type-safe way.
+[^eventually]: This may require that each validator $i'$ poll other validators for the transcripts in the proposed set $Q$ that $i'$ is missing.
+[^equivocation]: If $i'$ receives two transcripts signed by the same validator $j'$, then that constitute equivocation and would be provable misbehavior. So $i'$ should (or may?) vote _"no"_ on $Q$ since it includes a malicious player $j'$.
 
 {% include refs.md %}
