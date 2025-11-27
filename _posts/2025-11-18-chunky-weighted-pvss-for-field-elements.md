@@ -304,7 +304,7 @@ Parse public parameters:
 (\ell, \maxTotalWeight, G, \widetilde{G}, H, \prk,\ck,\vk)\parse\pp
 \end{align}
 
-Compute the **total weight** and assert that the public parameters can accomodate it:
+Compute the **total weight** and assert that the public parameters can accommodate it:
 \begin{align}
 \label{eq:W}
 \term{W} &\gets \sum_{i\in[n]} w_i\\\\\
@@ -321,7 +321,7 @@ Find a $2^\kappa$-th **root of unity** $\term{\omega} \in \F$ such that we can e
 \term{s_{i, j}} &\gets f\left(\term{\chi_{i,j}}\right),\forall i\in[n],\forall j\in[w_i]
 \end{align}
 
-_Note:_ Assuming that the set of evaluation points $\emph{\\{\chi_{i,j}\\}}$ are _wisely_ set to be the the first $W$ roots of unity in $\\{\omega^{i'}\\}\_{i'\in [0,W)}$, then the $s_{i,j}$'s would be quickly-computable in $\Fmul{O(W\log{W})}$ via an FFT. 
+_Note:_ Assuming that the set of evaluation points $\emph{\\{\chi_{i,j}\\}}$ are _wisely_ set to be the first $W$ roots of unity in $\\{\omega^{i'}\\}\_{i'\in [0,W)}$, then the $s_{i,j}$'s would be quickly-computable in $\Fmul{O(W\log{W})}$ via an FFT. 
 
 **Step 2:** Commit to the shares, $\forall i\in[n],\forall j\in[w_i]$:
 \begin{align}
@@ -368,7 +368,7 @@ The **cumulative weight up to (but excluding) $i$** is $\term{W_i}$ such that $\
 <!-- 
 $\term{W_i} = W_{i-1} + w_{i-1}$.
 -->
-$\emph{W_i} = \sum_{i'\in [1, i)} w_i$. 
+$\emph{W_i} = \sum_{i'\in [1, i)} w_{i'}$. 
 (Note that $W \bydef W_{n+1}$.)
 This notion helps us "flatten" all the share chunks $s_{i,j,k}$ into an array $\\{z\_{i'}\\}\_{i'\in [W \cdot m]}$, where $z_{i'} \bydef s_{i,j,k}$ with $i'\gets \left(\emph{W_i} + (j-1)\right)\cdot m + k \bydef \term{\idx(i,j,k)}$ (see [appendix](#appendix-the-igets-mathsfidxijk-indexing) for how the indexing was derived).
 
@@ -521,7 +521,7 @@ In Chunky's case, this will consist of only:
 3. The share chunk ciphertexts (i.e., all share ciphertexts $(C\_{i,j,k}, R\_{j,k})$ as defined in Eq. \ref{eq:share-ciphertexts})
 
 **Fourth**, and last, we will also define a $\term{\ssPvssSubaggregate}$ algorithm which takes several subtranscripts $\\{\subtrs_i\\}_i$ and aggregates them into a single $\subtrs$.
-This way, two subtranscripts $\subtrs_1$ and $\subtrs_2$ dealing secrets $z_1$ and $z_2$, respectively, can be succintly combined into a $\subtrs$ dealing $z_1 + z_2$ (such that $\sizeof{\subtrs} = \sizeof{\subtrs_i}, \forall i\in\\{1,2\\}$).
+This way, two subtranscripts $\subtrs_1$ and $\subtrs_2$ dealing secrets $z_1$ and $z_2$, respectively, can be succinctly combined into a $\subtrs$ dealing $z_1 + z_2$ (such that $\sizeof{\subtrs} = \sizeof{\subtrs_i}, \forall i\in\\{1,2\\}$).
 
 We detail the new algorithms for this signed, subaggregatable, non-malleable PVSS below.
 (Note that the $\setup$ and $\decrypt$ algorithms remain the same.)
@@ -598,7 +598,7 @@ Specifically, every validator $i$ has signing pubkey $\term{\pk_{i'}}$ (with sig
 {: .smallnote}
 Our current $\ssPvssDeal$ Rust implementation in `aptos-dkg` returns a `chunky::Transcript` struct that will contain both the actual transcript $\trs$ and its signature $\sigma$.
 
-Then, each validator $i'$ (best-effort) disemminates $(\trs_{i'}, \sigma_{i'})$ to all other validators.
+Then, each validator $i'$ (best-effort) disseminates $(\trs_{i'}, \sigma_{i'})$ to all other validators.
 Eventually, each validators $i'$ will have its own view of a set $\term{Q_{i'}}$ of validators who correctly-dealt a (single) transcript.
 
 **Agreement phase:** In this phase, validators will agree on the same "large-enough" eligible set $\emph{Q}$ of validators who correctly-dealt transcripts.
@@ -611,12 +611,12 @@ More formally, the goal is to agree on a set $Q$ such that:
 
 {: .note}
 Agreement on $Q$ could be reached inefficiently by running a Byzantine agreement phase for each transcript: i.e., validator $i'$ proposes its $(\trs_{i'}, \sigma_{i'})$ and if it collects "enough" votes on it, then $i'$ is accumulated in the set $Q$ so far.
-The  downside of this approach is high latency: it requires one Byzantine agreement per contributing validator.
+The downside of this approach is high latency: it requires one Byzantine agreement per contributing validator.
 For Aptos, specifically, it would also require sending too many [validator TXNs](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-64.md).
 
 To reach agreement on $Q$ efficiently, one of the validators (e.g., the consensus leader) sends a **final DKG subtranscript proposal** containing:
  1. an eligible set $Q$ of validators with $\norm{Q} > \threshQ$
- 2. a substranscript $\subtrs$ allegedly-aggregated from all validators in $Q$
+ 2. a subtranscript $\subtrs$ allegedly-aggregated from all validators in $Q$
 
 Every validator $i'$ will "vote" on this proposal if they can verify that $\subtrs$ was actually aggregated from some set $\\{\trs\_{j'}\\}\_{j'\in Q}$ of transcripts that all pass verification as per Eq. \ref{eq:trs-verifies}.
 
@@ -649,9 +649,9 @@ Thanks to Ittai Abraham for helping me think through the DKG protocol from the l
 
 It may be easiest to understand the $\idx(i,j,k) = (W_i + (j-1))\cdot m + k$ formula by considering an example.
 
-Say the number of chunks per share is $m = 4$ and that we have $n=4$ players with weights $[ w_1, w_2, w_3, w_4 ] = [2, 1, 3, 2]$
+Say the number of chunks per share is $m = 3$ and that we have $n=4$ players with weights $[ w_1, w_2, w_3, w_4 ] = [2, 1, 3, 2]$
 
-Then, the cumulative weights will be $[ W_1, W_2, W_3, W_4 ] = [ 0, 2, 3, 6]$
+Then, the cumulative weights will be $[ W_1, W_2, W_3, W_4 ] = [ 0, 2, 3, 6 ]$
 
 "Flattening out" the shares, we'd get:
 ```
