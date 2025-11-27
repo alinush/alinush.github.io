@@ -596,12 +596,12 @@ Specifically, every validator $i$ has signing pubkey $\term{\pk_{i'}}$ (with sig
 \end{align}
 
 {: .smallnote}
-Our current $\ssPvssDeal$ Rust implementation in `aptos-dkg` returns a `chunky::Transcript` struct that will contain both the actual transcript $\trs$ and its signature $\sigma$.
+Our current $\ssPvssDeal$ Rust implementation in `aptos-dkg` returns a `chunky::Transcript` struct that will contain both the actual transcript $\trs_{i'}$ and its signature $\sigma_{i'}$.
 
 Then, each validator $i'$ (best-effort) disseminates $(\trs_{i'}, \sigma_{i'})$ to all other validators.
-Eventually, each validators $i'$ will have its own view of a set $\term{Q_{i'}}$ of validators who correctly-dealt a (single) transcript.
+Eventually, each validators $i'$ will have its own view of a set $\term{Q_{i'}}$ of validators who correctly-dealt a (single) transcript, as well as the actual signed transcripts themselves.
 
-**Agreement phase:** In this phase, validators will agree on the same "large-enough" eligible set $\emph{Q}$ of validators who correctly-dealt transcripts.
+**Agreement phase:** In this phase, validators will agree on a "large-enough" eligible set $\emph{Q}$ of validators who correctly-dealt transcripts.
 More formally, the goal is to agree on a set $Q$ such that:
 \begin{align}
    \label{eq:trs-verifies}
@@ -618,7 +618,7 @@ To reach agreement on $Q$ efficiently, one of the validators (e.g., the consensu
  1. an eligible set $Q$ of validators with $\norm{Q} > \threshQ$
  2. a subtranscript $\subtrs$ allegedly-aggregated from all validators in $Q$
 
-Every validator $i'$ will "vote" on this proposal if they can verify that $\subtrs$ was actually aggregated from some set $\\{\trs\_{j'}\\}\_{j'\in Q}$ of transcripts that all pass verification as per Eq. \ref{eq:trs-verifies}.
+Every validator $i'$ will "vote" on this proposal if they can verify that $\subtrs$ was actually aggregated from some set $\\{\trs\_{j'}\\}\_{j'\in Q}$ of transcripts that all passed verification as per Eq. \ref{eq:trs-verifies}.
 
 More formally, validator $i'$ will vote _"yes"_ on the $(Q, \subtrs)$ proposal, if and only if:
  1. $\norm{Q} > \threshQ$
