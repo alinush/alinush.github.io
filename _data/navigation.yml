@@ -178,6 +178,8 @@ cryptomat:
         url: /elgamal
       - title: Identity-based encryption (IBE)
         url: /ibe
+      #- title: Okamoto-Uchiyama
+      #  url: /okamoto-uchiyama
 
   - title: Verifiable randomn functions (VRFs)
     children:
@@ -253,6 +255,10 @@ cryptomat:
   - title: (Zero knowledge) proofs
     url: /zkps
     children:
+    # TODO: but this should be part of the /zkps article, including the definitional tension between ZKness and knowledge-soundness
+    #  - title: Simulation
+    #    url: /2020/05/07/zero-knowledge-simulation.html
+    #  - title: Fischlin transform
       - title: NP relations
         url: /np-relations 
       - title: IOPs
@@ -277,8 +283,6 @@ cryptomat:
     #    https://cs355.stanford.edu/lectures/Lecture12-plonk.pdf
       - title: $\Sigma$-protocols
         url: /sigma
-    #  - title: Simulation
-    #    url: /2020/05/07/zero-knowledge-simulation.html
 
   #- title: Miscellanea 
   #  children:
