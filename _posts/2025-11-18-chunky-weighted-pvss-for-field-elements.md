@@ -601,40 +601,47 @@ Our current $\ssPvssDeal$ Rust implementation in `aptos-dkg` returns a `chunky::
 Then, each validator $i'$ (best-effort) disseminates $(\trs_{i'}, \sigma_{i'})$ to all other validators.
 Eventually, each validators $i'$ will have its own view of a set $\term{Q_{i'}}$ of validators who correctly-dealt a (single) transcript, as well as the actual signed transcripts themselves.
 
-**Agreement phase:** In this phase, validators will agree on a "large-enough" eligible set $\emph{Q}$ of validators who correctly-dealt transcripts.
-More formally, the goal is to agree on a set $Q$ such that:
+**Agreement phase:** In this phase, validators will agree on an aggregated subtranscript $\term{\subtrs}$ obtained from a "large-enough" eligible set $\emph{Q}$ of honest validators.
+More formally, the agreed-upon $(Q,\subtrs)$ will have the following three properties:
 \begin{align}
-   \label{eq:trs-verifies}
-   &\forall i' \in Q, \exists (\emph{\trs_{i'},\sigma_{i'}}),\ \text{s.t.}\ \ssPvssVerify(\pk_{i'}, \emph{\trs\_{i'}, \sigma_{i'}}, \threshWeight, \\{w\_i,\ek\_i\\}\_{i\in[n]}, (\underbrace{i', \pk\_{i'}, \epoch}\_{\emph{\ssid\_{i'}}})) \goddamnequals 1\\\\\
    &\norm{Q} > \threshQ\\\\\
+   \label{eq:trs-verifies}
+   &\forall j' \in Q, \exists (\term{\trs_{j'},\sigma_{j'}}),\ \text{s.t.}\ \ssPvssVerify(\pk_{j'}, \emph{\trs\_{j'}, \sigma_{j'}}, \threshWeight, \\{w\_i,\ek\_i\\}\_{i\in[n]}, (\underbrace{j', \pk\_{j'}, \epoch}\_{\emph{\ssid\_{j'}}})) \goddamnequals 1\\\\\
+   \label{eq:subtrs-aggr}
+   &\emph{\subtrs} \goddamnequals \ssPvssSubaggregate(\\{\ssPvssSubtranscript(\trs\_{j'})\\}\_{j' \in Q})
 \end{align}
 
 {: .note}
-Agreement on $Q$ could be reached inefficiently by running a Byzantine agreement phase for each transcript: i.e., validator $i'$ proposes its $(\trs_{i'}, \sigma_{i'})$ and if it collects "enough" votes on it, then $i'$ is accumulated in the set $Q$ so far.
+Agreement on $Q$ could be reached inefficiently by running a Byzantine agreement phase for each transcript: i.e., validator $i'$ proposes its $(\trs_{i'}, \sigma_{i'})$ and if it collects "enough" **attestations** (e.g., signatures from $>$ 33% of the stake) on it, then $i'$ is accumulated in the set $Q$ so far.
 The downside of this approach is high latency: it requires one Byzantine agreement per contributing validator.
 For Aptos, specifically, it would also require sending too many [validator TXNs](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-64.md).
 
-To reach agreement on $Q$ efficiently, one of the validators (e.g., the consensus leader) sends a **final DKG subtranscript proposal** containing:
- 1. an eligible set $Q$ of validators with $\norm{Q} > \threshQ$
- 2. a subtranscript $\subtrs$ allegedly-aggregated from all validators in $Q$
+**Proposal sub-phase:** To reach agreement on $Q$ efficiently, one of the validators (e.g., the consensus leader) sends a **final DKG subtranscript proposal** $(Q,\subtrs)$.
 
-Every validator $i'$ will "vote" on this proposal if they can verify that $\subtrs$ was actually aggregated from some set $\\{\trs\_{j'}\\}\_{j'\in Q}$ of transcripts that all passed verification as per Eq. \ref{eq:trs-verifies}.
+Every validator $i'$ will **attest to** (i.e., sign) this proposal if they can verify that $\subtrs$ was actually aggregated from some set $\\{\trs\_{j'}\\}\_{j'\in Q}$ of transcripts that all passed verification as per Eq. \ref{eq:trs-verifies}.
 
-More formally, validator $i'$ will vote _"yes"_ on the $(Q, \subtrs)$ proposal, if and only if:
+More formally, validator $i'$ will attest to the $(Q, \subtrs)$ proposal, if and only if:
  1. $\norm{Q} > \threshQ$
  1. $\forall j'\in Q$, validator $i'$ eventually[^eventually] receives a single[^equivocation] $(\trs\_{j'},\sigma\_{j'})$ s.t. $\ssPvssVerify(\pk_{j'}, \trs\_{j'}, \sigma_{j'}, \threshWeight, \\{w\_i,\ek\_i\\}\_{i\in[n]}, (j', \pk\_{j'}, \epoch)) \goddamnequals 1$
- 1. $\subtrs \equals \ssPvssSubaggregate(\\{\subtrs_{j'}\\}\_{j'\in Q})$
+ 1. $\subtrs \equals \ssPvssSubaggregate(\\{\ssPvssSubtranscript(\trs_{j'})\\}\_{j'\in Q})$
 
-If the $(Q, \subtrs)$ proposal gathers "enough" votes, the proposing validator includes it in a(n Aptos validator) TXN and sends it on-chain.
+**Commit sub-phase:** If the $(Q, \subtrs)$ proposal gathers "enough" attestations, the proposing validator includes it in a(n Aptos validator) TXN and sends it on-chain.
 This TXN will be succinct as it only contains:
-1. The aggregated subtranscript $\subtrs$
+ 1. The aggregated subtranscript $\subtrs$
     - _Note:_ Assuming elliptic curves over 256-bit base fields (e.g., BN254), $\sizeof{\subtrs} \bydef \underbrace{64}\_{\widetilde{V}\_0} + \underbrace{64 \cdot W}\_{\widetilde{V}\_{i,j}\text{\'s}} + \underbrace{32 \cdot W\cdot m}\_{C\_{i,j,k}\text{\'s}} + 32\cdot \underbrace{\max_i{w_i}\cdot m}\_{R\_{j,k}\text{\'s}}$ as per Eq. \ref{eq:subtrs}
     - e.g., for total weight $W = 254$, $m=8$ chunks and $\max_i{w_i} = 5$, the size will be $64 + 64 \cdot 254 + 32 \cdot 254 \cdot 8 + 32 \cdot 5 \cdot 8 =$ 82,624 bytes $=$ 80.6875 KiB
     - If we increase $\max_i{w_i}$ to 7, we get $64 + 64 \cdot 254 + 32 \cdot 254 \cdot 8 + 32 \cdot \emph{7} \cdot 8 =$ 83,136 bytes $=$ 81.1875 KiB
-2. Votes from at most all $n$ validators. 
-    + e.g., In Aptos, we are using BLS signatures[^BLS01] over BLS12-381 curves[^BLS02e] $\Rightarrow$ since validators are voting by signing over the same proposal $(Q,\subtrs)$, the vote signatures can be aggregated into a single multi-signature of 48 bytes.
+ 1. Attestations from at most all $n$ validators. 
+    + e.g., In Aptos, we are using BLS signatures[^BLS01] over BLS12-381 curves[^BLS02e] $\Rightarrow$ since validators are voting by signing over the same proposal $(Q,\subtrs)$, the attestation signatures can be aggregated into a single multi-signature of 48 bytes.
 
-If this TXN gets included and executed on-chain, the DKG is now complete:
+Once this TXN gets included on-chain it is sent to execution, where all (honest) validators will:
+
+ 1. check that $(Q,\subtrs)$ has "enough" attestations
+    - this implies that $\norm{Q} > \threshQ$...
+    - ...and that Eqs. \ref{eq:trs-verifies} and \ref{eq:subtrs-aggr} hold
+ 1. install the subtranscript on-chain, declaring the DKG complete
+
+Now:
  - The final public key whose corresponding secret key is secret-shared is $\widetilde{V}_0$ from $\subtrs$
  - The share commitments $\widetilde{V}\_{i,j}$'s in $\subtrs$ can be made public
     + e.g., if the DKG is for bootstrapping a weighted [threshold BLS signature scheme](/threshold-bls), then $\widetilde{V}\_{i,j}\bydef s\_{i,j}\cdot G$ will act as the verification key for the BLS signature share $H(m)^{s\_{i,j}}$
@@ -716,6 +723,6 @@ For cited works, see below 👇👇
 [^reuse]: Recall that in Aptos, we will safely reuse the validator signing keys as encryption keys.
 [^dummy]: Technically, they have to add a dummy proof to the _subtranscript_, obtaining a proper _transcript_, which they can now feed in to $\pvssDecrypt$ in a type-safe way.
 [^eventually]: This may require that each validator $i'$ poll other validators for the transcripts in the proposed set $Q$ that $i'$ is missing.
-[^equivocation]: If $i'$ receives two transcripts signed by the same validator $j'$, then that constitute equivocation and would be provable misbehavior. So $i'$ should (or may?) vote _"no"_ on $Q$ since it includes a malicious player $j'$.
+[^equivocation]: If $i'$ receives two transcripts signed by the same validator $j'$, then that constitute equivocation and would be provable misbehavior. So $i'$ should (or may?) not attest to $Q$ since it includes a malicious player $j'$.
 
 {% include refs.md %}
