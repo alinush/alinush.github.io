@@ -197,6 +197,11 @@ I think it can be addressed but it re-introduce the size-$n$ SRS problem.
 {: .todo}
 Log-space uniform circuits.
 
+### Halo2
+
+{: .todo}
+Learn.
+
 ## Engineering roadmap
 
 There's several things that, if we spend effort on, they are likely to be fruitful no matter what research direction we take:
