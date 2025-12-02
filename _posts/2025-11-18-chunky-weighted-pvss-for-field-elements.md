@@ -361,7 +361,7 @@ _Observation 1:_ The randomness has been correlated such that:
 
 _Observation 2:_ Different players $i$ will safely re-use the same $r_{j,k}$ randomness.
 
-_Observation 3:_ $\sizeof{\\{R_{j,k}\\}_{j,k}} = \max\_{i\in[n]}{(w\_i)} \cdot m$
+_Observation 3:_ $\sizeof{\\{R_{j,k}\\}_{j,k}} = m\cdot \max\_{i\in[n]}{(w\_i)}$
 
 {: .definition}
 The **cumulative weight up to (but excluding) $i$** is $\term{W_i}$ such that $\emph{W_1} = 0$ and 
@@ -616,16 +616,17 @@ Agreement on $Q$ could be reached inefficiently by running a Byzantine agreement
 The downside of this approach is high latency: it requires one Byzantine agreement per contributing validator.
 For Aptos, specifically, it would also require sending too many [validator TXNs](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-64.md).
 
-**Proposal sub-phase:** To reach agreement on $Q$ efficiently, one of the validators (e.g., the consensus leader) sends a **final DKG subtranscript proposal** $(Q,\subtrs)$.
+**Proposal sub-phase:** To reach agreement on $Q$ efficiently, one of the validators (e.g., the consensus leader) sends a **final DKG subtranscript proposal** $(Q, h)$, where $h \gets H(\subtrs)$ and $H(\cdot)$ is a collision-resistant hash function.
 
 Every validator $i'$ will **attest to** (i.e., sign) this proposal if they can verify that $\subtrs$ was actually aggregated from some set $\\{\trs\_{j'}\\}\_{j'\in Q}$ of transcripts that all passed verification as per Eq. \ref{eq:trs-verifies}.
 
-More formally, validator $i'$ will attest to the $(Q, \subtrs)$ proposal, if and only if:
+More formally, validator $i'$ will attest to the $(Q, h)$ proposal, if and only if:
  1. $\norm{Q} > \threshQ$
  1. $\forall j'\in Q$, validator $i'$ eventually[^eventually] receives a single[^equivocation] $(\trs\_{j'},\sigma\_{j'})$ s.t. $\ssPvssVerify(\pk_{j'}, \trs\_{j'}, \sigma_{j'}, \threshWeight, \\{w\_i,\ek\_i\\}\_{i\in[n]}, (j', \pk\_{j'}, \epoch)) \goddamnequals 1$
- 1. $\subtrs \equals \ssPvssSubaggregate(\\{\ssPvssSubtranscript(\trs_{j'})\\}\_{j'\in Q})$
+ 1. $h \equals H(\ssPvssSubaggregate(\\{\ssPvssSubtranscript(\trs_{j'})\\}\_{j'\in Q}))$
 
-**Commit sub-phase:** If the $(Q, \subtrs)$ proposal gathers "enough" attestations, the proposing validator includes it in a(n Aptos validator) TXN and sends it on-chain.
+**Commit sub-phase:** If the $(Q, h)$ proposal gathers "enough" attestations, the proposing validator sends a(n Aptos validator) TXN with $(Q, \subtrs)$ to the chain.
+(Note that, in ths TXN, we've replaced the proposal hash $h$ with its preimage $\subtrs$.)
 This TXN will be succinct as it only contains:
  1. The aggregated subtranscript $\subtrs$
     - _Note:_ Assuming elliptic curves over 256-bit base fields (e.g., BN254), $\sizeof{\subtrs} \bydef \underbrace{64}\_{\widetilde{V}\_0} + \underbrace{64 \cdot W}\_{\widetilde{V}\_{i,j}\text{\'s}} + \underbrace{32 \cdot W\cdot m}\_{C\_{i,j,k}\text{\'s}} + 32\cdot \underbrace{\max_i{w_i}\cdot m}\_{R\_{j,k}\text{\'s}}$ as per Eq. \ref{eq:subtrs}
