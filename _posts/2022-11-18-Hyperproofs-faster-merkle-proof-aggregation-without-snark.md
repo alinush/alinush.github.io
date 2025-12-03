@@ -1,7 +1,7 @@
 ---
 tags: 
 - vector commitments (VCs)
-- inner product arguments (IPAs)
+- inner-product arguments (IPAs)
 - papers
 - mle
 title: "Hyperproofs: Faster Merkle proof aggregation without SNARKs"
