@@ -93,9 +93,8 @@ cryptomat:
         url: /linear-algebra
       - title: Linear Diophantine equations
         url: /2020/11/23/Linear-Diophantine-Equations.html
-
-  - title: Group theory
-    children:
+  #- title: Group theory
+  #  children:
       #- title: Abelian groups
       #  url: /abelian-groups
       - title: Pairings or bilinear maps
@@ -214,7 +213,7 @@ cryptomat:
     #    url: /drafts/2021-09-10-Pointproofs-Vector-Commitments.html # TODO: finalize and rename
     #  - title: AMTs
   
-  - title: Polynomials
+  - title: Polynomial (commitments)
     children:
       - title: Basics of polynomials
         url: /polynomials
@@ -234,10 +233,6 @@ cryptomat:
         url: /pst
       - title: Differentiation tricks
         url: /differentiation-tricks
-      - title: Univariate sumcheck
-        url: /univariate-sumcheck
-      - title: Multivariate sumcheck
-        url: /sumcheck
       - title: FRI
         url: /fri
       #-title: STIR
@@ -251,6 +246,8 @@ cryptomat:
     children:
       - title: How to reshare a secret
         url: /2024/04/26/How-to-reshare-a-secret.html
+      - title: "Chunky: Weighted PVSS"
+        url: /chunky
 
   - title: (Zero knowledge) proofs
     url: /zkps
@@ -269,13 +266,13 @@ cryptomat:
         url: /piop
       - title: QAPs & R1CS
         url: /r1cs
-      #- title: PIOPs
-      #  url: /piop
       #  originally introduced in DARK, https://eprint.iacr.org/2019/1229 (but AHPs introduced in Marlin are very similar but additionally need "holography")
       - title: Groth16
         url: /groth16
       - title: Spartan
         url: /spartan
+      - title: DeKART
+        url: /dekart
       - title: Marlin
         url: /marlin
     #  - title: PLONK
@@ -283,6 +280,10 @@ cryptomat:
     #    https://cs355.stanford.edu/lectures/Lecture12-plonk.pdf
       - title: $\Sigma$-protocols
         url: /sigma
+      - title: Univariate sumcheck
+        url: /univariate-sumcheck
+      - title: Multivariate sumcheck
+        url: /sumcheck
 
   #- title: Miscellanea 
   #  children:

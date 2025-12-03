@@ -9,12 +9,13 @@ article_header:
     src: /pictures/cost12/plot-over-r.png
 #date: 2020-11-05 20:45:59
 #published: false
+permalink: elliptic-curves
 #sidebar:
 #    nav: cryptomat
 ---
 
 {: .info}
-**tl;dr:** Everything I wanted to know, but was afraid to ask (about elliptic curves).
+**tl;dr:** Everything I wanted to know, but was afraid to ask about elliptic curves.
 
 <!--more-->
 
@@ -38,7 +39,7 @@ $$</p>
  - **TODO:** $\mathbb{A}^n(K)$ = affine $n$-spaces over field $K$
  - **TODO:** quadratic extension $\F_{q^2} = \Fq(i)$ with $i^2 + 1 = 0$
 
-## Scratchpad
+## A few notes 
 
 The **general Weierstrass equation**:
 
@@ -75,7 +76,7 @@ Note that $\ecid$ is a "special case" point that is defined artificially; it doe
 Note that we typically just have $(x,y)\in K^2$?
 
 {: .todo}
-$E = E(\bar{K})$ is typically used to refer to the same group defined over the **full** algebraic closure of $K$. (e.g., when $K = \mathbb{Q}$, $\bar{K}$ seems to be $\mathbb{R}$?
+$E = E(\bar{K})$ is typically used to refer to the same group defined over the **full** algebraic closure of $K$. (e.g., when $K = \mathbb{Q}$, $\bar{K}$ is $\mathbb{R}$)
 
 We'll initially denote the elliptic curve group operation by $\oplus$ (and its inverse by $\ominus$), but at a later point we will replace it with $+$ (and $-$, respectively).
 
@@ -98,12 +99,15 @@ Q: Why are singular curves bad?
  - weirstrass model is not ideal for fast impl. of the group addition law
     + projective coordinates avoid inversions (may be worth only mentioning it? cause lots of details to cover)
     + jacobi quartic form (just mention it; too advanced for now)
- - the order of E(F_q)
- - hasse bound
+ - the order of $E(\Fq)$
+ - Hasse bound
+ - the CM algorithm
 
 ## Acknowledgements
 
 Most screenshots in this post (and most of my understanding of elliptic curves) come from Craig Costello's _"Pairings for beginners."_[^Cost12].
+
+Thanks to Wicher Malten for reminding me what an algebraic closure is.
 
 ---
 
