@@ -97,6 +97,8 @@ cryptomat:
   #  children:
       #- title: Abelian groups
       #  url: /abelian-groups
+      - title: Elliptic curves
+        url: elliptic-curves
       - title: Pairings or bilinear maps
         url: /pairings
       #- title: Multilinear maps

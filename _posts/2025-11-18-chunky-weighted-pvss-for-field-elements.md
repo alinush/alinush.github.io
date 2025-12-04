@@ -250,7 +250,7 @@ To see why this is necessary consider the following scenario:
 
 **Implication:** The PVSS transcript will include a **zero-knowledge signature of knowledge (ZKSoK)** of the dealt secret $z_i$.
 This way, the dealt secret cannot be mauled without rendering the transcript invalid.
-Importantly, part of the signed message will include the signing public key of the dealer.
+Importantly, the ZKSoK signature will include the signing public key of the dealer.
 This way, validator $j$ cannot bias the final DKG secret $z$ by appropriating validator $i$'s transcript as their own (i.e., by stripping validator $i$'s signature from the transcript, adding their own signature and leaving the dealt secret $z_i$ untouched).
 
 ## Chunky: A weighted PVSS
@@ -531,15 +531,17 @@ We detail the new algorithms for this signed, subaggregatable, non-malleable PVS
 Deal a normal PVSS transcript via [$\pvssDeal$](#mathsfpvssmathsfdeal_mathsfpplefta_0-t_w-w_i-mathsfek_i_iin-n-mathsfssidright-rightarrow-mathsftrs) **but** also sign over it and over the session ID:
 \begin{align}
 \trs &\gets \pvssDeal(a_0, \threshWeight, \\{w\_i,\ek\_i\\}\_{i\in[n]}, \ssid)\\\\\
-\sigma &\gets \sig.\sign(\sk, (\trs, \ssid))
+(\tilde{V}_0,\cdot,\cdot,\cdot,\cdot)&\parse \trs\\\\\
+\sigma &\gets \sig.\sign(\sk, (\tilde{V}_0, \ssid))
 \end{align}
 
 ### $\mathsf{ssPVSS}.\mathsf{Verify}\_\mathsf{pp}\left(\pk, \mathsf{trs}, \sigma, t_W, \\{w_i, \mathsf{ek}_i\\}\_{i\in[n]}, \mathsf{ssid}\right) \rightarrow \\{0,1\\}$
 
 Do a normal PVSS transcript verification via [$\pvssVerify$](#mathsfpvssmathsfverify_mathsfppleftmathsftrs-t_w-w_i-mathsfek_i_iinn-mathsfssidright-rightarrow-01) **but** also verify the signature over it and the session ID:
 \begin{align}
-\textbf{assert}\ \pvssVerify(\trs, \threshWeight, \\{w\_i,\ek\_i\\}\_{i\in[n]}, \ssid) \equals 1\\\\\
-\textbf{assert}\ \sig.\verify(\pk, \sigma, (\trs, \ssid)) \equals 1
+\textbf{assert}\ \pvssVerify(\trs, \threshWeight, \\{w\_i,\ek\_i\\}\_{i\in[n]}, \ssid) &\equals 1\\\\\
+(\tilde{V}_0,\cdot,\cdot,\cdot,\cdot) &\parse \trs\\\\\
+\textbf{assert}\ \sig.\verify(\pk, \sigma, (\tilde{V}_0, \ssid)) &\equals 1
 \end{align}
 
 ### $\mathsf{ssPVSS}.\mathsf{Subtranscript}\left(\mathsf{trs}\right) \rightarrow \mathsf{subtrs}$
