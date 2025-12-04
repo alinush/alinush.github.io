@@ -254,7 +254,7 @@ This way, the dealt secret cannot be mauled without rendering the transcript inv
 Importantly, the ZKSoK signature will include the signing public key of the dealer.
 This way, validator $j$ cannot bias the final DKG secret $z$ by appropriating validator $i$'s transcript as their own (i.e., by stripping validator $i$'s signature from the transcript, adding their own signature and leaving the dealt secret $z_i$ untouched).
 
-## Chunky: A weighted PVSS
+## Chunky: A weighted, non-malleable PVSS
 
 Notation:
 
