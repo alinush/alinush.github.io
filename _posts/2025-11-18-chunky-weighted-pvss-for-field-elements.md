@@ -55,6 +55,7 @@ sidebar:
 \def\totalWeight{W}
 \def\threshWeight{t_W}
 \def\threshQ{t_Q}
+\def\threshS{t_S}
 %
 \def\trs{\mathsf{trs}}
 \def\pp{\mathsf{pp}}
@@ -614,33 +615,41 @@ More formally, the agreed-upon $(Q,\subtrs)$ will have the following three prope
 \end{align}
 
 {: .note}
-Agreement on $Q$ could be reached inefficiently by running a Byzantine agreement phase for each transcript: i.e., validator $i'$ proposes its $(\trs_{i'}, \sigma_{i'})$ and if it collects "enough" **attestations** (e.g., signatures from $>$ 33% of the stake) on it, then $i'$ is accumulated in the set $Q$ so far.
+Agreement on $Q$ could be reached inefficiently by running a Byzantine agreement phase for each transcript: i.e., validator $i'$ proposes its $(\trs_{i'}, \sigma_{i'})$ and if it collects "enough" **attestations** (e.g., signatures from a fraction $> \term{\threshS}$ of the stake, say, 66%) on it, then $i'$ is accumulated in the set $Q$ so far.
 The downside of this approach is high latency: it requires one Byzantine agreement per contributing validator.
 For Aptos, specifically, it would also require sending too many [validator TXNs](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-64.md).
 
-**Proposal sub-phase:** To reach agreement on $Q$ efficiently, one of the validators (e.g., the consensus leader) sends a **final DKG subtranscript proposal** $(Q, h)$, where $h \gets H(\subtrs)$ and $H(\cdot)$ is a collision-resistant hash function.
+**Proposal sub-phase:** To reach agreement on $(Q,\subtrs)$ efficiently, one of the validators (e.g., the consensus leader) sends a **final DKG subtranscript proposal** $(Q, h)$, where $h \gets H(\subtrs)$ and $H(\cdot)$ is a collision-resistant hash function.
 
-Every validator $i'$ will **attest to** (i.e., sign) this proposal if they can verify that $\subtrs$ was actually aggregated from some set $\\{\trs\_{j'}\\}\_{j'\in Q}$ of transcripts that all passed verification as per Eq. \ref{eq:trs-verifies}.
+Every validator $i'$ will **attest to** (i.e., sign) this proposal if they can verify that the hashed subtranscript in $h$ was actually aggregated from some set $\\{\trs\_{j'}\\}\_{j'\in Q}$ of transcripts that all passed verification as per Eq. \ref{eq:trs-verifies}.
 
-More formally, validator $i'$ will attest to the $(Q, h)$ proposal, if and only if:
+More formally, validator $i'$ will attest to the $(Q, h)$ proposal via a signature $\term{\alpha_{i'}\}\bydef \sig.\sign(\sk_{i'}, (Q, h))$, if and only if:
  1. $\norm{Q} > \threshQ$
  1. $\forall j'\in Q$, validator $i'$ eventually[^eventually] receives a single[^equivocation] $(\trs\_{j'},\sigma\_{j'})$ s.t. $\ssPvssVerify(\pk_{j'}, \trs\_{j'}, \sigma_{j'}, \threshWeight, \\{w\_i,\ek\_i\\}\_{i\in[n]}, (j', \pk\_{j'}, \epoch)) \goddamnequals 1$
  1. $h \equals H(\ssPvssSubaggregate(\\{\ssPvssSubtranscript(\trs_{j'})\\}\_{j'\in Q}))$
 
-**Commit sub-phase:** If the $(Q, h)$ proposal gathers "enough" attestations, the proposing validator sends a(n Aptos validator) TXN with $(Q, \subtrs)$ to the chain.
-(Note that, in ths TXN, we've replaced the proposal hash $h$ with its preimage $\subtrs$.)
+**Commit sub-phase:** If the $(Q, h)$ proposal gathers "enough" attestations (i.e., $> \threshS$), the proposing validator sends a(n Aptos validator) TXN with $(Q, \subtrs, \\{\alpha_{j'}\\}_{j'\in \term{S}})$ to the chain, where $\emph{S}$ is the set of validators who attested with $\norm{S} > \threshS$.
+
+(Note that this TXN includes the $\subtrs$ corresponding to the hash in the proposal $(Q,h)$.)
+
+{: .todo}
+Make it explicit that this contains the attestations $\alpha_{i'}$'s or whatever.
+
 This TXN will be succinct as it only contains:
  1. The aggregated subtranscript $\subtrs$
     - _Note:_ Assuming elliptic curves over 256-bit base fields (e.g., BN254), $\sizeof{\subtrs} \bydef \underbrace{64}\_{\widetilde{V}\_0} + \underbrace{64 \cdot W}\_{\widetilde{V}\_{i,j}\text{\'s}} + \underbrace{32 \cdot W\cdot m}\_{C\_{i,j,k}\text{\'s}} + 32\cdot \underbrace{\max_i{w_i}\cdot m}\_{R\_{j,k}\text{\'s}}$ as per Eq. \ref{eq:subtrs}
     - e.g., for total weight $W = 254$, $m=8$ chunks and $\max_i{w_i} = 5$, the size will be $64 + 64 \cdot 254 + 32 \cdot 254 \cdot 8 + 32 \cdot 5 \cdot 8 =$ 82,624 bytes $=$ 80.6875 KiB
     - If we increase $\max_i{w_i}$ to 7, we get $64 + 64 \cdot 254 + 32 \cdot 254 \cdot 8 + 32 \cdot \emph{7} \cdot 8 =$ 83,136 bytes $=$ 81.1875 KiB
- 1. Attestations from at most all $n$ validators. 
+ 1. Attestations $\alpha_{j'}$'s from at most all $n$ validators. 
     + e.g., In Aptos, we are using BLS signatures[^BLS01] over BLS12-381 curves[^BLS02e] $\Rightarrow$ since validators are voting by signing over the same proposal $(Q,\subtrs)$, the attestation signatures can be aggregated into a single multi-signature of 48 bytes.
 
 Once this TXN gets included on-chain it is sent to execution, where all (honest) validators will:
 
- 1. check that $(Q,\subtrs)$ has "enough" attestations
-    - this implies that $\norm{Q} > \threshQ$...
+ 1. check that the attestations in $(Q,\subtrs, \\{\alpha_{j'}\\}_{j'\in S})$ are valid; i.e.,:
+    - $h \gets H(\subtrs)$
+    - $\textbf{assert}\ \norm{S} > \threshS$
+    - $\forall j'\in S, \textbf{assert}\ \sig.\verify(\pk_{j'}, \alpha_{j'}, (Q, h)) \equals 1$
+ 1. this implies that $\norm{Q} > \threshQ$...
     - ...and that Eqs. \ref{eq:trs-verifies} and \ref{eq:subtrs-aggr} hold
  1. install the subtranscript on-chain, declaring the DKG complete
 
