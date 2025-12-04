@@ -632,9 +632,6 @@ More formally, validator $i'$ will attest to the $(Q, h)$ proposal via a signatu
 
 (Note that this TXN includes the $\subtrs$ corresponding to the hash in the proposal $(Q,h)$.)
 
-{: .todo}
-Make it explicit that this contains the attestations $\alpha_{i'}$'s or whatever.
-
 This TXN will be succinct as it only contains:
  1. The aggregated subtranscript $\subtrs$
     - _Note:_ Assuming elliptic curves over 256-bit base fields (e.g., BN254), $\sizeof{\subtrs} \bydef \underbrace{64}\_{\widetilde{V}\_0} + \underbrace{64 \cdot W}\_{\widetilde{V}\_{i,j}\text{\'s}} + \underbrace{32 \cdot W\cdot m}\_{C\_{i,j,k}\text{\'s}} + 32\cdot \underbrace{\max_i{w_i}\cdot m}\_{R\_{j,k}\text{\'s}}$ as per Eq. \ref{eq:subtrs}
