@@ -615,7 +615,7 @@ More formally, the agreed-upon $(Q,\subtrs)$ will have the following three prope
 \end{align}
 
 {: .note}
-Agreement on $Q$ could be reached inefficiently by running a Byzantine agreement phase for each transcript: i.e., validator $i'$ proposes its $(\trs_{i'}, \sigma_{i'})$ and if it collects "enough" **attestations** (e.g., signatures from a fraction $> \term{\threshS}$ of the stake, say, 66%) on it, then $i'$ is accumulated in the set $Q$ so far.
+Agreement on $Q$ could be reached inefficiently by running a Byzantine agreement phase for each transcript: i.e., validator $i'$ proposes its $(\trs_{i'}, \sigma_{i'})$ and if it collects "enough" **attestations** (e.g., signatures from a fraction $> \term{\threshS}$ of the stake, say, 33%[^vaba]) on it, then $i'$ is accumulated in the set $Q$ so far.
 The downside of this approach is high latency: it requires one Byzantine agreement per contributing validator.
 For Aptos, specifically, it would also require sending too many [validator TXNs](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-64.md).
 
@@ -733,5 +733,6 @@ For cited works, see below 👇👇
 [^dummy]: Technically, they have to add a dummy proof to the _subtranscript_, obtaining a proper _transcript_, which they can now feed in to $\pvssDecrypt$ in a type-safe way.
 [^eventually]: This may require that each validator $i'$ poll other validators for the transcripts in the proposed set $Q$ that $i'$ is missing.
 [^equivocation]: If $i'$ receives two transcripts signed by the same validator $j'$, then that constitute equivocation and would be provable misbehavior. So $i'$ should (or may?) not attest to $Q$ since it includes a malicious player $j'$.
+[^vaba]: This can be viewed through the lens of collecting $f+1$ attestations in validated Byzantine agreement (VABA).
 
 {% include refs.md %}
