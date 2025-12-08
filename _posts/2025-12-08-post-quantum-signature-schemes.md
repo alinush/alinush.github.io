@@ -33,6 +33,12 @@ Steps:
     * Filtered after Round 1. (See status report[^ABCplus24].)
     * See all schemes [here](/pictures/nist-round-1.png), with the advanced ones marked in $\textcolor{blue}{\text{blue}}$
         + **A criticism:** The MPC-in-the-Head schemes actually rely on all sorts of exotic assuptions. The caption makes it seem like they do not, which is confusing.
+ - [x] Looked at [FAEST](#faest)
+    - Not as fast to verify as SPHINCS+
+    - Better if faster signing is desired (e.g., consensus signatures)
+ - [x] Looked at [SLH-DSA (SPHINCS+)](#slh-dsa-sphincs)
+    - This is ideal for the blockchain setting: minimal assumptions (just hashing), verification time descreases with signature size (by trading off signing time), standardized, sufficiently-succinct (e.g., 7.67 KiB)
+ - [x] Found all FIPS standards[^fips]; not that many, hm.
 
 ## Symmetric-crypto-based schemes
 
@@ -306,6 +312,7 @@ Investigate [ML-DSA](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.204.pdf), 
 
 For cited works, see below 👇👇
 
+[^fips]: [FIPS publications](https://csrc.nist.gov/publications/fips)
 [^sphincsplus-git]: [sphincs/sphincsplus](https://github.com/sphincs/sphincsplus.git)
 [^nist-round-2-additional]: [Post-Quantum Cryptography: Additional Digital Signature Schemes (Round 2)](https://csrc.nist.gov/projects/pqc-dig-sig/round-2-additional-signatures)
 
