@@ -23,7 +23,7 @@ permalink: post-quantum-signatures
 <div style="display: none;">$
 $</div> <!-- $ -->
 
-## Introduction
+## Notes 
 
 This is a research blog post on the state-of-the-art PQ signature schemes.
 
@@ -40,9 +40,8 @@ Steps:
     - This is ideal for the blockchain setting: minimal assumptions (just hashing), verification time descreases with signature size (by trading off signing time), standardized, sufficiently-succinct (e.g., 7.67 KiB)
  - [x] Found all FIPS standards[^fips]; not that many, hm.
 
-## Symmetric-crypto-based schemes
 
-### FAEST
+## FAEST
 
 {: .note}
 See [FAEST website](https://faest.info/) for a full list of resources.
@@ -54,7 +53,7 @@ Notes:
     + VOLEitH is constructed only from symmetric-key primitives
  - NIST cites it as _"somewhat complex"_ and says _"the security proof is very technical."_[^ABCplus24]
 
-#### Construction
+### Construction
 
 \begin{align}
 \pk &= (x,y)\\\\\
@@ -67,13 +66,13 @@ E_k(x) = y,\ \text{where}\ E\ \text{is a block cipher}
 
 Signing works by doing a ZKPoK of $k$ using VOLEitH and the QuickSilver information-theoretic proof system[^YSWW21e] (under the Fiat-Shamir transform).
 
-#### Sizes
+### Sizes
 
 Secret and public keys are small: 32 bytes at 128-bit security.
 
 Signature sizes are described below.
 
-#### Performance
+### Performance
 
 Benchmarked on:
  > _"a single core of a consumer notebook with an AMD Ryzen 7 5800H processor, with a base clock speed of 3.2 GHz and 16 GiB memory."_ 
@@ -98,7 +97,7 @@ I quote: _"For a circuit of size $\sizeof{C} = 2^{27}$, it shows up to 83.6× im
 [Pratik Sarkar suggests](https://x.com/pratiks_crypto/status/1998113981794529597) it likely does _not_.
 And even if it does, it would require additively-homomorphic encryption like BGV, which would introduce additional assumptions.
 
-### SLH-DSA (SPHINCS+)
+## SLH-DSA (SPHINCS+)
 
 {: .note}
 See [SPHINCS website](https://sphincs.org/index.html) for a full list of resources.
@@ -111,30 +110,25 @@ See [SPHINCS website](https://sphincs.org/index.html) for a full list of resourc
  - a rather-involved construction; would need to dig deeper to see if there's a simple design underneath
  - _"The SHA2-based parameter sets are 2x slower than the SHAKE-based ones"_
 
-#### Sizes
+### Sizes
 
 Key and signature sizes from FIPS-205[^FIPS205]:
 
 <div align="center"><img style="width:80%" src="/pictures/slh-dsa-sizes.png" /></div>
 
-#### Performance of `sphincs/sphincsplus`
-
-Benchmarking the reference implementation in C[^sphincsplus-git] on my Apple Macbook Pro, M1 Max below.
+### `sphincs-shake-128f` benchmarks
 
 {: .note}
-They only provide an ARM implementation for the SHAKE variant.
-Not sure what the SHA2 numbers would look like on ARM.
+16.69 KiB signature size, signing time is 17 ms and verification is 1.1 ms!
+
+Benchmarking the **reference implementation** in C[^sphincsplus-git] on my Apple Macbook Pro, M1 Max below.
+They only provide an ARM implementation for the SHAKE variant $\Rightarrow$ not sure what the SHA2 numbers would look like on ARM.
 
 {: .todo}
 Are these numbers single-threaded?
 
 {: .todo}
 Got this `kpc_get_thread_counters failed, run as sudo?` error (I think) during the `thash` benchmarks.
-
-#### `sphincs-shake-128f` benchmarks
-
-{: .note}
-16.69 KiB signature, signing time is 17 ms and verification is 1.1 ms!
 
 Building this variant on ARM via:
 ```
@@ -144,7 +138,7 @@ make clean
 make benchmark
 ```
 
-The results for `sphincs-shake-128f`, edited for clarity of exposition:
+The results, edited for clarity of exposition:
 ```
 cc -Wall -Wextra -Wpedantic -Wmissing-prototypes -O3 -std=c99 -fomit-frame-pointer -flto -DPARAMS=sphincs-shake-128f  -o test/benchmark test/cycles.c hash_shake.c hash_shakex2.c thash_shake_robustx2.c address.c randombytes.c merkle.c wots.c utils.c utilsx2.c fors.c sign.c fips202.c fips202x2.c f1600x2_const.c f1600x2.s test/benchmark.c
 wrong fixed counters count
@@ -170,7 +164,7 @@ Public key size: 32 bytes (0.03 KiB)
 Secret key size: 64 bytes (0.06 KiB)
 ```
 
-#### `sphincs-shake-128s` benchmarks
+### `sphincs-shake-128s` benchmarks
 
 {: .success}
 **Clear winner:** hash-based, 7.67 KiB signatures created in 336 ms that verify in 0.4 ms!
@@ -212,7 +206,7 @@ Public key size: 32 bytes (0.03 KiB)
 Secret key size: 64 bytes (0.06 KiB)
 ```
 
-#### Performance of `RustCrypto/signatures`
+### Performance of `RustCrypto/signatures`
 
 {: .note}
 Seems like a single-threaded implementation.
@@ -291,7 +285,9 @@ verify: SLH-DSA-SHA2-256f
 
 -->
 
-## SIS-based
+## TODO
+
+### SIS-based schemes
 
 {: .todo}
 GPV hash-and-sign signatures and their plain-lattice descendants[^GPV07e].
@@ -300,8 +296,6 @@ GPV hash-and-sign signatures and their plain-lattice descendants[^GPV07e].
 [Squirrels](https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/round-1/spec-files/Squirrels-spec-web.pdf).
 [HuFu](https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/round-1/spec-files/HuFu-spec-web.pdf).
 (Also see [this survey](https://csrc.nist.gov/csrc/media/events/workshop-on-cybersecurity-in-a-post-quantum-world/documents/papers/session9-oneill-paper.pdf?utm_source=chatgpt.com).)
-
-## LWE-based
 
 ### ML-DSA
 
