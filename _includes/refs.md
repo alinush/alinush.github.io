@@ -1650,6 +1650,8 @@
 
 [^FHSZ23e]: **Chipmunk: Better Synchronized Multi-Signatures from Lattices**, by Nils Fleischhacker and Gottfried Herold and Mark Simkin and Zhenfei Zhang, *in Cryptology ePrint Archive, Paper 2023/1820*, 2023, [[URL]](https://eprint.iacr.org/2023/1820)
 
+[^FIPS205]: **FIPS 205: Stateless Hash-Based Digital Signature Standard**, by National Institute of Standards and Technology (NIST), 2024, [[URL]](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.pdf)
+
 [^FK20]: **Fast amortized Kate proofs**, by Dankrad Feist and Dmitry Khovratovich, 2020, [[URL]](https://github.com/khovratovich/Kate)
 
 [^FK23e]: **Fast amortized KZG proofs**, by Dankrad Feist and Dmitry Khovratovich, *in Cryptology ePrint Archive, Paper 2023/033*, 2023, [[URL]](https://eprint.iacr.org/2023/033)
@@ -3350,6 +3352,8 @@
 
 [^SZ23e]: **FREPack}: Improved {SNARK} Frontend for Highly Repetitive Computations**, by Sriram Sridhar and Yinuo Zhang, *in Cryptology {ePrint} Archive, Paper 2023/1240*
 
+[^Saar24e]: **Accelerating {SLH}-{DSA} by Two Orders of Magnitude with a Single Hash Unit**, by Markku-Juhani O. Saarinen, *in Cryptology {ePrint} Archive, Paper 2024/367*, 2024, [[URL]](https://eprint.iacr.org/2024/367)
+
 [^Saha99]: **Non-malleable non-interactive zero knowledge and adaptive chosen-ciphertext security**, by A. Sahai, *in 40th Annual Symposium on Foundations of Computer Science (Cat. No.99CB37039)*, 1999
 
 [^Sand22]: **EPID} with Efficient Proof of Non-Revocation**, by Olivier Sanders, *in Proceedings of the 2022 {ACM} on Asia Conference on Computer and Communications Security*, 2022, [[URL]](https://doi.org/10.1145%2F3488932.3517392)
@@ -3751,6 +3755,8 @@
 [^ZZWG21]: **VCProof: Constructing Shorter and Faster-to-Verify zkSNARKs with Vector Oracles**, by Yuncong Zhang and Ren Zhang and Geng Wang and Dawu Gu, *in Cryptology ePrint Archive, Report 2021/710*, 2021, [[URL]](https://eprint.iacr.org/2021/710)
 
 [^Zah18]: **Chimeric Ledgers: Translating and Unifying UTXO-based and Account-based Cryptocurrencies**, by Joachim Zahnentferner, *in Cryptology ePrint Archive, Report 2018/262*, 2018, [[URL]](https://eprint.iacr.org/2018/262)
+
+[^Zakh25]: **Introduction to Lattice-based Cryptography**, by Dmytro Zakharov, 2025, [[URL]](https://zamdimon.github.io/files/talks/lecture-notes/lattice-cryptography.pdf)
 
 [^Zha15]: **Concentration Bounds**, by Cyril Zhang, 2015, [[URL]](https://sachdevasushant.github.io/courses/15s-cpsc665/notes/concentration.pdf)
 
