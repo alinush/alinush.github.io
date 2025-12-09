@@ -110,6 +110,19 @@ See [SPHINCS website](https://sphincs.org/index.html) for a full list of resourc
  - a rather-involved construction; would need to dig deeper to see if there's a simple design underneath
  - _"The SHA2-based parameter sets are 2x slower than the SHAKE-based ones"_
 
+### Construction
+
+Key generation, at a high-level, works like this:
+```
+(sk_seed, sk_prf, pk_seed) ← random()
+root ← build_merkle_tree(sk_seed, pk_seed)
+SK = (sk_seed, sk_prf, pk_seed, root)
+PK = (pk_seed, root)
+```
+
+So, in the context of blockchain accounts, the user's mnemonic should be used to deterministically derive the `pk_seed`.
+Otherwise, wallet recovery won't work.
+
 ### Sizes
 
 Key and signature sizes from FIPS-205[^FIPS205]:
@@ -143,7 +156,7 @@ The results, edited for clarity of exposition:
 cc -Wall -Wextra -Wpedantic -Wmissing-prototypes -O3 -std=c99 -fomit-frame-pointer -flto -DPARAMS=sphincs-shake-128f  -o test/benchmark test/cycles.c hash_shake.c hash_shakex2.c thash_shake_robustx2.c address.c randombytes.c merkle.c wots.c utils.c utilsx2.c fors.c sign.c fips202.c fips202x2.c f1600x2_const.c f1600x2.s test/benchmark.c
 wrong fixed counters count
 
-Parameters: n = 16, h = 66, d = 22, b = 6, k = 33, w = 16
+arameters: n = 16, h = 66, d = 22, b = 6, k = 33, w = 16
 
 Running 10 iterations.
 
