@@ -42,6 +42,7 @@ How?
 
  1. Assuming the BHT attack on hash functions does not actually scale in practice[^Bern09], hash function length can be kept the same.
  1. Consensus [BLS](/threshold-bls#preliminaries) multi-signatures can be changed to a PQ variant via a simple protocol upgrade. The Ethereum Foundation has done a lot of great work on this lately[^DKKW25e]
+    + Another path is to simply swap consensus signatures with 128-bit MACs: with 250 validators, a validator's message will now be "signed" by MAC'ing it for all 250 validators: 250 $\times$ 16 bytes $=$ 4,000 bytes per "signature."
  1. We can add support for a new PQ-secure signature scheme. This way, new users are protected. Many interesting work in this space. Unclear what the best answer is. Personally, I like the idea of combining a [post-quantum zkSNARK scheme with a one-way function (OWF) to get a signature scheme](https://x.com/alinush/status/1921915943795503301) in a clean way.
  1. [Ed25519 signatures](/schnorr#eddsa-and-ed25519-formulation) can be easily transformed into PQ-secure ones: the Ed25519 SK $\sk$ is derived from some secret bits $b$ via a hash function as $\sk = H(b)$. So even if a quantum computer obtains $\sk$ by computing a discrete log on the public key, we can nonetheless rely on the secrecy of the bits $b$ induced by the one-way hash function $H$. Then, we can do a PQ signature using $b$ as the secret key and $H(b)$ as the public key[^CLYC21e].
  1. Key rotation in Aptos requires a ZKPoK of the new secret key being rotated to. This can also be done using a post-quantum zkSNARK.
