@@ -315,6 +315,10 @@ GPV hash-and-sign signatures and their plain-lattice descendants[^GPV07e].
 {: .todo}
 Investigate [ML-DSA](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.204.pdf), based on MLWE.
 
+### Others
+{: .todo}
+[HAWK](https://hawk-sign.info/).
+
 ## References
 
 For cited works, see below 👇👇
