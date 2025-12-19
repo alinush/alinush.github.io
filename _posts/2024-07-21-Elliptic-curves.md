@@ -103,6 +103,10 @@ Q: Why are singular curves bad?
  - Hasse bound
  - the CM algorithm
 
+## Resources
+
+ - [Learning fast elliptic-curve cryptography](https://paulmillr.com/posts/noble-secp256k1-fast-ecc/)
+
 ## Acknowledgements
 
 Most screenshots in this post (and most of my understanding of elliptic curves) come from Craig Costello's _"Pairings for beginners."_[^Cost12].

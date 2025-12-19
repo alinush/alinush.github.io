@@ -36,7 +36,7 @@ $</div> <!-- $ -->
 
  - $\F$ is a prime-order finite field
  - $f(X_1,X_2,\ldots,X_\mu)$ denotes a $\mu$-variate polynomial with coefficients in $\F$.
- - $d_j\bydef \deg_j(f)$ is the highest degree of $f$ in the variable $X_j$
+ - $\term{\deg_j(f)}$ is the degree of $f$ in the variable $X_j$
  - $f$ is said to be **multilinear** when $\deg_j(f) = 1$ for all $j\in[\mu]$
  - a [multilinear extensions (MLE)](/mle) of a vector $\vec{v} = [v_0,\ldots,v_{2^\mu -1}]$ is a multilinear polynomial $f$ such that $f(i_1,i_1,\dots,i_\mu) = v_i$ where $i= \sum_{j=1}^{\mu} i_j \cdot 2^{j-1}$
     + this is the multivariate counterpart of [univariate polynomials interpolated from a vector](/2022/07/28/lagrange-interpolation.html)
@@ -72,8 +72,11 @@ While the sumcheck protocol inherently must require $\P$ to compute $O(2^\mu)$ p
         <li><em>Initialization</em>:</li>
         <ul>
             <li>Prover $\P$ claims $\emph{H} = \sum_{\b\in\binMu} \emph{f}(b_1, b_2,\ldots, b_\mu)$.</li>
-            <li>Verifier $\V$ has an $\term{\oracle{f}}$ oracle <em>and</em> the degrees $\term{d_j} \bydef \deg_j(f)$ of each variable of $f$</li>
-            <li>Verifier's <b>initial claim</b> is $\term{g_0(X)} \bydef H \equals \sum_{\b\in\binMu} f(\b)$.</li>
+            <li>Verifier $\V$ has an $\term{\oracle{f}}$ oracle <em>and</em> an upper bound $\term{d_j}$ on the degree $\deg_j(f)$ of each variable of $f$, such that $\deg_j(f)\le d_j$</li>
+            <li>Prover's <b>initial claim</b> is $H \equals \sum_{\b\in\binMu} f(\b)$.</li>
+            <ul>
+                <li>Let $\term{g_0(X)} \bydef H$ be a <em>constant</em> polynomial for this claim (which is used in Round 1 below)</li>
+            </ul>
         </ul>
         <li><em>Round $1 \le \term{j} \le \mu-1$</em>:</li>
         <ul>
@@ -84,7 +87,7 @@ While the sumcheck protocol inherently must require $\P$ to compute $O(2^\mu)$ p
                 $g_{j-1}(r_{j-1}) \equals g_j(0) + g_j(1)$ (as it should, by definition of $g_j$)
             </li>
             <li>$\V$ sends public randomness $\term{r_j}\randget\F$ to $\P$</li>
-            <li>Verifier's <b>reduced claim</b> is $g_j(r_j) \equals \sum_{b_{j+1} \in \bin} \cdots \sum_{b_\mu \in \bin} f(r_1, \ldots, r_{j-1}, \emph{r_j}, b_{j+1},\ldots,b_\mu)$.</li>
+            <li>Prover's <b>reduced claim</b> is $g_j(r_j) \equals \sum_{b_{j+1} \in \bin} \cdots \sum_{b_\mu \in \bin} f(r_1, \ldots, r_{j-1}, \emph{r_j}, b_{j+1},\ldots,b_\mu)$.</li>
         </ul>
         <li><em>Last round $\mu$</em>:</li>
         <ul>
@@ -119,7 +122,7 @@ We finish by describing the last round which handles things a bit differently.
  - $\P$ starts with the polynomial $\emph{f}(X_1,\ldots,X_\mu)$
  - $\V$ starts with:
     - the number of variables $\mu$
-    + the degrees $d_j\bydef \deg_j(f)$ of each variable $X_j$ of $f$
+    + the max degrees $d_j$ (s.t. $\deg_j(f)\le d_j$) of each variable $X_j$ of $f$[^upper-bound]
     + an **oracle** $\term{\oracle{f}}$ to $f$
 
 ### Round $1 \lt \mu$ (special case)
@@ -128,7 +131,7 @@ We finish by describing the last round which handles things a bit differently.
     + Note we are not summing over $b_1$; we are excluding $\sum_{b_1\in\bin}$.
  - $\P \xrightarrow{g_1(X)}\V$
  - $\V$ checks:
-    + $g_1(X)$ is of degree $d_1$
+    + $g_1(X)$ is of degree $\le d_1$
     + $\emph{H} \equals g_1(0) + g_1(1)$, as it should be (by definition of $H$ and $g_1$).
  + $\V$ randomly picks $\term{r_1}\randget\F$
  + $\V \xrightarrow{r_1} \P$
@@ -138,7 +141,7 @@ We finish by describing the last round which handles things a bit differently.
  - $\P$ computes $\term{g_2(X)} \gets \underbrace{\sum_{b_3 \in \bin} \cdots \sum_{b_\mu \in \bin}}\_{\mu-2\ \text{variables}} f(r_1, X, b_3, \ldots,b_\mu)$.
  - $\P \xrightarrow{g_2(X)}\V$
  - $\V$ checks:
-    + $g_2(X)$ is of degree $d_2$
+    + $g_2(X)$ is of degree $\le d_2$
     + $\emph{g_1(r_1)} \equals g_2(0) + g_2(1)$, as it should be (by definition of $g_1$ and $g_2$).
  + $\V$ randomly picks $\term{r_2}\randget\F$
  + $\V \xrightarrow{r_2} \P$
@@ -149,7 +152,7 @@ The protocol continues in this fashion for every round $j \lt \mu$:
   - $\P$ computes $\term{g_j(X)} \gets \underbrace{\sum_{b_{j+1} \in \bin} \cdots \sum_{b_\mu \in \bin}}\_{\mu-j\ \text{variables}} f(r_1, \ldots, r_{j-1}, X, b_{j+1}, \ldots,b_\mu)$.
   - $\P \xrightarrow{g_j(X)}\V$
   - $\V$ checks:
-     + $g_j(X)$ is of degree $d_j$
+     + $g_j(X)$ is of degree $\le d_j$
      + $\emph{g_{j-1}(r_{j-1})} \equals g_j(0) + g_j(1)$, as it should be (by definition of $g_{j-1}$ and $g_j$).
   + $\V$ randomly picks $\term{r_j}\randget\F$
   + $\V \xrightarrow{r_j} \P$
@@ -161,7 +164,7 @@ Note: In the previous round, the polynomial $g_{\mu -1}(X)\bydef \sum_{b_\mu\in\
  - $\P$ computes $\term{g_\mu(X)} \gets f(r_1, \ldots, r_{\mu-1}, X)$.
  - $\P \xrightarrow{g_\mu(X)}\V$
  - $\V$ checks:
-    + $g_\mu(X)$ is of degree $d_\mu$
+    + $g_\mu(X)$ is of degree $\le d_\mu$
     + $\emph{g_{\mu-1}(r_{\mu-1})} \equals g_\mu(0) + g_\mu(1)$, as it should be (by definition of $g_{\mu-1}$ and $g_\mu$).
  + $\V$ randomly picks $\term{r_\mu}\randget\F$
  - $\V$ queries $\oracle{f}$ on whether $\emph{f(r_1, \ldots, r_\mu) \equals g_\mu(r_\mu)}$ 
@@ -215,7 +218,7 @@ Since the sumcheck proof consists of all the univariate polynomials sent by the 
 
 For example:
  + When $f$ is multilinear, the proof size is $2\mu$!
- - When $f$ has max degree $d$ in _any_ variable, the proof size is $\sum_{j\in[mu]} (d+1) = (d+1)\mu$ elements in $\F$
+ - When $f$ has degree exactly $d$ in _every_ variable, the proof size is $\sum_{j\in[mu]} (d+1) = (d+1)\mu$ elements in $\F$
 
 {: .note}
 HyperPLONK[^CBBZ22e] gives a technique to reduce the proof size.
@@ -237,10 +240,12 @@ I'm just trying to keep track of _some_ interesting works.
 
 Other relevant resources on sumchecks:
 
- - [Optimizing the Sumcheck Prover: Small Values and Equality Polynomials](https://hackmd.io/@tcoratger/S1gl1ucheg)
- - [Optimizing the Sumcheck Protocol](https://hackmd.io/04fkpdFhTFOCJ-GYMU6UbQ)
- - [Multilinear polynomials survival kit](https://blog.lambdaclass.com/multilinear-polynomials-survival-kit/)
- - [Optimizing sumcheck](https://blog.lambdaclass.com/optimizing-sumcheck/)
+ - [Optimizing the Sumcheck Prover: Small Values and Equality Polynomials](https://hackmd.io/@tcoratger/S1gl1ucheg), by Thomas Coratger
+ - [Optimizing the Sumcheck Protocol](https://hackmd.io/04fkpdFhTFOCJ-GYMU6UbQ), by Thomas Coratger
+ - [Multilinear polynomials survival kit](https://blog.lambdaclass.com/multilinear-polynomials-survival-kit/), by LambdaClass
+ - [Optimizing sumcheck](https://blog.lambdaclass.com/optimizing-sumcheck/), by LambdaClass
+ - [How factoring equality polynomials optimizes sumcheck](https://blog.lambdaclass.com/how-factoring-equality-polynomials-optimizes-sumcheck/), by LambdaClass
+ - [Faster sumchecks](https://blog.zksecurity.xyz/posts/faster-sumchecks/), by Jason Park, zkSecurity
 
 ## Conclusion
 
@@ -258,3 +263,5 @@ The sumcheck interactive proof (IP) relation $\mathcal{R}\_\mathsf{sum}^\mathsf{
 \end{align}
 
 {% include refs.md %}
+
+[^upper-bound]: The verifier can have either the exact degree $d_j$ of $f$ in variable $X_j$ or just an upper bound $\le d_j$.
