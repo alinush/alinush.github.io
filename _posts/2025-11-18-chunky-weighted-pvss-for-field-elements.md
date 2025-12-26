@@ -724,6 +724,39 @@ For example, when $i = 3, j = 3, k = 2$, we get:
 \end{align}
 as expected for $s_{3,3,2}$.
 
+## Appendix: Chunky2
+
+In an attempt to optimize verifier time, in this appendix we present a modified version of **Chunky** which for the moment will be called **Chunky2**. Early benchmarks show a 13% decrease in verifier time. For brevity and to avoid redundancy, we describe only the modifications we made, rather than restating the entire algorithm from scratch.
+
+### $\mathsf{PVSS}.\mathsf{Deal}\_\mathsf{pp}\left(a_0, t_W, \\{w_i, \mathsf{ek}_i\\}\_{i\in [n]}, \mathsf{ssid}\right) \rightarrow \mathsf{trs}$
+**Step 6:** In the SoK from **Chunky**, the $\widetilde{V}_{i,j}$ were not included, and this time we add them:
+
+\begin{align}
+\term{\piSok} &\gets \sok.\prove\left(\begin{array}{l}
+    \Retk, \emph{\ctx},\\\\\
+    \underbrace{G, H, \ck, \\{\ek\_i\\}\_i,\\{C\_{i,j,k}\\}\_{i,j,k}, \\{R\_{j,k}\\}\_{j,k}, C,  \\{V\_{i,j}\\}\_{i,j}}\_{\stmt},\\\\\
+    \underbrace{\\{s\_{i,j,k}\\}\_{i,j,k}, \\{r\_{j,k}\\}\_{j,k}, \rho}\_{\witn}
+\end{array}\right)
+\end{align}
+
+In practical terms, this means a $\mathbb{G}_2$ multiplications is added for each virtual player.
+
+### $\mathsf{PVSS}.\mathsf{Verify}\_\mathsf{pp}\left(\mathsf{trs}, t_W, \\{w_i, \mathsf{ek}_i\\}\_{i\in[n]}, \mathsf{ssid}\right) \rightarrow \\{0,1\\}$
+
+**Step 2:** The result of changing the SoK is that we no longer have to compare the $\\{V\_{i,j}\\}_{i,j}$ with the $\\{C\_{i,j,k}\\}\_{i,j,k}$ through two MSMs (one of which is quite large) and a pairing (step 2 in $\mathsf{PVSS.Verify}$).
+
+**Step 4:** Instead, this comparison is now done implicitly by the sigma protocol underlying the SoK:
+
+\begin{align}
+\textbf{assert}\ &\sok.\verify\left(\begin{array}{l}
+    \Retk, \emph{\ctx},\\\\\
+    \underbrace{G, H, \ck, \\{\ek\_i\\}\_i,\\{C\_{i,j,k}\\}\_{i,j,k}, \\{R\_{j,k}\\}\_{j,k}, C,  \\{V\_{i,j}\\}\_{i,j}}\_{\stmt};\\\\\
+    \piSok
+\end{array}\right) \equals 1
+\end{align}
+
+In practical terms, this means one batched $\mathbb{G}_2$ MSM is added, scaling in size with the number of virtual players instead of the product of virtual players *and* chunks.
+
 ## References
 
 For cited works, see below 👇👇
