@@ -47,9 +47,11 @@ sidebar:
 \def\lowdegreetest{\mathsf{LowDegreeTest}}
 %
 \def\Retk{\mathcal{R}_\mathsf{e2k}}
+\def\Retknew{\mathcal{R}'_\mathsf{e2k}}
 \def\ctx{\mathsf{ctx}}
 \def\sok{\mathsf{SoK}}
 \def\piSok{\pi_\mathsf{SoK}}
+\def\piSoknew{\pi_\mathsf{SoK}'}
 %
 \def\maxTotalWeight{W_\mathsf{max}}
 \def\totalWeight{W}
@@ -199,9 +201,10 @@ This is captured via the NP relation below:
 \end{array}\right) = 1\Leftrightarrow\\\\\
 \Leftrightarrow\left\\{\begin{array}{rl} 
     (C\_{i,j,k}, R_{j,k}) &= E.\enc_{G,H}(\ek_i, s\_{i,j,k}; r\_{j,k})\\\\\
-    C& = \dekart_2.\commit(\ck, \\{s\_{i,j,k}\\}\_{i,j,k}; \rho)
+    C& = \dekart_2.\commit(\ck, \\{s\_{i,j,k}\\}\_{i,j,k}; \rho)\\\\\
 \end{array}\right.
 \end{align}
+
 where the $s_{i,j,k}$'s will be "flattened" as a vector (in a specific order) before being input to $\dekart_2.\commit(\cdot)$.
 
 {: .warning}
@@ -728,18 +731,32 @@ as expected for $s_{3,3,2}$.
 
 In an attempt to optimize verifier time, in this appendix we present a modified version of **Chunky** which for the moment will be called **Chunky2**. Early benchmarks show a 13% decrease in verifier time. For brevity and to avoid redundancy, we describe only the modifications we made, rather than restating the entire algorithm from scratch.
 
-### $\mathsf{PVSS}.\mathsf{Deal}\_\mathsf{pp}\left(a_0, t_W, \\{w_i, \mathsf{ek}_i\\}\_{i\in [n]}, \mathsf{ssid}\right) \rightarrow \mathsf{trs}$
-**Step 6:** In the SoK from **Chunky**, the $\widetilde{V}_{i,j}$ were not included, and this time we add them:
+The idea is to add the $\widetilde{V}_{i,j}$ to the SoK of **Chunky**:
 
 \begin{align}
-\term{\piSok} &\gets \sok.\prove\left(\begin{array}{l}
-    \Retk, \emph{\ctx},\\\\\
+\term{\Retknew}\left(\begin{array}{l}
+\stmt = \left(G, H, \ck, \\{\ek\_i\\}\_i,\\{C\_{i,j,k}\\}\_{i,j,k}, \\{R_{j,k}\\}\_{j,k}, C\right),\\\\\
+\witn = \left(\\{s\_{i,j,k}\\}\_{i,j,k}, \\{r\_{j,k}\\}\_{j,k}, \rho\right)
+\end{array}\right) = 1\Leftrightarrow\\\\\
+\Leftrightarrow\left\\{\begin{array}{rl} 
+    (C\_{i,j,k}, R_{j,k}) &= E.\enc_{G,H}(\ek_i, s\_{i,j,k}; r\_{j,k})\\\\\
+    C& = \dekart_2.\commit(\ck, \\{s\_{i,j,k}\\}\_{i,j,k}; \rho)\\\\\
+    \widetilde{V}\_{i,j}& = \bigl( \sum_{k \in [m]} B^{k-1} s\_{i,j,k} \bigr) \cdot \widetilde{G}
+\end{array}\right.
+\end{align}
+
+### $\mathsf{PVSS}.\mathsf{Deal}\_\mathsf{pp}\left(a_0, t_W, \\{w_i, \mathsf{ek}_i\\}\_{i\in [n]}, \mathsf{ssid}\right) \rightarrow \mathsf{trs}$
+**Step 6:** 
+
+\begin{align}
+\term{\piSoknew} &\gets \sok.\prove\left(\begin{array}{l}
+    \Retknew, \emph{\ctx},\\\\\
     \underbrace{G, H, \ck, \\{\ek\_i\\}\_i,\\{C\_{i,j,k}\\}\_{i,j,k}, \\{R\_{j,k}\\}\_{j,k}, C,  \\{V\_{i,j}\\}\_{i,j}}\_{\stmt},\\\\\
     \underbrace{\\{s\_{i,j,k}\\}\_{i,j,k}, \\{r\_{j,k}\\}\_{j,k}, \rho}\_{\witn}
 \end{array}\right)
 \end{align}
 
-In practical terms, this means a $\mathbb{G}_2$ multiplications is added for each virtual player.
+In practical terms, this means a $\mathbb{G}_2$ multiplication is added for each virtual player; this is very small compared to the other work the dealer does.
 
 ### $\mathsf{PVSS}.\mathsf{Verify}\_\mathsf{pp}\left(\mathsf{trs}, t_W, \\{w_i, \mathsf{ek}_i\\}\_{i\in[n]}, \mathsf{ssid}\right) \rightarrow \\{0,1\\}$
 
@@ -749,13 +766,13 @@ In practical terms, this means a $\mathbb{G}_2$ multiplications is added for eac
 
 \begin{align}
 \textbf{assert}\ &\sok.\verify\left(\begin{array}{l}
-    \Retk, \emph{\ctx},\\\\\
+    \Retknew, \emph{\ctx},\\\\\
     \underbrace{G, H, \ck, \\{\ek\_i\\}\_i,\\{C\_{i,j,k}\\}\_{i,j,k}, \\{R\_{j,k}\\}\_{j,k}, C,  \\{V\_{i,j}\\}\_{i,j}}\_{\stmt};\\\\\
     \piSok
 \end{array}\right) \equals 1
 \end{align}
 
-In practical terms, this means one batched $\mathbb{G}_2$ MSM is added, scaling in size with the number of virtual players instead of the product of virtual players *and* chunks.
+In practical terms, this means one batched $\mathbb{G}_2$ MSM is added, scaling in size with the number of virtual players instead of the product of the number of virtual players *and* the number of chunks.
 
 ## References
 
