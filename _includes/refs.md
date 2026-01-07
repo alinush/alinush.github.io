@@ -8,6 +8,8 @@
 
 [^AB19]: **Simulation Extractability in Groth's zk-SNARK**, by Atapoor, Shahla and Baghery, Karim, *in Data Privacy Management, Cryptocurrencies and Blockchain Technology*, 2019
 
+[^ABBplus22]: **SPHINCS+ – Submission to the 3rd round of the NIST post-quantum project. v3.1**, by Jean-Philippe Aumasson, Daniel J. Bernstein, Ward Beullens, Christoph Dobraunig, Maria Eichlseder, Scott Fluhrer, Stefan-Lukas Gazdag, Andreas Hülsing, Panos Kampanakis, Stefan Kölbl, Tanja Lange, Martin M. Lauridsen, Florian Mendel, Ruben Niederhagen, Christian Rechberger, Joost Rijneveld, Peter Schwabe, Bas Westerbaan, 2022, [[URL]](https://sphincs.org/data/sphincs+-r3.1-specification.pdf)
+
 [^ABCplus11]: **Computing on Authenticated Data**, by Jae Hyun Ahn and Dan Boneh and Jan Camenisch and Susan Hohenberger and abhi shelat and Brent Waters, *in Cryptology ePrint Archive, Report 2011/096*, 2011, [[URL]](https://eprint.iacr.org/2011/096)
 
 [^ABCplus21]: **ECLIPSE: Enhanced Compiling method for Pedersen-committed zkSNARK Engines**, by Diego F. Aranha and Emil Madsen Bennedsen and Matteo Campanelli and Chaya Ganesh and Claudio Orlandi and Akira Takahashi, *in Cryptology ePrint Archive, Report 2021/934*, 2021, [[URL]](https://ia.cr/2021/934)
@@ -472,6 +474,8 @@
 
 [^BFKL93]: **Cryptographic Primitives Based on Hard Learning Problems**, by Blum, Avrim and Furst, Merrick and Kearns, Michael and Lipton, Richard J., *in Advances in Cryptology --- CRYPTO' 93*, 1994
 
+[^BFKL94]: **Cryptographic Primitives Based on Hard Learning Problems**, by Blum, Avrim and Furst, Merrick and Kearns, Michael and Lipton, Richard J., *in Advances in Cryptology --- CRYPTO' 93*, 1994
+
 [^BFKT24e]: **The Brave New World of Global Generic Groups and UC-Secure Zero-Overhead SNARKs**, by Jan Bobolz and Pooya Farshim and Markulf Kohlweiss and Akira Takahashi, *in Cryptology ePrint Archive, Paper 2024/818*, 2024, [[URL]](https://eprint.iacr.org/2024/818)
 
 [^BFL20]: **A Classification of Computational Assumptions in the Algebraic Group Model**, by Balthazar Bauer and Georg Fuchsbauer and Julian Loss, *in Cryptology ePrint Archive, Report 2020/859*, 2020, [[URL]](https://ia.cr/2020/859)
@@ -595,6 +599,8 @@
 [^BHRplus21e]: **Time- and Space-Efficient Arguments from Groups of Unknown Order**, by Alexander R. Block and Justin Holmgren and Alon Rosen and Ron D. Rothblum and Pratik Soni, *in Cryptology ePrint Archive, Report 2021/358*, 2021, [[URL]](https://ia.cr/2021/358)
 
 [^BHS22e]: **Weighted Secret Sharing from Wiretap Channels**, by Fabrice Benhamouda and Shai Halevi and Lev Stambler, *in Cryptology ePrint Archive, Paper 2022/1578*, 2022, [[URL]](https://eprint.iacr.org/2022/1578)
+
+[^BHT97]: **Quantum cryptanalysis of hash and claw-free functions**, by Brassard, Gilles and Høyer, Peter and Tapp, Alain, *in SIGACT News*, 1997, [[URL]](https://doi.org/10.1145/261342.261346)
 
 [^BHVplus23]: **Private Polynomial Commitments and Applications to MPC**, by Bhadauria, Rishabh and Hazay, Carmit and Venkitasubramaniam, Muthuramakrishnan and Wu, Wenxuan and Zhang, Yupeng, *in Public-Key Cryptography -- PKC 2023*, 2023
 
@@ -742,6 +748,8 @@
 
 [^BP97]: **Collision-Free Accumulators and Fail-Stop Signature Schemes Without Trees**, by Barić, Niko and Pfitzmann, Birgit, *in Advances in Cryptology --- EUROCRYPT '97*, 1997
 
+[^BPPplus25]: **SLasH-DSA: Breaking SLH-DSA Using an Extensible End-To-End Rowhammer Framework**, by Jeremy Boy and Antoon Purnal and Anna Pätschke and Luca Wilke and Thomas Eisenbarth, 2025
+
 [^BPR11e]: **Pseudorandom Functions and Lattices**, by Abhishek Banerjee and Chris Peikert and Alon Rosen, *in Cryptology ePrint Archive, Paper 2011/401*, 2011, [[URL]](https://eprint.iacr.org/2011/401)
 
 [^BPR20]: **Simulation Extractable Versions of Groth’s zk-SNARK Revisited**, by Karim Baghery and Zaira Pindado and Carla Ràfols, *in Cryptology ePrint Archive, Report 2020/1306*, 2020, [[URL]](https://eprint.iacr.org/2020/1306)
@@ -851,6 +859,8 @@
 [^Bern09]: **Cost analysis of hash collisions : will quantum computers make SHARCS obsolete?**, by Daniel J. Bernstein, 2009, [[URL]](https://api.semanticscholar.org/CorpusID:596115)
 
 [^Beth88]: **Efficient Zero-Knowledge Identification Scheme for Smart Cards**, by Beth, Thomas, *in Advances in Cryptology --- EUROCRYPT '88*, 1988
+
+[^Beul22e]: **Breaking Rainbow Takes a Weekend on a Laptop**, by Ward Beullens, *in Cryptology {ePrint} Archive, Paper 2022/214*, 2022, [[URL]](https://eprint.iacr.org/2022/214)
 
 [^Blac20]: **Move: A Language With Programmable Resources**, by Sam Blackshear and Evan Cheng and David L. Dill and Victor Gao and Ben Maurer and Todd Nowacki and Alistair Pott, Shaz Qadeer and Rain and Dario Russi and Stephane Sezer and Tim Zakian and Runtian Zhou, 2020, [[URL]](https://diem-developers-components.netlify.app/papers/diem-move-a-language-with-programmable-resources/2020-05-26.pdf)
 
@@ -1650,6 +1660,8 @@
 
 [^FHSZ23e]: **Chipmunk: Better Synchronized Multi-Signatures from Lattices**, by Nils Fleischhacker and Gottfried Herold and Mark Simkin and Zhenfei Zhang, *in Cryptology ePrint Archive, Paper 2023/1820*, 2023, [[URL]](https://eprint.iacr.org/2023/1820)
 
+[^FIPS204]: **Module-Lattice-Based Digital Signature Standard**, by National Institute of Standards and Technology (NIST), 2024, [[URL]](https://csrc.nist.gov/pubs/fips/204/final)
+
 [^FIPS205]: **FIPS 205: Stateless Hash-Based Digital Signature Standard**, by National Institute of Standards and Technology (NIST), 2024, [[URL]](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.pdf)
 
 [^FK20]: **Fast amortized Kate proofs**, by Dankrad Feist and Dmitry Khovratovich, 2020, [[URL]](https://github.com/khovratovich/Kate)
@@ -2416,6 +2428,8 @@
 
 [^KN08]: **Identity-Based Signatures**, by Kiltz, Eike and Neven, G., *in Cryptology and Information Security Series on Identity-Based Cryptography*, 2008
 
+[^KN25e]: **Hash-based Signature Schemes for Bitcoin**, by Mikhail Kudinov and Jonas Nick, *in Cryptology {ePrint} Archive, Paper 2025/2203*, 2025, [[URL]](https://eprint.iacr.org/2025/2203)
+
 [^KO21]: **Proposal: $\Sigma$-protocols**, by Stephan Krenn and Michel Orru, 2021, [[URL]](https://docs.zkproof.org/pages/standards/accepted-workshop4/proposal-sigma.pdf)
 
 [^KOR05]: **Identity-Based Zero-Knowledge**, by Katz, Jonathan and Ostrovsky, Rafail and Rabin, Michael O., *in Security in Communication Networks*, 2005
@@ -2747,6 +2761,8 @@
 [^MKLplus20]: **Think Global, Act Local: Gossip and Client Audits in Verifiable Data Structures**, by Sarah Meiklejohn and Pavel Kalinnikov and Cindy S. Lin and Martin Hutchinson and Gary Belvin and Mariana Raykova and Al Cutter, 2020
 
 [^MKWK19]: **A Survey on Zero Knowledge Range Proofs and Applications**, by Eduardo Morais and Tommy Koens and Cees van Wijk and Aleksei Koren, 2019
+
+[^MM11]: **Pseudorandom Knapsacks and the Sample Complexity of LWE Search-to-Decision Reductions**, by Micciancio, Daniele and Mol, Petros, *in Advances in Cryptology -- CRYPTO 2011*, 2011
 
 [^MM17e]: **Möbius: Trustless Tumbling for Transaction Privacy**, by Sarah Meiklejohn and Rebekah Mercer, *in Cryptology ePrint Archive, Report 2017/881*, 2017, [[URL]](https://ia.cr/2017/881)
 
@@ -3763,6 +3779,8 @@
 [^Zhan22e]: **To Label, or Not To Label (in Generic Groups)**, by Mark Zhandry, *in Cryptology {ePrint} Archive, Paper 2022/226*, 2022, [[URL]](https://eprint.iacr.org/2022/226)
 
 [^Zhu25e]: **Plonkify: {R1CS}-to-Plonk transpiler**, by Pengfei Zhu, *in Cryptology {ePrint} Archive, Paper 2025/534*, 2025, [[URL]](https://eprint.iacr.org/2025/534)
+
+[^dR95]: **Efficient exponentiation using precomputation and vector addition chains**, by de Rooij, Peter, *in Advances in Cryptology --- EUROCRYPT'94*, 1995
 
 [^deVa20]: **It’s 255:19AM. Do you know what your validation criteria are?**, by Henry de Valence, 2020, [[URL]](https://hdevalence.ca/blog/2020-10-04-its-25519am)
 

@@ -108,41 +108,45 @@ In many MLE-based protocols (e.g., [sumchecks](/sumcheck) or PCSs like [Hyrax](/
 
 This can be done in $n$ $\F$ multiplications using a tree-based algorithm, best illustrated with an example (for $\ell = 3$):
 ```
-                               1                                 <-- level 0
-                         /           \
+                               1                                 <-- level 0 / root
+                         /           \                               (no muls)
                       /                 \    
                    /                       \  
                 /                             \
            (1 - x_0)                          x_0                <-- level 1
-        /             \                 /             \
+        /             \                 /             \              (no muls)
    (1 - x_1)          x_1          (1 - x_1)          x_1        <-- level 2
-    /     \         /     \         /     \         /     \          (4 muls)
-(1-x_2)   x_2   (1-x_2)   x_2   (1-x_2)   x_2   (1-x_2)   x_2    <-- level 3
-   |       |       |       |       |       |       |       |         (8 muls)
-   |       |       |       |       |       |       |       |
+    /     \         /     \         /     \         /     \          (2 muls)
+(1-x_2)   x_2   (1-x_2)   x_2   (1-x_2)   x_2   (1-x_2)   x_2    <-- level 3 / leaves
+                        [ end of tree ]                              (4 muls)
+   .       .       .       .       .       .       .       .         
+   .       .       .       .       .       .       .       .
+   .       .       .       .       .       .       .       .
 eq_0(x) eq_1(x) eq_2(x) eq_3(x) eq_4(x) eq_5(x) eq_6(x) eq_7(x)  <-- results
 ```
 
 The algorithm works in two phases:
- - **Phase 1:** Compute all negations $(1-x_k),\forall k\in[\ell)$ in $\ell=\log_2{n}$ field additions
-    + **Q**: I wonder whether the negation here is problematic, performance-wise? Would $(x_k - 1)$ help a lot here?
-    + We will be ignoring this small cost.
- - **Phase 2:** At every level $k\in[2,\ell]$ in the tree, multiply each node with its parent and overwrite that node with the result.
-    + This way, each leaf will have the desired value!
+ - **Phase 1:** Compute all negations $(1-x_k),\forall k\in[\ell)$ in $\ell=\log_2{n}$ field additions. (Additions are cheap, so in practice we can ignore this cost.)
+    - Now, all the nodes in the tree above are computed.
+ - **Phase 2:** Starting with level 2 and going down to level $\ell$, multiply each node with its parent and overwrite that node with the result.
+    - Now, all the nodes in the tree above are updated to contain the product of the values of all ancestor nodes.
+    + Therfore, the $i$th leaf will have the desired $\eq_i(\x)$ value
         + For example, the $\eq_0(\x)$ leaf will be set to its actual $(1-x_0)(1-x_1)(1-x_2)$ value.
-    + This will result in $2^k$ field multiplications for each level $k$
+    + This will result in $2^{k-1}$ field multiplications (and $2^{k-1}$ additions) for each level $k$, if done wisely (see note below)
 
-In general, for $n=2^\ell$, the number of field multiplications can be upper bounded by $T(n) = T(n/2) + n = 2n-1$.
-But since we are skipping the $2$ multiplications at level 1 and the $1$ multiplication at level 0, it is really $2n-4$.
+In general, for $n=2^\ell$, the number of field multiplications (and field additions) can be upper bounded by $T(n) = n/2 + T(n/2) = n-2$ with $T(2) = 0$ ending the recurrence, since once we reach level $k = 1$ of size $n=2^k = 2$, no multiplications are happening anymore, as depicted above.
 
-e.g., for $n=8$, it is $2 \cdot 8 - 4 = 16 - 4 = 12$
+e.g., for $n=8$, it is $4 + 2 + 0 = 6$.
 
-However, let's not split hairs and call it $2n$ $\F$ multiplications!
+However, let's not split hairs and call it $n$ $\F$ multiplications (and $n$ $\F$ additions)!
 
-It turns out, instead of doing two multiplications per node (i.e., one for $\mathsf{parent}\cdot (1-x_i)$ and one for $\mathsf{parent}\cdot x_i$), we can get away with one: first compute $\mathsf{parent}\cdot x_i$ and then subtract it from $\mathsf{parent}$ to obtain $\mathsf{parent}\cdot (1-x_i)$.
+{: .note}
+As hinted above, we can get away with only $2^{k-1}$ multiplications per level: instead of doing two multiplications per node (i.e., one for $\mathsf{parent}\cdot (1-x_i)$ and one for $\mathsf{parent}\cdot x_i$), we only do one multiplication to compute $\mathsf{parent}\cdot x_i$ followed by subtraction from $\mathsf{parent}$ to obtain $\mathsf{parent}\cdot (1-x_i)$.
 (Here, $\mathsf{parent}$ denotes the parent node in the tree, which stores the product computed so far. e.g., for $i = 2$, an example of a parent node is $(1-x_0)x_1$.)
 
-This reduces the multiplications to (roughly) $n$!
+
+{: .todo}
+I wonder whether the negation here is problematic, performance-wise? Would $(x_k - 1)$ help a lot here?
 
 ## Multilinear extensions (MLEs)
 
@@ -160,8 +164,8 @@ This way, if $\i=[i_0,\ldots,i_{s-1}]$ is the binary representation of $i$, we h
 $f$ is often called the **multilinear extension (MLE)** of $\vect{V}$.
 
 {: .note}
-Using the [time complexities from above](#computing-all-lagrange-evaluations-fast), notice that evaluating a size-$n$ MLE $f$ at an arbitrary point $(\x,\y)$ will involve (1) $2n$ $\F$ multiplications to compute all the $\eq_i(\x)$ evaluations and (2) $n$ $\F$ multiplications and $n$ $\F$ additions to compute Eq. \ref{eq:mle}.
-The total time will be $3n$ $\F$ multiplications and $n$ $\F$ additions.
+Using the [time complexities from above](#computing-all-lagrange-evaluations-fast), notice that evaluating a size-$n$ MLE $f$ at an arbitrary point $(\x,\y)$ will involve (1) $n$ $\F$ multiplications and $n$ $\F$ additions to compute all the $\eq_i(\x)$ evaluations and (2) $n$ $\F$ multiplications and $n$ $\F$ additions to compute Eq. \ref{eq:mle}.
+The total time will be $2n$ $\F$ multiplications and $2n$ $\F$ additions.
 
 {: .todo}
 Contrast this with evaluating polynomials in [Lagrange basis](/lagrange-interpolation) using the efficient formulas over root of unity?
@@ -170,9 +174,12 @@ Contrast this with evaluating polynomials in [Lagrange basis](/lagrange-interpol
 
 Big thanks to [Ron Rothblum](https://csaws.cs.technion.ac.il/~rothblum/) for pointing out several optimizations that are possible (which I am looking into and will integrate here):
 
-1. For computing all $n=2^\ell$ Lagrange $\eq(\x,\i)_{\i\in\\{0,1\\}^\ell}$ evaluations for an arbitrary $\x\in \F^\ell$, Proposition 1 of [Roth24e][^Roth24e] gives a faster algorithm: $n$ instead of $2n$ $\F$ multiplications! 🤔
+1. For computing all $n=2^\ell$ Lagrange $\eq(\x,\i)_{\i\in\\{0,1\\}^\ell}$ evaluations for an arbitrary $\x\in \F^\ell$, Proposition 1 of [Roth24e][^Roth24e] gives a $n$ $\F$ multiplications algorithm.
     + Also, it gives a way to stream the computation (but, AFAICT, so does a careful walk through the tree depicted above) 
-2. The faster algorithm from above would immediately reduce the MLE evaluation time from $3n$ $\F$ muls to $2n$, but Remark 1.? from [ARR25e][^ARR25e] can further reduce this to $n$! 🤯
+    - **Q:** What about additions?
+    - (A previous version of this blog required $2n$ $\F$ multiplications.)
+2. Remark 1.? from [ARR25e][^ARR25e] can reduce the MLE evaluation time from $2n$ $\F$ multiplications to $n$! 🤯
+    - **Q:** What about additions?
 
 ### Links
 

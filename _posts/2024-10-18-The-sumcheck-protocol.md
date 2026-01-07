@@ -83,7 +83,7 @@ While the sumcheck protocol inherently must require $\P$ to compute $O(2^\mu)$ p
             <li>$\P$ sends $\term{g_j(X)} \gets \underbrace{\sum_{b_{j+1} \in \bin} \cdots \sum_{b_\mu \in \bin}}_{\mu-j\ \text{variables}} f(\overbrace{r_1, \ldots, r_{j-1}}^{j-1\ \text{variables}}, X, \overbrace{b_{j+1}, \ldots,b_\mu}^{\mu - j\ \text{variables}})$ to $\V$</li>
             <li>
                 $\V$ <b>asserts</b> that
-                $d_j \equals \deg(g_j)$ <u>and</u> that
+                $\deg(g_j) \le d_j$ <u>and</u> that
                 $g_{j-1}(r_{j-1}) \equals g_j(0) + g_j(1)$ (as it should, by definition of $g_j$)
             </li>
             <li>$\V$ sends public randomness $\term{r_j}\randget\F$ to $\P$</li>
@@ -94,7 +94,7 @@ While the sumcheck protocol inherently must require $\P$ to compute $O(2^\mu)$ p
             <li>$\P$ sends $\term{g_\mu(X)} \gets f(r_1, \ldots, r_{\mu-1}, X)$ to $\V$</li>
             <li>
                 $\V$ <b>asserts</b> that
-                $d_\mu \equals \deg(g_\mu)$ <u>and</u> that
+                $\deg(g_\mu) \le d_\mu$ <u>and</u> that
                 $g_{\mu-1}(r_{\mu-1}) \equals g_\mu(0) + g_\mu(1)$ (as it should)
             </li>
             <li>$\V$ picks $\term{r_\mu}\randget\F$ and <b>asserts</b> that $g_\mu(r_\mu) \equals f(r_1,\ldots,r_\mu)$.</li>
@@ -240,6 +240,7 @@ I'm just trying to keep track of _some_ interesting works.
 
 Other relevant resources on sumchecks:
 
+ - [Folding technique for implementing sumcheck over MLEs](https://org.weids.dev/agenda/notes/gkr-sum-check-tutorial.html#orgab39859), by Angold J. Wang
  - [Optimizing the Sumcheck Prover: Small Values and Equality Polynomials](https://hackmd.io/@tcoratger/S1gl1ucheg), by Thomas Coratger
  - [Optimizing the Sumcheck Protocol](https://hackmd.io/04fkpdFhTFOCJ-GYMU6UbQ), by Thomas Coratger
  - [Multilinear polynomials survival kit](https://blog.lambdaclass.com/multilinear-polynomials-survival-kit/), by LambdaClass

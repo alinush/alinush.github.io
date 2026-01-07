@@ -24,7 +24,7 @@ Then, learn about popular digital signature schemes:
  - [Schnorr](/schnorr), and [why you should prefer it over ECDSA](/schnorr-vs-ecdsa).
 
 Or, some esoteric ones:
- - [BBS+ signatures](/bbs-plus-signatures), or: _"Did you know you can sign Pedersen commitments?"_
+ - [BBS+ signatures](/bbs+), or: _"Did you know you can sign Pedersen commitments?"_
 
 You can learn about ZK range proofs:
  - [DeKART](/dekart), or: _"How to prove many range fast!"_

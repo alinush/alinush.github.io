@@ -276,7 +276,7 @@ This updates the following token-type-specific resource:
 {: .note}
 There is no global auditor support implemented; only token-specific.
 (An older version of the code had global auditing only.)
-However, we **do** allow optional and unrestricted auditors: one can encrypt TXN amounts under any EK they please.
+However, we **do** allow anyone to encrypt their TXN's amounts under any auditor EK they please, not just the token-specific auditors that may (or may not) be "installed" on-chain.
 In other words, only the first auditor EK is required to be the set to the token-specific auditor.
 
 {: .note}

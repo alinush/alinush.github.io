@@ -129,6 +129,8 @@ cryptomat:
     children:
       - title: Hidden-order group assumptions
         url: /2020/11/05/cryptographic-assumptions-in-hidden-order-groups.html
+      - title: LPN
+        url: /lpn
     #  - title: DL, CDH, DDH, SXDH, KEA, q-SDH, q-BSDH, q-PKE
 
   #- title: Lattices
@@ -153,7 +155,7 @@ cryptomat:
     url: /signatures
     children:
       - title: BBS+ signatures
-        url: /bbs-plus-signatures
+        url: /bbs+
       - title: ECDSA signatures
         url: /ecdsa
       - title: Pointcheval-Sanders (PS)

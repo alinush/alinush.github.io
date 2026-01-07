@@ -2,12 +2,13 @@
 tags:
  - digital signatures
  - bilinear maps (pairings)
+ - BBS+
 title: BBS+ signatures
 #date: 2020-11-05 20:45:59
 #published: false
 sidebar:
     nav: cryptomat
-permalink: bbs-plus-signatures
+permalink: bbs+
 #article_header:
 #  type: cover
 #  image:
@@ -164,7 +165,7 @@ BBS+ was a transformation of the BBS group signature scheme[^BBS04] into a stand
 Unfortunately, BBS+ signature sizes are larger: from $(A, e)\in\Gr\times\Zp$ to $(A, e, s)\in\Gr\times\Zp^2$.
 Interestingly, the $s$ component only had to be included so that the security proof could pass.
 
-Recently, Tessaro and Zhu[^TZ23e] fixed this in a new variant dubbed **standalone BBS signatures**.
+Recently, Tessaro and Zhu[^TZ23e] fixed this in their new **standalone BBS** variant.
 First, they gave a (non-tight) security proof for the **strong** existential unforgeability of standalone BBS, under the $q$-SDH assumption, assuming the $e$'s are randomly picked (see Theorem 1 in [TZ23e][^TZ23e]).
 Second, they gave a tight security proof in the algebraic group model (AGM)[^FKL18], additionally allowing for unique, deterministically-generated $e$'s (see Theorem 2 in [TZ23e][^TZ23e]).
 This suggests that the loss in tightness in the original proof may be artificial.

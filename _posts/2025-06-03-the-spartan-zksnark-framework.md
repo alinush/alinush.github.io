@@ -228,7 +228,6 @@ This formalization, although a bit awkward, makes it easier to reason about secu
 
 ### Multivariate zerocheck
 
-We want to 
 One of the tasks in Spartan is to prove a **zerocheck** on a polynomial $F$ (see [Step 3](#3-zerocheck-on-fboldsymbolx-leftarrow-degree-3-0-sumcheck-on-fboldsymbolxeq_btauboldsymbolx)), i.e.:
 \begin{align}
 F(\X) = 0, \forall \X\in \binS
