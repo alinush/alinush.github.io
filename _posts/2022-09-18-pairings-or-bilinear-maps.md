@@ -389,6 +389,9 @@ Therefore, practitioners today, as far as I am aware, exclusively rely on **a**s
 I will give a few key performance numbers for the BLS12-381 curve implemented in Filecoin's [blstrs](https://github.com/filecoin-project/blstrs) Rust wrapper around the popular [blst](https://github.com/supranational/blst) library.
 These microbenchmarks were run on a 10-core 2021 Apple M1 Max using `cargo bench`.
 
+{: .note}
+You can find links to more benchmarks in the ["Resources"](#resources) section. 
+
 #### Pairing computation times
 
 <!--
@@ -673,6 +676,10 @@ Big thanks to:
  - [Chris Peikert](https://twitter.com/ChrisPeikert) for pointing out that there are plenty-fast IBE schemes out there that do not rely on pairings[^DLP14e].
 
 **PS:** Twitter threads are a pain to search through, so if I missed acknowledging your contribution, please kindly let me know.
+
+## Resources
+
+ - [Benchmarking pairing-friendly elliptic curves libraries](https://hackmd.io/@gnark/eccbench), by Youssef El Housni
 
 ---
 
