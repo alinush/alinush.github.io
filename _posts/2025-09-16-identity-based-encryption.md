@@ -25,6 +25,7 @@ sidebar:
 \def\dec{\mathsf{Dec}}
 % IBE
 \def\ibe{\mathsf{IBE}}
+\def\tibe{\mathsf{IBE}}
 \def\id{\mathsf{id}}
 \def\mpk{\mathsf{mpk}}
 \def\msk{\mathsf{msk}}
@@ -85,28 +86,35 @@ m = \ibe.\dec(\ibe.\derive(\msk, \id), \ibe.\enc(\mpk, \id, m; r))
 
 Most algorithms change, except for $\ibe.\enc$, which remains the same.
 
-### $\mathsf{IBE}.\mathsf{DistKGen}(1^\lambda, t, n) \rightarrow \left(\left(\mathsf{msk}\_i,\mathsf{mpk}_i\right)\_{i\in[n]}, \mathsf{mpk}\right)$
+### $\mathsf{TIBE}.\mathsf{DistKGen}(1^\lambda, t, n) \rightarrow \left(\left(\mathsf{msk}\_i,\mathsf{mpk}_i\right)\_{i\in[n]}, \mathsf{mpk}\right)$
 
 Runs a distributed key generation protocol that outputs:
  - a master public key $\mpk$ for **all** players
  - the master public key shares $(\mpk_i)_{i\in[n]}$, also for **all** players.
  - the master secret key share $\msk_i$ to _each_ player $i$
 
-### $\mathsf{IBE}.\mathsf{Derive}(\mathsf{msk}_i, \mathsf{id}) \rightarrow \mathsf{dk}\_i$
+### $\mathsf{IBE}.\mathsf{Enc}(\mathsf{mpk}, \mathsf{id}, m; r) \rightarrow C$
+
+Encrypts a message $m$ under identity $\id$ and master public key $\mpk$ using randomness $r$, yielding a ciphertext $C$.
+
+{: .note}
+This is the same as the non-threshold $\ibe.\enc$. That's why we kept the same name for it here.
+
+### $\mathsf{TIBE}.\mathsf{Derive}(\mathsf{msk}_i, \mathsf{id}) \rightarrow \mathsf{dk}\_i$
 
 Derives a **decryption key share** $\dk$ for the identity $\id$ using the master key share $\msk_i$.
 This $\dk_i$ can be used to threshold decrypt messages encrypted under $\mpk$ and $\id$.
 
-### $\mathsf{IBE}.\mathsf{Dec}(\mathsf{dk}_i, C) \rightarrow (d_i, \pi_i)$
+### $\mathsf{TIBE}.\mathsf{Dec}(\mathsf{dk}_i, C) \rightarrow (d_i, \pi_i)$
 
 Derives a decryptions share $d_i$ from the ciphertext $C$ using the decryption key share $\dk_i$.
 Optionally, returns a ZKP $\pi_i$ that $d_i$ is the correct decryption share obtained from $C$ and $\msk_i$.
 This ZKP can be verified against $C$ and $\mpk_i$.
 
 {: .note}
-Alternatively, you can also imagine having an $\ibe.\dec(\msk_i, \id, C) \rightarrow (d_i, \pi_i)$ algorithm that operates more directly.
+Alternatively, you can also imagine having an $\tibe.\dec(\msk_i, \id, C) \rightarrow (d_i, \pi_i)$ algorithm that operates more directly.
 
-### $\mathsf{IBE}.\mathsf{Agg}\left((d\_i,\pi\_i)\_{i\in S}\right) \rightarrow m$
+### $\mathsf{TIBE}.\mathsf{Agg}\left((d\_i,\pi\_i)\_{i\in S}\right) \rightarrow m$
 
 Aggregates the $\|S\|$ decryption shares $d_i$, assuming $t$ of them are valid and $\|S\|\ge t$, yielding back the decrypted message $m$.
 
