@@ -81,9 +81,9 @@ m = \ibe.\dec(\ibe.\derive(\msk, \id), \ibe.\enc(\mpk, \id, m; r))
 
 ## Threshold IBE
 
-**Threshold-issuance IBE** or, more simply, **threshold IBE** distributed the master secret key $\msk$ in $t$-out-of-$n$ fashion.
+**Threshold-issuance IBE** or, more simply, **threshold IBE** distributes the master secret key $\msk$ in $t$-out-of-$n$ fashion amongst $n$ **players**.
 
-All algorithms are the same except:
+Most algorithms change, except for $\ibe.\enc$, which remains the same.
 
 ### $\mathsf{IBE}.\mathsf{DistKGen}(1^\lambda, t, n) \rightarrow \left(\left(\mathsf{msk}\_i,\mathsf{mpk}_i\right)\_{i\in[n]}, \mathsf{mpk}\right)$
 
