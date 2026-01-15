@@ -1,7 +1,7 @@
 ---
 tags:
 - bilinear maps (pairings)
-- encryption
+- identity-based encryption (IBE)
 - math
 title: Pairings or bilinear maps
 date: 2022-12-31 20:45:59
@@ -680,6 +680,7 @@ Big thanks to:
 ## Resources
 
  - [Benchmarking pairing-friendly elliptic curves libraries](https://hackmd.io/@gnark/eccbench), by Youssef El Housni
+ - [Ariel Gabizon's screenshots of Weil's pairing definition](https://x.com/rel_zeta_tech/status/2010698238773301248)
 
 ---
 

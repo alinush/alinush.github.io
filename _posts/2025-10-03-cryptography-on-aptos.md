@@ -122,7 +122,7 @@ You may find Zhoujun's [snarkjs-to-aptos tool](https://github.com/zjma/snarkjs-t
 
 ### Confidential assets
 
- > _"Key to a person’s dignity is her ability to decide to whom she reveals information about herself to."_ -- Hester Peirce, SEC Commissioner, in her keynote at the Science of Blockchain Conference, 2025
+ > _"Key to a person’s dignity is her ability to decide to whom she will reveal information about herself."_ -- Hester Peirce, SEC Commissioner, in [her keynote at the Science of Blockchain Conference, 2025](https://www.youtube.com/watch?v=_2gnJjvodws&t=7156s)
 
 It really does suck when everyone can see:
 1. How much money you have.

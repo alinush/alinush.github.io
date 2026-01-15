@@ -1,6 +1,7 @@
 ---
 tags:
  - encryption
+ - identity-based encryption (IBE)
 title: Identity-based encryption
 #date: 2020-11-05 20:45:59
 #published: false
@@ -77,6 +78,38 @@ Roughly speaking, an IBE is said to be **correct** if for any $(\msk,\mpk)$ hone
 \begin{align}
 m = \ibe.\dec(\ibe.\derive(\msk, \id), \ibe.\enc(\mpk, \id, m; r))
 \end{align}
+
+## Threshold IBE
+
+**Threshold-issuance IBE** or, more simply, **threshold IBE** distributed the master secret key $\msk$ in $t$-out-of-$n$ fashion.
+
+All algorithms are the same except:
+
+### $\mathsf{IBE}.\mathsf{DistKGen}(1^\lambda, t, n) \rightarrow \left(\left(\mathsf{msk}\_i,\mathsf{mpk}_i\right)\_{i\in[n]}, \mathsf{mpk}\right)$
+
+Runs a distributed key generation protocol that outputs:
+ - a master public key $\mpk$ for **all** players
+ - the master public key shares $(\mpk_i)_{i\in[n]}$, also for **all** players.
+ - the master secret key share $\msk_i$ to _each_ player $i$
+
+### $\mathsf{IBE}.\mathsf{Derive}(\mathsf{msk}_i, \mathsf{id}) \rightarrow \mathsf{dk}\_i$
+
+Derives a **decryption key share** $\dk$ for the identity $\id$ using the master key share $\msk_i$.
+This $\dk_i$ can be used to threshold decrypt messages encrypted under $\mpk$ and $\id$.
+
+### $\mathsf{IBE}.\mathsf{Dec}(\mathsf{dk}_i, C) \rightarrow (d_i, \pi_i)$
+
+Derives a decryptions share $d_i$ from the ciphertext $C$ using the decryption key share $\dk_i$.
+Optionally, returns a ZKP $\pi_i$ that $d_i$ is the correct decryption share obtained from $C$ and $\msk_i$.
+This ZKP can be verified against $C$ and $\mpk_i$.
+
+{: .note}
+Alternatively, you can also imagine having an $\ibe.\dec(\msk_i, \id, C) \rightarrow (d_i, \pi_i)$ algorithm that operates more directly.
+
+### $\mathsf{IBE}.\mathsf{Agg}\left((d\_i,\pi\_i)\_{i\in S}\right) \rightarrow m$
+
+Aggregates the $\|S\|$ decryption shares $d_i$, assuming $t$ of them are valid and $\|S\|\ge t$, yielding back the decrypted message $m$.
+
 
 ## References
 
