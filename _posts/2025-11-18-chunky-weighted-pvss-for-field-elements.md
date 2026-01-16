@@ -11,8 +11,8 @@ title: "Chunky: Weighted PVSS and DKG for field elements"
 #date: 2020-11-05 20:45:59
 #published: false
 permalink: chunky
-#sidebar:
-#    nav: cryptomat
+sidebar:
+    nav: cryptomat
 #article_header:
 #  type: cover
 #  image:
@@ -778,7 +778,7 @@ Then, we modify the SoK verification in [**Step 4** of the $\pvss.\verify$ algor
 \end{array}\right) \equals 1
 \end{align}
 
-Lastly, we can remove [**Step 2** of the $\pvss.\verify$ algorithm](#step-2-verify), since the check is now performed above.
+Lastly, we remove [**Step 2** of the $\pvss.\verify$ algorithm](#step-2-verify), since the check is now performed above.
 
 {: .todo}
 Wicher wrote: "In practical terms, this means one batched $\Gr_2$ MSM is added, scaling in size with the number of virtual players instead of the product of the number of virtual players *and* the number of chunks."
