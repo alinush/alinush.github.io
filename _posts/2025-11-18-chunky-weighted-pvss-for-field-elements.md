@@ -769,7 +769,7 @@ Then, we modify [**Step 6** of the $\pvss.\deal$ algorithm](#step-6-deal) to pro
 \end{array}\right)
 \end{align}
 
-Then, we modify the SoK verification in [**Step 4** of the $\pvss.\verify$ algorithm](#step-4-verify) to verify the proof from above:
+Then, we modify [**Step 4** of the $\pvss.\verify$ algorithm](#step-4-verify) to verify the proof from above:
 \begin{align}
 \textbf{assert}\ &\sok.\verify\left(\begin{array}{l}
     \bluedashedbox{\Retknew}, \ctx,\\\\\
