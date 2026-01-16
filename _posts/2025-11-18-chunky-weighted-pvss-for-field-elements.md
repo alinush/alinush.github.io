@@ -11,8 +11,8 @@ title: "Chunky: Weighted PVSS and DKG for field elements"
 #date: 2020-11-05 20:45:59
 #published: false
 permalink: chunky
-sidebar:
-    nav: cryptomat
+#sidebar:
+#    nav: cryptomat
 #article_header:
 #  type: cover
 #  image:
@@ -195,6 +195,7 @@ One of the key ingredients in our PVSS will be a ZK proof of knowledge of share 
 
 This is captured via the NP relation below:
 \begin{align}
+\label{rel:e2k}
 \term{\Retk}\left(\begin{array}{l}
 \stmt = \left(G, H, \ck, \\{\ek\_i\\}\_i,\\{C\_{i,j,k}\\}\_{i,j,k}, \\{R_{j,k}\\}\_{j,k}, C\right),\\\\\
 \witn = \left(\\{s\_{i,j,k}\\}\_{i,j,k}, \\{r\_{j,k}\\}\_{j,k}, \rho\right)
@@ -392,6 +393,7 @@ Second, KZG commit to the share chunks and prove they are all in range:
 \end{align}
 
 **Step 6:** Compute a signature of knowledge of the dealt secret key $a_0$ over the session ID: 
+<a id="step-6-deal"></a>
 \begin{align}
 \term{\ctx} &\gets (\threshWeight, \\{w_i\\}_i, \ssid)\\\\\
 \term{\piSok} &\gets \sok.\prove\left(\begin{array}{l}
@@ -435,6 +437,7 @@ _Note:_ Recall that the $\emph{\chi_{i,j}}$'s are the roots of unity used to eva
 May need to feed in the size of the evaluation domain to SCRAPE for the super-efficient algorithm.
 
 **Step 2:** Check that ciphertexts encrypt the committed shares:
+<a id="step-2-verify"></a>
 \begin{align}
 \term{\beta_{i,j}} &\randget\\{0,1\\}^\lambda\\\\\
 \label{eq:multi-pairing-check}
@@ -468,6 +471,7 @@ May need to feed in the size of the evaluation domain to SCRAPE for the super-ef
 \end{align}
 
 **Step 4:** Verify the SoK:
+<a id="step-4-verify"></a>
 \begin{align}
 \term{\ctx} &\gets (\threshWeight, \\{w_i\\}_i, \ssid)\\\\\
 \textbf{assert}\ &\sok.\verify\left(\begin{array}{l}
@@ -664,6 +668,7 @@ Now:
 The weighted PVSS in this blog post has been co-designed with Rex Fernando and Wicher Malten at Aptos Labs.
 The weighted DKG built on top of the PVSS has been co-designed with Daniel Xiang and Balaji Arun.
 Thanks to Ittai Abraham for helping me think through the DKG protocol from the lens of validated Byzantine agreement.
+Thanks to Wicher Malten for the initial write-up of **Chunky 2**, which I later modified.
 
 ## Appendix: The $i'\gets \mathsf{idx}(i,j,k)$ indexing
 
@@ -727,52 +732,57 @@ For example, when $i = 3, j = 3, k = 2$, we get:
 \end{align}
 as expected for $s_{3,3,2}$.
 
-## Appendix: Chunky2
+## Appendix: Chunky 2
 
-In an attempt to optimize verifier time, in this appendix we present a modified version of **Chunky** which for the moment will be called **Chunky2**. Early benchmarks show a 13% decrease in verifier time. For brevity and to avoid redundancy, we describe only the modifications we made, rather than restating the entire algorithm from scratch.
+We present a modified version of **Chunky** with a 13% faster verifier, henceforth called **Chunky 2**.
 
-The idea is to add the $\widetilde{V}_{i,j}$ to the SoK of **Chunky**:
+To avoid redundancy, we describe only the modifications we made, rather than restating the entire algorithm from scratch.
 
+The idea is to modify the ElGamal-to-KZG relation from Eq. $\ref{rel:e2k}$ to also prove that the $\widetilde{V}\_{i,j}$ share commitments from Eq. $\ref{eq:share-commitments}$ are computed correctly.
+This will make it faster to verify that what's encrypted in the $C\_{i,j,k}$'s from Eq. \ref{eq:share-ciphertexts} is what's comitted in the $\widetilde{V}\_{i,j}$'s.
+Currently, this verification requires a $(W\cdot m)$-sized MSM in $\Gr_1$, a $W$-sized MSM in $\Gr_2$ and a pairing (see [Step 2 in $\pvss.\verify$](#step-2-verify)).
+
+{: .todo}
+Describe **extra** prover work, somewhat concretely if we can.
+For this part of the verification (not the full PVSS verifier), describe the new verifier work.
+(The old verifier work was described above.)
+
+This modification yields a new relation $\Retknew$ (see highlighted $\bluedashedbox{\text{changes}}$):
 \begin{align}
 \term{\Retknew}\left(\begin{array}{l}
-\stmt = \left(G, H, \ck, \\{\ek\_i\\}\_i,\\{C\_{i,j,k}\\}\_{i,j,k}, \\{R_{j,k}\\}\_{j,k}, C\right),\\\\\
+\stmt = \left(G, H, \ck, \\{\ek\_i\\}\_i,\\{C\_{i,j,k}\\}\_{i,j,k}, \\{R_{j,k}\\}\_{j,k}, C, \bluedashedbox{\\{\widetilde{V}\_{i,j}\\}\_{i,j}}    \right),\\\\\
 \witn = \left(\\{s\_{i,j,k}\\}\_{i,j,k}, \\{r\_{j,k}\\}\_{j,k}, \rho\right)
 \end{array}\right) = 1\Leftrightarrow\\\\\
 \Leftrightarrow\left\\{\begin{array}{rl} 
     (C\_{i,j,k}, R_{j,k}) &= E.\enc_{G,H}(\ek_i, s\_{i,j,k}; r\_{j,k})\\\\\
     C& = \dekart_2.\commit(\ck, \\{s\_{i,j,k}\\}\_{i,j,k}; \rho)\\\\\
-    \widetilde{V}\_{i,j}& = \bigl( \sum_{k \in [m]} B^{k-1} s\_{i,j,k} \bigr) \cdot \widetilde{G}
+    \bluedashedbox{\widetilde{V}\_{i,j}} & = \bluedashedbox{\left( \sum_{k \in [m]} B^{k-1} s\_{i,j,k} \right) \cdot \widetilde{G}}
 \end{array}\right.
 \end{align}
 
-### $\mathsf{PVSS}.\mathsf{Deal}\_\mathsf{pp}\left(a_0, t_W, \\{w_i, \mathsf{ek}_i\\}\_{i\in [n]}, \mathsf{ssid}\right) \rightarrow \mathsf{trs}$
-**Step 6:** 
-
+Then, we modify [**Step 6** of the $\pvss.\deal$ algorithm](#step-6-deal) to prove this new relation: 
 \begin{align}
-\term{\piSoknew} &\gets \sok.\prove\left(\begin{array}{l}
-    \Retknew, \emph{\ctx},\\\\\
-    \underbrace{G, H, \ck, \\{\ek\_i\\}\_i,\\{C\_{i,j,k}\\}\_{i,j,k}, \\{R\_{j,k}\\}\_{j,k}, C,  \\{V\_{i,j}\\}\_{i,j}}\_{\stmt},\\\\\
-    \underbrace{\\{s\_{i,j,k}\\}\_{i,j,k}, \\{r\_{j,k}\\}\_{j,k}, \rho}\_{\witn}
+\bluedashedbox{\piSoknew} &\gets \sok.\prove\left(\begin{array}{l}
+    \bluedashedbox{\Retknew}, \ctx,\\\\\
+    G, H, \ck, \\{\ek\_i\\}\_i,\\{C\_{i,j,k}\\}\_{i,j,k}, \\{R\_{j,k}\\}\_{j,k}, C, \bluedashedbox{\\{\widetilde{V}\_{i,j}\\}\_{i,j}},\\\\\
+    \\{s\_{i,j,k}\\}\_{i,j,k}, \\{r\_{j,k}\\}\_{j,k}, \rho
 \end{array}\right)
 \end{align}
 
-In practical terms, this means a $\mathbb{G}_2$ multiplication is added for each virtual player; this is very small compared to the other work the dealer does.
-
-### $\mathsf{PVSS}.\mathsf{Verify}\_\mathsf{pp}\left(\mathsf{trs}, t_W, \\{w_i, \mathsf{ek}_i\\}\_{i\in[n]}, \mathsf{ssid}\right) \rightarrow \\{0,1\\}$
-
-**Step 2:** The result of changing the SoK is that we no longer have to compare the $\\{V\_{i,j}\\}_{i,j}$ with the $\\{C\_{i,j,k}\\}\_{i,j,k}$ through two MSMs (one of which is quite large) and a pairing (step 2 in $\mathsf{PVSS.Verify}$).
-
-**Step 4:** Instead, this comparison is now done implicitly by the sigma protocol underlying the SoK:
-
+Then, we modify the SoK verification in [**Step 4** of the $\pvss.\verify$ algorithm](#step-4-verify) to verify the proof from above:
 \begin{align}
 \textbf{assert}\ &\sok.\verify\left(\begin{array}{l}
-    \Retknew, \emph{\ctx},\\\\\
-    \underbrace{G, H, \ck, \\{\ek\_i\\}\_i,\\{C\_{i,j,k}\\}\_{i,j,k}, \\{R\_{j,k}\\}\_{j,k}, C,  \\{V\_{i,j}\\}\_{i,j}}\_{\stmt};\\\\\
-    \piSok
+    \bluedashedbox{\Retknew}, \ctx,\\\\\
+    G, H, \ck, \\{\ek\_i\\}\_i,\\{C\_{i,j,k}\\}\_{i,j,k}, \\{R\_{j,k}\\}\_{j,k}, C, \bluedashedbox{\\{\widetilde{V}\_{i,j}\\}\_{i,j}};\\\\\
+    \bluedashedbox{\piSoknew}
 \end{array}\right) \equals 1
 \end{align}
 
-In practical terms, this means one batched $\mathbb{G}_2$ MSM is added, scaling in size with the number of virtual players instead of the product of the number of virtual players *and* the number of chunks.
+Lastly, we can remove [**Step 2** of the $\pvss.\verify$ algorithm](#step-2-verify), since the check is now performed above.
+
+{: .todo}
+Wicher wrote: "In practical terms, this means one batched $\Gr_2$ MSM is added, scaling in size with the number of virtual players instead of the product of the number of virtual players *and* the number of chunks."
+But this don't seem right: the old verifier was doing a $W$-sized MSM in $\Gr_2$.
 
 ## References
 
