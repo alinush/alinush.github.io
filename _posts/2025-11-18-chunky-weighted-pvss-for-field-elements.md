@@ -758,10 +758,10 @@ This modification moves almost all verification work in [Step 2 of $\pvss.\verif
 Furthermore, it reduces total computation across the dealing and verification algorithms.
 We summarize below:
 
-| Scheme       | Proving work         | Verification work                                  |
-|--------------|----------------------|----------------------------------------------------|
-| Chunky       | 0                    | $\vmsmOne{W\cdot m} + \vmsmTwo{W} + \multipair{2}$ |
-| **Chunky 2** | $\GmulTwo{W\cdot m}$ | $\approx \GmulTwo{1} + \Fmul{W\cdot m}$            |
+| Scheme       | Proving work         | Verification work                                  | Transcript size change |
+|--------------|----------------------|----------------------------------------------------|------------------------|
+| Chunky       | 0                    | $\vmsmOne{W\cdot m} + \vmsmTwo{W} + \multipair{2}$ | 0                      |
+| **Chunky 2** | $\GmulTwo{W\cdot m}$ | $\approx \GmulTwo{1} + \Fmul{W\cdot m}$            | ${} + W \|\Gr_2\|$     |
 
 {: .note}
 The $\widetilde{V}_{i,j}$'s in the new $\Retknew$ relation are computed using the same base $\widetilde{G}$, which is why the verification work in the associated $\Sigma$-protocol can be done efficiently in one $\Gr_2$ scalar multiplication (i.e., in $\GmulTwo{1}$).
