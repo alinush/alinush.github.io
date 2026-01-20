@@ -17,8 +17,9 @@ sidebar:
 ---
 
 {: .info}
-**tl;dr:** We fix up our previous [non-ZK, univariate DeKART](/dekart-not-zk) scheme and also speed up its verifier by trading off prover time.
+**tl;dr:** We present **DeKART**: a batched ZK range proof for a KZG-committed vector, inspired from Borgeaud's unbatched protocol[^Borg20].
 This is joint work with Dan Boneh, Trisha Datta, Kamilla Nazirkhanova and Rex Fernando.
+Note that this blog fixes up a previous [non-ZK variant](/dekart-not-zk) and allows for a trading off proving speed for faster verification.
 
 <!--more-->
 

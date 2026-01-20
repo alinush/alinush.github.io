@@ -761,11 +761,10 @@ We summarize below:
 | Scheme       | Proving work         | Verification work                                  | Transcript size change |
 |--------------|----------------------|----------------------------------------------------|------------------------|
 | Chunky       | 0                    | $\vmsmOne{W\cdot m} + \vmsmTwo{W} + \multipair{2}$ | 0                      |
-| **Chunky 2** | $\GmulTwo{W}$        | $\approx \GmulTwo{1} + \Fmul{W\cdot m}$            | ${} + W \|\Gr_2\|$     |
+| **Chunky 2** | $\GmulTwo{W}$        | $\vmsmTwo{2W+1}$                                   | ${} + W \|\Gr_2\|$     |
 
 {: .note}
-The $\widetilde{V}_{i,j}$'s in the new $\Retknew$ relation are computed using the same base $\widetilde{G}$, which is why the verification work in the associated $\Sigma$-protocol can be done efficiently in one $\Gr_2$ scalar multiplication (i.e., in $\GmulTwo{1}$).
-The $\approx \Fmul{W\cdot m}$ work is for taking random linear combinations of the $\widetilde{V}\_{i,j}$'s in the $\Sigma$-protocol verifier.
+The $\Sigma$-protocol verifier extra work will be of the form $\psi(\mathbf{\sigma}) \equals \mathbf{A} + e\cdot [V_{i,j}]_{i,j}$ and can be done in a size-$(2W+1)$ MSM because the group elements in $\psi(\mathbf{\sigma})$ will all have the same base $\widetilde{G}$.
 
 Then, we modify [**Step 6** of the $\pvss.\deal$ algorithm](#step-6-deal) to prove this new relation: 
 \begin{align}
