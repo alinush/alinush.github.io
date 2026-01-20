@@ -45,13 +45,18 @@ $</div> <!-- $ -->
 {: .todo}
 If we decide to use $b$ for the base, use $w$ for the chunk size!
 
- - $b$ -- chunk size in bits
- - $B=2^b$ -- chunk size as an integer
- - $\ell$ -- # of avaiable balance chunks
+ - $\term{b}$
+    + chunk size in bits
+ - $\term{B}=2^b$
+    + chunk size as an integer
+ - $\term{\ell}$ 
+    - \# of available balance chunks
     + In Aptos, balances are 128 bits $\Rightarrow \ell\cdot b = 128$ 
- - $n$ -- # of pending balance chunks **and** the # of transferred amount chunks
+ - $\term{n}$
+    - \# of pending balance chunks **and** # of transferred amount chunks
     + In Aptos, transferred amounts are 64 bits $\Rightarrow n \cdot b = 64$ 
- - $t$ -- each account can receive up to $2^t-1$ incoming transfers, after which it needs to be _rolled over_
+ - $\term{t}$
+    - each account can receive up to $2^t-1$ incoming transfers, after which it needs to be _rolled over_
     - i.e., the owner must send a TXN that rolls over their pending into their available balance
     - $\Rightarrow$ pending balance chunks are always $< \emph{2^b(2^t - 1)}$
     - $\Rightarrow$ available balance chunks are always $< 2^b + \emph{2^b(2^t - 1)} = 2^b(1 + 2^t - 1) = 2^b 2^t = 2^{b+t}$ 
@@ -188,6 +193,12 @@ Will be difficult to change some things
         - Maybe there’s a hope to just re-chunk automatically on the Move side during a send? But this may create some large field elements that will be difficult to decrypt for the sender 😬
 -->
 
+### Increasing the # of max pending transfers
+
+The parameter $\emph{t}$ defined [above](#confidential-asset-notation) can be increased as long as we can compute discrete logs for values $\le 2^b(2^t - 1)$.
+
+The justification for its $t = 16$ value is discussed [later on](#why-16-bit-chunk-sizes).
+
 ### Upgrading ZKPs
 
 This can be done trivially: just add a new enum variant while maintaining the old one for a while.
@@ -201,21 +212,21 @@ Define the CFA algorithms so as to reason about upgradeability more easily.
 
 ### Upgrading encryption scheme
 
-We may want to upgrade our encryption scheme for efficiency reasons or for security (e.g., post-quantum).
+We may want to upgrade our **encryption scheme** for efficiency reasons or for security (e.g., post-quantum).
 
-#### Option 1: Force users to upgrade balance ciphertext
+#### Option 1: Force users to upgrade their balance ciphertexts
 
-One way[^hm] to support such an upgrade is to force the owning user to re-encrypt their old balance under the new encryption scheme.
+One way[^hm] to support such an upgrade is to force the owning user to re-encrypt their **obsolete balance ciphertexts** under the new encryption scheme.
 Then, we'd only allow transfers between users who are upgraded to the new scheme.
-(Option two would be to implement support for sending confidential assets from an old balance into a new balance.)
+(Option two would be to implement support for sending confidential assets from an obsolete balance ciphertext into an **upgraded balance ciphertext**.)
 
 Such upgrades may happen repeatedly, so we must ensure complexity does not get out of hand: e.g., if over the years we've upgraded our encryption scheme $n-1$ times, then there may be a total of $n$ ciphertext types flying around ($n\ge 1$).
 
-Naively, we'd want to support converting any old scheme to any new scheme, but that would require too many re-encryption implementations: $(n-1) + (n-2) + \ldots + 2 + 1 = O(n^2)$.
+Naively, we'd want to support converting from any obsoleted encryption scheme to any new scheme, but that would require too many re-encryption implementations: $(n-1) + (n-2) + \ldots + 2 + 1 = O(n^2)$.
 
-A solution would be to only implement re-encryption from scheme $i$ to scheme $i+1$, for any $i\in[n-1]$.
+A solution would be to only implement re-encryption from the $i$th scheme to $(i+1)$th scheme, for any $i\in[n-1]$.
 This could be slow, since it requires $n-1$ re-encryptions.
-If so, we can do it in $O(\log{n})$ re-encryption in a skip list-like fashion.
+If so, we can do it in $O(\log{n})$ re-encryptions in a skip list-like fashion.
 (By allowing upgrades to skip intermediate schemes, we would reduce the number of required re-encryptions.)
 
 **Another challenge:** post-upgrade, existing dapps, now with an out-of-date SDK, will not know how to handle the new encryption scheme. So, such upgrades are **backwards incompatible.**
@@ -231,17 +242,17 @@ I think the main problematic scenario is:
 We may want to strongly recommend that dapps/wallets only allow the user to manually upgrade their ciphertexts?
 This way, at least users understand that upgrading may make their assets inaccessible on older dapps.
 
-### Option 2: Universal transfers
+#### Option 2: Universal transfers
 
-Again, the assumption is that, over the years, we've upgraded our encryption scheme $n-1$ time $\Rightarrow$ there may be a total of $n$ ciphertext types flying around ($n\ge 1$).
+Again, the assumption is that, over the years, we've upgraded our encryption scheme $n-1$ times $\Rightarrow$ there may be a total of $n$ ciphertext types flying around ($n\ge 1$).
 
 To deal with this, we could simply build functionality that allows to transfer CFAs between any scheme $i,j\in[n]$.
 
 During a send, the SDK should prefer encrypting the amounts for the recipient under the highest supported scheme $j$ their account supports.
 (Or, encrypt for the max $j$ supported by the contract; it's just that the user, depending on what dapp/wallet they are using, may not be able to access that balance.)
 
-The key question is: should we enforce "progress" by only allowing to send from a scheme $i$ to a scheme $j$ when $j\ge i$? 
-This way, we would ensure that older ciphertexts don't proliferate?
+We could enforce "progress" by only allowing to send from a scheme $i$ to a scheme $j$ when $j > i$, but only when we are certain dapps have been upgraded to the latest SDK so they can handle the new ciphertexts.
+This way, we would ensure that older ciphertexts don't proliferate.
 
 ## FAQ
 
@@ -290,7 +301,8 @@ We chose $b=16$-bit chunks for two reasons.
 First, it allows us to use the [naive DL algorithm](#naive-discrete-log-algorithm) to instantly decrypt TXN amounts.
 This should make confidential dapps very responsive and fast.
 
-Second, if $t=16$, it ensures that the pending balance chunks never exceed $2^b(2^t-1)\approx 2^{32}$, even if there were 65,535 incoming transfers (i.e., $2^t - 1$).
+Second, it ensures that, after $2^{\emph{t}} - 1$ incoming transfers, the pending balance chunks never exceed $2^b(2^t-1)$.
+For example, for $t = 16$ (i.e., for $\le$ 65,535 incoming transfers), the pending balance chunks will remain $\le 2^{16}(2^{16} - 1) = 2^{32} - 2^{16} < 2^{32}$.
 This, in turn, ensures fast decryption times for pending (and available) balances.
 
 Why do we think there could be so many incoming transfers?
@@ -487,7 +499,7 @@ ristretto255/point_add  time:   [201.41 ns 201.88 ns 202.47 ns]
                         thrpt:  [4.9391 Melem/s 4.9534 Melem/s 4.9651 Melem/s]
 ```
 
-So, we expect a BSGS DL on a 32-bit balance chunk to require $2^{16}$ such additions: so, 13.23 ms.
+A BSGS DL on a 32-bit balance chunk will require $\le 2^{16}$ such additions: so, 13.23 ms.
 
 For 16-bit chunks, this time decreases to $2^8$ additions: so, 51 $\mu$s.
 
@@ -525,22 +537,22 @@ e.g., on 32 bit values, BL takes $30.86$ ms on average, while BSGS similarly tak
 
 We cannot easily deserialize structs like:
 ```rust
-    /// A sigma protocol *proof* always consists of:
-    /// 1. a *commitment* $A \in \mathbb{G}^m$
-    /// 2. a *response* $\sigma \in \mathbb{F}^k$
-    struct Proof has drop {
-        A: vector<RistrettoPoint>,
-        sigma: vector<Scalar>,
-    }
+/// A sigma protocol *proof* always consists of:
+/// 1. a *commitment* $A \in \mathbb{G}^m$
+/// 2. a *response* $\sigma \in \mathbb{F}^k$
+struct Proof has drop {
+    A: vector<RistrettoPoint>,
+    sigma: vector<Scalar>,
+}
 ```
 ...because `RistrettoPoint` just contains a Move VM handle pointing to an underlying Move VM Rust struct.
 
 We instead have to define a special de-serializable type:
 ```rust
-    struct SerializableProof has drop {
-        A: vector<CompressedRistretto>,
-        sigma: vector<Scalar>,
-    }
+struct SerializableProof has drop {
+    A: vector<CompressedRistretto>,
+    sigma: vector<Scalar>,
+}
 ```
 ...because `CompressedRistretto` is serializable: it just wraps a `vector<u8>`.
 
@@ -560,9 +572,9 @@ Alternatively, but probably more expensive, since we are writing Aptos framework
 use aptos_framework::util;
 
 fun deserialize_proof_bcs(bytes: vector<u8>): Proof {
-	let proof: SerializableProof = util::from_bytes(bytes);
-    
-	sigma_protocols::proof::from_serializable_proof(proof)
+    let proof: SerializableProof = util::from_bytes(bytes);
+
+    sigma_protocols::proof::from_serializable_proof(proof)
 }
 ```
 ...but we still have to, more, or less, manually write code for each struct that converts between its "serializable" counterpart and its actual counterpart.

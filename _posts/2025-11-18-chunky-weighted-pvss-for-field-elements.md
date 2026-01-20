@@ -112,7 +112,7 @@ All of these will be described in more detail in the subsections below.
  - We often use $\widetilde{G}$ or $\widetilde{H}$ letters to denote group elements in $\Gr_2$
 
 #### Time-complexity notation
-{% include prelims-time-complexities.md %}
+{% include prelims-time-complexities-pairings.md %}
 
 #### Other notation
 
@@ -738,16 +738,10 @@ We present a modified version of **Chunky** with a 13% faster verifier, hencefor
 
 To avoid redundancy, we describe only the modifications we made, rather than restating the entire algorithm from scratch.
 
-The idea is to modify the ElGamal-to-KZG relation from Eq. $\ref{rel:e2k}$ to also prove that the $\widetilde{V}\_{i,j}$ share commitments from Eq. $\ref{eq:share-commitments}$ are computed correctly.
-This will make it faster to verify that what's encrypted in the $C\_{i,j,k}$'s from Eq. \ref{eq:share-ciphertexts} is what's comitted in the $\widetilde{V}\_{i,j}$'s.
-Currently, this verification requires a $(W\cdot m)$-sized MSM in $\Gr_1$, a $W$-sized MSM in $\Gr_2$ and a pairing (see [Step 2 in $\pvss.\verify$](#step-2-verify)).
+The **key idea** is to modify the ElGamal-to-KZG relation $\emph{\Retk}$ from Eq. $\ref{rel:e2k}$ to also prove that the $\widetilde{V}\_{i,j}$ share commitments from Eq. $\ref{eq:share-commitments}$ are computed correctly.
+This will speed up [Step 2 in $\pvss.\verify$](#step-2-verify), which checks that what's encrypted in the $C\_{i,j,k}$'s from Eq. \ref{eq:share-ciphertexts} is what's comitted in the $\widetilde{V}\_{i,j}$'s.
 
-{: .todo}
-Describe **extra** prover work, somewhat concretely if we can.
-For this part of the verification (not the full PVSS verifier), describe the new verifier work.
-(The old verifier work was described above.)
-
-This modification yields a new relation $\Retknew$ (see highlighted $\bluedashedbox{\text{changes}}$):
+The modified $\Retknew$ relation follows below, with changes $\bluedashedbox{\text{highlighted in blue}}$:
 \begin{align}
 \term{\Retknew}\left(\begin{array}{l}
 \stmt = \left(G, H, \ck, \\{\ek\_i\\}\_i,\\{C\_{i,j,k}\\}\_{i,j,k}, \\{R_{j,k}\\}\_{j,k}, C, \bluedashedbox{\\{\widetilde{V}\_{i,j}\\}\_{i,j}}    \right),\\\\\
@@ -759,6 +753,19 @@ This modification yields a new relation $\Retknew$ (see highlighted $\bluedashed
     \bluedashedbox{\widetilde{V}\_{i,j}} & = \bluedashedbox{\left( \sum_{k \in [m]} B^{k-1} s\_{i,j,k} \right) \cdot \widetilde{G}}
 \end{array}\right.
 \end{align}
+
+This modification moves almost all verification work in [Step 2 of $\pvss.\verify$](#step-2-verify) into the dealing algorithm.
+Furthermore, it reduces total computation across the dealing and verification algorithms.
+We summarize below:
+
+| Scheme       | Proving work         | Verification work                                  |
+|--------------|----------------------|----------------------------------------------------|
+| Chunky       | 0                    | $\vmsmOne{W\cdot m} + \vmsmTwo{W} + \multipair{2}$ |
+| **Chunky 2** | $\GmulTwo{W\cdot m}$ | $\approx \GmulTwo{1} + \Fmul{W\cdot m}$            |
+
+{: .note}
+The $\widetilde{V}_{i,j}$'s in the new $\Retknew$ relation are computed using the same base $\widetilde{G}$, which is why the verification work in the associated $\Sigma$-protocol can be done efficiently in one $\Gr_2$ scalar multiplication (i.e., in $\GmulTwo{1}$).
+The $\approx \Fmul{W\cdot m}$ work is for taking random linear combinations of the $\widetilde{V}\_{i,j}$'s in the $\Sigma$-protocol verifier.
 
 Then, we modify [**Step 6** of the $\pvss.\deal$ algorithm](#step-6-deal) to prove this new relation: 
 \begin{align}
@@ -779,10 +786,6 @@ Then, we modify [**Step 4** of the $\pvss.\verify$ algorithm](#step-4-verify) to
 \end{align}
 
 Lastly, we remove [**Step 2** of the $\pvss.\verify$ algorithm](#step-2-verify), since the check is now performed above.
-
-{: .todo}
-Wicher wrote: "In practical terms, this means one batched $\Gr_2$ MSM is added, scaling in size with the number of virtual players instead of the product of the number of virtual players *and* the number of chunks."
-But this don't seem right: the old verifier was doing a $W$-sized MSM in $\Gr_2$.
 
 ## References
 
