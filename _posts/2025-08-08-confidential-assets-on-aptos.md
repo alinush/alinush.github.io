@@ -417,7 +417,7 @@ If:
 
 ...then the complexity may be warranted.
 
-On the other hand, if using $b+t = 32$ bits, then I estimate that a 32-bit discrete log via BSGS will take around 1 second in the browser (i.e., 13 ms $\times$ 10x slowdown${}\times \ell$ chunks $= 13 \times 10 \times 8$ ms $= 1.04$ seconds) 
+On the other hand, if using $b+t = 32$ bits, then I estimate that a 32-bit discrete log via BSGS will take around 1 second in the browser (i.e., 13 ms $\times$ 10x slowdown${}\times \ell$ chunks $= 13$ ms${} \times 10 \times 8$ chunks $= 1.04$ seconds). 
 
 {: .info}
 **Decision:** Either way, we need a DL algorithm for $(b+t)$-bit values in case the hint is wrong/corrupted by bad SDKs. So, for now, we adopt the simpler approach, but we should leave open the possiblity of adding hints in the future.
