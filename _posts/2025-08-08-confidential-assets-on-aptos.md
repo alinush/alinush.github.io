@@ -468,8 +468,13 @@ Because we can nonetheless achieve competitively-small TXN sizes and cheap verif
 
 ## Appendix: Links
 
+Guides:
+ - [Confidential assets: 10,000 feet view](https://docs.google.com/presentation/d/1wwkDuFBUSfDmVC83UdGsXRXdCQQES6Rpj7RskdaBgfY/edit?usp=sharing)
+ - WIP: [Confidential assets: deep dive](https://docs.google.com/presentation/d/1AO2ft2WPgQ7YNr2WgGNiCtB28QfIoC9k1Q7JOrukoOQ/edit?usp=sharing)
+
 Documentation:
  - [aptos.dev docs](https://aptos.dev/build/smart-contracts/confidential-asset)
+ - TBA: Aptos Improvement Proposal
 
 Implementation:
  - [$\Sigma$-protocols in Move](https://github.com/aptos-labs/aptos-core/pull/17660/)
