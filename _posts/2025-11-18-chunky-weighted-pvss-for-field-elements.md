@@ -428,7 +428,7 @@ Let the _total weight_ $W$ be defined as before in Eq. \ref{eq:W}.
 **Step 1:** Verify that the committed shares encode a degree-$\threshWeight$ polynomial via the SCRAPE LDT[^CD17]:
 \begin{align}
 \term{\alpha} &\randget \F\\\\\
-\textbf{assert}\ &\scrape.\lowdegreetest(\\{(0, V_0)\\} \cup \\{(\chi_{i,j}, V_{i,j})\\}_{i,j}, \threshWeight, W; \emph{\alpha}) \equals 1
+\textbf{assert}\ &\scrape.\lowdegreetest(\\{(0, \widetilde{V}\_0)\\} \cup \\{(\chi\_{i,j}, \widetilde{V}\_{i,j})\\}\_{i,j}, \threshWeight, W; \emph{\alpha}) \equals 1
 \end{align}
 
 _Note:_ Recall that the $\emph{\chi_{i,j}}$'s are the roots of unity used to evaluate the secret-sharing polynomial $f(X)$ during dealing (see Eq. \ref{eq:eval}).
@@ -764,7 +764,7 @@ We summarize below:
 | **Chunky 2** | $\GmulTwo{W}$        | $\vmsmTwo{2W+1}$                                   | ${} + W \|\Gr_2\|$     |
 
 {: .note}
-The $\Sigma$-protocol verifier extra work will be of the form $\psi(\mathbf{\sigma}) \equals \mathbf{A} + e\cdot [V_{i,j}]_{i,j}$ and can be done in a size-$(2W+1)$ MSM because the group elements in $\psi(\mathbf{\sigma})$ will all have the same base $\widetilde{G}$.
+The $\Sigma$-protocol verifier extra work will be of the form $\psi(\mathbf{\sigma}) \equals \mathbf{A} + e\cdot [\widetilde{V}_{i,j}]_{i,j}$ and can be done in a size-$(2W+1)$ MSM because the group elements in $\psi(\mathbf{\sigma})$ will all have the same base $\widetilde{G}$.
 
 Then, we modify [**Step 6** of the $\pvss.\deal$ algorithm](#step-6-deal) to prove this new relation: 
 \begin{align}
