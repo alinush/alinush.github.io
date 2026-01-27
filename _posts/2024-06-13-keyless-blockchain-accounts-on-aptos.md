@@ -458,6 +458,29 @@ This will serve as an appendix of technical information, useful when communicati
 The notation below will not be explicitly defined; just exercise intuition! 
 e.g., $\maxaudval$ is clearly the maximum number of bytes in $\audval$.
 
+### Poseidon BN254 benchmarks
+
+Using `neptune-poseidon`, ran on my Apple M1 Max.
+
+```
+Poseidon/BN254/1      time:   [8.7997 µs 8.8256 µs 8.8519 µs]
+Poseidon/BN254/2      time:   [12.465 µs 12.525 µs 12.591 µs]
+Poseidon/BN254/3      time:   [16.134 µs 16.286 µs 16.475 µs]
+Poseidon/BN254/4      time:   [21.107 µs 21.166 µs 21.234 µs]
+Poseidon/BN254/5      time:   [25.647 µs 25.902 µs 26.218 µs]
+Poseidon/BN254/6      time:   [30.907 µs 31.159 µs 31.480 µs]
+Poseidon/BN254/7      time:   [36.135 µs 36.274 µs 36.459 µs]
+Poseidon/BN254/8      time:   [41.677 µs 41.905 µs 42.135 µs]
+Poseidon/BN254/9      time:   [46.249 µs 46.531 µs 46.919 µs]
+Poseidon/BN254/10     time:   [54.717 µs 54.878 µs 55.054 µs]
+Poseidon/BN254/11     time:   [58.174 µs 58.485 µs 58.811 µs]
+Poseidon/BN254/12     time:   [67.353 µs 67.446 µs 67.544 µs]
+Poseidon/BN254/13     time:   [79.749 µs 80.069 µs 80.404 µs]
+Poseidon/BN254/14     time:   [80.739 µs 81.138 µs 81.529 µs]
+Poseidon/BN254/15     time:   [91.997 µs 92.370 µs 92.782 µs]
+Poseidon/BN254/16     time:   [117.26 µs 123.23 µs 136.39 µs]
+```
+
 ### BN254
 
 Currently, the Aptos keyless relation is implemented using [circom](/circom) with a Groth16 backend over the BN254 elliptic curve[^bn254] of order $r$, where $2^{253} < r < 2^{254}$:
