@@ -537,6 +537,108 @@ These were run on a Macbook M3.
 Something is off here: BL should be **much** faster than [BSGS](#baby-step-giant-step-bsgs-discrete-log-algorithm).
 e.g., on 32 bit values, BL takes $30.86$ ms on average, while BSGS similarly takes $2^{16}$ group operations $\Rightarrow$ 0.5 microseconds $\times 2^{16} \approx 32$ ms.
 
+### Gas benchmarks for `confidential_asset` v1.0 Move module
+
+```
+Gas report for 0x1::primary_fungible_store::transfer, assuming 100 octas / gas unit
+|  Execution gas:   4 units
+|  IO gas:          7 units
+|  Storage fee:     0 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 10 units
+|  Total octas:     1,000 octas
+|  Total APT:       0.00001000 APT
+\-----------------------------------
+test tests::confidential_asset::bench_gas_fungible_asset_transfer ... ok
+
+Gas report for 0x7::confidential_asset::register, assuming 100 octas / gas unit
+|  Execution gas:   5 units
+|  IO gas:          3 units
+|  Storage fee:     126,880 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 1,276 units
+|  Total octas:     127,600 octas
+|  Total APT:       0.00127600 APT
+\-----------------------------------
+test tests::confidential_asset::bench_gas_register ... ok
+
+Gas report for 0x7::confidential_asset::rollover_pending_balance, assuming 100 octas / gas unit
+|  Execution gas:   11 units
+|  IO gas:          3 units
+|  Storage fee:     0 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 13 units
+|  Total octas:     1,300 octas
+|  Total APT:       0.00001300 APT
+\-----------------------------------
+test tests::confidential_asset::bench_gas_rollover_pending_balance ... ok
+
+Gas report for 0x7::confidential_asset::deposit_to, assuming 100 octas / gas unit
+|  Execution gas:   10 units
+|  IO gas:          9 units
+|  Storage fee:     0 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 19 units
+|  Total octas:     1,900 octas
+|  Total APT:       0.00001900 APT
+\-----------------------------------
+Alice balance: 999,872,400 -> 999,869,500 (deposited 1,000)
+Bob public balance: 999,872,400 (unchanged)
+test tests::confidential_asset::bench_gas_deposit_to ... ok
+
+Gas report for 0x7::confidential_asset::rotate_encryption_key, assuming 100 octas / gas unit
+|  Execution gas:   212 units
+|  IO gas:          4 units
+|  Storage fee:     0 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 215 units
+|  Total octas:     21,500 octas
+|  Total APT:       0.00021500 APT
+\-----------------------------------
+test tests::confidential_asset::bench_gas_rotate_encryption_key ... ok
+
+Gas report for 0x7::confidential_asset::withdraw_to, assuming 100 octas / gas unit
+|  Execution gas:   207 units
+|  IO gas:          9 units
+|  Storage fee:     0 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 215 units
+|  Total octas:     21,500 octas
+|  Total APT:       0.00021500 APT
+\-----------------------------------
+test tests::confidential_asset::bench_gas_withdraw_to ... ok
+
+Gas report for 0x7::confidential_asset::confidential_transfer, assuming 100 octas / gas unit
+|  Execution gas:   333 units
+|  IO gas:          6 units
+|  Storage fee:     0 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 339 units
+|  Total octas:     33,900 octas
+|  Total APT:       0.00033900 APT
+\-----------------------------------
+test tests::confidential_asset::bench_gas_confidential_transfer ... ok
+
+Gas report for 0x7::confidential_asset::normalize, assuming 100 octas / gas unit
+|  Execution gas:   209 units
+|  IO gas:          4 units
+|  Storage fee:     0 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 212 units
+|  Total octas:     21,200 octas
+|  Total APT:       0.00021200 APT
+\-----------------------------------
+test tests::confidential_asset::bench_gas_normalize ... ok
+```
+
 ## Appendix: Implementation challenges
 
 ### Move serialization of handle-based "native" structs like `RistrettoPoint`
