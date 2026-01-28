@@ -468,12 +468,13 @@ Because we can nonetheless achieve competitively-small TXN sizes and cheap verif
 
 ## Appendix: Links
 
-Guides:
+Slides:
  - [Confidential assets: 10,000 feet view](https://docs.google.com/presentation/d/1wwkDuFBUSfDmVC83UdGsXRXdCQQES6Rpj7RskdaBgfY/edit?usp=sharing)
  - WIP: [Confidential assets: deep dive](https://docs.google.com/presentation/d/1AO2ft2WPgQ7YNr2WgGNiCtB28QfIoC9k1Q7JOrukoOQ/edit?usp=sharing)
 
-Documentation:
+Documentation & articles:
  - [aptos.dev docs](https://aptos.dev/build/smart-contracts/confidential-asset)
+ - [Build with Confidential Transactions on Aptos](https://medium.com/aptoslabs/build-with-confidential-transactions-on-aptos-1e99f78aa181)
  - TBA: Aptos Improvement Proposal
 
 Implementation:
