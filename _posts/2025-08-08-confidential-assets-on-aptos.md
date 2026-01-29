@@ -488,6 +488,12 @@ Apps:
 
 ## Appendix: Benchmarks
 
+### Bit-widths of Aptos balances (in octas) on mainnet
+
+**tl;dr:** One third have at most 1, 2, 3 or 4 bits. 18% have 15 bits. 15% have 14 or 16 bits. Graph below 👇
+
+<div align="center"><img style="width:80%" src="/pictures/confidential-assets/2025-01-28-apt-on-mainnet.png" /></div>
+
 ### BSGS for Ristretto255 in JavaScript
 
 For now, just take the Rust benchmarks in the next section and multiply them by 10-20x.

@@ -17,7 +17,7 @@ permalink: curve-trees
 ---
 
 {: .info}
-**tl;dr:** A few notes on the beautiful curve tree work by Campanelli, Hall-Andersen and Kamp.
+**tl;dr:** A few notes on the beautiful curve tree[^CHK22e] work by Campanelli, Hall-Andersen and Kamp.
 
 <!--more-->
 
