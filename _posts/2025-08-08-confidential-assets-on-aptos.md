@@ -316,7 +316,7 @@ The **main tension** is between:
  1. The ElGamal ciphertext (and associated proof) sizes: i.e., the # of chunks $n$ and $\ell$
  2. The decryption time for a TXN's amount: i.e., the chunk size $b$
     - We must be able to compute $n$ DLs on $b$ bit values in less than 10ms in the browser
-        + This seems to restrict us to $b \le 16$ (see [benchmarks here](#bsgs-for-ristretto255-in-javascript)) 
+        + This seems to restrict us to $b \le 16$ (**TODO:** include TypeScript benchmarks here)
     - We must have $\ell \cdot b=128$ and $n \cdot b = 64$
         + From above, we get $\ell = 8$ and $n=4$
     + This also indirectly influences the balance decryption times: balance chunks DLs are $(b+t)$-bit
@@ -357,14 +357,13 @@ A **secondary tension** is between:
 
 One of the difficulties is that BL DL[^BL12] is a probabilistic algorithm. 
 This seems harmless, in theory, but we've actually encountered failures that are hard to debug when confidential apps are deployed.
-Plus, decryption times can vary a lot $\Rightarrow$ unpredictable UX; see [benchmarks here](#bl-dl-benchmarks-for-ristretto255-in-rust).
-Furthermore, our current BL DL implementation is in WASM (compiled from Rust) which increases the size of confidential dapps, complicates our code and makes debugging harder.
+Furthermore, our current BL DL implementation is in WASM (compiled from Rust) which increases the size of confidential dapps (**TODO:** by how much?), complicates our code and makes debugging harder.
 
 So, for ease of debugging, ease of implementing and for a consistent UX, we'd prefer deterministic algorithms that are guaranteed to terminate in a known amount of steps, like BSGS.
 This way, we can guarantee none of our users will ever run into issues.
 
 Unfortunately, deterministic algorithms are slower: BSGS on values in $[m)$ takes $O(\sqrt{m})$ time and space while BL DL only takes $O(m^{1/3})$ time and space.
-This means that the highest $m$ we can hope to use with BSGS is in $[2^{32}, 2^{36})$, or so (see some [benchmarks](#bsgs-for-ristretto255-in-javascript)).
+This means that the highest $m$ we can hope to use with BSGS is in $[2^{32}, 2^{36})$, or so.
 So, our $b+t=32$.
 
 ### How many types of discrete log instances do you have to solve?
@@ -488,60 +487,100 @@ Apps:
 
 ## Appendix: Benchmarks
 
+All of these are run on my Macbook Pro M1 Max, in high power mode.
+All are single-threaded, AFAIK.
+
 ### Bit-widths of Aptos balances (in octas) on mainnet
 
 **tl;dr:** One third have at most 1, 2, 3 or 4 bits. 18% have 15 bits. 15% have 14 or 16 bits. Graph below 👇
 
 <div align="center"><img style="width:80%" src="/pictures/confidential-assets/2025-01-28-apt-on-mainnet.png" /></div>
 
-### BSGS for Ristretto255 in JavaScript
+### Ristretto255: `curve-dalek25519-ng` microbenchmarks
 
-For now, just take the Rust benchmarks in the next section and multiply them by 10-20x.
-This means a 32-bit balance chunk could take 130-260 ms to decrypt ($\GaddG{2^{16}}$ time).
-Increasing it to 36-bits would 4x the time: 520ms-1.04s ($\GaddG{2^{18}}$ time).
-
-{: .todo}
-Figure out the fastest library and use it. Probably [`noble-curves`](https://github.com/paulmillr/noble-curves)?
-
-### BSGS for Ristretto255 in Rust
-
-A Ristretto255 point addition in `curve25519-dalek`, on a Macbook Pro M1 Max in low power mode, takes:
 ```
-ristretto255/point_add  time:   [201.41 ns 201.88 ns 202.47 ns]
-                        thrpt:  [4.9391 Melem/s 4.9534 Melem/s 4.9651 Melem/s]
+ristretto255 point compression
+                        time:   [3.7242 µs 3.7265 µs 3.7290 µs]
+
+ristretto255 point addition
+                        time:   [126.28 ns 127.90 ns 130.90 ns]
 ```
 
-A BSGS DL on a 32-bit balance chunk will require $\le 2^{16}$ such additions: so, 13.23 ms.
+{: .error}
+Unfortunately, Ristretto255 is cursed: it needs canonical square roots computed during point compression, which are not batchable.
+(This is inherent for any Decaf-like group, it seems.)
+This means that the DL algorithms are dominated by point-compression necessary to index into the precomputed tables.
 
-For 16-bit chunks, this time decreases to $2^8$ additions: so, 51 $\mu$s.
+### DLP: [BL12]
 
-So, if a TXN amount has 8 chunks of 16 bits each, we could decrypt it in 404 $\mu$s. 
+```
+Kangaroo 16-bit secrets time:   [93.397 µs 93.841 µs 94.297 µs]
 
-So, we could support 1 second / 404 $\mu$s $\approx$ 2475 TXN decryptions per second.
+Kangaroo 32-bit secrets time:   [7.9513 ms 8.4471 ms 8.9553 ms]
+
+Kangaroo 48-bit secrets time:   [763.90 ms 1.1598 s 1.6174 s]
+```
+
+### DLP: Naive BSGS with compression after every step
+
+```
+BSGS 32-bit secrets     time:   [99.317 ms 119.34 ms 139.48 ms]
+```
+
+### DLP: BSGS with compression batch size $k$
+
+```
+BSGS-k 32-bit secrets/1
+                        time:   [105.87 ms 125.37 ms 144.54 ms]
+
+BSGS-k 32-bit secrets/2
+                        time:   [63.794 ms 72.014 ms 80.063 ms]
+
+BSGS-k 32-bit secrets/4
+                        time:   [35.490 ms 39.095 ms 42.754 ms]
+
+BSGS-k 32-bit secrets/8
+                        time:   [27.505 ms 29.692 ms 31.885 ms]
+
+BSGS-k 32-bit secrets/16
+                        time:   [20.106 ms 21.737 ms 23.372 ms]
+
+BSGS-k 32-bit secrets/32
+                        time:   [17.625 ms 18.929 ms 20.229 ms]
+
+BSGS-k 32-bit secrets/64
+                        time:   [15.233 ms 16.333 ms 17.420 ms]
+
+BSGS-k 32-bit secrets/128
+                        time:   [15.818 ms 16.711 ms 17.608 ms]
+
+BSGS-k 32-bit secrets/256
+                        time:   [16.060 ms 17.057 ms 18.089 ms]
+
+BSGS-k 32-bit secrets/512
+                        time:   [16.018 ms 16.927 ms 17.796 ms]
+
+BSGS-k 32-bit secrets/1024
+                        time:   [15.377 ms 16.231 ms 17.115 ms]
+
+BSGS-k 32-bit secrets/2048
+                        time:   [14.985 ms 15.940 ms 16.860 ms]
+
+BSGS-k 32-bit secrets/4096
+                        time:   [15.514 ms 16.449 ms 17.374 ms]
+
+BSGS-k 32-bit secrets/8192
+                        time:   [16.488 ms 17.474 ms 18.464 ms]
+
+BSGS-k 32-bit secrets/16384
+                        time:   [18.067 ms 19.088 ms 20.114 ms]
+```
 
 {: .note}
-Even if JavaScript is 20x slower $\Rightarrow$ we should still be able to support 100 TXNs / second in the browser.
-Plus, reducing chunk size further speeds things up.
-\
-**Decision:** Stick with 16 bit chunks and use the [naive DL algorithm](#naive-discrete-log-algorithm): store all solutions in tables of $2^{16}$ group elements ($2^{16}\times 32$ bytes $\Rightarrow 2$ MiB) and compute the DL in constant time! 
+**Decision:** Stick with 16 bit chunks and use the [naive DL algorithm](#naive-discrete-log-algorithm): store all solutions in tables of $2^{16}$ group elements ($2^{16}\times 32$ bytes $\Rightarrow 2$ MiB) and compute the DL in constant time, when chunks are small!
+When chunks are big, resort to BSGS or to [BL12]. 
 <!-- 16 chunks of 8-bit each give $2^4$ additions to decrypt: so, 3.20 $\mu$s per chunk $\Rightarrow $ 51.2 $\mu$s per TXN $\Rightarrow$ 19,500 TXN decryptions per second in Rust (or 1000 in the browser).-->
 We have to be conservative because a user may be using multiple confidential apps at the same time and/or the browser may be busy doing other things.
-
-### BL DL benchmarks for Ristretto255 in Rust
-
-These were run on a Macbook M3.
-
-|----------------+------------------------+-------------+--------------+--------------+
-| Chunk size     | Algorithm              | Lowest time | Average time | Highest time |
-|----------------|------------------------|-------------|--------------|--------------|
-| 16-bit         | Bernstein-Lange[^BL12] | 1.67 ms     | 2.01 ms      | 2.96 ms      |
-| 32-bit         | Bernstein-Lange[^BL12] | 7.38 ms     | 30.86 ms     | 77.00 ms     |
-| 48-bit         | Bernstein-Lange[^BL12] | 0.72 s      | 4.03 s       | 12.78 s      |
-|----------------+------------------------+-------------+--------------+--------------|
-
-{: .warning}
-Something is off here: BL should be **much** faster than [BSGS](#baby-step-giant-step-bsgs-discrete-log-algorithm).
-e.g., on 32 bit values, BL takes $30.86$ ms on average, while BSGS similarly takes $2^{16}$ group operations $\Rightarrow$ 0.5 microseconds $\times 2^{16} \approx 32$ ms.
 
 ### Gas benchmarks for `confidential_asset` v1.0 Move module
 

@@ -281,7 +281,7 @@ The **recovery ID** $v$ stores (1) whether the reduction modulo $p$ wrapped arou
 
 {: .warning}
 This blog-post's recovery ID is not encoded the same as in Ethereum or Bitcoin.
-Recall that Ethereum's ECDSA signatures use the secp256k1 ellptic curve, which has $q > p$.
+Recall that Ethereum's ECDSA signatures use the secp256k1 elliptic curve, which has $q > p$.
 So, in theory, the recovery ID can be either 0, 1, 2, or 3.
 In practice, though, Ethereum re-maps these 2-bit recovery IDs as just two numbers: 27 (for $v=0$) and 28 (for $v=1$), since the case of $\mathsf{overflows} \equals 1$ occurs with negligible probability when $R\randget g^k$ is picked randomly.
 Recently, EIP-155[^eip-155] changed this encoding scheme to be $\mathsf{chain\\_id} \times 2 + (35 + v)$.
