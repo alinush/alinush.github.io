@@ -530,50 +530,62 @@ BSGS 32-bit secrets     time:   [99.317 ms 119.34 ms 139.48 ms]
 ### DLP: BSGS with compression batch size $k$
 
 ```
-BSGS-k 32-bit secrets/1
-                        time:   [105.87 ms 125.37 ms 144.54 ms]
+[BSGS-k1], 32-bit secrets
+                        time:   [110.60 ms 151.21 ms 184.73 ms]
 
-BSGS-k 32-bit secrets/2
-                        time:   [63.794 ms 72.014 ms 80.063 ms]
+[BSGS-k2], 32-bit secrets
+                        time:   [69.391 ms 77.605 ms 83.465 ms]
 
-BSGS-k 32-bit secrets/4
-                        time:   [35.490 ms 39.095 ms 42.754 ms]
+[BSGS-k4], 32-bit secrets
+                        time:   [45.726 ms 50.188 ms 56.264 ms]
 
-BSGS-k 32-bit secrets/8
-                        time:   [27.505 ms 29.692 ms 31.885 ms]
+[BSGS-k8], 32-bit secrets
+                        time:   [29.779 ms 33.050 ms 36.316 ms]
 
-BSGS-k 32-bit secrets/16
-                        time:   [20.106 ms 21.737 ms 23.372 ms]
+[BSGS-k16], 32-bit secrets
+                        time:   [22.947 ms 24.992 ms 27.162 ms]
 
-BSGS-k 32-bit secrets/32
-                        time:   [17.625 ms 18.929 ms 20.229 ms]
+[BSGS-k32], 32-bit secrets
+                        time:   [19.536 ms 20.419 ms 21.443 ms]
 
-BSGS-k 32-bit secrets/64
-                        time:   [15.233 ms 16.333 ms 17.420 ms]
+[BSGS-k64], 32-bit secrets
+                        time:   [19.697 ms 20.707 ms 22.185 ms]
 
-BSGS-k 32-bit secrets/128
-                        time:   [15.818 ms 16.711 ms 17.608 ms]
+[BSGS-k128], 32-bit secrets
+                        time:   [16.332 ms 18.104 ms 20.259 ms]
 
-BSGS-k 32-bit secrets/256
-                        time:   [16.060 ms 17.057 ms 18.089 ms]
+[BSGS-k256], 32-bit secrets
+                        time:   [18.265 ms 19.817 ms 21.729 ms]
 
-BSGS-k 32-bit secrets/512
-                        time:   [16.018 ms 16.927 ms 17.796 ms]
+[BSGS-k512], 32-bit secrets
+                        time:   [17.480 ms 18.578 ms 19.166 ms]
 
-BSGS-k 32-bit secrets/1024
-                        time:   [15.377 ms 16.231 ms 17.115 ms]
+[BSGS-k1024], 32-bit secrets
+                        time:   [18.623 ms 20.118 ms 21.567 ms]
 
-BSGS-k 32-bit secrets/2048
-                        time:   [14.985 ms 15.940 ms 16.860 ms]
+[BSGS-k2048], 32-bit secrets
+                        time:   [17.741 ms 18.244 ms 18.840 ms]
 
-BSGS-k 32-bit secrets/4096
-                        time:   [15.514 ms 16.449 ms 17.374 ms]
+[BSGS-k4096], 32-bit secrets
+                        time:   [18.639 ms 20.364 ms 22.003 ms]
 
-BSGS-k 32-bit secrets/8192
-                        time:   [16.488 ms 17.474 ms 18.464 ms]
+[BSGS-k8192], 32-bit secrets
+                        time:   [19.777 ms 21.778 ms 24.215 ms]
 
-BSGS-k 32-bit secrets/16384
-                        time:   [18.067 ms 19.088 ms 20.114 ms]
+[BSGS-k16384], 32-bit secrets
+                        time:   [21.709 ms 23.573 ms 25.266 ms]
+
+[BSGS-k64], 18-bit secrets (32-bit table)
+                        time:   [37.029 µs 37.112 µs 37.203 µs]
+
+[BSGS-k128], 18-bit secrets (32-bit table)
+                        time:   [69.837 µs 69.939 µs 70.045 µs]
+
+[BSGS-k1024], 18-bit secrets (32-bit table)
+                        time:   [584.86 µs 586.24 µs 587.66 µs]
+
+[BSGS-k2048], 18-bit secrets (32-bit table)
+                        time:   [1.1385 ms 1.1416 ms 1.1449 ms]
 ```
 
 {: .note}
