@@ -227,7 +227,24 @@ Not relevant for Groth16, but for other zkSNARKs like Spartan:
 {: .note}
 I think our `task.sh` script in [the keyless-zk-proofs repo](https://github.com/aptos-labs/keyless-zk-proofs/tree/main/scripts) can be used to reproduce these "# of non-zero entries" numbers.
 
-### rapidsnark (modified) proving time
+### `arkworks` proving time for a "synthetic" R1CS
+
+From [this PR](https://github.com/aptos-labs/aptos-core/pull/18032/files):
+
+```
+ark_groth16/bn254/prove/multithreaded/norm/1
+                        time:   [5.1475 s 5.1769 s 5.2092 s]
+                        thrpt:  [276.21 Kelem/s 277.93 Kelem/s 279.52 Kelem/s]
+
+ark_groth16/bn254/prove/multithreaded/norm/128-bit
+                        time:   [5.5024 s 5.5402 s 5.5816 s]
+                        thrpt:  [257.78 Kelem/s 259.70 Kelem/s 261.49 Kelem/s]
+
+ark_groth16/bn254/prove time:   [20.031 s 20.132 s 20.242 s]
+                        thrpt:  [71.079 Kelem/s 71.467 Kelem/s 71.830 Kelem/s]
+```
+
+### `rapidsnark` (modified) proving time
 
 These are the times taken on a [`t2d-standard-4`](https://gcloud-compute.com/t2d-standard-4.html) VM for an older version of the circuit with 1.3M constraints and variables. 
 
