@@ -47,6 +47,7 @@ Just some loose notes for now (will go into more depth as I understand later) fr
  - Mike O'Connor's [post](https://forum.aztec.network/t/reducing-nullifier-set-state-growth/155)
  - Mike O'Connor's [clarification](https://x.com/mike_connor/status/1977131650233274749) on how you precompute some nullifiers and then send one to whomever is trying to pay you. 
     + This makes the recursive proof more efficient because, I suppose, you can prove in batch that all of your precomputed nullifiers have not yet been spent: 
+ - Sean Bowe's [zeroknowledge.fm podcast](https://zeroknowledge.fm/podcast/388/) on Tachyon
 
 Some disadvantages:
 
