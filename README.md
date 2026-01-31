@@ -40,8 +40,8 @@ Had some issue getting this to run the server on Apple M1. The instructions from
 xcode-select --install
 brew install rbenv ruby-build
 
-rbenv install 3.0.0
-rbenv global 3.0.0
+rbenv install 3.2.10
+rbenv global 3.2.10
 ruby -v
 rbenv rehash
 
@@ -49,9 +49,14 @@ echo 'eval "$(rbenv init - bash)"' >> ~/.bash_profile
 
 gem install --user-install bundler jekyll
 
+bundle install
 bundle update --bundler
-bundle add webrick
 bundle install --redownload
+```
+
+You should now be ready to run the web-server:
+```
+./run-server.sh
 ```
 
 ## License
