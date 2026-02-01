@@ -511,6 +511,17 @@ Unfortunately, Ristretto255 is cursed: it needs canonical square roots computed 
 (This is inherent for any Decaf-like group, it seems.)
 This means that the DL algorithms are dominated by point-compression necessary to index into the precomputed tables.
 
+### DLP precomputated table sizes
+
+| Algorithm           | Naive    | MPHF-based | Reduction |
+|---------------------|----------|------------|-----------|
+| BSGS 32-bit         | 2.50 MiB | 534 KiB    | 79%       |
+| BSGS-k 32-bit       | 2.50 MiB | 534 KiB    | 79%       |
+| Naive Lookup 16-bit | 2.50 MiB | 534 KiB    | 79%       |
+
+{: .error}
+The problem is MPHF-based hashing does not return `None` when you're hashing something outside the set.
+
 ### DLP: [BL12]
 
 ```
@@ -529,6 +540,7 @@ BSGS 32-bit secrets     time:   [99.317 ms 119.34 ms 139.48 ms]
 
 ### DLP: BSGS with compression batch size $k$
 
+For discrete logs on 32-bit values with tables for 32-bits:
 ```
 [BSGS-k1], 32-bit secrets
                         time:   [110.60 ms 151.21 ms 184.73 ms]
@@ -574,7 +586,11 @@ BSGS 32-bit secrets     time:   [99.317 ms 119.34 ms 139.48 ms]
 
 [BSGS-k16384], 32-bit secrets
                         time:   [21.709 ms 23.573 ms 25.266 ms]
+```
 
+For discrete log on 18-bit values but with the same tables for 32 bits, demonstrating that smaller values are solved for faster:
+
+```
 [BSGS-k64], 18-bit secrets (32-bit table)
                         time:   [37.029 µs 37.112 µs 37.203 µs]
 
