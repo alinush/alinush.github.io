@@ -38,7 +38,7 @@ Applications:
 
 In my PhD thesis[^Tome20] (and a later paper[^TCZplus20]), we presented a different, tree-based mechanism to compute KZG polynomial commitment proofs.
 It was dubbed _authenticated multipoint evaluation trees (AMTs)_.
-I also described the AMT construction in this [blog post](http://localhost:4000/2020/03/12/towards-scalable-vss-and-dkg.html).
+I also described the AMT construction in this [blog post](/amt).
 
 The advantage[^allproofs] of our $\log{n}$-sized AMT proofs is that, unlike $O(1)$-sized KZG proofs, they are **maintainable**.
 Specifically, if one computes $n$ AMT proofs for, say, root-of-unity evaluation points $(\omega^0, \omega^1, \omega^2, \ldots, \omega^{n-1})$, then if the polynomial changes at one of those roots of unity, then one can efficiently update **all proofs** in $O(\log{n})$ time!

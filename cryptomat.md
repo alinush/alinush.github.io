@@ -14,7 +14,7 @@ sidebar:
 This is my perpetual effort aimed at summarizing various concepts in cryptography.
 
 Start with some basic things:
- - [Pairings](pairings), or: _"Versatile elliptic curves that power most modern crypto!"_
+ - [Pairings](/pairings), or: _"Versatile elliptic curves that power most modern crypto!"_
  - [KZG polynomial commitments](/kzg), or: _"How to get succinctness if modern SNARKs?"_
  - [RSA accumulators](/rsa-accumulators), or: _"Who needs Merkle trees anyway?"_
 
