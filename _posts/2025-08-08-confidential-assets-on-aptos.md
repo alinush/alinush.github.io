@@ -487,8 +487,7 @@ Apps:
 
 ## Appendix: Benchmarks
 
-All of these are run on my Macbook Pro M1 Max, in high power mode.
-All are single-threaded, AFAIK.
+All benchmarks are run **single-threaded** on an Apple Macbook Pro M4 Max.
 
 ### Bit-widths of Aptos balances (in octas) on mainnet
 
@@ -531,17 +530,16 @@ The problem is MPHF-based hashing does not return `None` when you're hashing som
 ### Rust DLP: [BL12]
 
 ```
-Kangaroo 16-bit secrets time:   [93.397 µs 93.841 µs 94.297 µs]
-
-Kangaroo 32-bit secrets time:   [7.9513 ms 8.4471 ms 8.9553 ms]
-
-Kangaroo 48-bit secrets time:   [763.90 ms 1.1598 s 1.6174 s]
+[BL12] 32-bit secrets   time:   [4.6197 ms 4.8080 ms 5.0194 ms]
 ```
 
-### Rust DLP: Naive BSGS with compression after every step
+{: .note}
+On my old M1 Max, for 48 bits, BL12 times were: `[763.90 ms 1.1598 s 1.6174 s]`.
+
+### Rust DLP: BSGS (compression after every step)
 
 ```
-BSGS 32-bit secrets     time:   [99.317 ms 119.34 ms 139.48 ms]
+[BSGS] 32-bit secrets   time:   [63.673 ms 69.557 ms 75.040 ms]
 ```
 
 ### Rust DLP: BSGS with compression batch size $k$
@@ -549,65 +547,93 @@ BSGS 32-bit secrets     time:   [99.317 ms 119.34 ms 139.48 ms]
 For discrete logs on 32-bit values with tables for 32-bits:
 ```
 [BSGS-k1], 32-bit secrets
-                        time:   [110.60 ms 151.21 ms 184.73 ms]
+                        time:   [48.397 ms 58.791 ms 71.057 ms]
 
 [BSGS-k2], 32-bit secrets
-                        time:   [69.391 ms 77.605 ms 83.465 ms]
+                        time:   [39.679 ms 41.498 ms 42.709 ms]
 
 [BSGS-k4], 32-bit secrets
-                        time:   [45.726 ms 50.188 ms 56.264 ms]
+                        time:   [26.182 ms 27.725 ms 28.876 ms]
 
 [BSGS-k8], 32-bit secrets
-                        time:   [29.779 ms 33.050 ms 36.316 ms]
+                        time:   [17.448 ms 19.025 ms 20.332 ms]
 
 [BSGS-k16], 32-bit secrets
-                        time:   [22.947 ms 24.992 ms 27.162 ms]
+                        time:   [14.812 ms 15.902 ms 16.538 ms]
 
 [BSGS-k32], 32-bit secrets
-                        time:   [19.536 ms 20.419 ms 21.443 ms]
+                        time:   [11.740 ms 12.097 ms 12.669 ms]
 
 [BSGS-k64], 32-bit secrets
-                        time:   [19.697 ms 20.707 ms 22.185 ms]
+                        time:   [11.828 ms 12.274 ms 12.554 ms]
 
 [BSGS-k128], 32-bit secrets
-                        time:   [16.332 ms 18.104 ms 20.259 ms]
+                        time:   [11.964 ms 12.468 ms 12.977 ms]
 
 [BSGS-k256], 32-bit secrets
-                        time:   [18.265 ms 19.817 ms 21.729 ms]
+                        time:   [10.943 ms 11.496 ms 11.986 ms]
 
 [BSGS-k512], 32-bit secrets
-                        time:   [17.480 ms 18.578 ms 19.166 ms]
+                        time:   [10.860 ms 11.427 ms 12.553 ms]
 
 [BSGS-k1024], 32-bit secrets
-                        time:   [18.623 ms 20.118 ms 21.567 ms]
+                        time:   [10.509 ms 11.230 ms 11.894 ms]
 
 [BSGS-k2048], 32-bit secrets
-                        time:   [17.741 ms 18.244 ms 18.840 ms]
+                        time:   [10.785 ms 11.400 ms 12.077 ms]
 
 [BSGS-k4096], 32-bit secrets
-                        time:   [18.639 ms 20.364 ms 22.003 ms]
+                        time:   [12.238 ms 12.617 ms 12.921 ms]
 
 [BSGS-k8192], 32-bit secrets
-                        time:   [19.777 ms 21.778 ms 24.215 ms]
+                        time:   [12.678 ms 13.061 ms 13.319 ms]
 
 [BSGS-k16384], 32-bit secrets
-                        time:   [21.709 ms 23.573 ms 25.266 ms]
+                        time:   [13.614 ms 14.166 ms 14.665 ms]
 ```
 
-For discrete log on 18-bit values but with the same tables for 32 bits, demonstrating that smaller values are solved for faster:
+For discrete log on 17-24 bit values but with the same tables for 32 bits, demonstrating that smaller values are solved for faster:
+
+```
+[BSGS-k32], 17-bit secrets (32-bit table)
+                        time:   [12.326 µs 12.362 µs 12.403 µs]
+
+[BSGS-k32], 18-bit secrets (32-bit table)
+                        time:   [12.437 µs 12.463 µs 12.490 µs]
+
+[BSGS-k32], 19-bit secrets (32-bit table)
+                        time:   [12.565 µs 12.590 µs 12.618 µs]
+
+[BSGS-k32], 20-bit secrets (32-bit table)
+                        time:   [12.680 µs 12.704 µs 12.729 µs]
+
+[BSGS-k32], 21-bit secrets (32-bit table)
+                        time:   [12.858 µs 12.882 µs 12.906 µs]
+
+[BSGS-k32], 22-bit secrets (32-bit table)
+                        time:   [19.356 µs 19.405 µs 19.460 µs]
+
+[BSGS-k32], 23-bit secrets (32-bit table)
+                        time:   [32.158 µs 32.302 µs 32.470 µs]
+
+[BSGS-k32], 24-bit secrets (32-bit table)
+                        time:   [57.987 µs 58.293 µs 58.588 µs]
+```
+
+For varying K values with 18-bit secrets:
 
 ```
 [BSGS-k64], 18-bit secrets (32-bit table)
-                        time:   [37.029 µs 37.112 µs 37.203 µs]
+                        time:   [23.114 µs 23.170 µs 23.234 µs]
 
 [BSGS-k128], 18-bit secrets (32-bit table)
-                        time:   [69.837 µs 69.939 µs 70.045 µs]
+                        time:   [43.764 µs 43.831 µs 43.896 µs]
 
 [BSGS-k1024], 18-bit secrets (32-bit table)
-                        time:   [584.86 µs 586.24 µs 587.66 µs]
+                        time:   [339.97 µs 340.48 µs 341.00 µs]
 
 [BSGS-k2048], 18-bit secrets (32-bit table)
-                        time:   [1.1385 ms 1.1416 ms 1.1449 ms]
+                        time:   [674.81 µs 675.91 µs 677.21 µs]
 ```
 
 {: .note}
