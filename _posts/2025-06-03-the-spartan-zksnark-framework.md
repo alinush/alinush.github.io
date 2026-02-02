@@ -70,7 +70,7 @@ Spartan doesn't really do that: it works directly with the R1CS matrices.
 
 A consequence of this seems to be that its proving time is, at best, $\Omega(n)$ where $n$ is the maximum number of non-zero entries in one of the three R1CS matrices.
 In contrast, SNARKs for QAP like [Groth16](/groth16) tend to have proving times of $\omega(\max{(N,m)})$ where $N$ is the number of R1CS constraints (i.e., number of rows in the matrix) and $m$ is the number of R1CS variables (i.e., number of columns).
-For example, [Groth16](/groth16/#prover-time)) does:
+For example, [Groth16](/groth16#prover-time) does:
  - 6 size-$N$ FFTs, so $O(N\log{N}) \F$ multiplications
  - 1 size-$(N-1) \Gr_1$ multi-large-scalar multiplication (large-MSM)
  - 1 size $\approx m$ $\Gr_2$ multi-small-scalar multiplication (small-MSM)

@@ -49,7 +49,7 @@ Verifies the signature $\sigma$ on $m$ under the public key $\pk$, returning 1 f
 
 This blog has several examples of digital signatures schemes that instantiate the algorithms above.
 [Schnorr](/schnorr) and [ECDSA](/ecdsa) are the most popular ones used today (2025).
-But we also cover more esoteric schemes like [BBS+](/bbs) or [PS](/pointcheval-sanders).
+But we also cover more esoteric schemes like [BBS+](/bbs+) or [PS](/pointcheval-sanders).
 
 ## Correctness
 

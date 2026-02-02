@@ -99,7 +99,7 @@ We assume familiarity with:
     + i.e., sign a message $m$ as $\sigma \gets \sig.\sign(\sk, m)$ and verify via $\sig.\verify(\pk, \sigma, m)\equals 1$
  - [ElGamal encryption](/elgamal)
  - Batched range proofs (e.g., [DeKART](/dekart))
- - ZKSoKs (i.e., [$\Sigma$-protocols](/sigma-protocols) that implicitly sign over a message by feeding it into the Fiat-Shamir transform).
+ - ZKSoKs (i.e., [$\Sigma$-protocols](/sigma) that implicitly sign over a message by feeding it into the Fiat-Shamir transform).
  - The SCRAPE low-degree test
 
 All of these will be described in more detail in the subsections below.

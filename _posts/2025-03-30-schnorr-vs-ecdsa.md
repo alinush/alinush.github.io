@@ -85,7 +85,7 @@ Variations like $(e,s)$-Schnorr or Ed25519 do **not** support pubkey recovery!
 
 Vanilla Schnorr is arguably **slighyly simpler** to implement, since ECDSA requires:
 
- - efficient modular inversion to compute $k^{-1}$ (see $\mathsf{ECDSA.Sign}$ [here](http://localhost:4000/ecdsa#algorithms)) and $s^{-1}$ (see $\mathsf{ECDSA.Verify}$ [here](http://localhost:4000/ecdsa#algorithms))
+ - efficient modular inversion to compute $k^{-1}$ (see $\mathsf{ECDSA.Sign}$ [here](/ecdsa#algorithms)) and $s^{-1}$ (see $\mathsf{ECDSA.Verify}$ [here](/ecdsa#algorithms))
  - ensuring that $k,r$ and $s$ are not zero during signing
  - ensuring that $r$ and $s$ are not zero during verification
 

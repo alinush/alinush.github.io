@@ -478,7 +478,7 @@ Documentation & articles:
 
 Implementation:
  - [$\Sigma$-protocols in Move](https://github.com/aptos-labs/aptos-core/pull/17660/)
- - [Move module](https://github.com/aptos-labs/aptos-core/blob/main/aptos-move/framework/aptos-experimental/sources/confidential_asset/confidential_asset.move )
+ - [Move module](https://github.com/aptos-labs/aptos-core/blob/main/aptos-move/framework/aptos-experimental/sources/confidential_asset/confidential_asset.move)
  - [TypeScript SDK](https://github.com/aptos-labs/aptos-ts-sdk/tree/main/confidential-assets)
  - [Confidential payments demo](https://github.com/aptos-labs/confidential-payments-example)
 

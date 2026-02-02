@@ -45,7 +45,7 @@ Given a *vector* $\mathbf{v}$, computes its commitment $c$ and _authentication d
 Depending on the VC scheme, $\ad$ can store the vector $\mathbf{v}$, the commitment $c$, and/or any pre-computed proofs.
 For [Merke-based VCs](/merkle), the $\ad$ would include the Merkle tree itself.
 This way, the prover, who has $\ad$, can prove $v_j$ is the $j$th element by giving a Merkle path to it.
-For [KZG-based VCs with FK](/fk), the $\ad$ would include all $n$ precomputed _(individual) proofs_ for each position $j\in[n]$.
+For [KZG-based VCs with FK](/feist-khovratovich), the $\ad$ would include all $n$ precomputed _(individual) proofs_ for each position $j\in[n]$.
 
 $\mathsf{VC.Prove}(\ad, j) \rightarrow (\pi\_j)$  
 Given authentication data $\ad$, fetch (or compute) an _individual proof_ $\pi_j$ for *element* $v_j$ being at position $j$.
