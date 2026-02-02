@@ -227,6 +227,30 @@ Not relevant for Groth16, but for other zkSNARKs like Spartan:
 {: .note}
 I think our `task.sh` script in [the keyless-zk-proofs repo](https://github.com/aptos-labs/keyless-zk-proofs/tree/main/scripts) can be used to reproduce these "# of non-zero entries" numbers.
 
+### `gnark` proving time for a synthetic R1CS
+
+From [this branch](https://github.com/alinush/gnark/tree/alin/groth16-and-bls12-381-pairing-wrapper-benches):
+
+```
+GOMAXPROCS=1 go test -bench='Prover/bls12_381' -benchtime=1x -run='^$' -v 2>&1 
+GOMAXPROCS=1 go test -bench='Prover/bn254' -benchtime=1x -run='^$' -v 2>&1
+```
+
+Run on an Apple Macbook Pro M4 Max, single-threaded, Groth16 benchmarks for a synthetic Keyless-like circuit:
+
+| Benchmark | Time                     |
+|-----------|--------------------------|
+| Prover    | 22.17 seconds            |
+| Verifier  | 1.31 ms                  |
+
+| Benchmark | Time          |
+|-----------|---------------|
+| Prover    | 15.12 seconds |
+| Verifier  | 1.12 ms
+
+{: .warning}
+It's possible that these times are too fast: the satisfying assignment to the synthetic R1CS may be lower norm than the Keyless R1CS one.
+
 ### `arkworks` proving time for a "synthetic" R1CS
 
 From [this PR](https://github.com/aptos-labs/aptos-core/pull/18032/files):
