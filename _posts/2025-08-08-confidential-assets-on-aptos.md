@@ -528,7 +528,7 @@ This means that the DL algorithms are dominated by point-compression necessary t
 {: .error}
 The problem is MPHF-based hashing does not return `None` when you're hashing something outside the set.
 
-### DLP: [BL12]
+### Rust DLP: [BL12]
 
 ```
 Kangaroo 16-bit secrets time:   [93.397 µs 93.841 µs 94.297 µs]
@@ -538,13 +538,13 @@ Kangaroo 32-bit secrets time:   [7.9513 ms 8.4471 ms 8.9553 ms]
 Kangaroo 48-bit secrets time:   [763.90 ms 1.1598 s 1.6174 s]
 ```
 
-### DLP: Naive BSGS with compression after every step
+### Rust DLP: Naive BSGS with compression after every step
 
 ```
 BSGS 32-bit secrets     time:   [99.317 ms 119.34 ms 139.48 ms]
 ```
 
-### DLP: BSGS with compression batch size $k$
+### Rust DLP: BSGS with compression batch size $k$
 
 For discrete logs on 32-bit values with tables for 32-bits:
 ```
