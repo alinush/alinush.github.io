@@ -45,10 +45,11 @@ rbenv global 3.2.10
 ruby -v
 rbenv rehash
 
-echo 'eval "$(rbenv init - bash)"' >> ~/.bash_profile
+echo 'eval "$(rbenv init - bash)"' >> ~/.profile
 
 gem install --user-install bundler jekyll
 
+rm -f Gemfile.lock  # Remove old lock file with incompatible gem versions
 bundle install
 bundle update --bundler
 bundle install --redownload

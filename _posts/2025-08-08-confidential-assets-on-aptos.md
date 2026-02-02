@@ -511,7 +511,13 @@ Unfortunately, Ristretto255 is cursed: it needs canonical square roots computed 
 (This is inherent for any Decaf-like group, it seems.)
 This means that the DL algorithms are dominated by point-compression necessary to index into the precomputed tables.
 
-### DLP precomputated table sizes
+### DLP WASM sizes & precomputated table sizes
+
+#### Naive `HashMap`-based WASM sizes
+
+2,413 KiB is the full compiled WASM size (i.e., `confidential-asset-wasm-bindings/aptos-confidential-asset-wasm-bindings/pollard-kangaroo/aptos_pollard_kangaroo_wasm_bg.wasm`).
+
+#### MPHF-based table sizes
 
 | Algorithm           | Naive    | MPHF-based | Reduction |
 |---------------------|----------|------------|-----------|
