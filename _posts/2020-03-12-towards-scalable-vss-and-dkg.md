@@ -164,7 +164,7 @@ Finally, notice that the vanishing polynomials are "split" into left and right "
 The end result are the remainders $r_{i,i} = \phi(X) \bmod (X-i)$ which are exactly equal to the evaluations $\phi(i)$.
 
 {: .info}
-It might might not be immediately obvious but, as $n$ and $t$ get large, this approach saves us a lot of work, taking only $\Theta(n\log^2{t})$ time.
+It might not be immediately obvious but, as $n$ and $t$ get large, this approach saves us a lot of work, taking only $\Theta(n\log^2{t})$ time.
 (In contrast, the naive approach takes $\Theta(nt)$ time.)
 
 Hopefully, it should be clear by now that:
@@ -243,7 +243,7 @@ In conclusion, to verify the AMT proof for $\phi(3)$, the verifier will use the 
 
 {: .info}
 Note that for this, the verifier needs commitments to the vanishing polynomials along the path to $\phi(3)$.
-This means the verifer would need $O(n)$ such commitments as part of its public parameters to verify all $n$ proofs.
+This means the verifier would need $O(n)$ such commitments as part of its public parameters to verify all $n$ proofs.
 In the paper[^TCZplus20], we address this shortcoming by restricting the evaluation points to be roots of unity.
 This makes all vanishing polynomials be of the form $\left(X^{n/{2^i}} + c\right)$ for some constant $c$ and only requires the verifiers to have $O(\log{n})$ public parameters to reconstruct any vanishing polynomial commitment.
 It also has the advantage of reducing the multipoint eval time from $\Theta(n\log^2{t})$ to $\Theta(n\log{t})$.

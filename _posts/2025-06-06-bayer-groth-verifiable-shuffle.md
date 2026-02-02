@@ -81,7 +81,7 @@ D\_{\pi(i)}
 {: .note}
 Intuition is that they rerandomize the $i$th original ciphertext by $x^i$ and the $i$th new ciphertext by $x^{\pi(i)}$ and check equality of product of rerandomizations.
 
-It's a bit hard to see but because $B_i$ gets multiplied by $x^i$ and and $B'_i$ by $x^{\pi(i)}$. 
+It's a bit hard to see but because $B_i$ gets multiplied by $x^i$ and $B'_i$ by $x^{\pi(i)}$. 
 This means that $B'_i$ will only be cancelled out by a corresponding $B_j$ with $j = \pi(i)$.
 So that's why get the non-intuitive equality above.
 

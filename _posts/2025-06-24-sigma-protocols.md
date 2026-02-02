@@ -15,7 +15,7 @@ permalink: sigma
 ---
 
 {: .info}
-**tl;dr:** A quick note on the most commonly-occuring variant of $\Sigma$-protocols, inspired from the Boneh-Shoup textbook!
+**tl;dr:** A quick note on the most commonly-occurring variant of $\Sigma$-protocols, inspired from the Boneh-Shoup textbook!
 
 <!--more-->
 

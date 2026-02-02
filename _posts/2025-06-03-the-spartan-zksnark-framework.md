@@ -468,7 +468,7 @@ In practice, this single $M_{\r_x}$ sumcheck can be **batched, carefully,** so a
 We refer to this Eq. \ref{eq:second-sumcheck} sumcheck as Spartan's **second sumcheck**!
 (Recall the first one was in Eq. \ref{eq:first-sumcheck}).
 
-As before, the prover sends a sumcheck proof $\term{\pi_y}$ that reduces verifying the claimed sum $T$ to verifying an evaluation $\term{e_y}\bydef M_{\r_x}(\term{\r_y})$ at a random $\term{\r_y}\in\F^s$ picked by the verifer.
+As before, the prover sends a sumcheck proof $\term{\pi_y}$ that reduces verifying the claimed sum $T$ to verifying an evaluation $\term{e_y}\bydef M_{\r_x}(\term{\r_y})$ at a random $\term{\r_y}\in\F^s$ picked by the verifier.
 
 To verify the $e_y$ evaluation, the verifier needs to check:
 \begin{align}

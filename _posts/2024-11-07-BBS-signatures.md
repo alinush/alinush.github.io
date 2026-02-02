@@ -21,7 +21,7 @@ Do you want to sign (committed) field elements without relying on random oracles
 Do you want to efficiently prove (in zero-knowledge) relations over your signed messages?
 BBS+ is here to help you!
 
-The **BBS+ signature scheme** is a transformation[^ASM08e] of the the _Boneh-Boyen-Shacham (BBS)_ **group** signature scheme[^BBS04] into a **standalone** signature scheme.
+The **BBS+ signature scheme** is a transformation[^ASM08e] of the _Boneh-Boyen-Shacham (BBS)_ **group** signature scheme[^BBS04] into a **standalone** signature scheme.
 
 This blog post describes BBS+ as well as a recent improvement over it dubbed **standalone BBS**[^TZ23e].
 

@@ -369,7 +369,7 @@ So, our $b+t=32$.
 ### How many types of discrete log instances do you have to solve?
 
 Recall that:
-1. Transfered amounts are 64-bits and chunked into $b$-bit chunks.
+1. Transferred amounts are 64-bits and chunked into $b$-bit chunks.
 2. Balances are 128-bit and also $b$-bit chunked $\Rightarrow$ they have double the # of chunks
     + Also, balances "accumulate" transfers in
 

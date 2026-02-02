@@ -291,7 +291,7 @@ This actually creates subtle issues when batch-verifying Schnorr signatures, for
 ## Conclusion
 
 By now, you should be pretty well-versed in Schnorr signatures and a few of their properties: nonce reuse attacks, batch verification, alternative forms, etc.
-Nonethless, there is so much more to say about them (e.g., [why you should prefer Schnorr over ECDSA](/schnorr-vs-ecdsa)).
+Nonetheless, there is so much more to say about them (e.g., [why you should prefer Schnorr over ECDSA](/schnorr-vs-ecdsa)).
 Perhaps this article will grow over time.
 
 ### Questions left
@@ -300,7 +300,7 @@ Perhaps this article will grow over time.
  1. The original Schnorr paper[^Schn89] claims $\lambda$-bit hashes (as opposed to $2\lambda$) are sufficient for $\lambda$-bit security. I believe this analysis remains true?
     + A 2015 paper suggests that such "short" Schnorr signatures could still be secure, but not under the weak "random prefix resistance" property of the hash function[^Brow15e]
  1. What is a good academic reference for the *cleanest* EUF-CMA security proof for (single-signer) Schnorr?
- 1. What is the the earliest work that defines Schnorr signatures over elliptic curves?
+ 1. What is the earliest work that defines Schnorr signatures over elliptic curves?
  1. What is the significance of [PV05][^PV05]
 
 ### TODOs

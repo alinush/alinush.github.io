@@ -49,7 +49,7 @@ Even better, the recent lattice-based vector commitments by Peikert et al.[^PPS2
 
 ## RSA moduli of unknown complete factorization (UFOs)
 
-One last theoretical idea is to generate an RSA group with a modulus $N$ of unknown factorization using the _"RSA UFO"_ technique by Sander[^Sand99]. Unfortunatly, such $N$ are too large and kill performance.
+One last theoretical idea is to generate an RSA group with a modulus $N$ of unknown factorization using the _"RSA UFO"_ technique by Sander[^Sand99]. Unfortunately, such $N$ are too large and kill performance.
 Specifically, instead of the typical 2048-bit or 4096-bit, RSA UFO $N$'s are hundreds of thousands of bits (or larger?). Improving this would be a great avenue for future work.
 
 {% include refs.md %}

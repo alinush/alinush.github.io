@@ -160,7 +160,7 @@ See some [PLONK explorations below](#plonk).
     - Wrap sumcheck
  1. **Client-side proving:**
     + Same as in PLONK [above](#plonk-based), except maybe custom gates don't have as big of an impact on prover time
-    + (Note: in univariate PLONK, custom gates affect quotient poylnomial degree but do not affect KZG SRS size because, apparently, PLONK splits up the quotient polynomial into size-$n$ chunks)
+    + (Note: in univariate PLONK, custom gates affect quotient polynomial degree but do not affect KZG SRS size because, apparently, PLONK splits up the quotient polynomial into size-$n$ chunks)
 
 ### WHIR-based (PQ)
 

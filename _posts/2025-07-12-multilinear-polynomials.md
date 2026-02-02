@@ -57,7 +57,7 @@ Note that the $c_\b$'s are the polynomial's **coefficients**.
 
 ## Lagrange polynomials
 
-We want to define a multilinear polynomial $\eq$ such that that:
+We want to define a multilinear polynomial $\eq$ such that:
 \begin{align}
 \forall \X,\b\in\binS,
 \term{\eq(\X;\b)} &\bydef \begin{cases}

@@ -54,7 +54,7 @@ Example of threshold protocols:
  + 2-round FROST[^KG20] (even more efficient)
 
 {: .note}
-Of course, if you're looking for the the fastest threshold protocol, you should go for our [threshold BLS](/threshold-bls)!
+Of course, if you're looking for the fastest threshold protocol, you should go for our [threshold BLS](/threshold-bls)!
 
 ### Batch verification
 
@@ -83,7 +83,7 @@ Variations like $(e,s)$-Schnorr or Ed25519 do **not** support pubkey recovery!
 
 ### Simpler, faster & safer
 
-Vanilla Schnorr is arguably **slighyly simpler** to implement, since ECDSA requires:
+Vanilla Schnorr is arguably **slightly simpler** to implement, since ECDSA requires:
 
  - efficient modular inversion to compute $k^{-1}$ (see $\mathsf{ECDSA.Sign}$ [here](/ecdsa#algorithms)) and $s^{-1}$ (see $\mathsf{ECDSA.Verify}$ [here](/ecdsa#algorithms))
  - ensuring that $k,r$ and $s$ are not zero during signing

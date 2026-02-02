@@ -23,7 +23,7 @@ int aes_encrypt_file(const char * infile, const char * outfile, const void * key
   
   assert(cipher_block_size <= BUF_SIZE);
   
-  // The output buffer size needs to be bigger to accomodate incomplete blocks
+  // The output buffer size needs to be bigger to accommodate incomplete blocks
   // See EVP_EncryptUpdate documentation for explanation:
   //    http://lmgtfy.com/?q=EVP_EncryptUpdate
   int insize = BUF_SIZE;

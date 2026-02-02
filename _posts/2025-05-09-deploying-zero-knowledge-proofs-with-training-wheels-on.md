@@ -47,7 +47,7 @@ Training wheels (a.k.a., safety wheels) are a mitigation against this class of i
 
 ## Training wheels or safety wheels 
 
-Recall that a [ZKP](/zkps) protocol is designed to prove knowlege of a witness $\witn$, such that $R(\stmt; \witn)= 1$, for some interesting relation $R$ in some application setting.
+Recall that a [ZKP](/zkps) protocol is designed to prove knowledge of a witness $\witn$, such that $R(\stmt; \witn)= 1$, for some interesting relation $R$ in some application setting.
 
 {: .note}
 For example, for [Aptos Keyless accounts](/keyless), the relation $R$ is described in some detail [here](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-61.md#the-keyless-zk-relation-mathcalr).

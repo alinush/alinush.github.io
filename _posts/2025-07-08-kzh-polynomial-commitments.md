@@ -589,4 +589,4 @@ For cited works, see below 👇👇
 
 [^ck]: We are excluding the $\Vp$ and $\VV$ components from $\kzhTwo$'s $\ck$ because are not actually needed to create a commitment.
 [^N]: In the KZH paper[^KZHB25e], the setup algorithm only takes $N$ as input (but they confusingly denote it by $k$?)
-[^open]: In the KZH paper[^KZHB25e], the evaluation $z$ is also included in the proof, but this is unnecessary. Furthermore, the paper's opening algorithm unnecessarily includes the proving key $\ck$ as a a parameter, even thought it does **not** use it at all.
+[^open]: In the KZH paper[^KZHB25e], the evaluation $z$ is also included in the proof, but this is unnecessary. Furthermore, the paper's opening algorithm unnecessarily includes the proving key $\ck$ as a parameter, even though it does **not** use it at all.

@@ -62,7 +62,7 @@ In contrast, when $\vec{x}\in\F^n$ (i.e., a column vector) and $\vec{y}\in\F^{1\
 
 ## Matrices
 
-An $n$-row by $m$-colum **matrix** $\mat{A}$ is denoted by:
+An $n$-row by $m$-column **matrix** $\mat{A}$ is denoted by:
 
 \begin{align}
 \mat{A} \in \F^{n\times m} &\bydef (A\_{i,j})\_{i\in[n],j\in[m]} = 

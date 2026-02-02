@@ -186,7 +186,7 @@ The Extended Euclidean Algorithm (EEA) can be used to obtain the inverse $a = e^
 
 $$ae + b\ell = 1 \Rightarrow a = (1 - b\ell)/e$$
 
-Also, note that that $u^e = g$ and so $(u, e)$ is a solution to the Strong RSA problem $g$:
+Also, note that $u^e = g$ and so $(u, e)$ is a solution to the Strong RSA problem $g$:
 
 $$u^e = (g^{e^{-1} \bmod \ell})^e = (g^\frac{1-b\ell}{e})^e = g^{1-b\ell} = g/(g^{\ell})^b= g$$
 
