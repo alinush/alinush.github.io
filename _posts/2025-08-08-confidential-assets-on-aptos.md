@@ -527,6 +527,18 @@ This means that the DL algorithms are dominated by point-compression necessary t
 {: .error}
 The problem is MPHF-based hashing does not return `None` when you're hashing something outside the set.
 
+### TS DLP: [BL12] and BSGS
+
+These were run in the TS SDK repo via: `pnpm jest discrete-log`
+
+```
+WASM [BL12] 16-bit: avg=0.24ms, min=0.19ms, max=0.30ms
+WASM [BL12] 32-bit: avg=42.59ms, min=34.17ms, max=56.06ms
+
+TS BSGS 16-bit: avg=7.47ms, min=5.82ms, max=8.24ms
+TS BSGS 32-bit: avg=2252.36ms, min=1539.60ms, max=3359.79ms
+```
+
 ### Rust DLP: [BL12]
 
 ```
