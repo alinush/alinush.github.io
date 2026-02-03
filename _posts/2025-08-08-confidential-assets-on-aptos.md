@@ -267,8 +267,6 @@ Our work builds-and-improves upon these works:
  - 2025, [Taurus Releases Open-Source Private Security Token for Banks, Powered by Aztec](https://www.taurushq.com/blog/taurus-releases-open-source-private-security-token-for-banks-powered-by-aztec/), see [repo here](https://github.com/taurushq-io/private-CMTAT-aztec?tab=readme-ov-file)
  - 2025, [Solana's confidential transfers](https://solana.com/docs/tokens/extensions/confidential-transfer)
 
-Explain the algorithm.
-
 ## Upgradeability
 
 There will be many reasons to upgrade our confidential asset protocol (CFA):
@@ -451,17 +449,17 @@ Currently, we believe this to be either $b=8$-bit or $b=16$-bit chunks.
 
 A **secondary tension** is between:
  1. The # of incoming transfers $2^t - 1$ we allow without requiring a rollover from the pending balance into the available balance
- 2. The max discrete log instance we are willing to ever solve for via specialized algorithms like BL DL[^BL12]
+ 2. The max discrete log instance we are willing to ever solve for via specialized algorithms like [BL12][^BL12]
     + This instance would arise when decrypting the pending or the available balance
 
-One of the difficulties is that BL DL[^BL12] is a probabilistic algorithm. 
+One of the difficulties is that [BL12][^BL12] is a probabilistic algorithm. 
 This seems harmless, in theory, but we've actually encountered failures that are hard to debug when confidential apps are deployed.
-Furthermore, our current BL DL implementation is in WASM (compiled from Rust) which increases the size of confidential dapps, complicates our code and makes debugging harder.
+Furthermore, our current [BL12][^BL12] implementation is in WASM (compiled from Rust) which increases the size of confidential dapps, complicates our code and makes debugging harder.
 
 So, for ease of debugging, ease of implementing and for a consistent UX, we'd prefer deterministic algorithms that are guaranteed to terminate in a known amount of steps, like BSGS.
 This way, we can guarantee none of our users will ever run into issues.
 
-Unfortunately, deterministic algorithms are slower: BSGS on values in $[m)$ takes $O(\sqrt{m})$ time and space while BL DL only takes $O(m^{1/3})$ time and space.
+Unfortunately, deterministic algorithms are slower: BSGS on values in $[m)$ takes $O(\sqrt{m})$ time and space while [BL12][^BL12] only takes $O(m^{1/3})$ time and space.
 This means that the highest $m$ we can hope to use with BSGS is in $[2^{32}, 2^{36})$, or so.
 So, our $b+t=32$.
 
@@ -505,7 +503,7 @@ We can of course change this in the future.
 
 Third, for available balances, this is where the sender can **indeed** store a hint for themselves.
 The sender can do so:
-1. After sending a TXN out, which decreases their avaiable balance
+1. After sending a TXN out, which decreases their available balance
 2. After normalizing their available balance
 
 If:
@@ -518,7 +516,7 @@ If:
 On the other hand, if using $b+t = 32$ bits, then I estimate that a 32-bit discrete log via BSGS will take around 1 second in the browser (i.e., 13 ms $\times$ 10x slowdown${}\times \ell$ chunks $= 13$ ms${} \times 10 \times 8$ chunks $= 1.04$ seconds). 
 
 {: .info}
-**Decision:** Either way, we need a DL algorithm for $(b+t)$-bit values in case the hint is wrong/corrupted by bad SDKs. So, for now, we adopt the simpler approach, but we should leave open the possiblity of adding hints in the future.
+**Decision:** Either way, we need a DL algorithm for $(b+t)$-bit values in case the hint is wrong/corrupted by bad SDKs. So, for now, we adopt the simpler approach, but we should leave open the possibility of adding hints in the future.
 We can allow for "extensions" fields in a user's confidential asset balance.
 Maybe make it an `enum`.
 
@@ -648,7 +646,7 @@ cd confidential-asset-wasm-bindings/
 {: .note}
 This unified WASM combines both discrete log and range proof functionality into a single module, sharing the curve25519-dalek elliptic curve library.
 
-### Rust DLP: [BL12]
+### Rust DLP: [BL12][^BL12]
 
 ```
 [BL12] 32-bit secrets   time:   [4.6197 ms 4.8080 ms 5.0194 ms]
@@ -810,7 +808,7 @@ For varying K values with 18-bit secrets:
 
 {: .note}
 **Decision:** Stick with 16 bit chunks and use the [naive DL algorithm](#naive-discrete-log-algorithm): store all solutions in tables of $2^{16}$ group elements ($2^{16}\times 32$ bytes $\Rightarrow 2$ MiB) and compute the DL in constant time, when chunks are small!
-When chunks are big, resort to TBSGS-k or to [BL12]. 
+When chunks are big, resort to TBSGS-k or to [BL12][^BL12]. 
 <!-- 16 chunks of 8-bit each give $2^4$ additions to decrypt: so, 3.20 $\mu$s per chunk $\Rightarrow $ 51.2 $\mu$s per TXN $\Rightarrow$ 19,500 TXN decryptions per second in Rust (or 1000 in the browser).-->
 We have to be conservative because a user may be using multiple confidential apps at the same time and/or the browser may be busy doing other things.
 
@@ -820,7 +818,7 @@ We have to be conservative because a user may be using multiple confidential app
 [BSGS] 32-bit secrets   time:   [63.673 ms 69.557 ms 75.040 ms]
 ```
 
-### WASM DLP: [BL12] 
+### WASM DLP: [BL12][^BL12] 
 
 These were run on an older version of the TS SDK repo via: `pnpm jest discrete-log`
 
@@ -829,7 +827,7 @@ WASM [BL12] 16-bit: avg=0.24ms, min=0.19ms, max=0.30ms
 WASM [BL12] 32-bit: avg=42.59ms, min=34.17ms, max=56.06ms
 ```
 
-### WASM DLP: TBSGS-$k$ and NaiveTruncatedDoubleLookup
+### WASM DLP: TBSGS-$k$ and NaiveTruncatedDoubledLookup
     
 ```
 WASM NaiveTruncatedDoubledLookup 16-bit: avg=1.50ms, min=1.33ms, max=2.29ms
