@@ -510,22 +510,33 @@ Unfortunately, Ristretto255 is cursed: it needs canonical square roots computed 
 (This is inherent for any Decaf-like group, it seems.)
 This means that the DL algorithms are dominated by point-compression necessary to index into the precomputed tables.
 
-### DLP WASM sizes & precomputated table sizes
+### DLP WASM sizes & precomputed table sizes
 
-#### Naive `HashMap`-based WASM sizes
+#### Current WASM & table sizes
 
-2,413 KiB is the full compiled WASM size (i.e., `confidential-asset-wasm-bindings/aptos-confidential-asset-wasm-bindings/pollard-kangaroo/aptos_pollard_kangaroo_wasm_bg.wasm`).
+**WASM size:** 2,117 KiB (compiled `aptos_pollard_kangaroo_wasm_bg.wasm`)
 
-#### MPHF-based table sizes
+**Precomputed table sizes:**
 
-| Algorithm           | Naive    | MPHF-based | Reduction |
+| Algorithm     | Size     |
+|---------------|----------|
+| BSGS 32-bit   | 2.00 MiB |
+| BSGS-k 32-bit | 2.00 MiB |
+| BL12 32-bit   | 258 KiB  |
+
+Tables store 65,536 CompressedRistretto points (32 bytes each) sorted by discrete log.
+Values are implicit (index = value), rebuilt into HashMap at load time.
+
+#### MPHF-based table sizes (not used)
+
+| Algorithm           | HashMap  | MPHF-based | Reduction |
 |---------------------|----------|------------|-----------|
 | BSGS 32-bit         | 2.50 MiB | 534 KiB    | 79%       |
 | BSGS-k 32-bit       | 2.50 MiB | 534 KiB    | 79%       |
 | Naive Lookup 16-bit | 2.50 MiB | 534 KiB    | 79%       |
 
 {: .error}
-The problem is MPHF-based hashing does not return `None` when you're hashing something outside the set.
+MPHF cannot detect "key not in set" - it always returns some index. For BSGS where most lookups are misses, this is unacceptable without storing keys alongside (defeating the space savings).
 
 ### TS DLP: [BL12] and BSGS
 
