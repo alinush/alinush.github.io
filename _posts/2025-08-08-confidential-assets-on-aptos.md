@@ -574,6 +574,8 @@ Documentation & articles:
  - TBA: Aptos Improvement Proposal
 
 Implementation:
+ - [Ristretto255 discrete logarithm algorithms](https://github.com/aptos-labs/ristretto255-dlog)
+ - [WASM bindings for DL algorithms and Bulletproofs](https://github.com/aptos-labs/confidential-asset-wasm-bindings)
  - [$\Sigma$-protocols in Move](https://github.com/aptos-labs/aptos-core/pull/17660/)
  - [Move module](https://github.com/aptos-labs/aptos-core/blob/main/aptos-move/framework/aptos-experimental/sources/confidential_asset/confidential_asset.move)
  - [TypeScript SDK](https://github.com/aptos-labs/aptos-ts-sdk/tree/main/confidential-assets)
