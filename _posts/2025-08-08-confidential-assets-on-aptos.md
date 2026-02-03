@@ -226,7 +226,7 @@ Specifically, instead of storing $(j, \jG{j})\_{j\in[s)}$, we store:
 \end{align}
 where $\term{\mathsf{Trunc}}$ returns the first 8 bytes and $\term{\mathsf{Compress}}$ is the standard Ristretto255 point compression.
 
-We give formal algorithms for TBSGS-$k$ below, building on the [BSGS algorithms above](#mathsfbsgsprecomputem-in-mathbbn-gin-mathbbgr-rightarrow-mathsftbl).
+We give formal algorithms for TBSGS-$k$ below, building on the [BSGS-$k$ algorithms above](#bsgs-k-discrete-log-algorithm).
 
 #### $\mathsf{TBSGS\text{-}k.Precompute}(m\in \N, G\in\Gr) \rightarrow \table$
 
@@ -609,16 +609,7 @@ Unfortunately, Ristretto255 is cursed: it needs canonical square roots computed 
 (This is inherent for any Decaf-like group, it seems.)
 This means that the DL algorithms are dominated by point-compression necessary to index into the precomputed tables.
 
-### DLP WASM sizes & precomputed table sizes
-
-#### Current WASM & table sizes
-
-**WASM size:** 774 KiB (compiled `aptos_confidential_asset_wasm_bg.wasm`)
-
-{: .note}
-This unified WASM combines both discrete log and range proof functionality into a single module, sharing the curve25519-dalek elliptic curve library.
-
-**Precomputed table sizes:**
+### Discrete log precomputed table sizes
 
 | Algorithm       | Size     |
 |-----------------|----------|
@@ -639,19 +630,23 @@ TBSGS-k is the default algorithm, offering the best balance of WASM size and per
 | Naive Lookup 16-bit | 2.50 MiB | 534 KiB    | 79%       |
 
 {: .error}
-MPHF cannot detect "key not in set" - it always returns some index. For BSGS where most lookups are misses, this is unacceptable without storing keys alongside (defeating the space savings).
+This was an experiment gone wrong, because MPHFs cannot detect "key not in set" - it always returns some index. For BSGS where most lookups are misses, this is unacceptable without storing keys alongside (defeating the space savings).
+Plus, truncating the table is even more effective.
+But this may be due to the initially-naive MPHF implementation: may have stored values in `u64`'s?
 
-### TS DLP: [BL12] and BSGS
+### WASM size
 
-These were run in the TS SDK repo via: `pnpm jest discrete-log`
+Currently, **WASM size** is 774 KiB.
+Most of this is just the 512 KiB precomputed table for [TBSGS-$k$](#truncated-bsgs-k-tbsgs-k-discrete-log-algorithm).
 
 ```
-WASM [BL12] 16-bit: avg=0.24ms, min=0.19ms, max=0.30ms
-WASM [BL12] 32-bit: avg=42.59ms, min=34.17ms, max=56.06ms
-
-TS BSGS 16-bit: avg=7.47ms, min=5.82ms, max=8.24ms
-TS BSGS 32-bit: avg=2252.36ms, min=1539.60ms, max=3359.79ms
+git clone https://github.com/aptos-labs/confidential-asset-wasm-bindings
+cd confidential-asset-wasm-bindings/
+./scripts/wasm-sizes.sh
 ```
+
+{: .note}
+This unified WASM combines both discrete log and range proof functionality into a single module, sharing the curve25519-dalek elliptic curve library.
 
 ### Rust DLP: [BL12]
 
@@ -661,12 +656,6 @@ TS BSGS 32-bit: avg=2252.36ms, min=1539.60ms, max=3359.79ms
 
 {: .note}
 On my old M1 Max, for 48 bits, BL12 times were: `[763.90 ms 1.1598 s 1.6174 s]`.
-
-### Rust DLP: BSGS (compression after every step)
-
-```
-[BSGS] 32-bit secrets   time:   [63.673 ms 69.557 ms 75.040 ms]
-```
 
 ### Rust DLP: (Truncated-)BSGS with batch size $k$
 
@@ -824,6 +813,38 @@ For varying K values with 18-bit secrets:
 When chunks are big, resort to TBSGS-k or to [BL12]. 
 <!-- 16 chunks of 8-bit each give $2^4$ additions to decrypt: so, 3.20 $\mu$s per chunk $\Rightarrow $ 51.2 $\mu$s per TXN $\Rightarrow$ 19,500 TXN decryptions per second in Rust (or 1000 in the browser).-->
 We have to be conservative because a user may be using multiple confidential apps at the same time and/or the browser may be busy doing other things.
+
+### Rust DLP: BSGS (compression after every step)
+
+```
+[BSGS] 32-bit secrets   time:   [63.673 ms 69.557 ms 75.040 ms]
+```
+
+### WASM DLP: [BL12] 
+
+These were run on an older version of the TS SDK repo via: `pnpm jest discrete-log`
+
+```
+WASM [BL12] 16-bit: avg=0.24ms, min=0.19ms, max=0.30ms
+WASM [BL12] 32-bit: avg=42.59ms, min=34.17ms, max=56.06ms
+```
+
+### WASM DLP: TBSGS-$k$ and NaiveTruncatedDoubleLookup
+    
+```
+WASM NaiveTruncatedDoubledLookup 16-bit: avg=1.50ms, min=1.33ms, max=2.29ms
+
+WASM TBSGS-k32 32-bit: avg=20.15ms, min=1.84ms, max=39.55ms
+```
+
+### TypeScript DLP: BSGS
+
+These were run in the TS SDK repo via: `pnpm jest discrete-log`
+
+```
+TS BSGS 16-bit: avg=7.47ms, min=5.82ms, max=8.24ms
+TS BSGS 32-bit: avg=2252.36ms, min=1539.60ms, max=3359.79ms
+```
 
 ### Gas benchmarks for `confidential_asset` v1.0 Move module
 
