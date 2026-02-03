@@ -26,9 +26,21 @@ permalink: confidential-assets
 <div style="display: none;">$
 \def\table{\mathsf{tbl}}
 \def\jG#1{\green{#1\cdot G}}
+% BSGS
 \def\bsgsPrecompute{\mathsf{BSGS.Precompute}}
 \def\bsgsSolve{\mathsf{BSGS.Solve}}
 \def\msG{\green{-s \cdot G}}
+\def\twojG#1{\green{2#1\cdot G}}
+%
+% BSGS-k
+\def\trunc#1{\mathsf{Trunc}\left(#1\right)}
+\def\compress#1{\mathsf{Compress}\left(#1\right)}
+\def\doubleAndCompressBatch#1{\mathsf{DoubleAndCompressBatch}\left(#1\right)}
+\def\twomsG{\green{-2s \cdot G}}
+\def\ctwojG#1{\compress{\twojG{#1}}}
+%
+% TBSGS-k
+\def\tctwomjG#1{\trunc{\ctwojG{#1}}}
 \def\sqm{\ceil{\sqrt{m}}}
 $</div> <!-- $ -->
 
@@ -136,7 +148,7 @@ Recall that $\term{s}\bydef\sqm$.
 
 Compute the table in $\GaddG{(s-1)}$ time and return it:
 \begin{align}
-\table \gets (s, (\jG{j})_{j\in[s)}, \msG) \in \N \times (\N\times \Gr)^s \times \Gr
+\table \gets (s, (\jG{j})_{j\in[s)}, \msG) \in \N \times \Gr^s \times \Gr
 \end{align}
 
 #### $\mathsf{BSGS.Solve}(\table, H\in\Gr) \rightarrow a \in [m)\times \\{\bot\\}$
@@ -156,6 +168,93 @@ If we reached this point, this means no $i,j\in[s)$ were found.
 This, in turn, means $a \ge s^2 \ge m$.
 
 Therefore, return $\bot$.
+
+### BSGS-$k$ discrete log algorithm
+
+BSGS-$k$ is a variant of BSGS that **dramatically speeds up** the solve algorithm by batching $k$ giant steps together.
+When used on Ristretto255 curves, BSGS's main bottleneck is the expensive point compression required to index into the precomputed table after every giant step.
+BSGS-$k$ avoids this by first computing $k$ giant steps via $k-1$ group additions and then compressing all $k$ points at once.
+Unfortunately, batch compression is **not** supported in Ristretto255.
+(Feel free to open that can of worms on your own.)
+But, fortunately, doubled point compression **is** supported via a $\doubleAndCompressBatch{\cdot}$ algorithm.
+As a result, we observe that the BSGS algorithm can be adjusted to work over these doubled points!
+
+We give formal algorithms for BSGS-$k$ below, building on the [BSGS algorithms above](#baby-step-giant-step-bsgs-discrete-log-algorithm).
+
+#### $\mathsf{Compress}(H\in \Gr) \rightarrow \\{0,1\\}^{256}$
+
+Returns a 32-byte (256-bit) compressed canonical representation of the group element $H$.
+
+#### $\mathsf{DoubleAndCompressBatch}\left((H_i)\_{i\in[k]}\in \Gr\right) \rightarrow \left(\\{0,1\\}^{256}\right)^k$
+
+Doubles all $H_i$'s and compress the results in batch, more efficiently than repeatedly calling $\compress{2\cdot H_i}$ for all $i\in [k]$.
+
+#### $\mathsf{BSGS\text{-}k.Precompute}(m\in \N, G\in\Gr) \rightarrow \table$
+
+Recall that $\term{s}\bydef\sqm$.
+
+Compute the **doubled** table in $\GaddG{(s-1)}$ time and return it:
+\begin{align}
+\table \gets (s, (\ctwojG{j})_{j\in[s)}, \twomsG) \in \N \times \Gr^s \times \Gr
+\end{align}
+
+#### $\mathsf{BSGS\text{-}k.Solve}(\table, H\in\Gr) \rightarrow a \in [m)\times \\{\bot\\}$
+
+Parse the table:
+\begin{align}
+(s, (\ctwojG{j})\_{j\in[s)}, \twomsG) \parse \table
+\end{align}
+
+Let $V_0 = H$.
+
+For each $i\in[1, s)$ in increments of $k$:
+ - Compute $V_i, V_{i+1}, \ldots, V_{i+k-1}$ via $k-1$ additions of $\msG$
+ - Compute $\doubleAndCompressBatch{V_i, \ldots, V_{i+k-1}}$ to get compressed points $(C_i, \ldots, C_{i+k-1})$, where $C_i \bydef \compress{2\cdot V_i}$
+ - For each $\ell \in [i, i+k)$:
+    + **if** $\exists j\in[s)$ such that $C_\ell \equals \ctwojG{j}$, **then** return $\ell\cdot s + j$
+
+If we reached this point, return $\bot$.
+
+### Truncated BSGS-$k$ (TBSGS-$k$) discrete log algorithm
+
+TBSGS-$k$ is a variant of BSGS that dramatically **reduces the table size** from $\sqm \cdot 32$ bytes to $\sqm \cdot 8$ bytes (a 75% reduction) while maintaining nearly-identical performance for large secrets.
+
+The key idea is to store only **truncated** 8-byte hashes of the precomputed points rather than full 32-byte compressed points.
+Specifically, instead of storing $(j, \jG{j})\_{j\in[s)}$, we store:
+\begin{align}
+\left(\tctwomjG{j}\right)\_{j\in[s)}
+\end{align}
+where $\term{\mathsf{Trunc}}$ returns the first 8 bytes and $\term{\mathsf{Compress}}$ is the standard Ristretto255 point compression.
+
+We give formal algorithms for TBSGS-$k$ below, building on the [BSGS algorithms above](#mathsfbsgsprecomputem-in-mathbbn-gin-mathbbgr-rightarrow-mathsftbl).
+
+#### $\mathsf{TBSGS\text{-}k.Precompute}(m\in \N, G\in\Gr) \rightarrow \table$
+
+Recall that $\term{s}\bydef\sqm$.
+
+Compute the **truncated** doubled table in $\GaddG{(s-1)}$ time and return it:
+\begin{align}
+\table \gets \left(s, (\tctwomjG{j})_{j\in[s)}, \msG\right) \in \N \times \\{0,1\\}^{64 \cdot s} \times \Gr
+\end{align}
+
+#### $\mathsf{TBSGS\text{-}k.Solve}(\table, H\in\Gr) \rightarrow a \in [m)\times \\{\bot\\}$
+
+Parse the table:
+\begin{align}
+(s, (\tctwomjG{j})\_{j\in[s)}, \msG) \parse \table
+\end{align}
+
+Let $V_0 = H$.
+
+For each $i\in[1, s)$ in increments of $k$:
+ - Compute $V_i, V_{i+1}, \ldots, V_{i+k-1}$ via $k-1$ additions of $\msG$
+ - Compute $\doubleAndCompressBatch{V_i, \ldots, V_{i+k-1}}$ to get compressed points $(C_i, \ldots, C_{i+k-1})$, where $C_\ell \bydef \compress{2\cdot V_\ell}$
+ - For each $\ell \in [i, i+k)$:
+    + Let $t_\ell \gets \trunc{C_\ell}$
+    + **if** $\exists j\in[s)$ such that $t_\ell \equals \tctwomjG{j}$, **then**:
+       - **if** $C_\ell \equals \ctwojG{j}$ (verify the match), **then** return $\ell\cdot s + j$
+
+If we reached this point, return $\bot$.
 
 ## Related work
 
