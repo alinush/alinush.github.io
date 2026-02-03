@@ -456,7 +456,7 @@ A **secondary tension** is between:
 
 One of the difficulties is that BL DL[^BL12] is a probabilistic algorithm. 
 This seems harmless, in theory, but we've actually encountered failures that are hard to debug when confidential apps are deployed.
-Furthermore, our current BL DL implementation is in WASM (compiled from Rust) which increases the size of confidential dapps (**TODO:** by how much?), complicates our code and makes debugging harder.
+Furthermore, our current BL DL implementation is in WASM (compiled from Rust) which increases the size of confidential dapps, complicates our code and makes debugging harder.
 
 So, for ease of debugging, ease of implementing and for a consistent UX, we'd prefer deterministic algorithms that are guaranteed to terminate in a known amount of steps, like BSGS.
 This way, we can guarantee none of our users will ever run into issues.
@@ -613,18 +613,22 @@ This means that the DL algorithms are dominated by point-compression necessary t
 
 #### Current WASM & table sizes
 
-**WASM size:** 2,117 KiB (compiled `aptos_pollard_kangaroo_wasm_bg.wasm`)
+**WASM size:** 774 KiB (compiled `aptos_confidential_asset_wasm_bg.wasm`)
+
+{: .note}
+This unified WASM combines both discrete log and range proof functionality into a single module, sharing the curve25519-dalek elliptic curve library.
 
 **Precomputed table sizes:**
 
-| Algorithm     | Size     |
-|---------------|----------|
-| BSGS 32-bit   | 2.00 MiB |
-| BSGS-k 32-bit | 2.00 MiB |
-| BL12 32-bit   | 258 KiB  |
+| Algorithm       | Size     |
+|-----------------|----------|
+| TBSGS-k 32-bit  | 512 KiB  |
+| BSGS 32-bit     | 2.00 MiB |
+| BSGS-k 32-bit   | 2.00 MiB |
+| BL12 32-bit     | 258 KiB  |
 
-Tables store 65,536 CompressedRistretto points (32 bytes each) sorted by discrete log.
-Values are implicit (index = value), rebuilt into HashMap at load time.
+{: .note}
+TBSGS-k is the default algorithm, offering the best balance of WASM size and performance.
 
 #### MPHF-based table sizes (not used)
 
