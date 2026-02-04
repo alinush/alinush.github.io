@@ -1,5 +1,6 @@
 ---
 tags:
+ - benchmarks
  - digital signatures
  - post-quantum
 title: Post-quantum signature schemes

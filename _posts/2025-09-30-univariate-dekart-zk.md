@@ -1,5 +1,6 @@
 ---
 tags:
+ - benchmarks
  - papers
  - range proofs
  - zero-knowledge proofs (ZKPs)

@@ -1,5 +1,6 @@
 ---
 tags:
+ - benchmarks
  - aptos
  - ElGamal
  - zero-knowledge proofs (ZKPs)
@@ -234,20 +235,20 @@ Recall that $\term{s}\bydef\sqm$.
 
 Compute the **truncated** doubled table in $\GaddG{(s-1)}$ time and return it:
 \begin{align}
-\table \gets \left(s, (\tctwomjG{j})_{j\in[s)}, \msG\right) \in \N \times \\{0,1\\}^{64 \cdot s} \times \Gr
+\table \gets \left(s, (\tctwomjG{j})_{j\in[s)}, \twomsG\right) \in \N \times \\{0,1\\}^{64 \cdot s} \times \Gr
 \end{align}
 
 #### $\mathsf{TBSGS\text{-}k.Solve}(\table, H\in\Gr) \rightarrow a \in [m)\times \\{\bot\\}$
 
 Parse the table:
 \begin{align}
-(s, (\tctwomjG{j})\_{j\in[s)}, \msG) \parse \table
+(s, (\tctwomjG{j})\_{j\in[s)}, \twomsG) \parse \table
 \end{align}
 
 Let $V_0 = H$.
 
 For each $i\in[1, s)$ in increments of $k$:
- - Compute $V_i, V_{i+1}, \ldots, V_{i+k-1}$ via $k-1$ additions of $\msG$
+ - Compute $V_i, V_{i+1}, \ldots, V_{i+k-1}$ via $k-1$ additions of $\twomsG$
  - Compute $\doubleAndCompressBatch{V_i, \ldots, V_{i+k-1}}$ to get compressed points $(C_i, \ldots, C_{i+k-1})$, where $C_\ell \bydef \compress{2\cdot V_\ell}$
  - For each $\ell \in [i, i+k)$:
     + Let $t_\ell \gets \trunc{C_\ell}$

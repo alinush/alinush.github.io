@@ -1,5 +1,6 @@
 ---
 tags:
+ - benchmarks
  - aptos
  - keyless
  - Groth16

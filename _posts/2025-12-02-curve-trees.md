@@ -1,5 +1,6 @@
 ---
 tags:
+ - benchmarks
  - Merkle
  - accumulators
  - anonymous payments

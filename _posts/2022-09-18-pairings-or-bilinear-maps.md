@@ -1,5 +1,6 @@
 ---
 tags:
+- benchmarks
 - bilinear maps (pairings)
 - identity-based encryption (IBE)
 - math

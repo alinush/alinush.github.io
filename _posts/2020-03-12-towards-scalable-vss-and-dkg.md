@@ -1,5 +1,6 @@
 ---
 tags:
+ - benchmarks
  - papers
  - polynomials
  - verifiable secret sharing (VSS)

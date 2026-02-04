@@ -1,5 +1,6 @@
 ---
 tags:
+ - benchmarks
  - aptos
  - keyless
  - zero-knowledge proofs (ZKPs)
