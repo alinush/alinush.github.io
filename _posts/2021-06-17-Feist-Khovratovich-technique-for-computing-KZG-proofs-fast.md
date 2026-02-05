@@ -6,7 +6,8 @@ tags:
 - bilinear maps (pairings)
 - fast fourier transform (FFT)
 title: Feist-Khovratovich technique for computing KZG proofs fast
-permalink: feist-khovratovich
+permalink: fk
+redirect_from: /feist-khovratovich
 #published: false
 sidebar:
     nav: cryptomat

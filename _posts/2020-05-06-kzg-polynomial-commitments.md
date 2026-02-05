@@ -8,6 +8,7 @@ date: 2020-05-06 22:38:00
 sidebar:
     nav: cryptomat
 permalink: kzg
+redirect_from: /kate-zaverucha-goldberg
 ---
 
 Kate, Zaverucha and Goldberg introduced a constant-sized polynomial commitment scheme in 2010[^KZG10e].
