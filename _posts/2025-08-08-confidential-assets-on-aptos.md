@@ -860,7 +860,6 @@ Gas report for 0x1::primary_fungible_store::transfer, assuming 100 octas / gas u
 |  Total octas:     1,000 octas
 |  Total APT:       0.00001000 APT
 \-----------------------------------
-test tests::confidential_asset::bench_gas_fungible_asset_transfer ... ok
 
 Gas report for 0x7::confidential_asset::register, assuming 100 octas / gas unit
 |  Execution gas:   5 units
@@ -872,7 +871,6 @@ Gas report for 0x7::confidential_asset::register, assuming 100 octas / gas unit
 |  Total octas:     127,600 octas
 |  Total APT:       0.00127600 APT
 \-----------------------------------
-test tests::confidential_asset::bench_gas_register ... ok
 
 Gas report for 0x7::confidential_asset::rollover_pending_balance, assuming 100 octas / gas unit
 |  Execution gas:   11 units
@@ -884,7 +882,6 @@ Gas report for 0x7::confidential_asset::rollover_pending_balance, assuming 100 o
 |  Total octas:     1,300 octas
 |  Total APT:       0.00001300 APT
 \-----------------------------------
-test tests::confidential_asset::bench_gas_rollover_pending_balance ... ok
 
 Gas report for 0x7::confidential_asset::deposit_to, assuming 100 octas / gas unit
 |  Execution gas:   10 units
@@ -898,7 +895,6 @@ Gas report for 0x7::confidential_asset::deposit_to, assuming 100 octas / gas uni
 \-----------------------------------
 Alice balance: 999,872,400 -> 999,869,500 (deposited 1,000)
 Bob public balance: 999,872,400 (unchanged)
-test tests::confidential_asset::bench_gas_deposit_to ... ok
 
 Gas report for 0x7::confidential_asset::rotate_encryption_key, assuming 100 octas / gas unit
 |  Execution gas:   212 units
@@ -910,7 +906,6 @@ Gas report for 0x7::confidential_asset::rotate_encryption_key, assuming 100 octa
 |  Total octas:     21,500 octas
 |  Total APT:       0.00021500 APT
 \-----------------------------------
-test tests::confidential_asset::bench_gas_rotate_encryption_key ... ok
 
 Gas report for 0x7::confidential_asset::withdraw_to, assuming 100 octas / gas unit
 |  Execution gas:   207 units
@@ -922,7 +917,6 @@ Gas report for 0x7::confidential_asset::withdraw_to, assuming 100 octas / gas un
 |  Total octas:     21,500 octas
 |  Total APT:       0.00021500 APT
 \-----------------------------------
-test tests::confidential_asset::bench_gas_withdraw_to ... ok
 
 Gas report for 0x7::confidential_asset::confidential_transfer, assuming 100 octas / gas unit
 |  Execution gas:   333 units
@@ -934,7 +928,6 @@ Gas report for 0x7::confidential_asset::confidential_transfer, assuming 100 octa
 |  Total octas:     33,900 octas
 |  Total APT:       0.00033900 APT
 \-----------------------------------
-test tests::confidential_asset::bench_gas_confidential_transfer ... ok
 
 Gas report for 0x7::confidential_asset::normalize, assuming 100 octas / gas unit
 |  Execution gas:   209 units
@@ -946,7 +939,25 @@ Gas report for 0x7::confidential_asset::normalize, assuming 100 octas / gas unit
 |  Total octas:     21,200 octas
 |  Total APT:       0.00021200 APT
 \-----------------------------------
-test tests::confidential_asset::bench_gas_normalize ... ok
+```
+
+### Gas benchmarks for `confidential_asset` v1.1 Move module
+
+| Operation  | How much cheaper? (in terms of "Total gas units") |
+| ---------- | ---------------------- |
+| rotate key | 6.15x                  |
+
+```
+Gas report for 0x7::confidential_asset::rotate_encryption_key, assuming 100 octas / gas unit
+|  Execution gas:   32 units
+|  IO gas:          4 units
+|  Storage fee:     0 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 35 units
+|  Total octas:     3,500 octas
+|  Total APT:       0.00003500 APT
+\-----------------------------------
 ```
 
 ## Appendix: Implementation challenges
