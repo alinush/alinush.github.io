@@ -123,11 +123,13 @@ If it does, then $a = i\cdot s+ j$!
 
 More concretely, we compute:
 \begin{align}
-V_0 &\gets H\\\\\
+V_0 &\gets H = H + 0 \cdot (\msG)\\\\\
 V_1 &\gets V_0 \msG = H + 1 \cdot (\msG)\\\\\
 V_2 &\gets V_1 \msG = H + 2 \cdot (\msG)\\\\\
  &\hspace{.7em}\vdots\\\\\
 V_i &\gets V_{i-1} \msG = H + i \cdot (\msG)\\\\\
+ &\hspace{.7em}\vdots\\\\\
+V_{s-1} &\gets V_{s-2} \msG = H + (s-1) \cdot (\msG)\\\\\
 \end{align}
 Then, for each computed $V_i$, we check (in constant-time) whether there exists a $j\in[s)$ such that $V_i = \jG{j}$.
 In other words, we check if Eq. \ref{eq:bsgs-check} holds for some $i,j\in[s)$.
@@ -161,9 +163,9 @@ Parse the table:
 
 Let $V_0 = H$.
 
-For each $i\in[1, s)$:
- - $V_i \gets V_{i-1} + (\msG)$
+For each $i\in[0, s)$:
  - **if** $\exists j\in[s)$ such that $V_i \equals \jG{j}$, **then** return $i\cdot s + j$
+ - $V_{i+1} \gets V_i + (\msG)$
 
 If we reached this point, this means no $i,j\in[s)$ were found.
 This, in turn, means $a \ge s^2 \ge m$.
@@ -208,11 +210,12 @@ Parse the table:
 
 Let $V_0 = H$.
 
-For each $i\in[1, s)$ in increments of $k$:
- - Compute $V_i, V_{i+1}, \ldots, V_{i+k-1}$ via $k-1$ additions of $\msG$
- - Compute $\doubleAndCompressBatch{V_i, \ldots, V_{i+k-1}}$ to get compressed points $(C_i, \ldots, C_{i+k-1})$, where $C_i \bydef \compress{2\cdot V_i}$
+For each $i\in[0, s)$ in increments of $k$:
+ - Compute $V_{i+1}, \ldots, V_{i+k-1}$ via $k-1$ additions of $\msG$
+ - Compute $\doubleAndCompressBatch{V_i, V_{i+1}, \ldots, V_{i+k-1}}$ to get compressed points $(C_i, \ldots, C_{i+k-1})$, where $C_\ell \bydef \compress{2\cdot V_\ell}$
  - For each $\ell \in [i, i+k)$:
     + **if** $\exists j\in[s)$ such that $C_\ell \equals \ctwojG{j}$, **then** return $\ell\cdot s + j$
+ - $V_{i+k} \gets V_{i+k-1} + (\msG)$
 
 If we reached this point, return $\bot$.
 
@@ -247,13 +250,14 @@ Parse the table:
 
 Let $V_0 = H$.
 
-For each $i\in[1, s)$ in increments of $k$:
- - Compute $V_i, V_{i+1}, \ldots, V_{i+k-1}$ via $k-1$ additions of $\twomsG$
- - Compute $\doubleAndCompressBatch{V_i, \ldots, V_{i+k-1}}$ to get compressed points $(C_i, \ldots, C_{i+k-1})$, where $C_\ell \bydef \compress{2\cdot V_\ell}$
+For each $i\in[0, s)$ in increments of $k$:
+ - Compute $V_{i+1}, \ldots, V_{i+k-1}$ via $k-1$ additions of $\twomsG$
+ - Compute $\doubleAndCompressBatch{V_i, V_{i+1}, \ldots, V_{i+k-1}}$ to get compressed points $(C_i, \ldots, C_{i+k-1})$, where $C_\ell \bydef \compress{2\cdot V_\ell}$
  - For each $\ell \in [i, i+k)$:
     + Let $t_\ell \gets \trunc{C_\ell}$
     + **if** $\exists j\in[s)$ such that $t_\ell \equals \tctwomjG{j}$, **then**:
        - **if** $C_\ell \equals \ctwojG{j}$ (verify the match), **then** return $\ell\cdot s + j$
+ - $V_{i+k} \gets V_{i+k-1} + (\twomsG)$
 
 If we reached this point, return $\bot$.
 
