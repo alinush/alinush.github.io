@@ -210,11 +210,11 @@ Parse the table:
 
 Let $V_0 = H$.
 
-For each $i\in[0, s)$ in increments of $k$:
- - Compute $V_{i+1}, \ldots, V_{i+k-1}$ via $k-1$ additions of $\msG$
- - Compute $\doubleAndCompressBatch{V_i, V_{i+1}, \ldots, V_{i+k-1}}$ to get compressed points $(C_i, \ldots, C_{i+k-1})$, where $C_\ell \bydef \compress{2\cdot V_\ell}$
- - For each $\ell \in [i, i+k)$:
-    + **if** $\exists j\in[s)$ such that $C_\ell \equals \ctwojG{j}$, **then** return $\ell\cdot s + j$
+For each $i\in\\{0,k,2k,\ldots\\}$ subject to $i < s$:
+ - Compute $V_{i+1}, \ldots, V_{i+k-1}$ via $k-1$ additions of $\msG$, such that $V_{i+\ell} \bydef H + (i+\ell)\cdot (\msG)$
+ - Compute $\doubleAndCompressBatch{V_i, V_{i+1}, \ldots, V_{i+k-1}}$ to get compressed points $(c_i, \ldots, c_{i+k-1})$, where $c_{i+\ell} \bydef \compress{2\cdot V_{i+\ell}}$
+ - For each $\ell \in [0, k)$:
+    + **if** $\exists j\in[s)$ such that $c_{i+\ell} \equals \ctwojG{j}$, **then** return $\ell\cdot s + j$
  - $V_{i+k} \gets V_{i+k-1} + (\msG)$
 
 If we reached this point, return $\bot$.
@@ -250,14 +250,14 @@ Parse the table:
 
 Let $V_0 = H$.
 
-For each $i\in[0, s)$ in increments of $k$:
- - Compute $V_{i+1}, \ldots, V_{i+k-1}$ via $k-1$ additions of $\twomsG$
- - Compute $\doubleAndCompressBatch{V_i, V_{i+1}, \ldots, V_{i+k-1}}$ to get compressed points $(C_i, \ldots, C_{i+k-1})$, where $C_\ell \bydef \compress{2\cdot V_\ell}$
- - For each $\ell \in [i, i+k)$:
-    + Let $t_\ell \gets \trunc{C_\ell}$
-    + **if** $\exists j\in[s)$ such that $t_\ell \equals \tctwomjG{j}$, **then**:
-       - **if** $C_\ell \equals \ctwojG{j}$ (verify the match), **then** return $\ell\cdot s + j$
- - $V_{i+k} \gets V_{i+k-1} + (\twomsG)$
+For each $i\in\\{0,k,2k,\ldots\\}$ subject to $i < s$:
+ - Compute $V_{i+1}, \ldots, V_{i+k-1}$ via $k-1$ additions of $\msG$, such that $V_{i+\ell} \bydef H + (i+\ell)\cdot (\msG)$
+ - Compute $\doubleAndCompressBatch{V_i, V_{i+1}, \ldots, V_{i+k-1}}$ to get compressed points $(c_i, \ldots, c_{i+k-1})$, where $c_{i+\ell} \bydef \compress{2\cdot V_{i+\ell}}$
+ - For each $\ell \in [0, k)$:
+    + Let $t_{i+\ell} \gets \trunc{c_{i+\ell}}$
+    + **if** $\exists j\in[s)$ such that $t_{i+\ell} \equals \tctwomjG{j}$, **then**:
+       - **if** $V_{i+\ell} \equals \twojG{j}$ (verify the match), **then** return $\ell\cdot s + j$
+ - $V_{i+k} \gets V_{i+k-1} + (\msG)$
 
 If we reached this point, return $\bot$.
 
