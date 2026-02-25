@@ -663,6 +663,33 @@ Now:
     + e.g., if the DKG is for bootstrapping a weighted [threshold BLS signature scheme](/threshold-bls), then $\widetilde{V}\_{i,j}\bydef s\_{i,j}\cdot G$ will act as the verification key for the BLS signature share $H(m)^{s\_{i,j}}$
  - Each player can use $\pvssDecrypt$ to obtain their shares from $\subtrs$ [^dummy]
 
+## Benchmarks
+
+Numbers from my Apple Macbook Pro M4 Max:
+
+{: .todo}
+Single-threaded?
+
+
+| Scheme  | $\ell$ | Setup                        | Transcript size | Deal (ms)      | Serialize (ms) | Aggregate (ms) | Verify (ms)    | Decrypt-share (ms) |
+|---------|--------|------------------------------|-----------------|----------------|----------------|----------------|----------------|--------------------|
+| Chunky  | 16     | 129-out-of-219 / 136 players | 483.99 KiB      |         774.44 |           0.55 |           1.41 |         112.29 |              28.75 |
+| Chunky2 | 16     | 129-out-of-219 / 136 players | 504.53 KiB      | <span style="color:#dc2626">781.61</span> (0.99x) | <span style="color:#dc2626">0.57</span> (0.96x) | <span style="color:#dc2626">1.44</span> (0.98x) | <span style="color:#dc2626">119.05</span> (0.94x) | <span style="color:#dc2626">29.39</span> (0.98x) |
+
+| Scheme  | $\ell$ | Setup                        | Transcript size | Deal (ms)      | Serialize (ms) | Aggregate (ms) | Verify (ms)   | Decrypt-share (ms) |
+|---------|--------|------------------------------|-----------------|----------------|----------------|----------------|---------------|--------------------|
+| Chunky  | 32     | 129-out-of-219 / 136 players | 259.24 KiB      |         537.57 |           0.48 |           1.39 |         67.92 |           2,693.50 |
+| Chunky2 | 32     | 129-out-of-219 / 136 players | 279.78 KiB      | <span style="color:#15803d; font-weight:700">535.65</span> (1.00x) |   0.48 (1.00x) | <span style="color:#dc2626">1.41</span> (0.99x) | <span style="color:#dc2626">75.99</span> (0.89x) | <span style="color:#dc2626">2,753.60</span> (0.98x) |
+
+
+These numbers can be reproduce by cloning [aptos-core](https://github.com/aptos-labs/aptos-core) and doing:
+```
+git clone https://github.com/aptos-labs/aptos-core
+cd aptos-core/crates/aptos-crypto/benches/
+./run-pvss-benches.sh
+```
+
+
 ## Acknowledgements
 
 The weighted PVSS in this blog post has been co-designed with Rex Fernando and Wicher Malten at Aptos Labs.
