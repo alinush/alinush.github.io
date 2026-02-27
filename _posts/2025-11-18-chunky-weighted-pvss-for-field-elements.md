@@ -665,11 +665,7 @@ Now:
 
 ## Benchmarks
 
-Numbers from my Apple Macbook Pro M4 Max:
-
-{: .todo}
-Single-threaded?
-
+Single-threaded numbers from my Apple Macbook Pro M4 Max:
 
 | Scheme  | $\ell$ | Setup                        | Transcript size | Deal (ms)      | Serialize (ms) | Aggregate (ms) | Verify (ms)    | Decrypt-share (ms) |
 |---------|--------|------------------------------|-----------------|----------------|----------------|----------------|----------------|--------------------|
