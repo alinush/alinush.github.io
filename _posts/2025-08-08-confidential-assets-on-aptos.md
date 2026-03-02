@@ -947,20 +947,103 @@ Gas report for 0x7::confidential_asset::normalize, assuming 100 octas / gas unit
 
 ### Gas benchmarks for `confidential_asset` v1.1 Move module
 
-| Operation  | How much cheaper? (in terms of "Total gas units") |
-| ---------- | ---------------------- |
-| rotate key | 6.15x                  |
+| Operation  | v1.0 gas units | v1.1 gas units | How much cheaper? |
+| ---------- | -------------- | -------------- | ----------------- |
+| register   | 1,276          | 1,281          | ~same (storage-dominated) |
+| deposit    | 19             | 18             | ~same             |
+| rollover   | 13             | 13             | same              |
+| rotate key | 215            | 34             | **6.32x**         |
+| withdraw   | 215            | 200            | **1.08x**         |
+| transfer   | 339            | 299            | **1.13x**         |
+| normalize  | 212            | 195            | **1.09x**         |
 
 ```
+Gas report for 0x1::primary_fungible_store::transfer, assuming 100 octas / gas unit
+|  Execution gas:   4 units
+|  IO gas:          7 units
+|  Storage fee:     0 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 10 units
+|  Total octas:     1,000 octas
+|  Total APT:       0.00001000 APT
+\-----------------------------------
+
+Gas report for 0x7::confidential_asset::register, assuming 100 octas / gas unit
+|  Execution gas:   5 units
+|  IO gas:          3 units
+|  Storage fee:     127,100 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 1,281 units
+|  Total octas:     128,100 octas
+|  Total APT:       0.00128100 APT
+\-----------------------------------
+
+Gas report for 0x7::confidential_asset::deposit, assuming 100 octas / gas unit
+|  Execution gas:   11 units
+|  IO gas:          8 units
+|  Storage fee:     0 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 18 units
+|  Total octas:     1,800 octas
+|  Total APT:       0.00001800 APT
+\-----------------------------------
+
+Gas report for 0x7::confidential_asset::rollover_pending_balance, assuming 100 octas / gas unit
+|  Execution gas:   11 units
+|  IO gas:          3 units
+|  Storage fee:     0 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 13 units
+|  Total octas:     1,300 octas
+|  Total APT:       0.00001300 APT
+\-----------------------------------
+
 Gas report for 0x7::confidential_asset::rotate_encryption_key, assuming 100 octas / gas unit
-|  Execution gas:   32 units
+|  Execution gas:   31 units
 |  IO gas:          4 units
 |  Storage fee:     0 octas
 |  Storage refund:  0 octas
 * ----------------------------------
-|  Total gas units: 35 units
-|  Total octas:     3,500 octas
-|  Total APT:       0.00003500 APT
+|  Total gas units: 34 units
+|  Total octas:     3,400 octas
+|  Total APT:       0.00003400 APT
+\-----------------------------------
+
+Gas report for 0x7::confidential_asset::withdraw_to, assuming 100 octas / gas unit
+|  Execution gas:   191 units
+|  IO gas:          9 units
+|  Storage fee:     0 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 200 units
+|  Total octas:     20,000 octas
+|  Total APT:       0.00020000 APT
+\-----------------------------------
+
+Gas report for 0x7::confidential_asset::confidential_transfer, assuming 100 octas / gas unit
+|  Execution gas:   293 units
+|  IO gas:          6 units
+|  Storage fee:     0 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 299 units
+|  Total octas:     29,900 octas
+|  Total APT:       0.00029900 APT
+\-----------------------------------
+
+Gas report for 0x7::confidential_asset::normalize, assuming 100 octas / gas unit
+|  Execution gas:   191 units
+|  IO gas:          5 units
+|  Storage fee:     0 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 195 units
+|  Total octas:     19,500 octas
+|  Total APT:       0.00019500 APT
 \-----------------------------------
 ```
 
