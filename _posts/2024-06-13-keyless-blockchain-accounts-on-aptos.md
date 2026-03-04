@@ -331,6 +331,7 @@ We depict the flow for a dapp to fetch its user's pepper _obliviously_ from the 
 1. I wrote a [high-level overview](https://aptos.dev/en/build/guides/aptos-keyless/how-keyless-works) of how keyless accounts work on the [Aptos](https://twitter.com/aptos) blockchain 
 2. I wrote an [in-depth explanation](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-61.md) of how keyless accounts work (and their many caveats) in the 61st Aptos Improvement Proposal. 
 3. _Osikhena Oshomah_ wrote a keyless tutorial for devs called [Aptos Keyless Auth](https://jamiescript.hashnode.dev/aptos-keyless-auth)
+4. Michael Straka wrote [an explanation](https://www.michaelstraka.com/polyprotocols) about some of our string matching circuit code
 
 ## Slides
 
