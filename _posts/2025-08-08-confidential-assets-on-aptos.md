@@ -851,267 +851,50 @@ TS BSGS 16-bit: avg=7.47ms, min=5.82ms, max=8.24ms
 TS BSGS 32-bit: avg=2252.36ms, min=1539.60ms, max=3359.79ms
 ```
 
-### Gas benchmarks for `confidential_asset` v1.0 Move module
-
-```
-Gas report for 0x1::primary_fungible_store::transfer, assuming 100 octas / gas unit
-|  Execution gas:   4 units
-|  IO gas:          7 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 10 units
-|  Total octas:     1,000 octas
-|  Total APT:       0.00001000 APT
-\-----------------------------------
-
-Gas report for 0x7::confidential_asset::register, assuming 100 octas / gas unit
-|  Execution gas:   5 units
-|  IO gas:          3 units
-|  Storage fee:     126,880 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 1,276 units
-|  Total octas:     127,600 octas
-|  Total APT:       0.00127600 APT
-\-----------------------------------
-
-Gas report for 0x7::confidential_asset::rollover_pending_balance, assuming 100 octas / gas unit
-|  Execution gas:   11 units
-|  IO gas:          3 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 13 units
-|  Total octas:     1,300 octas
-|  Total APT:       0.00001300 APT
-\-----------------------------------
-
-Gas report for 0x7::confidential_asset::deposit_to, assuming 100 octas / gas unit
-|  Execution gas:   10 units
-|  IO gas:          9 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 19 units
-|  Total octas:     1,900 octas
-|  Total APT:       0.00001900 APT
-\-----------------------------------
-Alice balance: 999,872,400 -> 999,869,500 (deposited 1,000)
-Bob public balance: 999,872,400 (unchanged)
-
-Gas report for 0x7::confidential_asset::rotate_encryption_key, assuming 100 octas / gas unit
-|  Execution gas:   212 units
-|  IO gas:          4 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 215 units
-|  Total octas:     21,500 octas
-|  Total APT:       0.00021500 APT
-\-----------------------------------
-
-Gas report for 0x7::confidential_asset::withdraw_to, assuming 100 octas / gas unit
-|  Execution gas:   207 units
-|  IO gas:          9 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 215 units
-|  Total octas:     21,500 octas
-|  Total APT:       0.00021500 APT
-\-----------------------------------
-
-Gas report for 0x7::confidential_asset::confidential_transfer, assuming 100 octas / gas unit
-|  Execution gas:   333 units
-|  IO gas:          6 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 339 units
-|  Total octas:     33,900 octas
-|  Total APT:       0.00033900 APT
-\-----------------------------------
-
-Gas report for 0x7::confidential_asset::normalize, assuming 100 octas / gas unit
-|  Execution gas:   209 units
-|  IO gas:          4 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 212 units
-|  Total octas:     21,200 octas
-|  Total APT:       0.00021200 APT
-\-----------------------------------
-```
-
 ### Gas benchmarks for `confidential_asset` v1.1 Move module
 
-| Operation  | v1.0 gas | v1.1 gas (no auditor) | v1.0→v1.1 speedup        | v1.1 gas (w/ auditor, 1st) | v1.1 gas (w/ auditor, subsequent) | v1.1 auditor slowdown |
-| ---------- | -------- | --------------------- | ------------------------ | -------------------------- | --------------------------------- | --------------------- |
-| register   | 1,276    | 1,281                 | ~same (storage-dominated)| —                          | —                                 | —                     |
-| deposit    | 19       | 18                    | ~same                    | —                          | —                                 | —                     |
-| rollover   | 13       | 13                    | same                     | —                          | —                                 | —                     |
-| rotate key | 215      | 34                    | **6.32x**                | —                          | —                                 | —                     |
-| withdraw   | 215      | 200                   | **1.08x**                | 325                        | 219                               | **1.10x**             |
-| transfer   | 339      | 299                   | **1.13x**                | 431                        | 325                               | **1.09x**             |
-| normalize  | 212      | 195                   | **1.09x**                | 320                        | 214                               | **1.10x**             |
+The full gas benchmark logs are [here](/files/confidential-asset/gas-benchmarks-v1.1.txt), but a nicer summary follows below:
 
-```
-Gas report for 0x1::primary_fungible_store::transfer, assuming 100 octas / gas unit
-|  Execution gas:   4 units
-|  IO gas:          7 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 10 units
-|  Total octas:     1,000 octas
-|  Total APT:       0.00001000 APT
-\-----------------------------------
+| Operation | Gas | Cost (cents) | # of calls / $1 |
+| --------- | --- | ------------ | --------------- |
+| register  | 1,282 | 0.1282 | 780 |
+| deposit   | 18    | 0.0018 | 55,555 |
+| rollover  | 13    | 0.0013 | 76,923 |
+| rotate key | 37   | 0.0037 | 27,027 |
+| withdraw (no auditor) | 204 | 0.0204 | 4,901 |
+| withdraw (eff. auditor, **subsequent**) | 224 | 0.0224 | 4,464 |
+| withdraw (eff. auditor, _initial_) | 330 | 0.0330 | 3,030 |
+| transfer (no auditors) | 305 | 0.0305 | 3,278 |
+| transfer (1 extra only) | 315 | 0.0315 | 3,174 |
+| transfer (2 extra only) | 324 | 0.0324 | 3,086 |
+| transfer (3 extra only) | 334 | 0.0334 | 2,994 |
+| transfer (eff. auditor only, **subsequent**) | 333 | 0.0333 | 3,003 |
+| transfer (eff. + 1 extra, **subsequent**) | 343 | 0.0343 | 2,915 |
+| transfer (eff. + 2 extra, **subsequent**) | 352 | 0.0352 | 2,840 |
+| transfer (eff. + 3 extra, **subsequent**) | 362 | 0.0362 | 2,762 |
+| transfer (eff. auditor only, _initial_) | 438 | 0.0438 | 2,283 |
+| transfer (eff. + 1 extra, _initial_) | 449 | 0.0449 | 2,227 |
+| transfer (eff. + 2 extra, _initial_) | 457 | 0.0457 | 2,188 |
+| transfer (eff. + 3 extra, _initial_) | 468 | 0.0468 | 2,136 |
 
-Gas report for 0x7::confidential_asset::register, assuming 100 octas / gas unit
-|  Execution gas:   5 units
-|  IO gas:          3 units
-|  Storage fee:     127,100 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 1,281 units
-|  Total octas:     128,100 octas
-|  Total APT:       0.00128100 APT
-\-----------------------------------
+{: .note}
+"_Initial_" means this is the 1st call with an effective auditor $\Rightarrow$ it stores, for the 1st time, the auditor's EK component in the user's available balance $\Rightarrow$ higher gas cost due to storage fee.
+This is a one-time penalty though: only incurred when the call is 1st made.
+"**Subsequent**" refers to subsequent calls that reuse this auditor EK component and thus no longer incur a storage fee $\Rightarrow$ this is the "average case" that we care about when reasoning about gas costs.
 
-Gas report for 0x7::confidential_asset::deposit, assuming 100 octas / gas unit
-|  Execution gas:   11 units
-|  IO gas:          8 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 18 units
-|  Total octas:     1,800 octas
-|  Total APT:       0.00001800 APT
-\-----------------------------------
+#### v1.0 → v1.1 speedup
 
-Gas report for 0x7::confidential_asset::rollover_pending_balance, assuming 100 octas / gas unit
-|  Execution gas:   11 units
-|  IO gas:          3 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 13 units
-|  Total octas:     1,300 octas
-|  Total APT:       0.00001300 APT
-\-----------------------------------
+| Operation | v1.0 gas | v1.1 gas | Speedup |
+| --------- | -------- | -------- | ------- |
+| register   | 1,276 | 1,282 | ~same (storage-dominated) |
+| deposit    | 19    | 18    | ~same |
+| rollover   | 13    | 13    | same |
+| rotate key | 215   | 37    | **5.81x** |
+| withdraw   | 215   | 204   | **1.05x** |
+| transfer   | 339   | 305   | **1.11x** |
 
-Gas report for 0x7::confidential_asset::rotate_encryption_key, assuming 100 octas / gas unit
-|  Execution gas:   31 units
-|  IO gas:          4 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 34 units
-|  Total octas:     3,400 octas
-|  Total APT:       0.00003400 APT
-\-----------------------------------
-
-Gas report for 0x7::confidential_asset::withdraw_to, assuming 100 octas / gas unit
-|  Execution gas:   191 units
-|  IO gas:          9 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 200 units
-|  Total octas:     20,000 octas
-|  Total APT:       0.00020000 APT
-\-----------------------------------
-
-Gas report for 0x7::confidential_asset::confidential_transfer, assuming 100 octas / gas unit
-|  Execution gas:   293 units
-|  IO gas:          6 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 299 units
-|  Total octas:     29,900 octas
-|  Total APT:       0.00029900 APT
-\-----------------------------------
-
-Gas report for 0x7::confidential_asset::normalize, assuming 100 octas / gas unit
-|  Execution gas:   191 units
-|  IO gas:          5 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 195 units
-|  Total octas:     19,500 octas
-|  Total APT:       0.00019500 APT
-\-----------------------------------
-
-Gas report for 0x7::confidential_asset::withdraw_to (with auditor, first time), assuming 100 octas / gas unit
-|  Execution gas:   209 units
-|  IO gas:          10 units
-|  Storage fee:     10,560 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 325 units
-|  Total octas:     32,500 octas
-|  Total APT:       0.00032500 APT
-\-----------------------------------
-
-Gas report for 0x7::confidential_asset::confidential_transfer (with auditor, first time), assuming 100 octas / gas unit
-|  Execution gas:   319 units
-|  IO gas:          7 units
-|  Storage fee:     10,560 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 431 units
-|  Total octas:     43,100 octas
-|  Total APT:       0.00043100 APT
-\-----------------------------------
-
-Gas report for 0x7::confidential_asset::normalize (with auditor, first time), assuming 100 octas / gas unit
-|  Execution gas:   209 units
-|  IO gas:          6 units
-|  Storage fee:     10,560 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 320 units
-|  Total octas:     32,000 octas
-|  Total APT:       0.00032000 APT
-\-----------------------------------
-
-Gas report for 0x7::confidential_asset::withdraw_to (with auditor, subsequent), assuming 100 octas / gas unit
-|  Execution gas:   209 units
-|  IO gas:          10 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 219 units
-|  Total octas:     21,900 octas
-|  Total APT:       0.00021900 APT
-\-----------------------------------
-
-Gas report for 0x7::confidential_asset::confidential_transfer (with auditor, subsequent), assuming 100 octas / gas unit
-|  Execution gas:   319 units
-|  IO gas:          7 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 325 units
-|  Total octas:     32,500 octas
-|  Total APT:       0.00032500 APT
-\-----------------------------------
-
-Gas report for 0x7::confidential_asset::normalize (with auditor, subsequent), assuming 100 octas / gas unit
-|  Execution gas:   209 units
-|  IO gas:          6 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 214 units
-|  Total octas:     21,400 octas
-|  Total APT:       0.00021400 APT
-\-----------------------------------
-```
+{: .note}
+For the old code, see v1.0 gas benchmark logs [here](/files/confidential-asset/gas-benchmarks-v1.0.txt).
 
 ## Appendix: Implementation challenges
 
