@@ -667,15 +667,10 @@ Now:
 
 Single-threaded numbers from my Apple Macbook Pro M4 Max:
 
-| Scheme  | $\ell$ | Setup                        | Transcript size | Deal (ms)      | Serialize (ms) | Aggregate (ms) | Verify (ms)    | Decrypt-share (ms) |
-|---------|--------|------------------------------|-----------------|----------------|----------------|----------------|----------------|--------------------|
-| Chunky  | 16     | 129-out-of-219 / 136 players | 483.99 KiB      |         774.44 |           0.55 |           1.41 |         112.29 |              28.75 |
-| Chunky2 | 16     | 129-out-of-219 / 136 players | 504.53 KiB      | <span style="color:#dc2626">781.61</span> (0.99x) | <span style="color:#dc2626">0.57</span> (0.96x) | <span style="color:#dc2626">1.44</span> (0.98x) | <span style="color:#dc2626">119.05</span> (0.94x) | <span style="color:#dc2626">29.39</span> (0.98x) |
-
 | Scheme  | $\ell$ | Setup                        | Transcript size | Deal (ms)      | Serialize (ms) | Aggregate (ms) | Verify (ms)   | Decrypt-share (ms) |
 |---------|--------|------------------------------|-----------------|----------------|----------------|----------------|---------------|--------------------|
-| Chunky  | 32     | 129-out-of-219 / 136 players | 259.24 KiB      |         537.57 |           0.48 |           1.39 |         67.92 |           2,693.50 |
-| Chunky2 | 32     | 129-out-of-219 / 136 players | 279.78 KiB      | <span style="color:#15803d; font-weight:700">535.65</span> (1.00x) |   0.48 (1.00x) | <span style="color:#dc2626">1.41</span> (0.99x) | <span style="color:#dc2626">75.99</span> (0.89x) | <span style="color:#dc2626">2,753.60</span> (0.98x) |
+| Chunky  | 32     | 129-out-of-219 / 136 players | 259.24 KiB      |         373.30 |           0.24 |           1.29 |         63.05 |              10.73 |
+| Chunky2 | 32     | 129-out-of-219 / 136 players | 279.78 KiB      | <span style="color:#dc2626">401.96</span> (0.93x) | <span style="color:#dc2626">0.27</span> (0.89x) | <span style="color:#dc2626">1.35</span> (0.96x) | <span style="color:#dc2626">72.45</span> (0.87x) | <span style="color:#dc2626">11.09</span> (0.97x) |
 
 
 These numbers can be reproduce by cloning [aptos-core](https://github.com/aptos-labs/aptos-core) and doing:
@@ -784,10 +779,10 @@ We summarize below:
 | Scheme       | Proving work         | Verification work                                  | Transcript size change |
 |--------------|----------------------|----------------------------------------------------|------------------------|
 | Chunky       | 0                    | $\vmsmOne{W\cdot m} + \vmsmTwo{W} + \multipair{2}$ | 0                      |
-| **Chunky 2** | $\GmulTwo{W}$        | $\vmsmTwo{2W+1}$                                   | ${} + W \|\Gr_2\|$     |
+| **Chunky 2** | $\GmulTwo{W}$        | $\vmsmTwo{2W+1}$                                   | ${} + W \|\Gr\_2\|$     |
 
 {: .note}
-The $\Sigma$-protocol verifier extra work will be of the form $\psi(\mathbf{\sigma}) \equals \mathbf{A} + e\cdot [\widetilde{V}_{i,j}]_{i,j}$ and can be done in a size-$(2W+1)$ MSM because the group elements in $\psi(\mathbf{\sigma})$ will all have the same base $\widetilde{G}$.
+The $\Sigma$-protocol verifier extra work will be of the form $\psi(\mathbf{\sigma}) \equals \mathbf{A} + e\cdot [\widetilde{V}\_{i,j}]\_{i,j}$ and can be done in a size-$(2W+1)$ MSM because the group elements in $\psi(\mathbf{\sigma})$ will all have the same base $\widetilde{G}$.
 
 Then, we modify [**Step 6** of the $\pvss.\deal$ algorithm](#step-6-deal) to prove this new relation: 
 \begin{align}
