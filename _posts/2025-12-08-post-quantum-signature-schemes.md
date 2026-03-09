@@ -316,6 +316,12 @@ GPV hash-and-sign signatures and their plain-lattice descendants[^GPV07e].
 {: .todo}
 Investigate [ML-DSA](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.204.pdf), based on MLWE.
 
+| | Private Key | Public Key | Signature Size |
+|---|---|---|---|
+| ML-DSA-44 | 2,560 | 1,312 | 2,420 |
+| ML-DSA-65 | 4,032 | 1,952 | 3,309 |
+| ML-DSA-87 | 4,896 | 2,592 | 4,627 |
+
 ### Others
 {: .todo}
 [HAWK](https://hawk-sign.info/).
