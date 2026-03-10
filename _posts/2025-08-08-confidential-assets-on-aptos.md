@@ -418,7 +418,7 @@ The **main tension** is between:
  1. The ElGamal ciphertext (and associated proof) sizes: i.e., the # of chunks $n$ and $\ell$
  2. The decryption time for a TXN's amount: i.e., the chunk size $b$
     - We must be able to compute $n$ DLs on $b$ bit values in less than 10ms in the browser
-        + This seems to restrict us to $b \le 16$ (**TODO:** include TypeScript benchmarks here)
+        + This seems to restrict us to $b \le 16$ (see WASM benchmarks [here](#wasm-dlp-tbsgs-k-and-naivetruncateddoubledlookup))
     - We must have $\ell \cdot b=128$ and $n \cdot b = 64$
         + From above, we get $\ell = 8$ and $n=4$
     + This also indirectly influences the balance decryption times: balance chunks DLs are $(b+t)$-bit
