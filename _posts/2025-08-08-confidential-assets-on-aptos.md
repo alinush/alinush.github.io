@@ -69,15 +69,11 @@ If we decide to use $b$ for the base, use $w$ for the chunk size!
     - \# of pending balance chunks **and** # of transferred amount chunks
     + In Aptos, transferred amounts are 64 bits $\Rightarrow n \cdot b = 64$ 
  - $\term{t}$
-    - each account can receive up to $2^t-1$ incoming transfers, after which it needs to be _rolled over_
+    - each account can receive up to $2^t$ incoming transfers, after which it needs to be _rolled over_
     - i.e., the owner must send a TXN that rolls over their pending into their available balance
-    - $\Rightarrow$ pending balance chunks are always $< \emph{2^b(2^t - 1)}$
-    - $\Rightarrow$ available balance chunks are always $< 2^b + \emph{2^b(2^t - 1)} = 2^b(1 + 2^t - 1) = 2^b 2^t = 2^{b+t}$ 
+    - $\Rightarrow$ pending balance chunks are always $< \emph{2^{b+t}}$
+    - $\Rightarrow$ available balance chunks are always $\le (2^b - 1) + (2^b-1)2^t = (2^b - 1)(1 + 2^t) = 2^{b+t} - 1$ 
         + assuming we only roll over into _normalized_ available balances (i.e., with chunks $< 2^b$)
-
-{: .todo}
-Not sure why our initial implementation used $2^t - 2$ instead of $2^t-1$.
-May want to write a unit test and make sure my math works.
 
 ## Preliminaries
 
@@ -297,7 +293,7 @@ Will be difficult to change some things
 
 ### Increasing the # of max pending transfers
 
-The parameter $\emph{t}$ defined [above](#confidential-asset-notation) can be increased as long as we can compute discrete logs for values $\le 2^b(2^t - 1)$.
+The parameter $\emph{t}$ defined [above](#confidential-asset-notation) can be increased as long as we can compute discrete logs for values $\le 2^{b+t}$.
 
 The justification for its $t = 16$ value is discussed [later on](#why-16-bit-chunk-sizes).
 
@@ -403,8 +399,8 @@ We chose $b=16$-bit chunks for two reasons.
 First, it allows us to use the [naive DL algorithm](#naive-discrete-log-algorithm) to instantly decrypt TXN amounts.
 This should make confidential dapps very responsive and fast.
 
-Second, it ensures that, after $2^{\emph{t}} - 1$ incoming transfers, the pending balance chunks never exceed $2^b(2^t-1)$.
-For example, for $t = 16$ (i.e., for $\le$ 65,535 incoming transfers), the pending balance chunks will remain $\le 2^{16}(2^{16} - 1) = 2^{32} - 2^{16} < 2^{32}$.
+Second, it ensures that, after $2^t$ incoming transfers, the pending balance chunks remain $\le 2^{b+t} - 1$.
+For example, for $t = 16$ (i.e., for $\le$ 65,536 incoming transfers), the pending balance chunks will remain $\le 2^{16}(2^{16} - 1) = 2^{32} - 2^{16} < 2^{32}$.
 This, in turn, ensures fast decryption times for pending (and available) balances.
 
 Why do we think there could be so many incoming transfers?
@@ -415,17 +411,14 @@ In fact, $2^{16}$ may not even be enough there.
 ### What are the main tensions in the current ElGamal-based design
 
 The **main tension** is between:
- 1. The ElGamal ciphertext (and associated proof) sizes: i.e., the # of chunks $n$ and $\ell$
+ 1. The ElGamal ciphertext (and associated proof) sizes: i.e., the # of pending chunks $n$ and available chunks $\ell$
  2. The decryption time for a TXN's amount: i.e., the chunk size $b$
-    - We must be able to compute $n$ DLs on $b$ bit values in less than 10ms in the browser
-        + This seems to restrict us to $b \le 16$ (see WASM benchmarks [here](#wasm-dlp-tbsgs-k-and-naivetruncateddoubledlookup))
-    - We must have $\ell \cdot b=128$ and $n \cdot b = 64$
-        + From above, we get $\ell = 8$ and $n=4$
-    + This also indirectly influences the balance decryption times: balance chunks DLs are $(b+t)$-bit
-        + DL times are fast for 32 bits $\Rightarrow t = 16$
+    - We must be able to compute DLs on $b$-bit encrypted amount chunks in the browser very fast
+    - We must be able to compute DLs on $(b+t)$-bit encrypted balance chunks
+        + DL times are fast for 32 bits (see WASM benchmarks [here](#wasm-dlp-tbsgs-k-and-naivetruncateddoubledlookup)) $\Rightarrow b = t = 16$
         + **Fortunately**, as we improve our DL algorithms, we can simply increase $t$, in a backwards compatible fashion.
 
-We can make decryption arbitrarily fast by encrypting smaller chunks, but we would increase confidential transaction sizes and also the cost to verify them due to more $\Sigma$-protocol verification work.
+We can make decryption arbitrarily fast by reducing the chunk size $b$, but we would increase confidential transaction sizes and also the cost to verify them due to more $\Sigma$-protocol verification work.
 This would drive up gas costs.
 
 {: .info}
@@ -453,7 +446,7 @@ Currently, we believe this to be either $b=8$-bit or $b=16$-bit chunks.
 (TBD.)
 
 A **secondary tension** is between:
- 1. The # of incoming transfers $2^t - 1$ we allow without requiring a rollover from the pending balance into the available balance
+ 1. The # of incoming transfers $2^t$ we allow without requiring a rollover from the pending balance into the available balance
  2. The max discrete log instance we are willing to ever solve for via specialized algorithms like [BL12][^BL12]
     + This instance would arise when decrypting the pending or the available balance
 
@@ -499,7 +492,7 @@ Viewed differently, the hints are the decrypted amounts in all TXNs received sin
 
 {: .info}
 **A key question:**
-Should we decrypt pending balances by doing $n$ DLs of size $<2^b(2^t - 1)$ each?
+Should we decrypt pending balances by doing $n$ DLs of size $<2^{b+t}$ each?
 Or should we give ourselves a way to fetch the last $2^t$ TXNs, instantly decrypt them and add them up?
 \
 **Decision:**
@@ -531,7 +524,7 @@ Should the SDK just poll for a change in the encrypted balances on-chain and dec
 
 Or should the SDK be more "smart" and be aware of the last decrypted balance and the transactions received since, including rollovers and normalizations? (Complex, but much more efficient.)
 
-One challenge with the "smart" approach is that the SDK may need to fetch up to $2^t-1$ payment TXNs plus extra rollover and normalization TXNs.
+One challenge with the "smart" approach is that the SDK may need to fetch up to $2^t$ payment TXNs plus extra rollover and normalization TXNs.
 
 {: .todo}
 This is an **open question** for our SDK people.
