@@ -400,7 +400,7 @@ First, it allows us to use the [naive DL algorithm](#naive-discrete-log-algorith
 This should make confidential dapps very responsive and fast.
 
 Second, it ensures that, after $2^t$ incoming transfers, the pending balance chunks remain $\le 2^{b+t} - 1$.
-For example, for $t = 16$ (i.e., for $\le$ 65,536 incoming transfers), the pending balance chunks will remain $\le 2^{16}(2^{16} - 1) = 2^{32} - 2^{16} < 2^{32}$.
+For example, for $t = 16$ (i.e., for $\le$ 65,536 incoming transfers), the pending balance chunks will remain $\le 2^{b+t} - 1 = 2^{32} - 1$.
 This, in turn, ensures fast decryption times for pending (and available) balances.
 
 Why do we think there could be so many incoming transfers?
@@ -413,8 +413,8 @@ In fact, $2^{16}$ may not even be enough there.
 The **main tension** is between:
  1. The ElGamal ciphertext (and associated proof) sizes: i.e., the # of pending chunks $n$ and available chunks $\ell$
  2. The decryption time for a TXN's amount: i.e., the chunk size $b$
-    - We must be able to compute DLs on $b$-bit encrypted amount chunks in the browser very fast
-    - We must be able to compute DLs on $(b+t)$-bit encrypted balance chunks
+    - We must be able to compute DLs on $b$-bit encrypted amount chunks, **very** fast, in the browser
+    - We must be able to compute DLs on $(b+t)$-bit encrypted balance chunks, **reasonably** fast, in the browser
         + DL times are fast for 32 bits (see WASM benchmarks [here](#wasm-dlp-tbsgs-k-and-naivetruncateddoubledlookup)) $\Rightarrow b = t = 16$
         + **Fortunately**, as we improve our DL algorithms, we can simply increase $t$, in a backwards compatible fashion.
 
