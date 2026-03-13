@@ -854,6 +854,18 @@ TS BSGS 32-bit: avg=2252.36ms, min=1539.60ms, max=3359.79ms
 
 ### Gas benchmarks for `confidential_asset` v1.1 Move module
 
+#### Confidential vs. normal transfer
+
+**Q:** _"How much more expensive are confidential transfers?"_\
+**A:** 3x 👇
+
+| Operation | Gas | Overhead |
+| --------- | --- | -------- |
+| Normal fungible asset transfer | 100 | -- |
+| Confidential transfer (no auditors) | 305 | 3.05x |
+
+#### Detailed gas costs
+
 The full gas benchmark logs are [here](/files/confidential-asset/gas-benchmarks-v1.1.txt), but a nicer summary follows below:
 
 | Operation | Gas | Cost (cents) | # of calls / $1 |
