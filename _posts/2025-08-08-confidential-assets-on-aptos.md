@@ -356,37 +356,15 @@ This way, we would ensure that older ciphertexts don't proliferate.
 
 ### How does auditing currently work?
 
-Aptos governance can decide, for each token type, who is the auditor for TXNs for that token:
-```rust
-    /// Sets the auditor's public key for the specified token.
-    ///
-    /// NOTE: Ensures that new_auditor_ek is a valid Ristretto255 point
-    public fun set_auditor(
-        aptos_framework: &signer, token: Object<Metadata>, new_auditor_ek: vector<u8>
-    ) acquires FAConfig, FAController
-```
+First, Aptos governance can install a **global auditor EK**: every transferred amount and every user's balance will be encrypted under that EK.
 
-This updates the following token-type-specific resource:
-```rust
-    /// Represents the configuration of a token.
-    struct FAConfig has key {
-        /// Indicates whether the token is allowed for confidential transfers.
-        /// If allow list is disabled, all tokens are allowed.
-        /// Can be toggled by the governance module. The withdrawals are always allowed.
-        allowed: bool,
+Second, governance can also install an **asset-specific auditor EK** (e.g., an auditor EK for the APT token).
+Such asset-specific auditor EKs take precedence over the global auditor EK.
+In this sense, an asset type's **effective auditor** is the asset-specific auditor, if set.
+If not, it's the global auditor, if set.
+(Otherwise, there is no effective auditor at all.)
 
-        /// The auditor's public key for the token. If the auditor is not set, this field is `None`.
-        /// Otherwise, each confidential transfer must include the auditor as an additional party,
-        /// alongside the recipient, who has access to the decrypted transferred amount.
-        auditor_ek: Option<twisted_elgamal::CompressedPubkey>
-    }
-```
-
-{: .note}
-There is no global auditor support implemented; only token-specific.
-(An older version of the code had global auditing only.)
-However, we **do** allow anyone to encrypt their TXN's amounts under any auditor EK they please, not just the token-specific auditors that may (or may not) be "installed" on-chain.
-In other words, only the first auditor EK is required to be the set to the token-specific auditor.
+Third, we allow users to re-encrypt their TXN's amounts under any **extra** auditor EK they please, not just the effective auditor that may (or may not) be "installed" on-chain.
 
 {: .note}
 We do not require a ZKPoK when setting a token-specific EK, to simplify deployment and implementation.

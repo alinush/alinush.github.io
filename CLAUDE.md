@@ -9,3 +9,5 @@ You can see where the paper repository is locally by parsing the `ck` config fil
 ```
 cat "`ck config`"
 ```
+
+When writing math derivations in blog posts, each new equation/line should introduce only **one small change** from the previous line. Do not skip steps or combine multiple operations into a single line.
