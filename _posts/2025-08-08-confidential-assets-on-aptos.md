@@ -356,7 +356,7 @@ This way, we would ensure that older ciphertexts don't proliferate.
 
 ### How does auditing currently work?
 
-First, Aptos governance can install a **global auditor EK**: every transferred amount and every user's balance will be encrypted under that EK.
+First, Aptos governance can install a **global auditor EK**: every transferred amount and every user's balance[^best-effort] will be encrypted under that EK.
 
 Second, governance can also install an **asset-specific auditor EK** (e.g., an auditor EK for the APT token).
 Such asset-specific auditor EKs take precedence over the global auditor EK.
@@ -364,7 +364,8 @@ In this sense, an asset type's **effective auditor** is the asset-specific audit
 If not, it's the global auditor, if set.
 (Otherwise, there is no effective auditor at all.)
 
-Third, we allow users to re-encrypt their TXN's amounts under any **extra** auditor EK they please, not just the effective auditor that may (or may not) be "installed" on-chain.
+Third, we allow users to re-encrypt their transferred amounts under any **extra** auditor EK they please, not just the effective auditor that may (or may not) be "installed" on-chain.
+(Note, this re-encryption is only for transferred amounts, not balances.)
 
 {: .note}
 We do not require a ZKPoK when setting a token-specific EK, to simplify deployment and implementation.
@@ -946,6 +947,8 @@ For cited works, see below 👇👇
 [^hm]: I wonder if this is generally true...
 
 [^sok]: Writing efficient and secure ZK circuits is extremely difficult. I quote from a recent survey paper[^CETplus24] on implementing general-purpose zkSNARK-based systems: _"We find that developers seem to struggle in correctly implementing arithmetic circuits that are free of vulnerabilities, especially due to most tools exposing a low-level programming interface that can easily lead to misuse without extensive domain knowledge in cryptography."_
+
+[^best-effort]: Auditor balance ciphertexts are maintained on a "best-effort" basis: they can only be updated during a transfer out of an account, during a public withdrawal, or during a normalization. But they cannot be updated after an incoming transfer. They can be slightly stale in this sense. Put differently, only the "available" balance ciphertext is encrypted under the effective auditor's EK, but not the "pending" balance.
 
 
 {% include refs.md %}
