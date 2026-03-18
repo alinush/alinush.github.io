@@ -546,16 +546,16 @@ Slides:
  - WIP: [Confidential assets: deep dive](https://docs.google.com/presentation/d/1AO2ft2WPgQ7YNr2WgGNiCtB28QfIoC9k1Q7JOrukoOQ/edit?usp=sharing)
 
 Documentation & articles:
- - [aptos.dev docs](https://aptos.dev/build/smart-contracts/confidential-asset)
- - [Build with Confidential Transactions on Aptos](https://medium.com/aptoslabs/build-with-confidential-transactions-on-aptos-1e99f78aa181)
- - [Aptos Improvement Proposal (AIP) 143: Confidential APT](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-143.md)
+ - [aptos.dev docs](https://aptos.dev/build/smart-contracts/confidential-asset) (stale!)
+ - [Build with Confidential Transactions on Aptos](https://medium.com/aptoslabs/build-with-confidential-transactions-on-aptos-1e99f78aa181) (stale!)
+ - [Aptos Improvement Proposal (AIP) 143: Confidential APT](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-143.md) (will be updated with more nuance)
 
 Repositories:
  - [Ristretto255 discrete logarithm algorithms](https://github.com/aptos-labs/ristretto255-dlog)
  - [WASM bindings for DL algorithms and Bulletproofs](https://github.com/aptos-labs/confidential-asset-wasm-bindings)
- - [Move contract](https://github.com/aptos-labs/aptos-core/blob/main/aptos-move/framework/aptos-experimental/sources/confidential_asset/confidential_asset.move)
- - [TypeScript SDK](https://github.com/aptos-labs/aptos-ts-sdk/tree/main/confidential-assets)
- - [Confidential payments demo webapp](https://github.com/aptos-labs/confidential-payments-example)
+ - [Move contract](https://github.com/aptos-labs/aptos-core/blob/main/aptos-move/framework/aptos-experimental/sources/confidential_asset/confidential_asset.move) (stale! see PRs below)
+ - [TypeScript SDK](https://github.com/aptos-labs/aptos-ts-sdk/tree/main/confidential-assets) (stale! see PRs below)
+ - [Confidential payments demo webapp](https://github.com/aptos-labs/confidential-payments-example) (stale! see PRs below)
 
 Apps:
  - [Confidential payments demo (deployed)](https://confidential.aptoslabs.com)
@@ -563,8 +563,8 @@ Apps:
 ### v1.1 pull requests (PRs)
 
  - Move contract in [aptos-core](https://github.com/aptos-labs/aptos-core/pull/18973)
- - DL algorithms in [ristretto255-dlog](https://github.com/aptos-labs/ristretto255-dlog/pull/2)
-   + WASM bindings for DL algorithms and Bulletproofs in [confidential-asset-wasm-bindings](https://github.com/aptos-labs/confidential-asset-wasm-bindings/pull/3)
+ - **Merged:** DL algorithms in [ristretto255-dlog](https://github.com/aptos-labs/ristretto255-dlog/pull/2)
+   + **Merged:** WASM bindings for DL algorithms and Bulletproofs in [confidential-asset-wasm-bindings](https://github.com/aptos-labs/confidential-asset-wasm-bindings/pull/3)
  - SDK in [aptos-ts-sdk](https://github.com/aptos-labs/aptos-ts-sdk/pull/822)
  - aptos.dev docs in [aptos-docs](https://github.com/aptos-labs/aptos-docs/pull/389)
  - Confidential payments demo webapp in [confidential-payments-example](https://github.com/aptos-labs/confidential-payments-example/pull/53)
