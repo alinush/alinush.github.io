@@ -100,7 +100,7 @@ We assume familiarity with:
  - [ElGamal encryption](/elgamal)
  - Batched range proofs (e.g., [DeKART](/dekart))
  - ZKSoKs (i.e., [$\Sigma$-protocols](/sigma) that implicitly sign over a message by feeding it into the Fiat-Shamir transform).
- - The SCRAPE low-degree test
+ - [The SCRAPE low-degree test](#mathsfscrapemathsflowdegreetestmathsfevals-t-n-rightarrow-01)
 
 All of these will be described in more detail in the subsections below.
 
@@ -189,7 +189,7 @@ Returns a ZK proof of knowledge of $\witn$ s.t. $\mathcal{R}(\stmt;\witn) = 1$ a
 
 Verifies a ZK proof of knowledge of some $\witn$ s.t. $\mathcal{R}(\stmt;\witn) = 1$ and that the message $m$ was signed.
 
-### The ElGamal-to-KZG NP relation
+### The $\mathcal{R}\_\mathsf{e2k}$ ElGamal-to-KZG NP relation
 
 One of the key ingredients in our PVSS will be a ZK proof of knowledge of share chunks such that they are both ElGamal-encrypted and [KZG-committed](/kzg).
 
@@ -211,10 +211,38 @@ where the $s_{i,j,k}$'s will be "flattened" as a vector (in a specific order) be
 {: .warning}
 We will explain how this flattening works later in the [$\pvssDeal$](#mathsfpvssmathsfdeal_mathsfpplefta_0-t_w-w_i-mathsfek_i_iin-n-mathsfssidright-rightarrow-mathsftrs) algorithm.
 
-### The SCRAPE low-degree test
+### $\mathsf{SCRAPE}.\mathsf{LowDegreeTest}(\mathsf{evals}, t, n) \rightarrow \\{0,1\\}$
 
-{: .todo}
-Explain!
+Checks that a vector of group-element commitments to polynomial evaluations actually determine a degree-$\le t$ polynomial.
+It exploits the fact that Shamir shares form a Reed-Solomon codeword, so their inner product with any **dual codeword** must be zero[^CD17].
+
+**Input:** A list of $(n+1)$ evaluation commitments $\mathsf{evals} = \\{(x_i, V_i)\\}\_{i \in [0, n]}$ where $V_i = a(x_i) \cdot \widetilde{G}$, if honest, and $t$ is the max degree.
+
+**Step 1:** Sample a random degree-$d$ polynomial $f(X) \in \F[X]$ where $d = n - t$:
+\begin{align}
+f_0, \ldots, f_d &\randget \F\\\\\
+f(X) &:= \sum\_{j=0}^{d} f\_j X^j
+\end{align}
+
+**Step 2:** Compute Lagrange-like coefficients $\ell_i$ for each evaluation point:
+\begin{align}
+\ell\_0 &:= 1 / \prod\_{j \in [n]} (x\_0 - x\_j)\\\\\
+\forall i \in [n],\quad \ell\_i &:= 1 / \left((x\_i - x\_0) \cdot \prod\_{j \neq i, j \in [n]} (x\_i - x\_j)\right)
+\end{align}
+
+**Step 3:** Check that the inner product with the random dual codeword is zero:
+\begin{align}
+\textbf{assert}\ 0 \equals \ell\_0 \cdot f(x\_0) \cdot V\_0 + \sum\_{i \in [n]} \ell\_i \cdot f(x\_i) \cdot V\_i
+\end{align}
+
+{: .note}
+Typically, the evaluation domain $(x_1, \ldots, x_n)$ is FFT-friendly, so the $f(x_i)$'s are computable in $\Fmul{O(n\log{n})}$.
+$f(x_0)$ may add another $\Fmul{n}$ operations, but since typically $x_0 = 0$, we have $f(x_0) = f_0$. 
+
+{: .info}
+**Why it works:** The vector $(\ell_0 \cdot f(x_0), \ell_1 \cdot f(x_1), \ldots, \ell_n \cdot f(x_n))$ is a random codeword from the dual of the Reed-Solomon code $C = \\{(a(x_0), \ldots, a(x_n)) : \deg(a) \le t\\}$.
+If the committed values actually lie on a degree-$\le t$ polynomial, the inner product is zero.
+If not, it is nonzero with probability $\ge 1 - 1/p$.
 
 ## Building a DKG from a PVSS
 
@@ -425,10 +453,9 @@ Parse the transcript:
 
 Let the _total weight_ $W$ be defined as before in Eq. \ref{eq:W}.
 
-**Step 1:** Verify that the committed shares encode a degree-$\threshWeight$ polynomial via the SCRAPE LDT[^CD17]:
+**Step 1:** Verify that the committed shares encode a degree-$\threshWeight$ polynomial via the _randomized_ SCRAPE LDT[^CD17]:
 \begin{align}
-\term{\alpha} &\randget \F\\\\\
-\textbf{assert}\ &\scrape.\lowdegreetest(\\{(0, \widetilde{V}\_0)\\} \cup \\{(\chi\_{i,j}, \widetilde{V}\_{i,j})\\}\_{i,j}, \threshWeight, W; \emph{\alpha}) \equals 1
+\textbf{assert}\ &\scrape.\lowdegreetest(\\{(0, \widetilde{V}\_0)\\} \cup \\{(\chi\_{i,j}, \widetilde{V}\_{i,j})\\}\_{i,j}, \threshWeight, W) \equals 1
 \end{align}
 
 _Note:_ Recall that the $\emph{\chi_{i,j}}$'s are the roots of unity used to evaluate the secret-sharing polynomial $f(X)$ during dealing (see Eq. \ref{eq:eval}).
