@@ -43,6 +43,14 @@ permalink: confidential-assets
 % TBSGS-k
 \def\tctwomjG#1{\trunc{\ctwojG{#1}}}
 \def\sqm{\ceil{\sqrt{m}}}
+%
+% ElGamal
+\def\dk{\mathsf{dk}}
+\def\ek{\mathsf{ek}}
+\def\AHE{\mathsf{AHE}}
+\def\Enc{\mathsf{Enc}}
+\def\ctxt{\mathsf{ctxt}}
+\def\Dec{\mathsf{Dec}} % returns field element
 $</div> <!-- $ -->
 
 {% include defs-time-complexities.md %}
@@ -544,6 +552,7 @@ Because we can nonetheless achieve competitively-small TXN sizes and cheap verif
 Slides:
  - [Confidential assets: 10,000 feet view](https://docs.google.com/presentation/d/1wwkDuFBUSfDmVC83UdGsXRXdCQQES6Rpj7RskdaBgfY/edit?usp=sharing)
  - WIP: [Confidential assets: deep dive](https://docs.google.com/presentation/d/1AO2ft2WPgQ7YNr2WgGNiCtB28QfIoC9k1Q7JOrukoOQ/edit?usp=sharing)
+ - [Confidential asset: A cryptographic deep dive](https://docs.google.com/presentation/d/14WMFACzA17sMnC0kAk_05_ORHEBz2DKQbZf-Fnwd-IU)
 
 Documentation & articles:
  - [aptos.dev docs](https://aptos.dev/build/smart-contracts/confidential-asset) (stale!)
@@ -562,7 +571,7 @@ Apps:
 
 ### v1.1 pull requests (PRs)
 
- - Move contract in [aptos-core](https://github.com/aptos-labs/aptos-core/pull/18973)
+ - **Merged:** Move contract in [aptos-core](https://github.com/aptos-labs/aptos-core/pull/18973)
  - **Merged:** DL algorithms in [ristretto255-dlog](https://github.com/aptos-labs/ristretto255-dlog/pull/2)
    + **Merged:** WASM bindings for DL algorithms and Bulletproofs in [confidential-asset-wasm-bindings](https://github.com/aptos-labs/confidential-asset-wasm-bindings/pull/3)
  - SDK in [aptos-ts-sdk](https://github.com/aptos-labs/aptos-ts-sdk/pull/822)
