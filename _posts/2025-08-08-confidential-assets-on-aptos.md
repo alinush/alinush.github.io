@@ -833,6 +833,9 @@ TS BSGS 32-bit: avg=2252.36ms, min=1539.60ms, max=3359.79ms
 
 ### Gas benchmarks for `confidential_asset` v1.1 Move module
 
+{: .note}
+Events cost essentially nothing: I benchmarked with `V2` empty events and the difference is 0-8 gas units across all operations. The fat V1 events are fine.
+
 #### Confidential vs. normal transfer
 
 **Q:** _"How much more expensive are confidential transfers?"_\
