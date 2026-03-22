@@ -850,7 +850,8 @@ The full gas benchmark logs are [here](/files/confidential-asset/gas-benchmarks-
 | Operation | Gas | Cost (cents) | # of calls / $1 |
 | --------- | --- | ------------ | --------------- |
 | register  | 12,841 | 1.2841 | 77 |
-| deposit   | 5,515  | 0.5515 | 181 |
+| deposit (_initial_) | 5,515 | 0.5515 | 181 |
+| deposit (**subsequent**) | 182 | 0.0182 | 5,494 |
 | rollover  | 132    | 0.0132 | 7,575 |
 | rotate key | 370   | 0.0370 | 2,702 |
 | withdraw (no auditor) | 2,040 | 0.2040 | 490 |
@@ -870,9 +871,8 @@ The full gas benchmark logs are [here](/files/confidential-asset/gas-benchmarks-
 | transfer (eff. + 3 extra, _initial_) | 4,731 | 0.4731 | 211 |
 
 {: .note}
-"_Initial_" means this is the 1st call with an effective auditor $\Rightarrow$ it stores, for the 1st time, the auditor's EK component in the user's available balance $\Rightarrow$ higher gas cost due to storage fee.
-This is a one-time penalty though: only incurred when the call is 1st made.
-"**Subsequent**" refers to subsequent calls that reuse this auditor EK component and thus no longer incur a storage fee $\Rightarrow$ this is the "average case" that we care about when reasoning about gas costs.
+"_Initial_" means this is the 1st call that creates on-chain storage (e.g., the FA pool store for deposits, or the auditor's EK component for withdraw/transfer) $\Rightarrow$ higher gas cost due to one-time storage fee.
+"**Subsequent**" refers to subsequent calls that reuse existing storage $\Rightarrow$ this is the "average case" that we care about when reasoning about gas costs.
 
 #### v1.0 → v1.1 speedup
 
