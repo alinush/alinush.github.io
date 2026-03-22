@@ -572,6 +572,8 @@
 
 [^BGR98e]: **Fast Batch Verification for Modular Exponentiation and Digital Signatures**, by Mihir Bellare and Juan A. Garay and Tal Rabin, 1998, [[URL]](https://cseweb.ucsd.edu/~mihir/papers/batch.pdf)
 
+[^BGTZ24]: **On Soundness Notions for Interactive Oracle Proofs**, by Block, Alexander R. and Garreta, Albert and Tiwari, Pratyush Ranjan and Zając, Michał, *in Journal of Cryptology*, 2024, [[URL]](https://doi.org/10.1007/s00145-024-09520-7)
+
 [^BGV11]: **Verifiable Delegation of Computation over Large Datasets**, by Benabbas, Siavosh and Gennaro, Rosario and Vahlis, Yevgeniy, *in CRYPTO 2011*, 2011
 
 [^BGW05e]: **Collusion Resistant Broadcast Encryption With Short Ciphertexts and Private Keys**, by Dan Boneh and Craig Gentry  and Brent Waters, *in Cryptology ePrint Archive, Report 2005/018*, 2005, [[URL]](https://ia.cr/2005/018)
@@ -939,6 +941,8 @@
 [^CCG16e]: **Post-Compromise Security**, by Katriel Cohn-Gordon and Cas Cremers and Luke Garratt, *in Cryptology ePrint Archive, Paper 2016/221*, 2016, [[URL]](https://eprint.iacr.org/2016/221)
 
 [^CCHplus18e]: **Fiat-Shamir From Simpler Assumptions**, by Ran Canetti and Yilei Chen and Justin Holmgren and Alex Lombardi and Guy N.  Rothblum and Ron D.  Rothblum, *in Cryptology {ePrint} Archive, Paper 2018/1004*, 2018, [[URL]](https://eprint.iacr.org/2018/1004)
+
+[^CCHplus19]: **Fiat-Shamir: from practice to theory**, by Canetti, Ran and Chen, Yilei and Holmgren, Justin and Lombardi, Alex and Rothblum, Guy N. and Rothblum, Ron D. and Wichs, Daniel, *in Proceedings of the 51st Annual ACM SIGACT Symposium on Theory of Computing*, 2019, [[URL]](https://doi.org/10.1145/3313276.3316380)
 
 [^CCLplus20]: **Bandwidth-efficient threshold EC-DSA**, by Guilhem Castagnos and Dario Catalano and Fabien Laguillaumie and Federico Savasta and Ida Tucker, *in Cryptology ePrint Archive, Report 2020/084*, 2020, [[URL]](https://eprint.iacr.org/2020/084)
 
@@ -3363,6 +3367,8 @@
 [^SSDplus21]: **Evil Under the Sun: Understanding and Discovering Attacks on Ethereum Decentralized Applications**, by Liya Su and Xinyue Shen and Xiangyu Du and Xiaojing Liao and XiaoFeng Wang and Luyi Xing and Baoxu Liu, *in 30th USENIX Security Symposium (USENIX Security 21)*, 2021, [[URL]](https://www.usenix.org/conference/usenixsecurity21/presentation/su)
 
 [^SSKP22e]: **Structure-Preserving Threshold Signatures**, by Mahdi Sedaghat and Daniel Slamanig and Markulf Kohlweiss and Bart Preneel, *in Cryptology ePrint Archive, Paper 2022/839*, 2022, [[URL]](https://eprint.iacr.org/2022/839)
+
+[^SSPP26e]: **Relaxed Modular {PCS} from Arbitrary {PCS} and Applications to {SNARKs} for Integers**, by Alireza Shirzad and Sriram Sridhar and Dimitrios Papadopoulos and Charalampos Papamanthou, *in Cryptology {ePrint} Archive, Paper 2026/347*, 2026, [[URL]](https://eprint.iacr.org/2026/347)
 
 [^SSSplus22e]: **The inspection model for zero-knowledge proofs and efficient Zerocash with secp256k1 keys**, by Huachuang Sun and Haifeng Sun and Kevin Singh and Akhil Sai Peddireddy and Harshad Patil and Jianwei Liu and Weikeng Chen, *in Cryptology ePrint Archive, Paper 2022/1079*, 2022, [[URL]](https://eprint.iacr.org/2022/1079)
 

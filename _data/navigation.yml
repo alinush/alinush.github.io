@@ -262,6 +262,8 @@ cryptomat:
     #  - title: Fischlin transform
       - title: NP relations
         url: /np-relations 
+      - title: Fiat-Shamir
+        url: /fiat-shamir
       - title: IOPs
         url: /iop
       - title: IOPPs
@@ -290,6 +292,8 @@ cryptomat:
         url: /univariate-sumcheck
       - title: Multivariate sumcheck
         url: /sumcheck
+      - title: IPAs
+        url: /ipa
 
   #- title: Miscellanea 
   #  children:

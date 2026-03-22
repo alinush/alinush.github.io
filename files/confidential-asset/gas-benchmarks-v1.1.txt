@@ -1,219 +1,278 @@
+warning: function `exec_experimental_function` is never used
+   --> aptos-move/vm-genesis/src/lib.rs:511:4
+    |
+511 | fn exec_experimental_function(
+    |    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `aptos-vm-genesis` (lib) generated 1 warning
+warning: variant `Fuzzing` is never constructed
+   --> aptos-move/e2e-tests/src/executor.rs:149:5
+    |
+147 | enum BlockState {
+    |      ---------- variant in this enum
+148 |     None,
+149 |     Fuzzing(SharedCacheState),
+    |     ^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `aptos-language-e2e-tests` (lib) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.80s
+warning: the following packages contain code that will be rejected by a future version of Rust: num-bigint-dig v0.8.4
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 5`
+     Running unittests src/lib.rs (/Users/alinush/repos/aptos-core/target/debug/deps/e2e_move_tests-6a4147699f7cecf0)
+
+running 27 tests
+test tests::confidential_asset::bench_gas_confidential_transfer_detailed ... ignored
+test tests::confidential_asset::bench_gas_deposit_detailed ... ignored
+test tests::confidential_asset::bench_gas_fungible_asset_transfer_detailed ... ignored
+test tests::confidential_asset::bench_gas_register_detailed ... ignored
+
 Gas report for 0x1::primary_fungible_store::transfer, assuming 100 octas / gas unit
-|  Execution gas:   4 units
-|  IO gas:          7 units
+|  Execution gas:   36 units
+|  IO gas:          65 units
 |  Storage fee:     0 octas
 |  Storage refund:  0 octas
 * ----------------------------------
-|  Total gas units: 10 units
-|  Total octas:     1,000 octas
-|  Total APT:       0.00001000 APT
+|  Total gas units: 100 units
+|  Total octas:     10,000 octas
+|  Total APT:       0.00010000 APT
 \-----------------------------------
+test tests::confidential_asset::bench_gas_fungible_asset_transfer ... ok
+test tests::confidential_asset::bench_gas_rollover_pending_balance_detailed ... ignored
 
-Gas report for 0x7::confidential_asset::register, assuming 100 octas / gas unit
-|  Execution gas:   9 units
-|  IO gas:          5 units
-|  Storage fee:     126,840 octas
+Gas report for 0x1::confidential_asset::register, assuming 100 octas / gas unit
+|  Execution gas:   89 units
+|  IO gas:          53 units
+|  Storage fee:     1,270,000 octas
 |  Storage refund:  0 octas
 * ----------------------------------
-|  Total gas units: 1,282 units
-|  Total octas:     128,200 octas
-|  Total APT:       0.00128200 APT
+|  Total gas units: 12,841 units
+|  Total octas:     1,284,100 octas
+|  Total APT:       0.01284100 APT
 \-----------------------------------
+test tests::confidential_asset::bench_gas_register ... ok
+test tests::confidential_asset::bench_gas_rotate_encryption_key_detailed ... ignored
 
-Gas report for 0x7::confidential_asset::deposit, assuming 100 octas / gas unit
-|  Execution gas:   11 units
-|  IO gas:          8 units
+Gas report for 0x1::confidential_asset::deposit, assuming 100 octas / gas unit
+|  Execution gas:   109 units
+|  IO gas:          82 units
+|  Storage fee:     532,400 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 5,515 units
+|  Total octas:     551,500 octas
+|  Total APT:       0.00551500 APT
+\-----------------------------------
+  Alice balance: 9,998,715,900 -> 9,998,163,400 (deposited 1,000)
+test tests::confidential_asset::bench_gas_deposit ... ok
+test tests::confidential_asset::bench_gas_withdraw_to_detailed ... ignored
+
+Gas report for 0x1::confidential_asset::rollover_pending_balance, assuming 100 octas / gas unit
+|  Execution gas:   111 units
+|  IO gas:          21 units
 |  Storage fee:     0 octas
 |  Storage refund:  0 octas
 * ----------------------------------
-|  Total gas units: 18 units
-|  Total octas:     1,800 octas
-|  Total APT:       0.00001800 APT
+|  Total gas units: 132 units
+|  Total octas:     13,200 octas
+|  Total APT:       0.00013200 APT
 \-----------------------------------
+test tests::confidential_asset::bench_gas_rollover_pending_balance ... ok
 
-Gas report for 0x7::confidential_asset::rollover_pending_balance, assuming 100 octas / gas unit
-|  Execution gas:   11 units
-|  IO gas:          3 units
+Gas report for 0x1::confidential_asset::rotate_encryption_key, assuming 100 octas / gas unit
+|  Execution gas:   330 units
+|  IO gas:          41 units
 |  Storage fee:     0 octas
 |  Storage refund:  0 octas
 * ----------------------------------
-|  Total gas units: 13 units
-|  Total octas:     1,300 octas
-|  Total APT:       0.00001300 APT
+|  Total gas units: 370 units
+|  Total octas:     37,000 octas
+|  Total APT:       0.00037000 APT
 \-----------------------------------
+test tests::confidential_asset::bench_gas_rotate_encryption_key ... ok
 
-Gas report for 0x7::confidential_asset::rotate_encryption_key, assuming 100 octas / gas unit
-|  Execution gas:   33 units
-|  IO gas:          4 units
+Gas report for 0x1::confidential_asset::confidential_transfer (1 volun), assuming 100 octas / gas unit
+|  Execution gas:   3,089 units
+|  IO gas:          74 units
 |  Storage fee:     0 octas
 |  Storage refund:  0 octas
 * ----------------------------------
-|  Total gas units: 37 units
-|  Total octas:     3,700 octas
-|  Total APT:       0.00003700 APT
+|  Total gas units: 3,162 units
+|  Total octas:     316,200 octas
+|  Total APT:       0.00316200 APT
 \-----------------------------------
+test tests::confidential_asset::bench_gas_confidential_transfer_1_volun ... ok
 
-Gas report for 0x7::confidential_asset::withdraw_to, assuming 100 octas / gas unit
-|  Execution gas:   194 units
-|  IO gas:          10 units
+Gas report for 0x1::confidential_asset::confidential_transfer (2 volun), assuming 100 octas / gas unit
+|  Execution gas:   3,175 units
+|  IO gas:          74 units
 |  Storage fee:     0 octas
 |  Storage refund:  0 octas
 * ----------------------------------
-|  Total gas units: 204 units
-|  Total octas:     20,400 octas
-|  Total APT:       0.00020400 APT
+|  Total gas units: 3,249 units
+|  Total octas:     324,900 octas
+|  Total APT:       0.00324900 APT
 \-----------------------------------
 
-Gas report for 0x7::confidential_asset::withdraw_to (with auditor, first time), assuming 100 octas / gas unit
-|  Execution gas:   213 units
-|  IO gas:          11 units
-|  Storage fee:     10,560 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 330 units
-|  Total octas:     33,000 octas
-|  Total APT:       0.00033000 APT
-\-----------------------------------
-
-Gas report for 0x7::confidential_asset::withdraw_to (with auditor, subsequent), assuming 100 octas / gas unit
-|  Execution gas:   213 units
-|  IO gas:          11 units
+Gas report for 0x1::confidential_asset::confidential_transfer (0 volun), assuming 100 octas / gas unit
+|  Execution gas:   2,986 units
+|  IO gas:          73 units
 |  Storage fee:     0 octas
 |  Storage refund:  0 octas
 * ----------------------------------
-|  Total gas units: 224 units
-|  Total octas:     22,400 octas
-|  Total APT:       0.00022400 APT
+|  Total gas units: 3,059 units
+|  Total octas:     305,900 octas
+|  Total APT:       0.00305900 APT
 \-----------------------------------
+test tests::confidential_asset::bench_gas_confidential_transfer ... ok
+test tests::confidential_asset::bench_gas_confidential_transfer_2_volun ... ok
 
-Gas report for 0x7::confidential_asset::confidential_transfer (0 extra), assuming 100 octas / gas unit
-|  Execution gas:   298 units
-|  IO gas:          7 units
+Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, first time, 3 volun), assuming 100 octas / gas unit
+|  Execution gas:   3,553 units
+|  IO gas:          82 units
+|  Storage fee:     109,600 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 4,731 units
+|  Total octas:     473,100 octas
+|  Total APT:       0.00473100 APT
+\-----------------------------------
+test tests::confidential_asset::bench_gas_confidential_transfer_with_auditor_3_volun ... ok
+
+Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, first time, 1 volun), assuming 100 octas / gas unit
+|  Execution gas:   3,364 units
+|  IO gas:          81 units
+|  Storage fee:     109,600 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 4,541 units
+|  Total octas:     454,100 octas
+|  Total APT:       0.00454100 APT
+\-----------------------------------
+test tests::confidential_asset::bench_gas_confidential_transfer_with_auditor_1_volun ... ok
+
+Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, first time), assuming 100 octas / gas unit
+|  Execution gas:   3,261 units
+|  IO gas:          81 units
+|  Storage fee:     109,600 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 4,438 units
+|  Total octas:     443,800 octas
+|  Total APT:       0.00443800 APT
+\-----------------------------------
+test tests::confidential_asset::bench_gas_confidential_transfer_with_auditor ... ok
+
+Gas report for 0x1::confidential_asset::confidential_transfer (3 volun), assuming 100 octas / gas unit
+|  Execution gas:   3,278 units
+|  IO gas:          75 units
 |  Storage fee:     0 octas
 |  Storage refund:  0 octas
 * ----------------------------------
-|  Total gas units: 305 units
-|  Total octas:     30,500 octas
-|  Total APT:       0.00030500 APT
+|  Total gas units: 3,352 units
+|  Total octas:     335,200 octas
+|  Total APT:       0.00335200 APT
 \-----------------------------------
+test tests::confidential_asset::bench_gas_confidential_transfer_3_volun ... ok
 
-Gas report for 0x7::confidential_asset::confidential_transfer (1 extra), assuming 100 octas / gas unit
-|  Execution gas:   308 units
-|  IO gas:          7 units
+Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, first time, 2 volun), assuming 100 octas / gas unit
+|  Execution gas:   3,450 units
+|  IO gas:          82 units
+|  Storage fee:     109,600 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 4,628 units
+|  Total octas:     462,800 octas
+|  Total APT:       0.00462800 APT
+\-----------------------------------
+test tests::confidential_asset::bench_gas_confidential_transfer_with_auditor_2_volun ... ok
+
+Gas report for 0x1::confidential_asset::withdraw_to, assuming 100 octas / gas unit
+|  Execution gas:   1,941 units
+|  IO gas:          100 units
 |  Storage fee:     0 octas
 |  Storage refund:  0 octas
 * ----------------------------------
-|  Total gas units: 315 units
-|  Total octas:     31,500 octas
-|  Total APT:       0.00031500 APT
+|  Total gas units: 2,040 units
+|  Total octas:     204,000 octas
+|  Total APT:       0.00204000 APT
 \-----------------------------------
+test tests::confidential_asset::bench_gas_withdraw_to ... ok
 
-Gas report for 0x7::confidential_asset::confidential_transfer (2 extra), assuming 100 octas / gas unit
-|  Execution gas:   317 units
-|  IO gas:          7 units
+Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, subsequent), assuming 100 octas / gas unit
+|  Execution gas:   3,261 units
+|  IO gas:          81 units
 |  Storage fee:     0 octas
 |  Storage refund:  0 octas
 * ----------------------------------
-|  Total gas units: 324 units
-|  Total octas:     32,400 octas
-|  Total APT:       0.00032400 APT
+|  Total gas units: 3,342 units
+|  Total octas:     334,200 octas
+|  Total APT:       0.00334200 APT
 \-----------------------------------
+test tests::confidential_asset::bench_gas_confidential_transfer_with_auditor_subsequent ... ok
 
-Gas report for 0x7::confidential_asset::confidential_transfer (3 extra), assuming 100 octas / gas unit
-|  Execution gas:   327 units
-|  IO gas:          7 units
+Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, subsequent, 2 volun), assuming 100 octas / gas unit
+|  Execution gas:   3,451 units
+|  IO gas:          82 units
 |  Storage fee:     0 octas
 |  Storage refund:  0 octas
 * ----------------------------------
-|  Total gas units: 334 units
-|  Total octas:     33,400 octas
-|  Total APT:       0.00033400 APT
+|  Total gas units: 3,532 units
+|  Total octas:     353,200 octas
+|  Total APT:       0.00353200 APT
 \-----------------------------------
+test tests::confidential_asset::bench_gas_confidential_transfer_with_auditor_2_volun_subsequent ... ok
 
-Gas report for 0x7::confidential_asset::confidential_transfer (with auditor, first time), assuming 100 octas / gas unit
-|  Execution gas:   326 units
-|  IO gas:          8 units
-|  Storage fee:     10,560 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 438 units
-|  Total octas:     43,800 octas
-|  Total APT:       0.00043800 APT
-\-----------------------------------
-
-Gas report for 0x7::confidential_asset::confidential_transfer (with auditor, first time, 1 extra), assuming 100 octas / gas unit
-|  Execution gas:   336 units
-|  IO gas:          8 units
-|  Storage fee:     10,560 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 449 units
-|  Total octas:     44,900 octas
-|  Total APT:       0.00044900 APT
-\-----------------------------------
-
-Gas report for 0x7::confidential_asset::confidential_transfer (with auditor, first time, 2 extra), assuming 100 octas / gas unit
-|  Execution gas:   344 units
-|  IO gas:          8 units
-|  Storage fee:     10,560 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 457 units
-|  Total octas:     45,700 octas
-|  Total APT:       0.00045700 APT
-\-----------------------------------
-
-Gas report for 0x7::confidential_asset::confidential_transfer (with auditor, first time, 3 extra), assuming 100 octas / gas unit
-|  Execution gas:   355 units
-|  IO gas:          8 units
-|  Storage fee:     10,560 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 468 units
-|  Total octas:     46,800 octas
-|  Total APT:       0.00046800 APT
-\-----------------------------------
-
-Gas report for 0x7::confidential_asset::confidential_transfer (with auditor, subsequent), assuming 100 octas / gas unit
-|  Execution gas:   326 units
-|  IO gas:          8 units
+Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, subsequent, 3 volun), assuming 100 octas / gas unit
+|  Execution gas:   3,554 units
+|  IO gas:          82 units
 |  Storage fee:     0 octas
 |  Storage refund:  0 octas
 * ----------------------------------
-|  Total gas units: 333 units
-|  Total octas:     33,300 octas
-|  Total APT:       0.00033300 APT
+|  Total gas units: 3,635 units
+|  Total octas:     363,500 octas
+|  Total APT:       0.00363500 APT
 \-----------------------------------
+test tests::confidential_asset::bench_gas_confidential_transfer_with_auditor_3_volun_subsequent ... ok
 
-Gas report for 0x7::confidential_asset::confidential_transfer (with auditor, subsequent, 1 extra), assuming 100 octas / gas unit
-|  Execution gas:   336 units
-|  IO gas:          8 units
+Gas report for 0x1::confidential_asset::withdraw_to (with auditor, first time), assuming 100 octas / gas unit
+|  Execution gas:   2,136 units
+|  IO gas:          107 units
+|  Storage fee:     109,600 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 3,338 units
+|  Total octas:     333,800 octas
+|  Total APT:       0.00333800 APT
+\-----------------------------------
+test tests::confidential_asset::bench_gas_withdraw_to_with_auditor ... ok
+
+Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, subsequent, 1 volun), assuming 100 octas / gas unit
+|  Execution gas:   3,364 units
+|  IO gas:          81 units
 |  Storage fee:     0 octas
 |  Storage refund:  0 octas
 * ----------------------------------
-|  Total gas units: 343 units
-|  Total octas:     34,300 octas
-|  Total APT:       0.00034300 APT
+|  Total gas units: 3,445 units
+|  Total octas:     344,500 octas
+|  Total APT:       0.00344500 APT
 \-----------------------------------
+test tests::confidential_asset::bench_gas_confidential_transfer_with_auditor_1_volun_subsequent ... ok
 
-Gas report for 0x7::confidential_asset::confidential_transfer (with auditor, subsequent, 2 extra), assuming 100 octas / gas unit
-|  Execution gas:   344 units
-|  IO gas:          8 units
+Gas report for 0x1::confidential_asset::withdraw_to (with auditor, subsequent), assuming 100 octas / gas unit
+|  Execution gas:   2,136 units
+|  IO gas:          107 units
 |  Storage fee:     0 octas
 |  Storage refund:  0 octas
 * ----------------------------------
-|  Total gas units: 352 units
-|  Total octas:     35,200 octas
-|  Total APT:       0.00035200 APT
+|  Total gas units: 2,242 units
+|  Total octas:     224,200 octas
+|  Total APT:       0.00224200 APT
 \-----------------------------------
+test tests::confidential_asset::bench_gas_withdraw_to_with_auditor_subsequent ... ok
 
-Gas report for 0x7::confidential_asset::confidential_transfer (with auditor, subsequent, 3 extra), assuming 100 octas / gas unit
-|  Execution gas:   355 units
-|  IO gas:          8 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 362 units
-|  Total octas:     36,200 octas
-|  Total APT:       0.00036200 APT
-\-----------------------------------
+test result: ok. 20 passed; 0 failed; 7 ignored; 0 measured; 2 filtered out; finished in 6.81s
+

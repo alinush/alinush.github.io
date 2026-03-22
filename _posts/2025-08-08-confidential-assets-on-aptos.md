@@ -849,25 +849,25 @@ The full gas benchmark logs are [here](/files/confidential-asset/gas-benchmarks-
 
 | Operation | Gas | Cost (cents) | # of calls / $1 |
 | --------- | --- | ------------ | --------------- |
-| register  | 1,282 | 0.1282 | 780 |
-| deposit   | 18    | 0.0018 | 55,555 |
-| rollover  | 13    | 0.0013 | 76,923 |
-| rotate key | 37   | 0.0037 | 27,027 |
-| withdraw (no auditor) | 204 | 0.0204 | 4,901 |
-| withdraw (eff. auditor, **subsequent**) | 224 | 0.0224 | 4,464 |
-| withdraw (eff. auditor, _initial_) | 330 | 0.0330 | 3,030 |
-| transfer (no auditors) | 305 | 0.0305 | 3,278 |
-| transfer (1 extra only) | 315 | 0.0315 | 3,174 |
-| transfer (2 extra only) | 324 | 0.0324 | 3,086 |
-| transfer (3 extra only) | 334 | 0.0334 | 2,994 |
-| transfer (eff. auditor only, **subsequent**) | 333 | 0.0333 | 3,003 |
-| transfer (eff. + 1 extra, **subsequent**) | 343 | 0.0343 | 2,915 |
-| transfer (eff. + 2 extra, **subsequent**) | 352 | 0.0352 | 2,840 |
-| transfer (eff. + 3 extra, **subsequent**) | 362 | 0.0362 | 2,762 |
-| transfer (eff. auditor only, _initial_) | 438 | 0.0438 | 2,283 |
-| transfer (eff. + 1 extra, _initial_) | 449 | 0.0449 | 2,227 |
-| transfer (eff. + 2 extra, _initial_) | 457 | 0.0457 | 2,188 |
-| transfer (eff. + 3 extra, _initial_) | 468 | 0.0468 | 2,136 |
+| register  | 12,841 | 1.2841 | 77 |
+| deposit   | 5,515  | 0.5515 | 181 |
+| rollover  | 132    | 0.0132 | 7,575 |
+| rotate key | 370   | 0.0370 | 2,702 |
+| withdraw (no auditor) | 2,040 | 0.2040 | 490 |
+| withdraw (eff. auditor, **subsequent**) | 2,242 | 0.2242 | 446 |
+| withdraw (eff. auditor, _initial_) | 3,338 | 0.3338 | 299 |
+| transfer (no auditors) | 3,059 | 0.3059 | 326 |
+| transfer (1 extra only) | 3,162 | 0.3162 | 316 |
+| transfer (2 extra only) | 3,249 | 0.3249 | 307 |
+| transfer (3 extra only) | 3,352 | 0.3352 | 298 |
+| transfer (eff. auditor only, **subsequent**) | 3,342 | 0.3342 | 299 |
+| transfer (eff. + 1 extra, **subsequent**) | 3,445 | 0.3445 | 290 |
+| transfer (eff. + 2 extra, **subsequent**) | 3,532 | 0.3532 | 283 |
+| transfer (eff. + 3 extra, **subsequent**) | 3,635 | 0.3635 | 275 |
+| transfer (eff. auditor only, _initial_) | 4,438 | 0.4438 | 225 |
+| transfer (eff. + 1 extra, _initial_) | 4,541 | 0.4541 | 220 |
+| transfer (eff. + 2 extra, _initial_) | 4,628 | 0.4628 | 215 |
+| transfer (eff. + 3 extra, _initial_) | 4,731 | 0.4731 | 211 |
 
 {: .note}
 "_Initial_" means this is the 1st call with an effective auditor $\Rightarrow$ it stores, for the 1st time, the auditor's EK component in the user's available balance $\Rightarrow$ higher gas cost due to storage fee.
@@ -875,6 +875,9 @@ This is a one-time penalty though: only incurred when the call is 1st made.
 "**Subsequent**" refers to subsequent calls that reuse this auditor EK component and thus no longer incur a storage fee $\Rightarrow$ this is the "average case" that we care about when reasoning about gas costs.
 
 #### v1.0 → v1.1 speedup
+
+{: .note}
+The gas schedule changed between v1.0 and v1.1 benchmarks (~10x increase in gas units). The speedup ratios below compare v1.0 and v1.1 numbers measured **on the same gas schedule** (the old one). The absolute numbers above reflect the current gas schedule.
 
 | Operation | v1.0 gas | v1.1 gas | Speedup |
 | --------- | -------- | -------- | ------- |
