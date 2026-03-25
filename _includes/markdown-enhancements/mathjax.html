@@ -80,8 +80,21 @@
     },
     svg: {
       fontCache: 'global'
+    },
+    startup: {
+      pageReady: function() {
+        return MathJax.startup.defaultPageReady().then(function() {
+          // Signal that MathJax has finished rendering (including per-page
+          // \def macros). The TOC JS uses this to update its entries.
+          if (window._mathJaxDoneResolve) window._mathJaxDoneResolve();
+        });
+      }
     }
   };
+  // Promise that resolves when MathJax finishes its initial typesetting pass.
+  window.mathJaxDone = new Promise(function(resolve) {
+    window._mathJaxDoneResolve = resolve;
+  });
 
 	/**
    * For MathJax 2.7.4 

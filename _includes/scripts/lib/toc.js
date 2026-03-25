@@ -46,10 +46,34 @@
           $root.append($tocUl);
           $headings.each(function() {
             var $this = $(this);
+            var headingText = $this.text();
+            var $a = $('<a></a>').text(headingText).attr('href', '#' + $this.prop('id'));
+            // Store original text (with $...$ delimiters) so we can re-typeset
+            // after MathJax learns per-page \def macros from the article body.
+            if (headingText.indexOf('$') >= 0) {
+              $a.data('mathSrc', headingText);
+            }
             $tocUl.append($('<li></li>').addClass('toc-' + $this.prop('tagName').toLowerCase())
-              .append($('<a></a>').text($this.text()).attr('href', '#' + $this.prop('id'))));
+              .append($a));
           });
           $tocLi = $tocUl.children('li');
+          // After MathJax finishes its initial pass (which learns per-page
+          // \def macros from the article body), re-render TOC entries with
+          // the original $...$ source and typeset them properly.
+          if (window.mathJaxDone) {
+            window.mathJaxDone.then(function() {
+              // Restore original heading LaTeX source and typeset
+              $tocLi.each(function() {
+                var $a = $(this).find('a');
+                var src = $a.data('mathSrc');
+                if (src) {
+                  MathJax.typesetClear([$a[0]]);
+                  $a.text(src);
+                  MathJax.typesetPromise([$a[0]]);
+                }
+              });
+            });
+          }
           $tocUl.on('click', 'a', function(e) {
             e.preventDefault();
             var $this = $(this);
