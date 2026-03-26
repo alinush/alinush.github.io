@@ -202,6 +202,8 @@
 
 [^Atte23]: **Compressed Σ-protocol theory**, by Thomas Attema, 2023, [[URL]](https://ir.cwi.nl/pub/33032/33032D.pdf)
 
+[^BAG19e]: **Formalising Oblivious Transfer in the Semi-Honest and Malicious Model in {CryptHOL**, by David Butler and David Aspinall and Adria Gascon, *in Cryptology {ePrint} Archive, Paper 2019/1449*, 2019, [[URL]](https://eprint.iacr.org/2019/1449)
+
 [^BAZB20]: **Zether: Towards Privacy in a Smart Contract World**, by Bünz, Benedikt and Agrawal, Shashank and Zamani, Mahdi and Boneh, Dan, *in Financial Cryptography and Data Security*, 2020
 
 [^BAZB20e]: **Zether: Towards Privacy in a Smart Contract World**, by Bünz, Benedikt and Agrawal, Shashank and Zamani, Mahdi and Boneh, Dan, *in Financial Cryptography and Data Security*, 2020
@@ -1046,6 +1048,8 @@
 
 [^CFS17]: **A Zero Knowledge Sumcheck and its Applications**, by Alessandro Chiesa and Michael A. Forbes and Nicholas Spooner, 2017, [[URL]](https://arxiv.org/abs/1704.02086)
 
+[^CFS26e]: **Reducing the Number of Qubits in Quantum Discrete Logarithms on Elliptic Curves**, by Clémence Chevignard and Pierre-Alain Fouque and André Schrottenloher, *in Cryptology {ePrint} Archive, Paper 2026/280*, 2026, [[URL]](https://eprint.iacr.org/2026/280)
+
 [^CFT22e]: **Additive-Homomorphic Functional Commitments and Applications to Homomorphic Signatures**, by Dario Catalano and Dario Fiore and Ida Tucker, *in Cryptology ePrint Archive, Paper 2022/1331*, 2022, [[URL]](https://eprint.iacr.org/2022/1331)
 
 [^CG05]: **Cramer-Damg{\aa}rd Signatures Revisited: Efficient Flat-Tree Signatures Based on Factoring**, by Catalano, Dario and Gennaro, Rosario, *in Public Key Cryptography - PKC 2005*, 2005
@@ -1392,6 +1396,14 @@
 
 [^DFL24e]: **Shutter Network: Private Transactions from Threshold Cryptography**, by Stefan Dziembowski and Sebastian Faust and Jannik Luhn, *in Cryptology {ePrint} Archive, Paper 2024/1981*, 2024, [[URL]](https://eprint.iacr.org/2024/1981)
 
+[^DFG13e]: **The Fiat-Shamir Transformation in a Quantum World**, by Özgür Dagdelen and Marc Fischlin and Tommaso Gagliardoni, *in Cryptology {ePrint} Archive, Paper 2013/245*, 2013, [[URL]](https://eprint.iacr.org/2013/245)
+
+[^DFMS19e]: **Security of the Fiat-Shamir Transformation in the Quantum Random-Oracle Model**, by Jelle Don and Serge Fehr and Christian Majenz and Christian Schaffner, *in Cryptology {ePrint} Archive, Paper 2019/190*, 2019, [[URL]](https://eprint.iacr.org/2019/190)
+
+[^DFMS21e]: **Online-Extractability in the Quantum Random-Oracle Model**, by Jelle Don and Serge Fehr and Christian Majenz and Christian Schaffner, *in Cryptology {ePrint} Archive, Paper 2021/280*, 2021, [[URL]](https://eprint.iacr.org/2021/280)
+
+[^DFMS22e]: **Efficient {NIZKs} and Signatures from Commit-and-Open Protocols in the {QROM**, by Jelle Don and Serge Fehr and Christian Majenz and Christian Schaffner, *in Cryptology {ePrint} Archive, Paper 2022/270*, 2022, [[URL]](https://eprint.iacr.org/2022/270)
+
 [^DG06]: **Hidden Pairings and Trapdoor DDH Groups**, by Dent, Alexander W. and Galbraith, Steven D., *in Algorithmic Number Theory*, 2006
 
 [^DG17e]: **Identity-Based Encryption from the Diffie-Hellman Assumption**, by Nico Döttling and Sanjam Garg, *in Cryptology {ePrint} Archive, Paper 2017/543*, 2017, [[URL]](https://eprint.iacr.org/2017/543)
@@ -1481,6 +1493,8 @@
 [^DM10]: **Efficient, Robust and Constant-Round Distributed RSA Key Generation**, by Damgård, Ivan and Mikkelsen, Gert Læssøe, *in Theory of Cryptography*, 2010
 
 [^DM16]: **Centrally Banked Cryptocurrencies**, by George Danezis and Sarah Meiklejohn, *in 23rd Annual Network and Distributed System Security Symposium, {NDSS} 2016, San Diego, California, USA, February 21-24, 2016*, 2016, [[URL]](https://eprint.iacr.org/2015/502.pdf)
+
+[^DM19e]: **Can we Beat the Square Root Bound for {ECDLP} over $\mathbb{F}_{p^2}$ via Representations?**, by Claire Delaplace and Alexander May, *in Cryptology {ePrint} Archive, Paper 2019/800*, 2019, [[URL]](https://eprint.iacr.org/2019/800)
 
 [^DMBW24]: **NOPE: Strengthening domain authentication with succinct proofs**, by DeStefano, Zachary and Ma, Jeff J. and Bonneau, Joseph and Walfish, Michael, *in Proceedings of the ACM SIGOPS 30th Symposium on Operating Systems Principles*, 2024, [[URL]](http://dx.doi.org/10.1145/3694715.3695962)
 
@@ -2424,6 +2438,8 @@
 
 [^KLRX20]: **On Pairing-Free Blind Signature Schemes in the Algebraic Group Model**, by Julia Kastner and Julian Loss and Michael Rosenberg and Jiayu Xu, *in Cryptology ePrint Archive, Report 2020/1071*, 2020, [[URL]](https://eprint.iacr.org/2020/1071)
 
+[^KLS17e]: **A Concrete Treatment of Fiat-Shamir Signatures in the Quantum Random-Oracle Model**, by Eike Kiltz and Vadim Lyubashevsky and Christian Schaffner, *in Cryptology {ePrint} Archive, Paper 2017/916*, 2017, [[URL]](https://eprint.iacr.org/2017/916)
+
 [^KLX20]: **On the Security of Time-Lock Puzzles and Timed Commitments**, by Jonathan Katz and Julian Loss and Jiayu Xu, *in Cryptology ePrint Archive, Report 2020/730*, 2020, [[URL]](https://ia.cr/2020/730)
 
 [^KLZ24e]: **OPPID}: Single Sign-On with Oblivious Pairwise Pseudonyms**, by Maximilian Kroschewski and Anja Lehmann and Cavit Özbay, *in Cryptology ePrint Archive, Paper 2024/1124*, 2024, [[URL]](https://eprint.iacr.org/2024/1124)
@@ -2705,6 +2721,8 @@
 [^LYG19]: **DDH-based Multisignatures with Public Key Aggregation**, by Duc-Phong Le and Guomin Yang and Ali Ghorbani, *in Cryptology ePrint Archive, Report 2019/771*, 2019, [[URL]](https://eprint.iacr.org/2019/771)
 
 [^LYKplus19]: **HoneyBadgerMPC and AsynchroMix: Practical Asynchronous MPC and its Application to Anonymous Communication**, by Donghang Lu and Thomas Yurek and Samarth Kulshreshtha and Rahul Govind and Aniket Kate and Andrew Miller, *in Proceedings of the 2019 {ACM} {SIGSAC} Conference on Computer and Communications Security*, 2019, [[URL]](https://doi.org/10.1145%2F3319535.3354238)
+
+[^LZ19e]: **Revisiting Post-Quantum Fiat-Shamir**, by Qipeng Liu and Mark Zhandry, *in Cryptology {ePrint} Archive, Paper 2019/262*, 2019, [[URL]](https://eprint.iacr.org/2019/262)
 
 [^LZ22]: **Matproofs**, by Jing Liu and Liang Feng Zhang, *in Proceedings of the 2022 {ACM} {SIGSAC} Conference on Computer and Communications Security*, 2022, [[URL]](https://doi.org/10.1145%2F3548606.3560591)
 
@@ -3278,6 +3296,8 @@
 
 [^SB20]: **A Note on Low Order Assumptions in RSA groups**, by István András Seres and Péter Burcsi, *in Cryptology ePrint Archive, Report 2020/402*, 2020, [[URL]](https://eprint.iacr.org/2020/402)
 
+[^SB23e]: **Behemoth: transparent polynomial commitment scheme with constant opening proof size and verifier time**, by István András Seres and Péter Burcsi, *in Cryptology {ePrint} Archive, Paper 2023/670*, 2023, [[URL]](https://eprint.iacr.org/2023/670)
+
 [^SBKN21e]: **Synchronous Distributed Key Generation without Broadcasts**, by Nibesh Shrestha and Adithya Bhat and Aniket Kate and Kartik Nayak, *in Cryptology ePrint Archive, Paper 2021/1635*, 2021, [[URL]](https://eprint.iacr.org/2021/1635)
 
 [^SBVplus12e]: **Resolving the conflict between generality and plausibility in verified computation**, by Srinath Setty and Benjamin Braun and Victor Vu and Andrew J.  Blumberg and Bryan Parno and Michael Walfish, *in Cryptology {ePrint} Archive, Paper 2012/622*, 2012, [[URL]](https://eprint.iacr.org/2012/622)
@@ -3581,6 +3601,8 @@
 [^Trev03]: **Notes for Lecture 1**, by Luca Trevisan, 2003
 
 [^Unge15]: **Deniable Key Exchanges for Secure Messaging**, by Unger, Nik, 2015, [[URL]](http://hdl.handle.net/10012/9406)
+
+[^Unru14e]: **Non-interactive zero-knowledge proofs in the quantum random oracle model**, by Dominique Unruh, *in Cryptology {ePrint} Archive, Paper 2014/587*, 2014, [[URL]](https://eprint.iacr.org/2014/587)
 
 [^VASplus16e]: **Measuring small subgroup attacks against Diffie-Hellman**, by Luke Valenta and David Adrian and Antonio Sanso and Shaanan Cohney and Joshua Fried and Marcella Hastings and J.  Alex Halderman and Nadia Heninger, *in Cryptology ePrint Archive, Paper 2016/995*, 2016, [[URL]](https://eprint.iacr.org/2016/995)
 
