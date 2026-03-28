@@ -112,6 +112,8 @@
 
 [^AGHO11]: **Optimal Structure-Preserving Signatures in Asymmetric Bilinear Groups**, by Abe, Masayuki and Groth, Jens and Haralambiev, Kristiyan and Ohkubo, Miyako, *in Advances in Cryptology -- CRYPTO 2011*, 2011
 
+[^AGK19e]: **Everybody's a Target: Scalability in Public-Key Encryption**, by Benedikt Auerbach and Federico Giacon and Eike Kiltz, *in Cryptology {ePrint} Archive, Paper 2019/364*, 2019, [[URL]](https://eprint.iacr.org/2019/364)
+
 [^AGLplus22e]: **Dew: Transparent Constant-sized zkSNARKs**, by Arasu Arun and Chaya Ganesh and Satya Lokam and Tushar Mopuri and Sriram Sridhar, *in Cryptology ePrint Archive, Report 2022/419*, 2022, [[URL]](https://ia.cr/2022/419)
 
 [^AGLplus23]: **Dew: A Transparent Constant-Sized Polynomial Commitment Scheme**, by Arun, Arasu and Ganesh, Chaya and Lokam, Satya and Mopuri, Tushar and Sridhar, Sriram, *in Public-Key Cryptography -- PKC 2023*, 2023
@@ -201,8 +203,6 @@
 [^Ajtai96]: **Generating Hard Instances of Lattice Problems (Extended Abstract)**, by Ajtai, M., *in Proceedings of the Twenty-Eighth Annual ACM Symposium on Theory of Computing*, 1996, [[URL]](https://doi-org.libproxy.mit.edu/10.1145/237814.237838)
 
 [^Atte23]: **Compressed Σ-protocol theory**, by Thomas Attema, 2023, [[URL]](https://ir.cwi.nl/pub/33032/33032D.pdf)
-
-[^BAG19e]: **Formalising Oblivious Transfer in the Semi-Honest and Malicious Model in {CryptHOL**, by David Butler and David Aspinall and Adria Gascon, *in Cryptology {ePrint} Archive, Paper 2019/1449*, 2019, [[URL]](https://eprint.iacr.org/2019/1449)
 
 [^BAZB20]: **Zether: Towards Privacy in a Smart Contract World**, by Bünz, Benedikt and Agrawal, Shashank and Zamani, Mahdi and Boneh, Dan, *in Financial Cryptography and Data Security*, 2020
 
@@ -705,6 +705,8 @@
 [^BM97]: **A New Paradigm for Collision-Free Hashing: Incrementality at Reduced Cost**, by Bellare, Mihir and Micciancio, Daniele, *in EUROCRYPT '97*, 1997
 
 [^BMMplus19]: **Proofs for Inner Pairing Products and Applications**, by Benedikt Bünz and Mary Maller and Pratyush Mishra and Nirvan Tyagi and Psi Vesely, *in Cryptology ePrint Archive, Report 2019/1177*, 2019, [[URL]](https://eprint.iacr.org/2019/1177)
+
+[^BMMS25e]: **FICS} and {FACS}: Fast {IOPPs} and Accumulation via Code-Switching**, by Anubhav Baweja and Pratyush Mishra and Tushar Mopuri and Matan Shtepel, *in Cryptology {ePrint} Archive, Paper 2025/737*, 2025, [[URL]](https://eprint.iacr.org/2025/737)
 
 [^BMMV19]: **Proofs for Inner Pairing Products and Applications**, by Benedikt Bünz and Mary Maller and Pratyush Mishra and Noah Vesely, *in Cryptology ePrint Archive, Report 2019/1177*, 2019, [[URL]](https://eprint.iacr.org/2019/1177)
 
@@ -1390,13 +1392,13 @@
 
 [^DF94]: **Homomorphic Zero-Knowledge Threshold Schemes over any Finite Abelian Group**, by Desmedt, Yvo G. and Frankel, Yair, *in SIAM Journal on Discrete Mathematics*, 1994, [[URL]](https://doi.org/10.1137/S0895480192224713)
 
+[^DFG13e]: **The Fiat-Shamir Transformation in a Quantum World**, by Özgür Dagdelen and Marc Fischlin and Tommaso Gagliardoni, *in Cryptology {ePrint} Archive, Paper 2013/245*, 2013, [[URL]](https://eprint.iacr.org/2013/245)
+
 [^DFKP16]: **Cinderella: Turning Shabby X.509 Certificates into Elegant Anonymous Credentials with the Magic of Verifiable Computation**, by Delignat-Lavaud, Antoine and Fournet, Cédric and Kohlweiss, Markulf and Parno, Bryan, *in 2016 IEEE Symposium on Security and Privacy (SP)*, 2016
 
 [^DFL23e]: **Individual Cryptography**, by Stefan Dziembowski and Sebastian Faust and Tomasz Lizurej, *in Cryptology {ePrint} Archive, Paper 2023/088*, 2023, [[URL]](https://eprint.iacr.org/2023/088)
 
 [^DFL24e]: **Shutter Network: Private Transactions from Threshold Cryptography**, by Stefan Dziembowski and Sebastian Faust and Jannik Luhn, *in Cryptology {ePrint} Archive, Paper 2024/1981*, 2024, [[URL]](https://eprint.iacr.org/2024/1981)
-
-[^DFG13e]: **The Fiat-Shamir Transformation in a Quantum World**, by Özgür Dagdelen and Marc Fischlin and Tommaso Gagliardoni, *in Cryptology {ePrint} Archive, Paper 2013/245*, 2013, [[URL]](https://eprint.iacr.org/2013/245)
 
 [^DFMS19e]: **Security of the Fiat-Shamir Transformation in the Quantum Random-Oracle Model**, by Jelle Don and Serge Fehr and Christian Majenz and Christian Schaffner, *in Cryptology {ePrint} Archive, Paper 2019/190*, 2019, [[URL]](https://eprint.iacr.org/2019/190)
 
@@ -1493,8 +1495,6 @@
 [^DM10]: **Efficient, Robust and Constant-Round Distributed RSA Key Generation**, by Damgård, Ivan and Mikkelsen, Gert Læssøe, *in Theory of Cryptography*, 2010
 
 [^DM16]: **Centrally Banked Cryptocurrencies**, by George Danezis and Sarah Meiklejohn, *in 23rd Annual Network and Distributed System Security Symposium, {NDSS} 2016, San Diego, California, USA, February 21-24, 2016*, 2016, [[URL]](https://eprint.iacr.org/2015/502.pdf)
-
-[^DM19e]: **Can we Beat the Square Root Bound for {ECDLP} over $\mathbb{F}_{p^2}$ via Representations?**, by Claire Delaplace and Alexander May, *in Cryptology {ePrint} Archive, Paper 2019/800*, 2019, [[URL]](https://eprint.iacr.org/2019/800)
 
 [^DMBW24]: **NOPE: Strengthening domain authentication with succinct proofs**, by DeStefano, Zachary and Ma, Jeff J. and Bonneau, Joseph and Walfish, Michael, *in Proceedings of the ACM SIGOPS 30th Symposium on Operating Systems Principles*, 2024, [[URL]](http://dx.doi.org/10.1145/3694715.3695962)
 
@@ -2228,6 +2228,8 @@
 
 [^HS21]: **With a Little Help from My Friends: Constructing Practical Anonymous Credentials**, by Lucjan Hanzlik and Daniel Slamanig, *in Cryptology ePrint Archive, Report 2021/1419*, 2021, [[URL]](https://ia.cr/2021/1419)
 
+[^HS24e]: **A Crack in the Firmament: Restoring Soundness of the Orion Proof System and More**, by Thomas den Hollander and Daniel Slamanig, *in Cryptology {ePrint} Archive, Paper 2024/1164*, 2024, [[URL]](https://eprint.iacr.org/2024/1164)
+
 [^HSB20]: **Fixing the Achilles Heel of E-Voting: The Bulletin Board**, by Lucca Hirschi and Lara Schmid and David Basin, *in Cryptology ePrint Archive, Report 2020/109*, 2020, [[URL]](https://eprint.iacr.org/2020/109)
 
 [^HSBB25e]: **IronDict}: Transparent Dictionaries from Polynomial Commitments**, by Hossein Hafezi and Alireza Shirzad and Benedikt Bünz and Joseph Bonneau, *in Cryptology {ePrint} Archive, Paper 2025/1580*, 2025, [[URL]](https://eprint.iacr.org/2025/1580)
@@ -2944,6 +2946,8 @@
 
 [^Myst22]: **The Sui Smart Contracts Platform**, by Mysten Labs, 2022, [[URL]](https://github.com/MystenLabs/sui/raw/main/doc/paper/sui.pdf)
 
+[^NA25e]: **Ligerito: A Small and Concretely Fast Polynomial Commitment Scheme**, by Andrija Novakovic and Guillermo Angeris, *in Cryptology {ePrint} Archive, Paper 2025/1187*, 2025, [[URL]](https://eprint.iacr.org/2025/1187)
+
 [^NBB16]: **Distributed key generation protocol with a new complaint management strategy**, by Neji, Wafa and Blibech, Kaouther and Ben Rajeb, Narjes, *in Security and Communication Networks*, 2016, [[URL]](https://onlinelibrary.wiley.com/doi/abs/10.1002/sec.1651)
 
 [^NBFplus16]: **Bitcoin and Cryptocurrency Technologies**, by Arvind Narayanan and Joseph Bonneau and Edward Felten and Andrew Miller and Steven Goldfeder, 2016
@@ -3651,6 +3655,8 @@
 [^WChen25e]: **SoK}: {BitVM} with Succinct On-Chain Cost**, by Weikeng Chen, *in Cryptology {ePrint} Archive, Paper 2025/1253*, 2025, [[URL]](https://eprint.iacr.org/2025/1253)
 
 [^WDLplus18]: **Forkbase**, by Sheng Wang and Tien Tuan Anh Dinh and Qian Lin and Zhongle Xie and Meihui Zhang and Qingchao Cai and Gang Chen and Beng Chin Ooi and Pingcheng Ruan, *in Proceedings of the {VLDB} Endowment*, 2018, [[URL]](https://doi.org/10.14778%2F3231751.3231762)
+
+[^WESY26e]: **Lether: Practical Post-Quantum Account-Based Private Blockchain Payments**, by Hongxiao Wang and Muhammed F. Esgin and Ron Steinfeld and Siu-Ming Yiu, *in Cryptology {ePrint} Archive, Paper 2026/076*, 2026, [[URL]](https://eprint.iacr.org/2026/076)
 
 [^WH14]: **Efficient and Extractable Bit Commitment Scheme from Knowledge Assumptions**, by Wodo, Wojciech and Hanzlik, Lucjan, 2014, [[URL]](http://www.cs.pwr.edu.pl/hanzlik/preludium/wyniki/paper3.pdf)
 

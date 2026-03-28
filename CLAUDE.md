@@ -11,6 +11,12 @@ You can see where the paper repository is locally by parsing the `ck` config fil
 cat "`ck config`"
 ```
 
+You can add new papers to the bibliography via their ePrint URL:
+```
+ck add <eprint-url> --tag <tag>
+```
+Choose the `--tag` from the existing tag hierarchy (see `ck tags`). For example, for a multilinear PCS paper use `--tag polycommit/multivariate/multilinear`. After adding papers, run `./update-refs.sh` in the blog's root directory to sync `_includes/refs.md`.
+
 When writing math derivations in blog posts, each new equation/line should introduce only **one small change** from the previous line. Do not skip steps or combine multiple operations into a single line.
 
 When writing blog posts, do NOT redefine LaTeX macros that are already defined globally in `_includes/markdown-enhancements/mathjax.html` (in the `window.MathJax.tex.macros` object). Globally-available macros include: `\pk`, `\sk`, `\vk`, `\aux`, `\negl`, `\poly`, `\F`, `\Fp`, `\Fq`, `\Fr`, `\Gr`, `\Z`, `\Zp`, `\Zq`, `\N`, and others. Check that file before adding per-page `\def` macros in a hidden div.
