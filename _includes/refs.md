@@ -1978,6 +1978,8 @@
 
 [^GNPR07]: **Cryptographic and Physical Zero-Knowledge Proof Systems for Solutions of Sudoku Puzzles**, by Gradwohl, Ronen and Naor, Moni and Pinkas, Benny and Rothblum, Guy N., *in Fun with Algorithms*, 2007
 
+[^GNR26e]: **Bolt: Faster {SNARKs} from Sketched Codes**, by Kobi Gurkan and Andrija Novakovic and Ron D. Rothblum, *in Cryptology {ePrint} Archive, Paper 2026/310*, 2026, [[URL]](https://eprint.iacr.org/2026/310)
+
 [^GNS21]: **Rinocchio: SNARKs for Ring Arithmetic**, by Chaya Ganesh      and Anca Nitulescu and Eduardo Soria-Vazquez, *in Cryptology ePrint Archive, Report 2021/322*, 2021, [[URL]](https://eprint.iacr.org/2021/322)
 
 [^GNS24e]: **Dual Polynomial Commitment Schemes and Applications to Commit-and-Prove {SNARKs**, by Chaya Ganesh and Vineet Nair and Ashish Sharma, *in Cryptology {ePrint} Archive, Paper 2024/943*, 2024, [[URL]](https://eprint.iacr.org/2024/943)
@@ -3509,6 +3511,8 @@
 [^Smart16]: **Cryptography Made Simple**, by Smart, Nigel P, 2016
 
 [^Smy20]: **Mind the Gap: Individual- and universal-verifiability plus cast-as-intended don't yield verifiable voting systems**, by Ben Smyth, *in Cryptology ePrint Archive, Report 2020/1054*, 2020, [[URL]](https://eprint.iacr.org/2020/1054)
+
+[^Souk25e]: **Logup*: faster, cheaper logup argument for small-table indexed lookups**, by Lev Soukhanov, *in Cryptology {ePrint} Archive, Paper 2025/946*, 2025, [[URL]](https://eprint.iacr.org/2025/946)
 
 [^Srin10]: **New Security Notions for Identity Based Encryption**, by Sriramkrishnan Srinivasan, 2010, [[URL]](https://www.isg.rhul.ac.uk/~kp/theses/SSthesis.pdf)
 

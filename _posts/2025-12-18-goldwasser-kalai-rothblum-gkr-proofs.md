@@ -23,6 +23,7 @@ $</div> <!-- $ -->
 
 ## Resources
 
+ - [Worldcoin's "Remainder Book"](https://worldcoin.github.io/remainder-documentation/quickstart.html)
  - [GKR sumcheck tutorial](https://org.weids.dev/agenda/notes/gkr-sum-check-tutorial.html), by Angold Wang
 
 ## References
