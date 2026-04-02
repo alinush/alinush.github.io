@@ -81,6 +81,7 @@ Assumptions **may be off** too.
 | [WHIR](/whir)[^ACFY24e] | 2024 | RS (constrained) | $\rho$[^rs-param] | $1-\rho$ | $1$ | $n \log n$ | $\lambda\log^2 n$ | $\lambda\log^2 n$ | |
 | Blaze[^BCFplus24e] | 2024 | RAA | $1/r$[^blaze-r] | $\approx 0.19$ | $1$ | $n$ | $\lambda\log^2 n$ | $\lambda\log^2 n$ | |
 | FICS[^BMMS25e] | 2025 | Any LT code | $\rho_0$[^lt-param] | $\delta_0$[^lt-param] | $1$ | $n$ | $\lambda\log n \log \log n$ | $\lambda\log n \log \log n$ | |
+| Hobbit[^PP25e] | 2025 | Tensor (Spielman + RS) | $\rho$[^rs-param] | $1-\rho$ | $1$ | $n$ | $\lambda\log^2 n$ | $\lambda\log^2 n$ | |
 | Ligerito[^NA25e] | 2025 | Any linear code | $\rho_0$[^lt-param] | $\delta_0$[^lt-param] | $1$ | $n \log n$ | $\frac{\lambda\log^2 n}{\log \log n}$ | $\frac{\lambda\log^2 n}{\log \log n}$ | |
 | Bolt[^GNR26e] | 2026 | Sketched (LDPC) | $\rho$[^bolt-rate] | $\delta(\rho)$[^bolt-rate] | $1$ | $n$ | $\lambda\log n \log\log n$ | $\lambda\log n \log\log n$ | |
 
@@ -107,6 +108,8 @@ DeepFold[^GLHplus24e] adapts FRI to the list decoding radius setting, achieving 
 Blaze[^BCFplus24e] achieves linear-time proving over binary extension fields using Repeat-Accumulate-Accumulate (RAA) codes; concretely faster than all prior schemes for large polynomials ($\ge 2^{25}$) with much smaller proofs than Brakedown.
 
 FICS[^BMMS25e] is an IOPP for multilinear evaluation that achieves linear prover time with improved query complexity $O(\lambda \cdot \log\log n + \log n)$, compiled into a PCS via BCS.
+
+Hobbit[^PP25e] uses a _tensor code_ (Spielman composed with RS) so that proof composition only requires encoding with the "SNARK-friendly" RS component, avoiding the expensive Spielman encoding. This yields a linear-time, transparent, plausibly post-quantum PCS with polylogarithmic proofs. The paper also presents a space-efficient variant with $O(B)$ working buffer space and $O(n/B + \log^2 B)$ proof size for tunable $B \in [\sqrt{n}, n]$. Concretely, Hobbit's PCS is $\approx 3\text{--}4.5\times$ faster than Brakedown and Orion.
 
 Ligerito[^NA25e] uses Ligero's matrix-vector product protocol with a partial sumcheck, supporting any linear code with efficiently-evaluable generator matrix rows.
 

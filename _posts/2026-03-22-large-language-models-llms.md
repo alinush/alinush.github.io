@@ -26,6 +26,10 @@ $</div> <!-- $ -->
  - [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://arxiv.org/abs/1810.04805), by Devlin et al., 2018
  - [Language Models are Unsupervised Multitask Learners](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf), by Radford et al., 2019
 
+## Courses
+
+ - [CS 336 @ Stanford](https://cs336.stanford.edu/)
+
 ## Learning resources
 
  - [Transformer Explainer](https://poloclub.github.io/transformer-explainer/), by Polo Club of Data Science, Georgia Tech
