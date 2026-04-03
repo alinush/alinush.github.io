@@ -230,6 +230,9 @@ Adding science to this list of beliefs would not serve anyone.
 
 I hope this blog post clearly articulated that science is a (fallible) process and must not be blindly trusted.
 
+{: .info}
+This blog post comes with a tweet storm [here](https://x.com/alinush/status/1665752787030876160).
+
 ---
 
 [^aether]: Another falsified theory was the _"Aether Theory."_ Aether was believed to be a medium that filled space and enabled the propagation of light. The famous Michelson-Morley experiment in 1887 failed to detect aether, leading to the eventual acceptance of Einstein's theory of relativity, which does not require the existence of aether.
