@@ -1316,6 +1316,8 @@
 
 [^CX19e]: **Blackbox Secret Sharing Revisited: A Coding-Theoretic Approach with Application to  Expansionless Near-Threshold Schemes**, by Ronald Cramer and Chaoping Xing, *in Cryptology ePrint Archive, Paper 2019/1134*, 2019, [[URL]](https://eprint.iacr.org/2019/1134)
 
+[^CXKplus26]: **Shor's algorithm is possible with as few as 10,000 reconfigurable atomic qubits**, by Madelyn Cain and Qian Xu and Robbie King and Lewis R. B. Picard and Harry Levine and Manuel Endres and John Preskill and Hsin-Yuan Huang and Dolev Bluvstein, 2026, [[URL]](https://arxiv.org/abs/2603.28627)
+
 [^CXZ21e]: **Manta: a Plug and Play Private DeFi Stack**, by Shumo Chu and Yu Xia and Zhenfei Zhang, *in Cryptology ePrint Archive, Paper 2021/743*, 2021, [[URL]](https://eprint.iacr.org/2021/743)
 
 [^CY07]: **Fast Batch Verification of Multiple Signatures**, by Cheon, Jung Hee and Yi, Jeong Hyun, *in Public Key Cryptography -- PKC 2007*, 2007
@@ -1369,6 +1371,8 @@
 [^DCB24e]: **VerITAS}: Verifying Image Transformations at Scale**, by Trisha Datta and Binyi Chen and Dan Boneh, *in Cryptology {ePrint} Archive, Paper 2024/1066*, 2024, [[URL]](https://eprint.iacr.org/2024/1066)
 
 [^DCXplus23e]: **Threshold Signatures from Inner Product Argument: Succinct, Weighted, and Multi-threshold**, by Sourav Das and Philippe Camacho and Zhuolun Xiang and Javier Nieto and Benedikt Bunz and Ling Ren, *in Cryptology ePrint Archive, Paper 2023/598*, 2023, [[URL]](https://eprint.iacr.org/2023/598)
+
+[^DDBplus26e]: **Speeding Up Sum-Check Proving (Extended Version)**, by Quang Dao and Zachary DeStefano and Suyash Bagad and Yuval Domb and Justin Thaler, *in Cryptology {ePrint} Archive, Paper 2026/587*, 2026, [[URL]](https://eprint.iacr.org/2026/587)
 
 [^DDKL24e]: **MUSEN}: Aggregatable Key-Evolving Verifiable Random Functions and Applications**, by Bernardo David and Rafael Dowsley and Anders Konring and Mario Larangeira, *in Cryptology {ePrint} Archive, Paper 2024/628*, 2024, [[URL]](https://eprint.iacr.org/2024/628)
 
@@ -1678,6 +1682,8 @@
 
 [^FF09e]: **Efficient Non-Malleable Commitment Schemes**, by Marc Fischlin and Roger Fischlin, 2009, [[URL]](https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/publications_1/fischlinnm_commitment2009.pdf)
 
+[^FFEB26]: **High-threshold decoding of non-Pauli codes for 2D universality**, by Julio C. Magdalena de la Fuente and Noa Feldman and Jens Eisert and Andreas Bauer, 2026, [[URL]](https://arxiv.org/abs/2604.02033)
+
 [^FGGplus06]: **Round-Optimal and Efficient Verifiable Secret Sharing**, by Fitzi, Matthias and Garay, Juan and Gollakota, Shyamnath and Rangan, C. Pandu and Srinathan, Kannan, *in Theory of Cryptography*, 2006
 
 [^FGHP08]: **Practical Short Signature Batch Verification**, by Anna Lisa Ferrara and Matthew Green and Susan Hohenberger and Michael Østergaard Pedersen, *in Cryptology ePrint Archive, Report 2008/015*, 2008, [[URL]](https://eprint.iacr.org/2008/015)
@@ -1975,6 +1981,8 @@
 [^GMW91]: **Proofs That Yield Nothing but Their Validity or All Languages in NP Have Zero-knowledge Proof Systems**, by Goldreich, Oded and Micali, Silvio and Wigderson, Avi, *in J. ACM*, 1991, [[URL]](http://doi.acm.org/10.1145/116825.116852)
 
 [^GMY03e]: **Strengthening Zero-Knowledge Protocols using Signatures**, by Juan A.  Garay and Philip MacKenzie and Ke Yang, *in Cryptology {ePrint} Archive, Paper 2003/037*, 2003, [[URL]](https://eprint.iacr.org/2003/037)
+
+[^GN25e]: **Replication of Quantum Factorisation Records with an 8-bit Home Computer, an Abacus, and a Dog**, by Peter Gutmann and Stephan Neuhaus, *in Cryptology {ePrint} Archive, Paper 2025/1237*, 2025, [[URL]](https://eprint.iacr.org/2025/1237)
 
 [^GNPR07]: **Cryptographic and Physical Zero-Knowledge Proof Systems for Solutions of Sudoku Puzzles**, by Gradwohl, Ronen and Naor, Moni and Pinkas, Benny and Rothblum, Guy N., *in Fun with Algorithms*, 2007
 
@@ -3398,6 +3406,8 @@
 
 [^SSSplus22e]: **The inspection model for zero-knowledge proofs and efficient Zerocash with secp256k1 keys**, by Huachuang Sun and Haifeng Sun and Kevin Singh and Akhil Sai Peddireddy and Harshad Patil and Jianwei Liu and Weikeng Chen, *in Cryptology ePrint Archive, Paper 2022/1079*, 2022, [[URL]](https://eprint.iacr.org/2022/1079)
 
+[^SSV13]: **Pretending to factor large numbers on a quantum computer**, by John A. Smolin and Graeme Smith and Alex Vargo, 2013, [[URL]](https://arxiv.org/abs/1301.7007)
+
 [^SSV19e]: **Publicly Verifiable Proofs from Blockchains**, by Alessandra Scafuro and Luisa Siniscalchi and Ivan Visconti, *in Cryptology ePrint Archive, Paper 2019/066*, 2019, [[URL]](https://eprint.iacr.org/2019/066)
 
 [^SSY01]: **Blind, Auditable Membership Proofs**, by Sander, Tomas and Ta-Shma, Amnon and Yung, Moti, *in Financial Cryptography*, 2001
@@ -3514,6 +3524,8 @@
 
 [^Souk25e]: **Logup*: faster, cheaper logup argument for small-table indexed lookups**, by Lev Soukhanov, *in Cryptology {ePrint} Archive, Paper 2025/946*, 2025, [[URL]](https://eprint.iacr.org/2025/946)
 
+[^Spie95]: **Linear-time encodable and decodable error-correcting codes**, by Spielman, Daniel A., *in Proceedings of the twenty-seventh annual ACM symposium on Theory of computing  - STOC ’95*, 1995, [[URL]](http://dx.doi.org/10.1145/225058.225165)
+
 [^Srin10]: **New Security Notions for Identity Based Encryption**, by Sriramkrishnan Srinivasan, 2010, [[URL]](https://www.isg.rhul.ac.uk/~kp/theses/SSthesis.pdf)
 
 [^Stad96]: **Publicly Verifiable Secret Sharing**, by Stadler, Markus, *in EUROCRYPT '96*, 1996
@@ -3623,6 +3635,8 @@
 [^VK20]: **Groth16 SNARKs are Randomizable and (Weakly) Simulation Extractable**, by Markulf Kohlweiss and Mikhail Volkhov, *in Cryptology ePrint Archive, Report 2020/811*, 2020, [[URL]](https://eprint.iacr.org/2020/811)
 
 [^VP19]: **Transparent Polynomial Commitment Scheme with Polylogarithmic Communication Complexity**, by Alexander Vlasov and Konstantin Panarin, *in Cryptology ePrint Archive, Report 2019/1020*, 2019, [[URL]](https://eprint.iacr.org/2019/1020)
+
+[^VSBplus01]: **Experimental realization of Shor's quantum factoring algorithm using nuclear magnetic resonance**, by Lieven M. K. Vandersypen and Matthias Steffen and Gregory Breyta and Costantino S. Yannoni and Mark H. Sherwood and Isaac L. Chuang, 2001, [[URL]](https://arxiv.org/abs/quant-ph/0112176)
 
 [^VSBW13]: **A Hybrid Architecture for Interactive Verifiable Computation**, by Vu, Victor and Setty, Srinath and Blumberg, Andrew J. and Walfish, Michael, *in Proceedings of the 2013 IEEE Symposium on Security and Privacy*, 2013, [[URL]](https://doi.org/10.1109/SP.2013.48)
 
