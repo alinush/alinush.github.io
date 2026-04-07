@@ -614,6 +614,8 @@
 
 [^BHvOS12]: **The Quest to Replace Passwords: A Framework for Comparative Evaluation of Web Authentication Schemes**, by J. Bonneau and C. Herley and P. C. v. Oorschot and F. Stajano, *in 2012 IEEE Symposium on Security and Privacy*, 2012
 
+[^BIJplus20e]: **Affine Determinant Programs: A Framework for Obfuscation and Witness Encryption**, by James Bartusek and Yuval Ishai and Aayush Jain and Fermi Ma and Amit Sahai and Mark Zhandry, *in Cryptology {ePrint} Archive, Paper 2020/889*, 2020, [[URL]](https://eprint.iacr.org/2020/889)
+
 [^BJLplus15e]: **EdDSA for more curves**, by Daniel J.  Bernstein and Simon Josefsson and Tanja Lange and Peter Schwabe and Bo-Yin Yang, *in Cryptology ePrint Archive, Paper 2015/677*, 2015, [[URL]](https://eprint.iacr.org/2015/677)
 
 [^BJY97]: **Round-Optimal Zero-Knowledge Arguments Based on any One-Way Function**, by Mihir Bellare and Markus Jakobsson and Moti Yung, *in Cryptology ePrint Archive, Report 1997/002*, 1997, [[URL]](https://ia.cr/1997/002)
@@ -925,6 +927,8 @@
 [^CBC21]: **SoK: Auditability and Accountability in Distributed Payment Systems**, by Panagiotis Chatzigiannis and Foteini Baldimtsi and Konstantinos Chalkias, *in Cryptology ePrint Archive, Report 2021/239*, 2021, [[URL]](https://eprint.iacr.org/2021/239)
 
 [^CBC21e]: **SoK: Blockchain Light Clients**, by Panagiotis Chatzigiannis and Foteini Baldimtsi and Konstantinos Chalkias, *in Cryptology ePrint Archive, Report 2021/1657*, 2021, [[URL]](https://ia.cr/2021/1657)
+
+[^CBHplus18e]: **Blockchained Post-Quantum Signatures**, by Konstantinos Chalkias and James Brown and Mike Hearn and Tommy Lillehagen and Igor Nitto and Thomas Schroeter, *in Cryptology {ePrint} Archive, Paper 2018/658*, 2018, [[URL]](https://eprint.iacr.org/2018/658)
 
 [^CBJplus17]: **File Systems Fated for Senescence? Nonsense, Says Science!**, by Conway, Alex and Bakshi, Ainesh and Jiao, Yizheng and Zhan, Yang and Bender, Michael A. and Jannen, William and Johnson, Rob and Kuszmaul, Bradley C. and Porter, Donald E. and Yuan, Jun and Farach-Colton, Martin, *in Proceedings of the 15th Usenix Conference on File and Storage Technologies*, 2017
 
@@ -1956,6 +1960,8 @@
 
 [^GM84]: **Probabilistic encryption**, by Shafi Goldwasser and Silvio Micali, *in Journal of Computer and System Sciences*, 1984, [[URL]](http://www.sciencedirect.com/science/article/pii/0022000084900709)
 
+[^GMM17e]: **Lower Bounds on Obfuscation from All-or-Nothing Encryption Primitives**, by Sanjam Garg and Mohammad Mahmoody and Ameer Mohammed, *in Cryptology {ePrint} Archive, Paper 2017/541*, 2017, [[URL]](https://eprint.iacr.org/2017/541)
+
 [^GMMZ25e]: **Constraint-Friendly Map-to-Elliptic-Curve-Group Relations and Their Applications**, by Jens Groth and Harjasleen Malvai and Andrew Miller and Yi-Nuo Zhang, *in Cryptology {ePrint} Archive, Paper 2025/1503*, 2025, [[URL]](https://eprint.iacr.org/2025/1503)
 
 [^GMN21]: **SNARKpack: Practical SNARK Aggregation**, by Nicolas Gailly and Mary Maller and Anca Nitulescu, *in Cryptology ePrint Archive, Report 2021/529*, 2021, [[URL]](https://eprint.iacr.org/2021/529)
@@ -2902,6 +2908,8 @@
 
 [^MW99]: **The Relationship Between Breaking the Diffie--Hellman Protocol and Computing Discrete Logarithms**, by Maurer, Ueli M. and Wolf, Stefan, *in SIAM Journal on Computing*, 1999, [[URL]](https://doi.org/10.1137/S0097539796302749)
 
+[^MZCN25]: **Quantum Disruption: An SOK of How Post-Quantum Attackers Reshape Blockchain Security and Performance**, by Tushin Mallick and Maya Zeldin and Murat Cenk and Cristina Nita-Rotaru, 2025, [[URL]](https://arxiv.org/abs/2512.13333)
+
 [^MZWplus19]: **CHURP: Dynamic-Committee Proactive Secret Sharing**, by Sai Krishna Deepak Maram and Fan Zhang and Lun Wang and Andrew Low and Yupeng Zhang and Ari Juels and Dawn Song, *in Cryptology ePrint Archive, Report 2019/017*, 2019, [[URL]](https://eprint.iacr.org/2019/017)
 
 [^Mala24e]: **Key-Homomorphic and Aggregate Verifiable Random Functions**, by Giulio Malavolta, *in Cryptology {ePrint} Archive, Paper 2024/643*, 2024, [[URL]](https://eprint.iacr.org/2024/643)
@@ -3382,6 +3390,8 @@
 
 [^SR25e]: **Morgana: a laconic circuit builder**, by Lev Soukhanov and Yaroslav Rebenko, *in Cryptology {ePrint} Archive, Paper 2025/065*, 2025, [[URL]](https://eprint.iacr.org/2025/065)
 
+[^SRGK26e]: **Implementable Witness Encryption from Arithmetic Affine Determinant Programs**, by Lev Soukhanov and Yaroslav Rebenko and Muhammad El Gebali and Mikhail Komarov, *in Cryptology {ePrint} Archive, Paper 2026/175*, 2026, [[URL]](https://eprint.iacr.org/2026/175)
+
 [^SS01]: **Provably Secure Distributed Schnorr Signatures and a (t, n) Threshold Scheme for Implicit Certificates**, by Stinson, Douglas R. and Strobl, Reto, *in Information Security and Privacy*, 2001
 
 [^SS02e]: **Assumptions Related to Discrete Logarithms: Why Subtleties Make a Real Difference**, by Ahmad-Reza Sadeghi and Michael Steiner, *in Cryptology ePrint Archive, Report 2002/126*, 2002, [[URL]](https://eprint.iacr.org/2002/126)
@@ -3641,6 +3651,8 @@
 [^VSBW13]: **A Hybrid Architecture for Interactive Verifiable Computation**, by Vu, Victor and Setty, Srinath and Blumberg, Andrew J. and Walfish, Michael, *in Proceedings of the 2013 IEEE Symposium on Security and Privacy*, 2013, [[URL]](https://doi.org/10.1109/SP.2013.48)
 
 [^VW99]: **Parallel Collision Search with Cryptanalytic Applications**, by van Oorschot, Paul C. and Wiener, Michael J., *in Journal of Cryptology*, 1999, [[URL]](https://doi.org/10.1007/PL00003816)
+
+[^VWW22e]: **Witness Encryption and Null-{IO} from Evasive {LWE**, by Vinod Vaikuntanathan and Hoeteck Wee and Daniel Wichs, *in Cryptology {ePrint} Archive, Paper 2022/1140*, 2022, [[URL]](https://eprint.iacr.org/2022/1140)
 
 [^Vaik20]: **Lattices, Learning with Errors and Post-Quantum Cryptography**, by Vinod Vaikuntanathan, 2020, [[URL]](https://people.csail.mit.edu/vinodv/CS294/lecturenotes.pdf)
 

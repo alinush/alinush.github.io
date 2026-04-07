@@ -17,6 +17,8 @@ This is some of the stuff I (plan to) read and think others could find useful.
 
 ## Blogroll
 
+ - [Michael Nielsen](https://michaelnielsen.org/)
+ - [Scott Aaronson](https://scottaaronson.blog/)
  - [Oded Goldreich's essays](https://www.wisdom.weizmann.ac.il/~oded/essays.html)
  - [cr.yp.to](https://cr.yp.to)
  - [David Wong's Cryptologie](https://cryptologie.net)
