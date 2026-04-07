@@ -1,7 +1,7 @@
 ---
 tags:
  - zero-knowledge proofs (ZKPs)
- - groth16
+ - Groth16
  - trusted setup
  - polynomials
  - interpolation

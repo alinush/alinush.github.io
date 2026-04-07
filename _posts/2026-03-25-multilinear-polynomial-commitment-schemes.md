@@ -1,6 +1,6 @@
 ---
 tags:
- - polynomial commitment schemes
+ - polynomial commitments
  - multilinear extensions (MLEs)
 title: Multilinear polynomial commitment schemes (MLE PCS)
 #date: 2020-11-05 20:45:59

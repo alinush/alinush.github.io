@@ -1,7 +1,7 @@
 ---
 tags:
  - basics
- - mle
+ - multilinear extensions (MLEs)
  - polynomials
  - Lagrange
 title: Multilinear polynomials and multilinear extensions (MLEs)

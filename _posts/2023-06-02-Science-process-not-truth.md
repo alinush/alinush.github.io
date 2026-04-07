@@ -1,6 +1,6 @@
 ---
 tags: 
- - science 
+ - science
  - philosophy
 permalink: science
 title: "Science: Process, not Truth"

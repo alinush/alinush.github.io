@@ -1,8 +1,8 @@
 ---
 tags:
  - benchmarks
- - aptos
- - keyless
+ - Aptos
+ - Aptos Keyless
  - Groth16
 title: Zero-knowledge proofs for Aptos Keyless
 #date: 2020-11-05 20:45:59

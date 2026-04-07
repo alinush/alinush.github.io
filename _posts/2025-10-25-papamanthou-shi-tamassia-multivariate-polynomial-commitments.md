@@ -3,7 +3,7 @@ tags:
  - polynomial commitments
  - polynomials
  - sumcheck
- - mle
+ - multilinear extensions (MLEs)
  - derivatives
 title: Papamanthou-Shi-Tamassia (PST) multivariate polynomial commitments
 #date: 2020-11-05 20:45:59

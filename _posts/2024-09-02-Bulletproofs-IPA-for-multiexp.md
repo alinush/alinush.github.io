@@ -1,6 +1,6 @@
 ---
 tags:
- - bulletproofs
+ - Bulletproofs
  - inner-product arguments (IPAs)
 title: Bulletproofs IPA for multiexp
 #date: 2020-11-05 20:45:59

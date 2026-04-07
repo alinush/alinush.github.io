@@ -1,6 +1,6 @@
 ---
 tags:
- - WE
+ - witness encryption (WE)
  - encryption
 title: Witness encryption (WE)
 #date: 2020-11-05 20:45:59
@@ -103,7 +103,7 @@ The (dimension-1) vector subset-sum (VSS) problem can be defined as an NP relati
 \end{align}
 
 They show how there exists a **randomized** ADP over $\Fp$ such that if satisfied it implies VSS satisfiability.
-Specifically, to encode a VSS instance $(\mathbf{h},\ell)$ as an ADP, pick a prime $q > \max_{\witn \in \\{0,1\\}^n} |\mathbf{h}\cdot \witn|$, interpret $\mathbf{h}$ and $\ell$ as elements of $\Fq$, sample $\R \xleftarrow{\$} \Fq^{k \times k}$, and set $M^0 = -\ell \R$ and $M^i = h_i \R$ for $i \in [n]$.
+Specifically, to encode a VSS instance $(\mathbf{h},\ell)$ as an ADP, pick a prime $q > \max_{\witn \in \\{0,1\\}^n} |\mathbf{h}\cdot \witn|$, interpret $\mathbf{h}$ and $\ell$ as elements of $\Fq$, sample $\R \xleftarrow{\$} \Fq^{k \times k}$, and set $\A = -\ell \R$ and $\B_i = h_i \R$ for $i \in [n]$.
 
 {: .warning}
 The requirement on $q$ ensures that the integer inner product $\mathbf{h}\cdot\witn$ does not wrap around modulo $q$, so that $\mathbf{h}\cdot\witn = \ell$ over $\Z$ iff $\mathbf{h}\cdot\witn = \ell$ over $\Fq$.
@@ -122,7 +122,7 @@ The requirement on $q$ ensures that the integer inner product $\mathbf{h}\cdot\w
 \begin{align}
 \Pr_{\R \randget \Fq^{k\times k}}\begin{bmatrix}
     \Radp{\eval_0}\begin{pmatrix}
-        \underbrace{-\ell \R}\_{\A}, \underbrace{h\_1 \R}\_{\B\_1},\ldots,\underbrace{h\_n \R}\_{\B\_n}\textbf{;}\\\\\
+        -\ell \R, h\_1 \R,\ldots, h\_n \R\textbf{;}\\\\\
         \witn
     \end{pmatrix} = 1
 \end{bmatrix} \leq k / q

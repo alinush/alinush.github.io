@@ -3,8 +3,8 @@ tags:
  - RSA
  - vector commitments (VCs)
  - authenticated dictionaries
- - accumulators 
- - aggregation 
+ - accumulators
+ - aggregation
  - papers
  - stateless validation
  - hidden-order groups

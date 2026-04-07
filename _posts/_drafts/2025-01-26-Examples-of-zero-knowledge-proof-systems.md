@@ -1,7 +1,7 @@
 ---
 tags: 
  - zero-knowledge proofs (ZKPs)
- - groth16
+ - Groth16
 title: Examples of zero-knowledge-proof systems
 #date: 2020-11-05 20:45:59
 published: false

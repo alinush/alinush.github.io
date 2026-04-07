@@ -301,6 +301,10 @@ verify: SLH-DSA-SHA2-256f
 
 ## TODO
 
+### Falcon
+
+See [this post](https://ethresear.ch/t/falcon-as-an-ethereum-transaction-signature-the-good-the-bad-and-the-gnarly/21512) by Antonio Sanso.
+
 ### SIS-based schemes
 
 {: .todo}

@@ -1,6 +1,6 @@
 ---
 tags:
- - quantum
+ - post-quantum
  - Shor
 title: Quantum computing
 #date: 2020-11-05 20:45:59
@@ -55,8 +55,10 @@ This result[^FFEB26].
 
 ## Blockchain space responses (chronological)
 
- - March 2nd, 2022: Algorand [announced](https://medium.com/algorand/algorand-state-proofs-707d64038e35) support for [state proofs](https://dev.algorand.co/concepts/protocol/state-proofs/) using [Falcon digital signatures](https://github.com/algorand/falcon)
+ - March 2nd, 2022: Algorand [announced](https://medium.com/algorand/algorand-state-proofs-707d64038e35) future support for [state proofs](https://dev.algorand.co/concepts/protocol/state-proofs/) using [Falcon digital signatures](https://github.com/algorand/falcon)
+ - September 7th, 2022: [Algorand Protocol Upgrade Introduces State Proofs for Trustless Cross Chain Communication and 5x Faster Performance](https://medium.com/algorand/algorand-protocol-upgrade-introduces-state-proofs-for-trustless-cross-chain-communication-51b4cc21a9f3), _by Algorand_
  - October 15th, 2025: [EIP-8051: Precompile for ML-DSA signature verification](https://eips.ethereum.org/EIPS/eip-8051), _by 	Renaud Dubois and Simon Masson_
+ - November 3rd, 2025: [Technical Brief: Quantum-resistant transactions on Algorand with Falcon signatures](https://algorand.co/blog/technical-brief-quantum-resistant-transactions-on-algorand-with-falcon-signatures), _by Larkin Young_
  - December 9th, 2025: [AIP-137: Post-quantum Aptos accounts via SLH-DSA-SHA2-128s signatures](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-137-post-quantum-aptos-accounts-via-slh-dsa-sha2-128s.md), _by Alin Tomescu_
  - January 14th, 2026: [Announcing Project Eleven’s Series A](https://blog.projecteleven.com/posts/announcing-project-elevens-series-a), _by Project 11_
     + Mentions a [Solana testnet with ML-DSA support](https://x.com/SolanaFndn/status/2000948477568934084?s=20)

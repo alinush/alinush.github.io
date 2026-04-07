@@ -1,9 +1,9 @@
 ---
 tags:
- - polynomials 
+ - polynomials
  - verifiable secret sharing (VSS)
  - distributed key generation (DKG)
- - kzg 
+ - kzg
  - polynomial commitments
  - fast fourier transform (FFT)
 title: A Step Closer To Scalable Verifiable Secret Sharing (and Distributed Key Generation)

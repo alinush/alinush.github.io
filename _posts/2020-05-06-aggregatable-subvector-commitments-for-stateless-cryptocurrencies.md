@@ -1,10 +1,10 @@
 ---
 tags:
  - vector commitments (VCs)
- - polynomials 
+ - polynomials
  - fast fourier transform (FFT)
- - Lagrange 
- - aggregation 
+ - Lagrange
+ - aggregation
  - KZG
  - polynomial commitments
  - stateless validation

@@ -1,10 +1,10 @@
 ---
 tags:
- - aptos
+ - Aptos
  - distributed key generation (DKG)
  - BLS
  - ECDSA
- - keyless
+ - Aptos Keyless
  - post-quantum
  - Schnorr
 title: How to easily make Aptos post-quantum secure

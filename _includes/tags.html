@@ -50,3 +50,19 @@
     {%- endfor -%}
   </ul>
 </div>
+<script>
+  // Sort tag buttons case-insensitively
+  (function() {
+    var menu = document.querySelector('.site-tags ul.menu');
+    if (!menu) return;
+    var items = Array.from(menu.children);
+    var showAll = items.shift();
+    items.sort(function(a, b) {
+      var textA = (a.textContent || '').trim().toLowerCase();
+      var textB = (b.textContent || '').trim().toLowerCase();
+      return textA.localeCompare(textB);
+    });
+    items.unshift(showAll);
+    items.forEach(function(item) { menu.appendChild(item); });
+  })();
+</script>

@@ -1,8 +1,8 @@
 ---
 tags: 
  - benchmarks
- - papers 
- - polynomials 
+ - papers
+ - polynomials
  - BLS
  - interpolation
  - fast fourier transform (FFT)

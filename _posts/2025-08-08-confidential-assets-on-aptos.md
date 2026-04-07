@@ -1,7 +1,7 @@
 ---
 tags:
  - benchmarks
- - aptos
+ - Aptos
  - ElGamal
  - zero-knowledge proofs (ZKPs)
  - range proofs

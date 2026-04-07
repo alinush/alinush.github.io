@@ -1,7 +1,7 @@
 ---
 tags: 
  - accumulators
- - aggregation 
+ - aggregation
  - RSA
  - hidden-order groups
 title: RSA Accumulators
