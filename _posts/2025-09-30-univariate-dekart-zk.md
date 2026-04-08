@@ -444,6 +444,10 @@ Return the proof $\pi$:
 
 #### Proof size and prover time
 
+{: .note}
+Recall $\emph{L} \bydef b(n+1)$, where $b$ is the base (typically binary; $b = 2$).
+Each value is in $[0, b^\ell)$ and there are $n$ values.
+
 **Proof size**:
  - $(\ell+2)\Gr_1$ for the $\hat{C}$, $C\_j$'s and $D$
  - $2$ $\Gr_1$ for $\pi\_\gamma$
