@@ -872,43 +872,50 @@ Events cost essentially nothing: I benchmarked with `V2` empty events and the di
 #### Confidential vs. normal transfer
 
 **Q:** _"How much more expensive are confidential transfers?"_\
-**A:** 3x 👇
+**A:** ~30x gas, ~59x TXN size 👇
 
-| Operation | Gas | Overhead |
-| --------- | --- | -------- |
-| Normal fungible asset transfer | 100 | -- |
-| Confidential transfer (no auditors) | 305 | 3.05x |
+| Operation | Gas | Gas overhead | TXN payload (KiB) | TXN payload overhead |
+| --------- | --- | ------------ | ------------------ | -------------------- |
+| Normal fungible asset transfer | 100 | — | 0.07 | — |
+| Confidential transfer (no auditors) | 3,026 | 30.3x | 4.13 | 58.7x |
 
 #### Detailed gas costs
 
-The full gas benchmark logs are [here](/files/confidential-asset/gas-benchmarks-v1.1.txt), but a nicer summary follows below:
+The full gas benchmark logs are [here](/files/confidential-asset/gas-benchmarks-v1.1.txt), but a nicer summary follows below.
 
-| Operation | Gas | Cost (cents) | # of calls / $1 | Proof size (bytes) |
-| --------- | --- | ------------ | --------------- | ------------------ |
-| register  | 12,841 | 1.2841 | 77 | 64 |
-| deposit (_initial_) | 5,515 | 0.5515 | 181 | — |
-| deposit (**subsequent**) | 182 | 0.0182 | 5,494 | — |
-| rollover  | 132    | 0.0132 | 7,575 | — |
-| rotate key | 370   | 0.0370 | 2,702 | 448 |
-| withdraw (no auditor) | 2,017 | 0.2017 | 495 | 1,856 |
-| withdraw (eff. auditor, **subsequent**) | 2,219 | 0.2219 | 450 | 2,112 |
-| withdraw (eff. auditor, _initial_) | 3,315 | 0.3315 | 301 | 2,112 |
-| transfer (no auditors) | 3,026 | 0.3026 | 330 | 3,168 |
-| transfer (1 extra only) | 3,130 | 0.3130 | 319 | 3,296 |
-| transfer (2 extra only) | 3,216 | 0.3216 | 311 | 3,424 |
-| transfer (3 extra only) | 3,320 | 0.3320 | 301 | 3,552 |
-| transfer (eff. auditor only, **subsequent**) | 3,309 | 0.3309 | 302 | 3,552 |
-| transfer (eff. + 1 extra, **subsequent**) | 3,413 | 0.3413 | 293 | 3,680 |
-| transfer (eff. + 2 extra, **subsequent**) | 3,499 | 0.3499 | 285 | 3,808 |
-| transfer (eff. + 3 extra, **subsequent**) | 3,603 | 0.3603 | 277 | 3,936 |
-| transfer (eff. auditor only, _initial_) | 4,405 | 0.4405 | 227 | 3,552 |
-| transfer (eff. + 1 extra, _initial_) | 4,509 | 0.4509 | 221 | 3,680 |
-| transfer (eff. + 2 extra, _initial_) | 4,595 | 0.4595 | 217 | 3,808 |
-| transfer (eff. + 3 extra, _initial_) | 4,699 | 0.4699 | 212 | 3,936 |
+##### Steady-state costs
 
-{: .note}
-"_Initial_" means this is the 1st call that creates on-chain storage (e.g., the FA pool store for deposits, or the auditor's EK component for withdraw/transfer) $\Rightarrow$ higher gas cost due to one-time storage fee.
-"**Subsequent**" refers to subsequent calls that reuse existing storage $\Rightarrow$ this is the "average case" that we care about when reasoning about gas costs.
+These are the costs that matter in practice: all on-chain storage already exists from prior calls.
+
+| Operation | Gas | Cost (cents) | # of calls / $1 | Sigma (KiB) | Bulletproofs (KiB) | Other data (KiB) | Total crypto overhead (KiB) |
+| --------- | --- | ------------ | --------------- | ----------- | ------------------ | ---------------- | -------------- |
+| register  | 12,841 | 1.2841 | 77 | 0.06 (66%) | — | 0.03 (33%) | 0.09 |
+| deposit | 182 | 0.0182 | 5,494 | — | — | — | — |
+| rollover  | 132    | 0.0132 | 7,575 | — | — | — | — |
+| rotate key | 370   | 0.0370 | 2,702 | 0.44 (60%) | — | 0.28 (39%) | 0.72 |
+| withdraw (no auditor) | 2,017 | 0.2017 | 495 | 1.09 (47%) | 0.72 (31%) | 0.50 (21%) | 2.31 |
+| withdraw (eff. auditor) | 2,219 | 0.2219 | 450 | 1.34 (47%) | 0.72 (25%) | 0.75 (26%) | 2.81 |
+| transfer (no auditors) | 3,026 | 0.3026 | 330 | 1.72 (43%) | 1.38 (34%) | 0.88 (22%) | 3.97 |
+| transfer (1 extra only) | 3,130 | 0.3130 | 319 | 1.84 (43%) | 1.38 (32%) | 1.03 (24%) | 4.25 |
+| transfer (2 extra only) | 3,216 | 0.3216 | 311 | 1.97 (43%) | 1.38 (30%) | 1.19 (26%) | 4.53 |
+| transfer (3 extra only) | 3,320 | 0.3320 | 301 | 2.09 (43%) | 1.38 (28%) | 1.34 (27%) | 4.81 |
+| transfer (eff. auditor only) | 3,309 | 0.3309 | 302 | 2.09 (44%) | 1.38 (29%) | 1.25 (26%) | 4.72 |
+| transfer (eff. + 1 extra) | 3,413 | 0.3413 | 293 | 2.22 (44%) | 1.38 (27%) | 1.41 (28%) | 5.00 |
+| transfer (eff. + 2 extra) | 3,499 | 0.3499 | 285 | 2.34 (44%) | 1.38 (26%) | 1.56 (29%) | 5.28 |
+| transfer (eff. + 3 extra) | 3,603 | 0.3603 | 277 | 2.47 (44%) | 1.38 (24%) | 1.72 (30%) | 5.56 |
+
+##### First-time costs
+
+These operations incur a one-time storage fee when they first create on-chain data (e.g., the FA pool store for deposits, or the auditor's R_aud component for withdraw/transfer). The TXN sizes are identical to steady-state since the same data is submitted.
+
+| Operation | Gas | vs. steady-state |
+| --------- | --- | ---------------- |
+| deposit (first time) | 5,515 | 30.3x |
+| withdraw (eff. auditor, first time) | 3,315 | 1.5x |
+| transfer (eff. auditor only, first time) | 4,405 | 1.3x |
+| transfer (eff. + 1 extra, first time) | 4,509 | 1.3x |
+| transfer (eff. + 2 extra, first time) | 4,595 | 1.3x |
+| transfer (eff. + 3 extra, first time) | 4,699 | 1.3x |
 
 #### v1.0 → v1.1 speedup
 

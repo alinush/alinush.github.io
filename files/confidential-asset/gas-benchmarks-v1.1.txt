@@ -1,9 +1,33 @@
-
+warning: variant `Fuzzing` is never constructed
+   --> aptos-move/e2e-tests/src/executor.rs:149:5
+    |
+147 | enum BlockState {
+    |      ---------- variant in this enum
+148 |     None,
+149 |     Fuzzing(SharedCacheState),
+    |     ^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+warning: `aptos-language-e2e-tests` (lib) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.60s
+warning: the following packages contain code that will be rejected by a future version of Rust: num-bigint-dig v0.8.4
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+     Running unittests src/lib.rs (/Users/alinush/repos/aptos-core/target/debug/deps/e2e_move_tests-0d36fe911dc4fd47)
 running 28 tests
 test tests::confidential_asset::bench_gas_confidential_transfer_detailed ... ignored
 test tests::confidential_asset::bench_gas_deposit_detailed ... ignored
 test tests::confidential_asset::bench_gas_fungible_asset_transfer_detailed ... ignored
-
+TXN payload size for primary_fungible_store::transfer: 72 bytes (0.07 KiB)
+TXN size report for register:
+| Sigma protocol:  0.06 KiB (66%)
+|   Group elements (A):  1
+|   Field elements (σ):  1
+| Bulletproofs:    (none)
+| Other data:      0.03 KiB (33%) [1 points]
+* ----------------------------------
+| TXN size:        0.09 KiB
+\-----------------------------------
+TXN payload size for register: 133 bytes (0.13 KiB)
 Gas report for 0x1::primary_fungible_store::transfer, assuming 100 octas / gas unit
 |  Execution gas:   36 units
 |  IO gas:          65 units
@@ -16,17 +40,6 @@ Gas report for 0x1::primary_fungible_store::transfer, assuming 100 octas / gas u
 \-----------------------------------
 test tests::confidential_asset::bench_gas_fungible_asset_transfer ... ok
 test tests::confidential_asset::bench_gas_register_detailed ... ignored
-
-Proof size report for register:
-| Sigma protocol:
-|   Group elements (A):  1
-|   Field elements (σ):  1
-|   Sigma subtotal:      64 bytes
-| Bulletproofs:            (none)
-* ----------------------------------
-| Total proof size:      64 bytes
-\-----------------------------------
-
 Gas report for 0x1::confidential_asset::register, assuming 100 octas / gas unit
 |  Execution gas:   89 units
 |  IO gas:          53 units
@@ -39,7 +52,7 @@ Gas report for 0x1::confidential_asset::register, assuming 100 octas / gas unit
 \-----------------------------------
 test tests::confidential_asset::bench_gas_register ... ok
 test tests::confidential_asset::bench_gas_rollover_pending_balance_detailed ... ignored
-
+TXN payload size for deposit (first time): 40 bytes (0.04 KiB)
 Gas report for 0x1::confidential_asset::deposit (first time), assuming 100 octas / gas unit
 |  Execution gas:   110 units
 |  IO gas:          82 units
@@ -53,7 +66,8 @@ Gas report for 0x1::confidential_asset::deposit (first time), assuming 100 octas
   Alice balance: 9,998,715,900 -> 9,998,163,400 (deposited 1,000)
 test tests::confidential_asset::bench_gas_deposit_first ... ok
 test tests::confidential_asset::bench_gas_rotate_encryption_key_detailed ... ignored
-
+TXN payload size for rollover_pending_balance: 32 bytes (0.03 KiB)
+TXN payload size for deposit: 40 bytes (0.04 KiB)
 Gas report for 0x1::confidential_asset::deposit, assuming 100 octas / gas unit
 |  Execution gas:   107 units
 |  IO gas:          76 units
@@ -67,7 +81,6 @@ Gas report for 0x1::confidential_asset::deposit, assuming 100 octas / gas unit
   Alice balance: 9,998,163,400 -> 9,998,144,200 (deposited 1,000)
 test tests::confidential_asset::bench_gas_deposit ... ok
 test tests::confidential_asset::bench_gas_withdraw_to_detailed ... ignored
-
 Gas report for 0x1::confidential_asset::rollover_pending_balance, assuming 100 octas / gas unit
 |  Execution gas:   111 units
 |  IO gas:          21 units
@@ -79,17 +92,16 @@ Gas report for 0x1::confidential_asset::rollover_pending_balance, assuming 100 o
 |  Total APT:       0.00013200 APT
 \-----------------------------------
 test tests::confidential_asset::bench_gas_rollover_pending_balance ... ok
-
-Proof size report for rotate_encryption_key:
-| Sigma protocol:
+TXN payload size for rotate_encryption_key: 795 bytes (0.78 KiB)
+TXN size report for rotate_encryption_key:
+| Sigma protocol:  0.44 KiB (60%)
 |   Group elements (A):  11
 |   Field elements (σ):  3
-|   Sigma subtotal:      448 bytes
-| Bulletproofs:            (none)
+| Bulletproofs:    (none)
+| Other data:      0.28 KiB (39%) [9 points]
 * ----------------------------------
-| Total proof size:      448 bytes
+| TXN size:        0.72 KiB
 \-----------------------------------
-
 Gas report for 0x1::confidential_asset::rotate_encryption_key, assuming 100 octas / gas unit
 |  Execution gas:   330 units
 |  IO gas:          41 units
@@ -101,19 +113,90 @@ Gas report for 0x1::confidential_asset::rotate_encryption_key, assuming 100 octa
 |  Total APT:       0.00037000 APT
 \-----------------------------------
 test tests::confidential_asset::bench_gas_rotate_encryption_key ... ok
-
-Proof size report for confidential_transfer (0 volun):
-| Sigma protocol:
+TXN payload size for confidential_transfer (0 volun): 4,227 bytes (4.13 KiB)
+TXN payload size for confidential_transfer (1 volun): 4,525 bytes (4.42 KiB)
+TXN payload size for confidential_transfer (with auditor, first time): 5,019 bytes (4.90 KiB)
+TXN payload size for confidential_transfer (with auditor, first time, 1 volun): 5,317 bytes (5.19 KiB)
+TXN payload size for confidential_transfer (with auditor, first time, 2 volun): 5,615 bytes (5.48 KiB)
+TXN payload size for confidential_transfer (3 volun): 5,121 bytes (5.00 KiB)
+TXN payload size for confidential_transfer (2 volun): 4,823 bytes (4.71 KiB)
+TXN size report for confidential_transfer (2 volun):
+| Sigma protocol:  1.97 KiB (43%)
+|   Group elements (A):  38
+|   Field elements (σ):  25
+| Bulletproofs:    1.38 KiB (30%)
+|   Range proof #1: 0.72 KiB
+|   Range proof #2: 0.66 KiB
+| Other data:      1.19 KiB (26%) [38 points]
+* ----------------------------------
+| TXN size:        4.53 KiB
+\-----------------------------------
+Gas report for 0x1::confidential_asset::confidential_transfer (2 volun), assuming 100 octas / gas unit
+|  Execution gas:   3,143 units
+|  IO gas:          74 units
+|  Storage fee:     0 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 3,216 units
+|  Total octas:     321,600 octas
+|  Total APT:       0.00321600 APT
+\-----------------------------------
+TXN size report for confidential_transfer (1 volun):
+| Sigma protocol:  1.84 KiB (43%)
+|   Group elements (A):  34
+|   Field elements (σ):  25
+| Bulletproofs:    1.38 KiB (32%)
+|   Range proof #1: 0.72 KiB
+|   Range proof #2: 0.66 KiB
+| Other data:      1.03 KiB (24%) [33 points]
+* ----------------------------------
+| TXN size:        4.25 KiB
+\-----------------------------------
+Gas report for 0x1::confidential_asset::confidential_transfer (1 volun), assuming 100 octas / gas unit
+|  Execution gas:   3,057 units
+|  IO gas:          74 units
+|  Storage fee:     0 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 3,130 units
+|  Total octas:     313,000 octas
+|  Total APT:       0.00313000 APT
+\-----------------------------------
+TXN size report for confidential_transfer (with auditor, first time, 2 volun):
+| Sigma protocol:  2.34 KiB (44%)
+|   Group elements (A):  50
+|   Field elements (σ):  25
+| Bulletproofs:    1.38 KiB (26%)
+|   Range proof #1: 0.72 KiB
+|   Range proof #2: 0.66 KiB
+| Other data:      1.56 KiB (29%) [50 points]
+* ----------------------------------
+| TXN size:        5.28 KiB
+\-----------------------------------
+Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, first time, 2 volun), assuming 100 octas / gas unit
+test tests::confidential_asset::bench_gas_confidential_transfer_2_volun ... ok
+|  Execution gas:   3,418 units
+|  IO gas:          82 units
+|  Storage fee:     109,600 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 4,595 units
+|  Total octas:     459,500 octas
+|  Total APT:       0.00459500 APT
+\-----------------------------------
+test tests::confidential_asset::bench_gas_confidential_transfer_1_volun ... ok
+test tests::confidential_asset::bench_gas_confidential_transfer_with_auditor_2_volun ... ok
+TXN size report for confidential_transfer (0 volun):
+| Sigma protocol:  1.72 KiB (43%)
 |   Group elements (A):  30
 |   Field elements (σ):  25
-|   Sigma subtotal:      1,760 bytes
-| Bulletproof #1: 736 bytes
-| Bulletproof #2: 672 bytes
-| Bulletproofs subtotal:   1,408 bytes
+| Bulletproofs:    1.38 KiB (34%)
+|   Range proof #1: 0.72 KiB
+|   Range proof #2: 0.66 KiB
+| Other data:      0.88 KiB (22%) [28 points]
 * ----------------------------------
-| Total proof size:      3,168 bytes
+| TXN size:        3.97 KiB
 \-----------------------------------
-
 Gas report for 0x1::confidential_asset::confidential_transfer (0 volun), assuming 100 octas / gas unit
 |  Execution gas:   2,953 units
 |  IO gas:          73 units
@@ -125,43 +208,17 @@ Gas report for 0x1::confidential_asset::confidential_transfer (0 volun), assumin
 |  Total APT:       0.00302600 APT
 \-----------------------------------
 test tests::confidential_asset::bench_gas_confidential_transfer ... ok
-
-Proof size report for confidential_transfer (3 volun):
-| Sigma protocol:
-|   Group elements (A):  42
-|   Field elements (σ):  25
-|   Sigma subtotal:      2,144 bytes
-| Bulletproof #1: 736 bytes
-| Bulletproof #2: 672 bytes
-| Bulletproofs subtotal:   1,408 bytes
-* ----------------------------------
-| Total proof size:      3,552 bytes
-\-----------------------------------
-
-Gas report for 0x1::confidential_asset::confidential_transfer (3 volun), assuming 100 octas / gas unit
-|  Execution gas:   3,246 units
-|  IO gas:          75 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 3,320 units
-|  Total octas:     332,000 octas
-|  Total APT:       0.00332000 APT
-\-----------------------------------
-test tests::confidential_asset::bench_gas_confidential_transfer_3_volun ... ok
-
-Proof size report for confidential_transfer (with auditor, first time, 1 volun):
-| Sigma protocol:
+TXN size report for confidential_transfer (with auditor, first time, 1 volun):
+| Sigma protocol:  2.22 KiB (44%)
 |   Group elements (A):  46
 |   Field elements (σ):  25
-|   Sigma subtotal:      2,272 bytes
-| Bulletproof #1: 736 bytes
-| Bulletproof #2: 672 bytes
-| Bulletproofs subtotal:   1,408 bytes
+| Bulletproofs:    1.38 KiB (27%)
+|   Range proof #1: 0.72 KiB
+|   Range proof #2: 0.66 KiB
+| Other data:      1.41 KiB (28%) [45 points]
 * ----------------------------------
-| Total proof size:      3,680 bytes
+| TXN size:        5.00 KiB
 \-----------------------------------
-
 Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, first time, 1 volun), assuming 100 octas / gas unit
 |  Execution gas:   3,332 units
 |  IO gas:          81 units
@@ -173,115 +230,17 @@ Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, fir
 |  Total APT:       0.00450900 APT
 \-----------------------------------
 test tests::confidential_asset::bench_gas_confidential_transfer_with_auditor_1_volun ... ok
-
-Proof size report for confidential_transfer (1 volun):
-| Sigma protocol:
-|   Group elements (A):  34
-|   Field elements (σ):  25
-
-Proof size report for confidential_transfer (with auditor, first time, 2 volun):
-| Sigma protocol:
-|   Group elements (A):  50
-|   Field elements (σ):  25
-|   Sigma subtotal:      1,888 bytes
-| Bulletproof #1: 736 bytes
-| Bulletproof #2: 672 bytes
-| Bulletproofs subtotal:   1,408 bytes
-* ----------------------------------
-|   Sigma subtotal:      2,400 bytes
-| Bulletproof #1: 736 bytes
-| Bulletproof #2: 672 bytes
-| Bulletproofs subtotal:   1,408 bytes
-* ----------------------------------
-| Total proof size:      3,808 bytes
-\-----------------------------------
-
-Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, first time, 2 volun), assuming 100 octas / gas unit
-|  Execution gas:   3,418 units
-|  IO gas:          82 units
-|  Storage fee:     109,600 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 4,595 units
-|  Total octas:     459,500 octas
-|  Total APT:       0.00459500 APT
-\-----------------------------------
-| Total proof size:      3,296 bytes
-\-----------------------------------
-
-Gas report for 0x1::confidential_asset::confidential_transfer (1 volun), assuming 100 octas / gas unit
-|  Execution gas:   3,057 units
-|  IO gas:          74 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 3,130 units
-|  Total octas:     313,000 octas
-|  Total APT:       0.00313000 APT
-\-----------------------------------
-test tests::confidential_asset::bench_gas_confidential_transfer_1_volun ... ok
-test tests::confidential_asset::bench_gas_confidential_transfer_with_auditor_2_volun ... ok
-
-Proof size report for confidential_transfer (with auditor, first time, 3 volun):
-| Sigma protocol:
-|   Group elements (A):  54
-|   Field elements (σ):  25
-|   Sigma subtotal:      2,528 bytes
-| Bulletproof #1: 736 bytes
-| Bulletproof #2: 672 bytes
-| Bulletproofs subtotal:   1,408 bytes
-* ----------------------------------
-| Total proof size:      3,936 bytes
-\-----------------------------------
-
-Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, first time, 3 volun), assuming 100 octas / gas unit
-|  Execution gas:   3,521 units
-|  IO gas:          82 units
-|  Storage fee:     109,600 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 4,699 units
-|  Total octas:     469,900 octas
-|  Total APT:       0.00469900 APT
-\-----------------------------------
-test tests::confidential_asset::bench_gas_confidential_transfer_with_auditor_3_volun ... ok
-
-Proof size report for confidential_transfer (2 volun):
-| Sigma protocol:
-|   Group elements (A):  38
-|   Field elements (σ):  25
-|   Sigma subtotal:      2,016 bytes
-| Bulletproof #1: 736 bytes
-| Bulletproof #2: 672 bytes
-| Bulletproofs subtotal:   1,408 bytes
-* ----------------------------------
-| Total proof size:      3,424 bytes
-\-----------------------------------
-
-Gas report for 0x1::confidential_asset::confidential_transfer (2 volun), assuming 100 octas / gas unit
-|  Execution gas:   3,143 units
-|  IO gas:          74 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 3,216 units
-|  Total octas:     321,600 octas
-|  Total APT:       0.00321600 APT
-\-----------------------------------
-test tests::confidential_asset::bench_gas_confidential_transfer_2_volun ... ok
-
-Proof size report for confidential_transfer (with auditor, first time):
-| Sigma protocol:
+TXN size report for confidential_transfer (with auditor, first time):
+| Sigma protocol:  2.09 KiB (44%)
 |   Group elements (A):  42
 |   Field elements (σ):  25
-|   Sigma subtotal:      2,144 bytes
-| Bulletproof #1: 736 bytes
-| Bulletproof #2: 672 bytes
-| Bulletproofs subtotal:   1,408 bytes
+| Bulletproofs:    1.38 KiB (29%)
+|   Range proof #1: 0.72 KiB
+|   Range proof #2: 0.66 KiB
+| Other data:      1.25 KiB (26%) [40 points]
 * ----------------------------------
-| Total proof size:      3,552 bytes
+| TXN size:        4.72 KiB
 \-----------------------------------
-
 Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, first time), assuming 100 octas / gas unit
 |  Execution gas:   3,229 units
 |  IO gas:          81 units
@@ -293,18 +252,40 @@ Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, fir
 |  Total APT:       0.00440500 APT
 \-----------------------------------
 test tests::confidential_asset::bench_gas_confidential_transfer_with_auditor ... ok
-
-Proof size report for withdraw_to:
-| Sigma protocol:
+TXN size report for confidential_transfer (3 volun):
+| Sigma protocol:  2.09 KiB (43%)
+|   Group elements (A):  42
+|   Field elements (σ):  25
+| Bulletproofs:    1.38 KiB (28%)
+|   Range proof #1: 0.72 KiB
+|   Range proof #2: 0.66 KiB
+| Other data:      1.34 KiB (27%) [43 points]
+* ----------------------------------
+| TXN size:        4.81 KiB
+\-----------------------------------
+Gas report for 0x1::confidential_asset::confidential_transfer (3 volun), assuming 100 octas / gas unit
+|  Execution gas:   3,246 units
+|  IO gas:          75 units
+|  Storage fee:     0 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 3,320 units
+|  Total octas:     332,000 octas
+|  Total APT:       0.00332000 APT
+\-----------------------------------
+test tests::confidential_asset::bench_gas_confidential_transfer_3_volun ... ok
+TXN payload size for confidential_transfer (with auditor, first time, 3 volun): 5,913 bytes (5.77 KiB)
+TXN payload size for withdraw_to: 2,498 bytes (2.44 KiB)
+TXN size report for withdraw_to:
+| Sigma protocol:  1.09 KiB (47%)
 |   Group elements (A):  18
 |   Field elements (σ):  17
-|   Sigma subtotal:      1,120 bytes
-| Bulletproof #1: 736 bytes
-| Bulletproofs subtotal:   736 bytes
+| Bulletproofs:    0.72 KiB (31%)
+|   Range proof #1: 0.72 KiB
+| Other data:      0.50 KiB (21%) [16 points]
 * ----------------------------------
-| Total proof size:      1,856 bytes
+| TXN size:        2.31 KiB
 \-----------------------------------
-
 Gas report for 0x1::confidential_asset::withdraw_to, assuming 100 octas / gas unit
 |  Execution gas:   1,918 units
 |  IO gas:          100 units
@@ -316,19 +297,42 @@ Gas report for 0x1::confidential_asset::withdraw_to, assuming 100 octas / gas un
 |  Total APT:       0.00201700 APT
 \-----------------------------------
 test tests::confidential_asset::bench_gas_withdraw_to ... ok
-
-Proof size report for confidential_transfer (with auditor, subsequent):
-| Sigma protocol:
+TXN payload size for confidential_transfer (with auditor, subsequent): 5,019 bytes (4.90 KiB)
+TXN payload size for confidential_transfer (with auditor, subsequent, 1 volun): 5,317 bytes (5.19 KiB)
+TXN payload size for confidential_transfer (with auditor, subsequent, 2 volun): 5,615 bytes (5.48 KiB)
+TXN size report for confidential_transfer (with auditor, first time, 3 volun):
+| Sigma protocol:  2.47 KiB (44%)
+|   Group elements (A):  54
+|   Field elements (σ):  25
+| Bulletproofs:    1.38 KiB (24%)
+|   Range proof #1: 0.72 KiB
+|   Range proof #2: 0.66 KiB
+| Other data:      1.72 KiB (30%) [55 points]
+* ----------------------------------
+| TXN size:        5.56 KiB
+\-----------------------------------
+Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, first time, 3 volun), assuming 100 octas / gas unit
+|  Execution gas:   3,521 units
+|  IO gas:          82 units
+|  Storage fee:     109,600 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 4,699 units
+|  Total octas:     469,900 octas
+|  Total APT:       0.00469900 APT
+\-----------------------------------
+test tests::confidential_asset::bench_gas_confidential_transfer_with_auditor_3_volun ... ok
+TXN size report for confidential_transfer (with auditor, subsequent):
+| Sigma protocol:  2.09 KiB (44%)
 |   Group elements (A):  42
 |   Field elements (σ):  25
-|   Sigma subtotal:      2,144 bytes
-| Bulletproof #1: 736 bytes
-| Bulletproof #2: 672 bytes
-| Bulletproofs subtotal:   1,408 bytes
+| Bulletproofs:    1.38 KiB (29%)
+|   Range proof #1: 0.72 KiB
+|   Range proof #2: 0.66 KiB
+| Other data:      1.25 KiB (26%) [40 points]
 * ----------------------------------
-| Total proof size:      3,552 bytes
+| TXN size:        4.72 KiB
 \-----------------------------------
-
 Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, subsequent), assuming 100 octas / gas unit
 |  Execution gas:   3,229 units
 |  IO gas:          81 units
@@ -340,19 +344,17 @@ Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, sub
 |  Total APT:       0.00330900 APT
 \-----------------------------------
 test tests::confidential_asset::bench_gas_confidential_transfer_with_auditor_subsequent ... ok
-
-Proof size report for confidential_transfer (with auditor, subsequent, 1 volun):
-| Sigma protocol:
+TXN size report for confidential_transfer (with auditor, subsequent, 1 volun):
+| Sigma protocol:  2.22 KiB (44%)
 |   Group elements (A):  46
 |   Field elements (σ):  25
-|   Sigma subtotal:      2,272 bytes
-| Bulletproof #1: 736 bytes
-| Bulletproof #2: 672 bytes
-| Bulletproofs subtotal:   1,408 bytes
+| Bulletproofs:    1.38 KiB (27%)
+|   Range proof #1: 0.72 KiB
+|   Range proof #2: 0.66 KiB
+| Other data:      1.41 KiB (28%) [45 points]
 * ----------------------------------
-| Total proof size:      3,680 bytes
+| TXN size:        5.00 KiB
 \-----------------------------------
-
 Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, subsequent, 1 volun), assuming 100 octas / gas unit
 |  Execution gas:   3,332 units
 |  IO gas:          81 units
@@ -364,43 +366,17 @@ Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, sub
 |  Total APT:       0.00341300 APT
 \-----------------------------------
 test tests::confidential_asset::bench_gas_confidential_transfer_with_auditor_1_volun_subsequent ... ok
-
-Proof size report for confidential_transfer (with auditor, subsequent, 3 volun):
-| Sigma protocol:
-|   Group elements (A):  54
-|   Field elements (σ):  25
-|   Sigma subtotal:      2,528 bytes
-| Bulletproof #1: 736 bytes
-| Bulletproof #2: 672 bytes
-| Bulletproofs subtotal:   1,408 bytes
-* ----------------------------------
-| Total proof size:      3,936 bytes
-\-----------------------------------
-
-Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, subsequent, 3 volun), assuming 100 octas / gas unit
-|  Execution gas:   3,521 units
-|  IO gas:          82 units
-|  Storage fee:     0 octas
-|  Storage refund:  0 octas
-* ----------------------------------
-|  Total gas units: 3,603 units
-|  Total octas:     360,300 octas
-|  Total APT:       0.00360300 APT
-\-----------------------------------
-test tests::confidential_asset::bench_gas_confidential_transfer_with_auditor_3_volun_subsequent ... ok
-
-Proof size report for confidential_transfer (with auditor, subsequent, 2 volun):
-| Sigma protocol:
+TXN size report for confidential_transfer (with auditor, subsequent, 2 volun):
+| Sigma protocol:  2.34 KiB (44%)
 |   Group elements (A):  50
 |   Field elements (σ):  25
-|   Sigma subtotal:      2,400 bytes
-| Bulletproof #1: 736 bytes
-| Bulletproof #2: 672 bytes
-| Bulletproofs subtotal:   1,408 bytes
+| Bulletproofs:    1.38 KiB (26%)
+|   Range proof #1: 0.72 KiB
+|   Range proof #2: 0.66 KiB
+| Other data:      1.56 KiB (29%) [50 points]
 * ----------------------------------
-| Total proof size:      3,808 bytes
+| TXN size:        5.28 KiB
 \-----------------------------------
-
 Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, subsequent, 2 volun), assuming 100 octas / gas unit
 |  Execution gas:   3,418 units
 |  IO gas:          82 units
@@ -412,18 +388,18 @@ Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, sub
 |  Total APT:       0.00349900 APT
 \-----------------------------------
 test tests::confidential_asset::bench_gas_confidential_transfer_with_auditor_2_volun_subsequent ... ok
-
-Proof size report for withdraw_to (with auditor, first time):
-| Sigma protocol:
+TXN payload size for withdraw_to (with auditor, first time): 3,026 bytes (2.96 KiB)
+TXN payload size for confidential_transfer (with auditor, subsequent, 3 volun): 5,913 bytes (5.77 KiB)
+TXN size report for withdraw_to (with auditor, first time):
+| Sigma protocol:  1.34 KiB (47%)
 |   Group elements (A):  26
 |   Field elements (σ):  17
-|   Sigma subtotal:      1,376 bytes
-| Bulletproof #1: 736 bytes
-| Bulletproofs subtotal:   736 bytes
+| Bulletproofs:    0.72 KiB (25%)
+|   Range proof #1: 0.72 KiB
+| Other data:      0.75 KiB (26%) [24 points]
 * ----------------------------------
-| Total proof size:      2,112 bytes
+| TXN size:        2.81 KiB
 \-----------------------------------
-
 Gas report for 0x1::confidential_asset::withdraw_to (with auditor, first time), assuming 100 octas / gas unit
 |  Execution gas:   2,113 units
 |  IO gas:          107 units
@@ -435,18 +411,39 @@ Gas report for 0x1::confidential_asset::withdraw_to (with auditor, first time), 
 |  Total APT:       0.00331500 APT
 \-----------------------------------
 test tests::confidential_asset::bench_gas_withdraw_to_with_auditor ... ok
-
-Proof size report for withdraw_to (with auditor, subsequent):
-| Sigma protocol:
+TXN size report for confidential_transfer (with auditor, subsequent, 3 volun):
+| Sigma protocol:  2.47 KiB (44%)
+|   Group elements (A):  54
+|   Field elements (σ):  25
+| Bulletproofs:    1.38 KiB (24%)
+|   Range proof #1: 0.72 KiB
+|   Range proof #2: 0.66 KiB
+| Other data:      1.72 KiB (30%) [55 points]
+* ----------------------------------
+| TXN size:        5.56 KiB
+\-----------------------------------
+Gas report for 0x1::confidential_asset::confidential_transfer (with auditor, subsequent, 3 volun), assuming 100 octas / gas unit
+|  Execution gas:   3,521 units
+|  IO gas:          82 units
+|  Storage fee:     0 octas
+|  Storage refund:  0 octas
+* ----------------------------------
+|  Total gas units: 3,603 units
+|  Total octas:     360,300 octas
+|  Total APT:       0.00360300 APT
+\-----------------------------------
+test tests::confidential_asset::bench_gas_confidential_transfer_with_auditor_3_volun_subsequent ... ok
+TXN payload size for withdraw_to (with auditor, subsequent): 3,026 bytes (2.96 KiB)
+TXN size report for withdraw_to (with auditor, subsequent):
+| Sigma protocol:  1.34 KiB (47%)
 |   Group elements (A):  26
 |   Field elements (σ):  17
-|   Sigma subtotal:      1,376 bytes
-| Bulletproof #1: 736 bytes
-| Bulletproofs subtotal:   736 bytes
+| Bulletproofs:    0.72 KiB (25%)
+|   Range proof #1: 0.72 KiB
+| Other data:      0.75 KiB (26%) [24 points]
 * ----------------------------------
-| Total proof size:      2,112 bytes
+| TXN size:        2.81 KiB
 \-----------------------------------
-
 Gas report for 0x1::confidential_asset::withdraw_to (with auditor, subsequent), assuming 100 octas / gas unit
 |  Execution gas:   2,113 units
 |  IO gas:          107 units
@@ -458,6 +455,4 @@ Gas report for 0x1::confidential_asset::withdraw_to (with auditor, subsequent), 
 |  Total APT:       0.00221900 APT
 \-----------------------------------
 test tests::confidential_asset::bench_gas_withdraw_to_with_auditor_subsequent ... ok
-
-test result: ok. 21 passed; 0 failed; 7 ignored; 0 measured; 286 filtered out; finished in 6.35s
-
+test result: ok. 21 passed; 0 failed; 7 ignored; 0 measured; 286 filtered out; finished in 6.79s

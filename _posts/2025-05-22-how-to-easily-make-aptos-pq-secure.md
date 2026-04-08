@@ -124,7 +124,7 @@ Nonetheless, [as explained above](#pq-fallback), ECDSA accounts can be manually 
 Unfortunately, not everyone will be aware of the quantum threat.
 As a result, some inactive users will likely have their accounts stolen.
 
-Luckily, as hinted before, there is **light at the end of the tunnel**[^vitalik-stark]:
+Luckily, as hinted before, there is **light at the end of the tunnel**[^vitalik-stark]$^,$[^project-eleven-eddsa]:
 
 The BIP-39[^bip-39] and BIP-32[^bip-32] key derivation mechanism (from a 12-word or 24-word mnemonic down to an ECDSA secret key) can be leveraged to provide fallback PQ security for ECDSA accounts as well, in a similar manner to Ed25519.
 This assumes that most ECDSA SKs are derived using a mnemonic or are derived using BIP-32.
@@ -264,6 +264,7 @@ Your thoughts or comments are welcome on this thread[^discussion-thread].
 [^aip-137]: [AIP-137: Post-quantum Aptos accounts via SLH-DSA-SHA2-128s signatures](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-137-post-quantum-aptos-accounts-via-slh-dsa-sha2-128s.md), Alin Tomescu, December 9th, 2025
 [^tweet-fs]: [Fiat, Shamir and Shor walk into a bar... 🍺](https://x.com/alinush/status/2037324705850372511), Alin Tomescu, March 26th, 2026
 [^vitalik-stark]: [How to hard-fork to save most users’ funds in a quantum emergency](https://ethresear.ch/t/how-to-hard-fork-to-save-most-users-funds-in-a-quantum-emergency/18901), Vitalik Buterin, March 9th, 2024
+[^project-eleven-eddsa]: [Post-Quantum Readiness for EdDSA Chains and a Possible Solution for Some ECDSA Wallets: Part 1](https://blog.projecteleven.com/posts/post-quantum-readiness-for-eddsa-chains-and-a-possible-solution-for-some-ecdsa-wallets---part-1), Conor Deegan, August 12th, 2025
 
 ## References
 
