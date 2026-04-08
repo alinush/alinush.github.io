@@ -598,6 +598,27 @@ ristretto255 point addition
                         time:   [126.28 ns 127.90 ns 130.90 ns]
 ```
 
+MSM benchmarks:
+```
+ristretto255/vartime_multiscalar_mul/64
+                        time:   [301.26 µs 301.73 µs 302.21 µs]
+
+ristretto255/vartime_multiscalar_mul/128
+                        time:   [597.56 µs 598.18 µs 598.79 µs]
+
+ristretto255/vartime_multiscalar_mul/256
+                        time:   [1.1076 ms 1.1091 ms 1.1106 ms]
+
+ristretto255/vartime_multiscalar_mul/512
+                        time:   [1.9242 ms 1.9265 ms 1.9295 ms]
+
+ristretto255/vartime_multiscalar_mul/1024
+                        time:   [3.3877 ms 3.3911 ms 3.3944 ms]
+
+ristretto255/vartime_multiscalar_mul/2048
+                        time:   [6.0133 ms 6.0203 ms 6.0275 ms]
+```
+
 {: .error}
 Unfortunately, Ristretto255 is cursed: it needs canonical square roots computed during point compression, which are not batchable.
 (This is inherent for any Decaf-like group, it seems.)
