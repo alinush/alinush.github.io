@@ -887,21 +887,21 @@ The full gas benchmark logs are [here](/files/confidential-asset/gas-benchmarks-
 | deposit (**subsequent**) | 182 | 0.0182 | 5,494 | — |
 | rollover  | 132    | 0.0132 | 7,575 | — |
 | rotate key | 370   | 0.0370 | 2,702 | 448 |
-| withdraw (no auditor) | 2,040 | 0.2040 | 490 | 1,856 |
-| withdraw (eff. auditor, **subsequent**) | 2,242 | 0.2242 | 446 | 2,112 |
-| withdraw (eff. auditor, _initial_) | 3,338 | 0.3338 | 299 | 2,112 |
-| transfer (no auditors) | 3,059 | 0.3059 | 326 | 3,168 |
-| transfer (1 extra only) | 3,162 | 0.3162 | 316 | 3,296 |
-| transfer (2 extra only) | 3,249 | 0.3249 | 307 | 3,424 |
-| transfer (3 extra only) | 3,352 | 0.3352 | 298 | 3,552 |
-| transfer (eff. auditor only, **subsequent**) | 3,342 | 0.3342 | 299 | 3,552 |
-| transfer (eff. + 1 extra, **subsequent**) | 3,445 | 0.3445 | 290 | 3,680 |
-| transfer (eff. + 2 extra, **subsequent**) | 3,532 | 0.3532 | 283 | 3,808 |
-| transfer (eff. + 3 extra, **subsequent**) | 3,635 | 0.3635 | 275 | 3,936 |
-| transfer (eff. auditor only, _initial_) | 4,438 | 0.4438 | 225 | 3,552 |
-| transfer (eff. + 1 extra, _initial_) | 4,541 | 0.4541 | 220 | 3,680 |
-| transfer (eff. + 2 extra, _initial_) | 4,628 | 0.4628 | 215 | 3,808 |
-| transfer (eff. + 3 extra, _initial_) | 4,731 | 0.4731 | 211 | 3,936 |
+| withdraw (no auditor) | 2,017 | 0.2017 | 495 | 1,856 |
+| withdraw (eff. auditor, **subsequent**) | 2,219 | 0.2219 | 450 | 2,112 |
+| withdraw (eff. auditor, _initial_) | 3,315 | 0.3315 | 301 | 2,112 |
+| transfer (no auditors) | 3,026 | 0.3026 | 330 | 3,168 |
+| transfer (1 extra only) | 3,130 | 0.3130 | 319 | 3,296 |
+| transfer (2 extra only) | 3,216 | 0.3216 | 311 | 3,424 |
+| transfer (3 extra only) | 3,320 | 0.3320 | 301 | 3,552 |
+| transfer (eff. auditor only, **subsequent**) | 3,309 | 0.3309 | 302 | 3,552 |
+| transfer (eff. + 1 extra, **subsequent**) | 3,413 | 0.3413 | 293 | 3,680 |
+| transfer (eff. + 2 extra, **subsequent**) | 3,499 | 0.3499 | 285 | 3,808 |
+| transfer (eff. + 3 extra, **subsequent**) | 3,603 | 0.3603 | 277 | 3,936 |
+| transfer (eff. auditor only, _initial_) | 4,405 | 0.4405 | 227 | 3,552 |
+| transfer (eff. + 1 extra, _initial_) | 4,509 | 0.4509 | 221 | 3,680 |
+| transfer (eff. + 2 extra, _initial_) | 4,595 | 0.4595 | 217 | 3,808 |
+| transfer (eff. + 3 extra, _initial_) | 4,699 | 0.4699 | 212 | 3,936 |
 
 {: .note}
 "_Initial_" means this is the 1st call that creates on-chain storage (e.g., the FA pool store for deposits, or the auditor's EK component for withdraw/transfer) $\Rightarrow$ higher gas cost due to one-time storage fee.
