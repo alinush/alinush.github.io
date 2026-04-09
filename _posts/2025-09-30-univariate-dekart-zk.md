@@ -564,114 +564,167 @@ However, it will make proving slower by a factor of $b$
 (e.g., 16x slower proving by for a 4x faster-to-verify and smaller proof 👌).
 Nonetheless, it will be great for applications like [confidential assets](/confidential-assets).
 
+{: .error}
+MissileProof[^GWHW24] is **not** zero-knowledge, but we compare to it anyway.
+It is unclear how much more expensive it would be if it was.
+No more than 2x for sure.
+We also slightly optimize its proving time and proof size by batching KZG proofs at the same point over different polynomials.
+Nonetheless, even this non-ZK MissileProof proves much slower than DeKART, and has almost-identical verification times.
+However, MissileProof does have smaller proofs (from 1.1x to 10x smaller) because they don't depend on the bit width $\ell$.
+Our [MissileProof implementation](https://github.com/alinush/missileproof-rs) has been vibe-coded using Claude Code Opus 4.6 so as to optimally leverage: MSMs in the prover and verifier, FFTs in the prover, and multi-pairings in the verifier.
+(Treat these numbers accordingly. Importantly, note that our implementation's numbers are 10x faster than the ones in the original MissileProof paper[^GWHW24]: e.g., $n=64$ and $\ell=64$ in their Table 4 takes 2.3 seconds; ours takes 0.2 seconds)
+
 #### $\ell = 8$ numbers
 
-| Scheme             | n    | Proving time (ms) | Verify time (ms) | Total time (ms) | Proof size (bytes) |
-|--------------------|------|-------------------|------------------|-----------------|--------------------|
-| Bulletproofs       | 2    |              3.24 |             0.52 |            3.76 | 544                |
-| DeKART (BLS12-381) | 1    | <span style="color:#dc2626">4.28</span> (0.76x) | <span style="color:#dc2626">3.04</span> (0.17x) | <span style="color:#dc2626">7.32</span> (0.51x) | <span style="color:#dc2626">1,008</span> (1.85x) |
-| Bulletproofs       | 4    |              6.25 |             0.89 |            7.14 | 608                |
-| DeKART (BLS12-381) | 3    | <span style="color:#15803d; font-weight:700">4.34</span> (1.44x) | <span style="color:#dc2626">2.96</span> (0.30x) | <span style="color:#dc2626">7.30</span> (0.98x) | <span style="color:#dc2626">1,008</span> (1.66x) |
-| Bulletproofs       | 8    |             11.66 |             1.40 |           13.06 | 672                |
-| DeKART (BLS12-381) | 7    | <span style="color:#15803d; font-weight:700">4.66</span> (2.50x) | <span style="color:#dc2626">2.92</span> (0.48x) | <span style="color:#15803d; font-weight:700">7.58</span> (1.72x) | <span style="color:#dc2626">1,008</span> (1.50x) |
-| Bulletproofs       | 16   |             22.32 |             2.48 |           24.80 | 736                |
-| DeKART (BLS12-381) | 15   | <span style="color:#15803d; font-weight:700">5.34</span> (4.18x) | <span style="color:#dc2626">2.98</span> (0.83x) | <span style="color:#15803d; font-weight:700">8.32</span> (2.98x) | <span style="color:#dc2626">1,008</span> (1.37x) |
-| Bulletproofs       | 32   |             45.50 |             4.44 |           49.94 | 800                |
-| DeKART (BLS12-381) | 31   | <span style="color:#15803d; font-weight:700">10.34</span> (4.40x) | <span style="color:#15803d; font-weight:700">2.95</span> (1.51x) | <span style="color:#15803d; font-weight:700">13.29</span> (3.76x) | <span style="color:#dc2626">1,008</span> (1.26x) |
-| Bulletproofs       | 64   |             91.64 |             7.17 |           98.81 | 864                |
-| DeKART (BLS12-381) | 63   | <span style="color:#15803d; font-weight:700">11.76</span> (7.79x) | <span style="color:#15803d; font-weight:700">2.89</span> (2.48x) | <span style="color:#15803d; font-weight:700">14.65</span> (6.74x) | <span style="color:#dc2626">1,008</span> (1.17x) |
-| Bulletproofs       | 128  |            171.31 |            12.73 |          184.04 | 928                |
-| DeKART (BLS12-381) | 127  | <span style="color:#15803d; font-weight:700">18.71</span> (9.16x) | <span style="color:#15803d; font-weight:700">2.93</span> (4.34x) | <span style="color:#15803d; font-weight:700">21.64</span> (8.50x) | <span style="color:#dc2626">1,008</span> (1.09x) |
-| Bulletproofs       | 256  |            339.23 |            23.93 |          363.16 | 992                |
-| DeKART (BLS12-381) | 255  | <span style="color:#15803d; font-weight:700">31.73</span> (10.69x) | <span style="color:#15803d; font-weight:700">2.89</span> (8.28x) | <span style="color:#15803d; font-weight:700">34.62</span> (10.49x) | <span style="color:#dc2626">1,008</span> (1.02x) |
-| Bulletproofs       | 512  |            664.35 |            46.06 |          710.41 | 1,056              |
-| DeKART (BLS12-381) | 511  | <span style="color:#15803d; font-weight:700">42.50</span> (15.63x) | <span style="color:#15803d; font-weight:700">2.90</span> (15.88x) | <span style="color:#15803d; font-weight:700">45.40</span> (15.65x) | <span style="color:#15803d; font-weight:700">1,008</span> (0.95x) |
-| Bulletproofs       | 1024 |          1,346.50 |            90.55 |        1,437.05 | 1,120              |
-| DeKART (BLS12-381) | 1023 | <span style="color:#15803d; font-weight:700">75.59</span> (17.81x) | <span style="color:#15803d; font-weight:700">2.91</span> (31.12x) | <span style="color:#15803d; font-weight:700">78.50</span> (18.31x) | <span style="color:#15803d; font-weight:700">1,008</span> (0.90x) |
-| Bulletproofs       | 2048 |          2,653.50 |           180.76 |        2,834.26 | 1,184              |
-| DeKART (BLS12-381) | 2047 | <span style="color:#15803d; font-weight:700">141.58</span> (18.74x) | <span style="color:#15803d; font-weight:700">2.94</span> (61.48x) | <span style="color:#15803d; font-weight:700">144.52</span> (19.61x) | <span style="color:#15803d; font-weight:700">1,008</span> (0.85x) |
+| Scheme                   | n    | Proving time (ms) | Verify time (ms) | Total time (ms) | Proof size (bytes) |
+|--------------------------|------|-------------------|------------------|-----------------|--------------------|
+| Bulletproofs             | 2    | <span style="color:#DAA520">3.24</span> | <span style="color:#15803d; font-weight:700">0.52</span> | <span style="color:#15803d; font-weight:700">3.76</span> | <span style="color:#15803d; font-weight:700">544</span> |
+| DeKART (BLS12-381)       | 1    | <span style="color:#15803d; font-weight:700">2.71</span> | <span style="color:#DAA520">1.91</span> | <span style="color:#DAA520">4.62</span> | <span style="color:#dc2626">1,025</span> |
+| MissileProof (BLS12-381) | 1    | <span style="color:#dc2626">3.60</span> | <span style="color:#dc2626">2.01</span> | <span style="color:#dc2626">5.61</span> | <span style="color:#DAA520">688</span> |
+| Bulletproofs             | 4    | <span style="color:#dc2626">6.25</span> | <span style="color:#15803d; font-weight:700">0.89</span> | <span style="color:#DAA520">7.14</span> | <span style="color:#15803d; font-weight:700">608</span> |
+| DeKART (BLS12-381)       | 3    | <span style="color:#15803d; font-weight:700">2.90</span> | <span style="color:#DAA520">1.89</span> | <span style="color:#15803d; font-weight:700">4.79</span> | <span style="color:#dc2626">1,025</span> |
+| MissileProof (BLS12-381) | 3    | <span style="color:#DAA520">5.12</span> | <span style="color:#dc2626">2.44</span> | <span style="color:#dc2626">7.56</span> | <span style="color:#DAA520">688</span> |
+| Bulletproofs             | 8    | <span style="color:#dc2626">11.66</span> | <span style="color:#15803d; font-weight:700">1.40</span> | <span style="color:#dc2626">13.06</span> | <span style="color:#15803d; font-weight:700">672</span> |
+| DeKART (BLS12-381)       | 7    | <span style="color:#15803d; font-weight:700">3.51</span> | <span style="color:#DAA520">1.87</span> | <span style="color:#15803d; font-weight:700">5.38</span> | <span style="color:#dc2626">1,025</span> |
+| MissileProof (BLS12-381) | 7    | <span style="color:#DAA520">7.80</span> | <span style="color:#dc2626">2.45</span> | <span style="color:#DAA520">10.25</span> | <span style="color:#DAA520">688</span> |
+| Bulletproofs             | 16   | <span style="color:#dc2626">22.32</span> | <span style="color:#dc2626">2.48</span> | <span style="color:#dc2626">24.80</span> | <span style="color:#DAA520">736</span> |
+| DeKART (BLS12-381)       | 15   | <span style="color:#15803d; font-weight:700">4.15</span> | <span style="color:#15803d; font-weight:700">1.89</span> | <span style="color:#15803d; font-weight:700">6.04</span> | <span style="color:#dc2626">1,025</span> |
+| MissileProof (BLS12-381) | 15   | <span style="color:#DAA520">12.50</span> | <span style="color:#DAA520">2.42</span> | <span style="color:#DAA520">14.92</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 32   | <span style="color:#dc2626">45.50</span> | <span style="color:#dc2626">4.44</span> | <span style="color:#dc2626">49.94</span> | <span style="color:#DAA520">800</span> |
+| DeKART (BLS12-381)       | 31   | <span style="color:#15803d; font-weight:700">5.30</span> | <span style="color:#15803d; font-weight:700">1.97</span> | <span style="color:#15803d; font-weight:700">7.27</span> | <span style="color:#dc2626">1,025</span> |
+| MissileProof (BLS12-381) | 31   | <span style="color:#DAA520">17.53</span> | <span style="color:#DAA520">2.47</span> | <span style="color:#DAA520">20.00</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 64   | <span style="color:#dc2626">91.64</span> | <span style="color:#dc2626">7.17</span> | <span style="color:#dc2626">98.81</span> | <span style="color:#DAA520">864</span> |
+| DeKART (BLS12-381)       | 63   | <span style="color:#15803d; font-weight:700">6.61</span> | <span style="color:#15803d; font-weight:700">1.89</span> | <span style="color:#15803d; font-weight:700">8.50</span> | <span style="color:#dc2626">1,025</span> |
+| MissileProof (BLS12-381) | 63   | <span style="color:#DAA520">30.08</span> | <span style="color:#DAA520">2.43</span> | <span style="color:#DAA520">32.51</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 128  | <span style="color:#dc2626">171.31</span> | <span style="color:#dc2626">12.73</span> | <span style="color:#dc2626">184.04</span> | <span style="color:#DAA520">928</span> |
+| DeKART (BLS12-381)       | 127  | <span style="color:#15803d; font-weight:700">9.20</span> | <span style="color:#15803d; font-weight:700">1.95</span> | <span style="color:#15803d; font-weight:700">11.15</span> | <span style="color:#dc2626">1,025</span> |
+| MissileProof (BLS12-381) | 127  | <span style="color:#DAA520">52.50</span> | <span style="color:#DAA520">2.42</span> | <span style="color:#DAA520">54.92</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 256  | <span style="color:#dc2626">339.23</span> | <span style="color:#dc2626">23.93</span> | <span style="color:#dc2626">363.16</span> | <span style="color:#DAA520">992</span> |
+| DeKART (BLS12-381)       | 255  | <span style="color:#15803d; font-weight:700">14.22</span> | <span style="color:#15803d; font-weight:700">1.89</span> | <span style="color:#15803d; font-weight:700">16.11</span> | <span style="color:#dc2626">1,025</span> |
+| MissileProof (BLS12-381) | 255  | <span style="color:#DAA520">83.19</span> | <span style="color:#DAA520">2.43</span> | <span style="color:#DAA520">85.62</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 512  | <span style="color:#dc2626">664.35</span> | <span style="color:#dc2626">46.06</span> | <span style="color:#dc2626">710.41</span> | <span style="color:#dc2626">1,056</span> |
+| DeKART (BLS12-381)       | 511  | <span style="color:#15803d; font-weight:700">21.27</span> | <span style="color:#15803d; font-weight:700">1.95</span> | <span style="color:#15803d; font-weight:700">23.22</span> | <span style="color:#DAA520">1,025</span> |
+| MissileProof (BLS12-381) | 511  | <span style="color:#DAA520">151.37</span> | <span style="color:#DAA520">2.43</span> | <span style="color:#DAA520">153.80</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 1024 | <span style="color:#dc2626">1,346.50</span> | <span style="color:#dc2626">90.55</span> | <span style="color:#dc2626">1,437.05</span> | <span style="color:#dc2626">1,120</span> |
+| DeKART (BLS12-381)       | 1023 | <span style="color:#15803d; font-weight:700">36.37</span> | <span style="color:#15803d; font-weight:700">1.95</span> | <span style="color:#15803d; font-weight:700">38.32</span> | <span style="color:#DAA520">1,025</span> |
+| MissileProof (BLS12-381) | 1023 | <span style="color:#DAA520">282.80</span> | <span style="color:#DAA520">2.49</span> | <span style="color:#DAA520">285.29</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 2048 | <span style="color:#dc2626">2,653.50</span> | <span style="color:#dc2626">180.76</span> | <span style="color:#dc2626">2,834.26</span> | <span style="color:#dc2626">1,184</span> |
+| DeKART (BLS12-381)       | 2047 | <span style="color:#15803d; font-weight:700">65.42</span> | <span style="color:#15803d; font-weight:700">2.10</span> | <span style="color:#15803d; font-weight:700">67.52</span> | <span style="color:#DAA520">1,025</span> |
+| MissileProof (BLS12-381) | 2047 | <span style="color:#DAA520">527.78</span> | <span style="color:#DAA520">2.46</span> | <span style="color:#DAA520">530.24</span> | <span style="color:#15803d; font-weight:700">688</span> |
 
 #### $\ell = 16$ numbers
 
-| Scheme             | n    | Proving time (ms) | Verify time (ms) | Total time (ms) | Proof size (bytes) |
-|--------------------|------|-------------------|------------------|-----------------|--------------------|
-| Bulletproofs       | 2    |              5.46 |             0.82 |            6.28 | 608                |
-| DeKART (BLS12-381) | 1    | <span style="color:#dc2626">6.45</span> (0.85x) | <span style="color:#dc2626">3.21</span> (0.26x) | <span style="color:#dc2626">9.66</span> (0.65x) | <span style="color:#dc2626">1,648</span> (2.71x) |
-| Bulletproofs       | 4    |             11.04 |             1.37 |           12.41 | 672                |
-| DeKART (BLS12-381) | 3    | <span style="color:#15803d; font-weight:700">6.71</span> (1.65x) | <span style="color:#dc2626">3.36</span> (0.41x) | <span style="color:#15803d; font-weight:700">10.07</span> (1.23x) | <span style="color:#dc2626">1,648</span> (2.45x) |
-| Bulletproofs       | 8    |             21.23 |             2.42 |           23.65 | 736                |
-| DeKART (BLS12-381) | 7    | <span style="color:#15803d; font-weight:700">7.05</span> (3.01x) | <span style="color:#dc2626">3.20</span> (0.76x) | <span style="color:#15803d; font-weight:700">10.25</span> (2.31x) | <span style="color:#dc2626">1,648</span> (2.24x) |
-| Bulletproofs       | 16   |             40.63 |             4.03 |           44.66 | 800                |
-| DeKART (BLS12-381) | 15   | <span style="color:#15803d; font-weight:700">8.58</span> (4.74x) | <span style="color:#15803d; font-weight:700">3.18</span> (1.27x) | <span style="color:#15803d; font-weight:700">11.76</span> (3.80x) | <span style="color:#dc2626">1,648</span> (2.06x) |
-| Bulletproofs       | 32   |             83.00 |             6.98 |           89.98 | 864                |
-| DeKART (BLS12-381) | 31   | <span style="color:#15803d; font-weight:700">16.09</span> (5.16x) | <span style="color:#15803d; font-weight:700">3.22</span> (2.17x) | <span style="color:#15803d; font-weight:700">19.31</span> (4.66x) | <span style="color:#dc2626">1,648</span> (1.91x) |
-| Bulletproofs       | 64   |            159.72 |            12.12 |          171.84 | 928                |
-| DeKART (BLS12-381) | 63   | <span style="color:#15803d; font-weight:700">17.97</span> (8.89x) | <span style="color:#15803d; font-weight:700">3.20</span> (3.79x) | <span style="color:#15803d; font-weight:700">21.17</span> (8.12x) | <span style="color:#dc2626">1,648</span> (1.78x) |
-| Bulletproofs       | 128  |            306.54 |            22.53 |          329.07 | 992                |
-| DeKART (BLS12-381) | 127  | <span style="color:#15803d; font-weight:700">28.48</span> (10.76x) | <span style="color:#15803d; font-weight:700">3.15</span> (7.15x) | <span style="color:#15803d; font-weight:700">31.63</span> (10.40x) | <span style="color:#dc2626">1,648</span> (1.66x) |
-| Bulletproofs       | 256  |            600.51 |            43.83 |          644.34 | 1,056              |
-| DeKART (BLS12-381) | 255  | <span style="color:#15803d; font-weight:700">48.73</span> (12.32x) | <span style="color:#15803d; font-weight:700">3.18</span> (13.78x) | <span style="color:#15803d; font-weight:700">51.91</span> (12.41x) | <span style="color:#dc2626">1,648</span> (1.56x) |
-| Bulletproofs       | 512  |          1,197.00 |            88.54 |        1,285.54 | 1,120              |
-| DeKART (BLS12-381) | 511  | <span style="color:#15803d; font-weight:700">61.91</span> (19.33x) | <span style="color:#15803d; font-weight:700">3.16</span> (28.02x) | <span style="color:#15803d; font-weight:700">65.07</span> (19.76x) | <span style="color:#dc2626">1,648</span> (1.47x) |
-| Bulletproofs       | 1024 |          2,369.10 |           171.48 |        2,540.58 | 1,184              |
-| DeKART (BLS12-381) | 1023 | <span style="color:#15803d; font-weight:700">111.55</span> (21.24x) | <span style="color:#15803d; font-weight:700">3.12</span> (54.96x) | <span style="color:#15803d; font-weight:700">114.67</span> (22.16x) | <span style="color:#dc2626">1,648</span> (1.39x) |
-| Bulletproofs       | 2048 |          4,763.80 |           349.29 |        5,113.09 | 1,248              |
-| DeKART (BLS12-381) | 2047 | <span style="color:#15803d; font-weight:700">205.36</span> (23.20x) | <span style="color:#15803d; font-weight:700">3.15</span> (110.89x) | <span style="color:#15803d; font-weight:700">208.51</span> (24.52x) | <span style="color:#dc2626">1,648</span> (1.32x) |
+| Scheme                   | n    | Proving time (ms) | Verify time (ms) | Total time (ms) | Proof size (bytes) |
+|--------------------------|------|-------------------|------------------|-----------------|--------------------|
+| Bulletproofs             | 2    | <span style="color:#dc2626">5.46</span> | <span style="color:#15803d; font-weight:700">0.82</span> | <span style="color:#dc2626">6.28</span> | <span style="color:#15803d; font-weight:700">608</span> |
+| DeKART (BLS12-381)       | 1    | <span style="color:#DAA520">4.25</span> | <span style="color:#DAA520">2.01</span> | <span style="color:#DAA520">6.26</span> | <span style="color:#dc2626">1,665</span> |
+| MissileProof (BLS12-381) | 1    | <span style="color:#15803d; font-weight:700">3.88</span> | <span style="color:#dc2626">2.02</span> | <span style="color:#15803d; font-weight:700">5.90</span> | <span style="color:#DAA520">688</span> |
+| Bulletproofs             | 4    | <span style="color:#dc2626">11.04</span> | <span style="color:#15803d; font-weight:700">1.37</span> | <span style="color:#dc2626">12.41</span> | <span style="color:#15803d; font-weight:700">672</span> |
+| DeKART (BLS12-381)       | 3    | <span style="color:#15803d; font-weight:700">4.62</span> | <span style="color:#DAA520">2.01</span> | <span style="color:#15803d; font-weight:700">6.63</span> | <span style="color:#dc2626">1,665</span> |
+| MissileProof (BLS12-381) | 3    | <span style="color:#DAA520">8.67</span> | <span style="color:#dc2626">2.45</span> | <span style="color:#DAA520">11.12</span> | <span style="color:#DAA520">688</span> |
+| Bulletproofs             | 8    | <span style="color:#dc2626">21.23</span> | <span style="color:#DAA520">2.42</span> | <span style="color:#dc2626">23.65</span> | <span style="color:#DAA520">736</span> |
+| DeKART (BLS12-381)       | 7    | <span style="color:#15803d; font-weight:700">5.66</span> | <span style="color:#15803d; font-weight:700">2.05</span> | <span style="color:#15803d; font-weight:700">7.71</span> | <span style="color:#dc2626">1,665</span> |
+| MissileProof (BLS12-381) | 7    | <span style="color:#DAA520">13.49</span> | <span style="color:#dc2626">2.45</span> | <span style="color:#DAA520">15.94</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 16   | <span style="color:#dc2626">40.63</span> | <span style="color:#dc2626">4.03</span> | <span style="color:#dc2626">44.66</span> | <span style="color:#DAA520">800</span> |
+| DeKART (BLS12-381)       | 15   | <span style="color:#15803d; font-weight:700">6.34</span> | <span style="color:#15803d; font-weight:700">2.06</span> | <span style="color:#15803d; font-weight:700">8.40</span> | <span style="color:#dc2626">1,665</span> |
+| MissileProof (BLS12-381) | 15   | <span style="color:#DAA520">18.17</span> | <span style="color:#DAA520">2.50</span> | <span style="color:#DAA520">20.67</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 32   | <span style="color:#dc2626">83.00</span> | <span style="color:#dc2626">6.98</span> | <span style="color:#dc2626">89.98</span> | <span style="color:#DAA520">864</span> |
+| DeKART (BLS12-381)       | 31   | <span style="color:#15803d; font-weight:700">7.74</span> | <span style="color:#15803d; font-weight:700">2.03</span> | <span style="color:#15803d; font-weight:700">9.77</span> | <span style="color:#dc2626">1,665</span> |
+| MissileProof (BLS12-381) | 31   | <span style="color:#DAA520">30.64</span> | <span style="color:#DAA520">2.49</span> | <span style="color:#DAA520">33.13</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 64   | <span style="color:#dc2626">159.72</span> | <span style="color:#dc2626">12.12</span> | <span style="color:#dc2626">171.84</span> | <span style="color:#DAA520">928</span> |
+| DeKART (BLS12-381)       | 63   | <span style="color:#15803d; font-weight:700">9.11</span> | <span style="color:#15803d; font-weight:700">2.01</span> | <span style="color:#15803d; font-weight:700">11.12</span> | <span style="color:#dc2626">1,665</span> |
+| MissileProof (BLS12-381) | 63   | <span style="color:#DAA520">52.71</span> | <span style="color:#DAA520">2.47</span> | <span style="color:#DAA520">55.18</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 128  | <span style="color:#dc2626">306.54</span> | <span style="color:#dc2626">22.53</span> | <span style="color:#dc2626">329.07</span> | <span style="color:#DAA520">992</span> |
+| DeKART (BLS12-381)       | 127  | <span style="color:#15803d; font-weight:700">12.27</span> | <span style="color:#15803d; font-weight:700">2.01</span> | <span style="color:#15803d; font-weight:700">14.28</span> | <span style="color:#dc2626">1,665</span> |
+| MissileProof (BLS12-381) | 127  | <span style="color:#DAA520">82.32</span> | <span style="color:#DAA520">2.46</span> | <span style="color:#DAA520">84.78</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 256  | <span style="color:#dc2626">600.51</span> | <span style="color:#dc2626">43.83</span> | <span style="color:#dc2626">644.34</span> | <span style="color:#DAA520">1,056</span> |
+| DeKART (BLS12-381)       | 255  | <span style="color:#15803d; font-weight:700">18.34</span> | <span style="color:#15803d; font-weight:700">2.04</span> | <span style="color:#15803d; font-weight:700">20.38</span> | <span style="color:#dc2626">1,665</span> |
+| MissileProof (BLS12-381) | 255  | <span style="color:#DAA520">150.36</span> | <span style="color:#DAA520">2.47</span> | <span style="color:#DAA520">152.83</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 512  | <span style="color:#dc2626">1,197.00</span> | <span style="color:#dc2626">88.54</span> | <span style="color:#dc2626">1,285.54</span> | <span style="color:#DAA520">1,120</span> |
+| DeKART (BLS12-381)       | 511  | <span style="color:#15803d; font-weight:700">27.07</span> | <span style="color:#15803d; font-weight:700">2.06</span> | <span style="color:#15803d; font-weight:700">29.13</span> | <span style="color:#dc2626">1,665</span> |
+| MissileProof (BLS12-381) | 511  | <span style="color:#DAA520">279.71</span> | <span style="color:#DAA520">2.49</span> | <span style="color:#DAA520">282.20</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 1024 | <span style="color:#dc2626">2,369.10</span> | <span style="color:#dc2626">171.48</span> | <span style="color:#dc2626">2,540.58</span> | <span style="color:#DAA520">1,184</span> |
+| DeKART (BLS12-381)       | 1023 | <span style="color:#15803d; font-weight:700">46.02</span> | <span style="color:#15803d; font-weight:700">2.04</span> | <span style="color:#15803d; font-weight:700">48.06</span> | <span style="color:#dc2626">1,665</span> |
+| MissileProof (BLS12-381) | 1023 | <span style="color:#DAA520">514.84</span> | <span style="color:#DAA520">2.47</span> | <span style="color:#DAA520">517.31</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 2048 | <span style="color:#dc2626">4,763.80</span> | <span style="color:#dc2626">349.29</span> | <span style="color:#dc2626">5,113.09</span> | <span style="color:#DAA520">1,248</span> |
+| DeKART (BLS12-381)       | 2047 | <span style="color:#15803d; font-weight:700">81.47</span> | <span style="color:#15803d; font-weight:700">2.04</span> | <span style="color:#15803d; font-weight:700">83.51</span> | <span style="color:#dc2626">1,665</span> |
+| MissileProof (BLS12-381) | 2047 | <span style="color:#DAA520">911.17</span> | <span style="color:#DAA520">2.49</span> | <span style="color:#DAA520">913.66</span> | <span style="color:#15803d; font-weight:700">688</span> |
 
 #### $\ell = 32$ numbers
 
-| Scheme             | n    | Proving time (ms) | Verify time (ms) | Total time (ms) | Proof size (bytes) |
-|--------------------|------|-------------------|------------------|-----------------|--------------------|
-| Bulletproofs       | 2    |              9.95 |             1.42 |           11.37 | 672                |
-| DeKART (BLS12-381) | 1    | <span style="color:#dc2626">11.32</span> (0.88x) | <span style="color:#dc2626">3.77</span> (0.38x) | <span style="color:#dc2626">15.09</span> (0.75x) | <span style="color:#dc2626">2,928</span> (4.36x) |
-| Bulletproofs       | 4    |             19.91 |             2.30 |           22.21 | 736                |
-| DeKART (BLS12-381) | 3    | <span style="color:#15803d; font-weight:700">11.61</span> (1.71x) | <span style="color:#dc2626">3.68</span> (0.62x) | <span style="color:#15803d; font-weight:700">15.29</span> (1.45x) | <span style="color:#dc2626">2,928</span> (3.98x) |
-| Bulletproofs       | 8    |             40.13 |             3.96 |           44.09 | 800                |
-| DeKART (BLS12-381) | 7    | <span style="color:#15803d; font-weight:700">12.11</span> (3.31x) | <span style="color:#15803d; font-weight:700">3.69</span> (1.07x) | <span style="color:#15803d; font-weight:700">15.80</span> (2.79x) | <span style="color:#dc2626">2,928</span> (3.66x) |
-| Bulletproofs       | 16   |             76.14 |             6.69 |           82.83 | 864                |
-| DeKART (BLS12-381) | 15   | <span style="color:#15803d; font-weight:700">12.74</span> (5.98x) | <span style="color:#15803d; font-weight:700">3.67</span> (1.82x) | <span style="color:#15803d; font-weight:700">16.41</span> (5.05x) | <span style="color:#dc2626">2,928</span> (3.39x) |
-| Bulletproofs       | 32   |            149.45 |            11.95 |          161.40 | 928                |
-| DeKART (BLS12-381) | 31   | <span style="color:#15803d; font-weight:700">27.80</span> (5.38x) | <span style="color:#15803d; font-weight:700">3.72</span> (3.21x) | <span style="color:#15803d; font-weight:700">31.52</span> (5.12x) | <span style="color:#dc2626">2,928</span> (3.16x) |
-| Bulletproofs       | 64   |            288.81 |            22.40 |          311.21 | 992                |
-| DeKART (BLS12-381) | 63   | <span style="color:#15803d; font-weight:700">29.82</span> (9.69x) | <span style="color:#15803d; font-weight:700">3.68</span> (6.09x) | <span style="color:#15803d; font-weight:700">33.50</span> (9.29x) | <span style="color:#dc2626">2,928</span> (2.95x) |
-| Bulletproofs       | 128  |            572.05 |            42.26 |          614.31 | 1,056              |
-| DeKART (BLS12-381) | 127  | <span style="color:#15803d; font-weight:700">47.78</span> (11.97x) | <span style="color:#15803d; font-weight:700">3.70</span> (11.42x) | <span style="color:#15803d; font-weight:700">51.48</span> (11.93x) | <span style="color:#dc2626">2,928</span> (2.77x) |
-| Bulletproofs       | 256  |          1,135.90 |            83.23 |        1,219.13 | 1,120              |
-| DeKART (BLS12-381) | 255  | <span style="color:#15803d; font-weight:700">81.28</span> (13.98x) | <span style="color:#15803d; font-weight:700">3.86</span> (21.56x) | <span style="color:#15803d; font-weight:700">85.14</span> (14.32x) | <span style="color:#dc2626">2,928</span> (2.61x) |
-| Bulletproofs       | 512  |          2,240.80 |           167.07 |        2,407.87 | 1,184              |
-| DeKART (BLS12-381) | 511  | <span style="color:#15803d; font-weight:700">102.28</span> (21.91x) | <span style="color:#15803d; font-weight:700">3.86</span> (43.28x) | <span style="color:#15803d; font-weight:700">106.14</span> (22.69x) | <span style="color:#dc2626">2,928</span> (2.47x) |
-| Bulletproofs       | 1024 |          4,527.10 |           328.03 |        4,855.13 | 1,248              |
-| DeKART (BLS12-381) | 1023 | <span style="color:#15803d; font-weight:700">180.72</span> (25.05x) | <span style="color:#15803d; font-weight:700">3.66</span> (89.63x) | <span style="color:#15803d; font-weight:700">184.38</span> (26.33x) | <span style="color:#dc2626">2,928</span> (2.35x) |
-| Bulletproofs       | 2048 |          8,911.40 |           663.67 |        9,575.07 | 1,312              |
-| DeKART (BLS12-381) | 2047 | <span style="color:#15803d; font-weight:700">343.12</span> (25.97x) | <span style="color:#15803d; font-weight:700">3.75</span> (176.98x) | <span style="color:#15803d; font-weight:700">346.87</span> (27.60x) | <span style="color:#dc2626">2,928</span> (2.23x) |
+| Scheme                   | n    | Proving time (ms) | Verify time (ms) | Total time (ms) | Proof size (bytes) |
+|--------------------------|------|-------------------|------------------|-----------------|--------------------|
+| Bulletproofs             | 2    | <span style="color:#dc2626">9.95</span> | <span style="color:#15803d; font-weight:700">1.42</span> | <span style="color:#dc2626">11.37</span> | <span style="color:#15803d; font-weight:700">672</span> |
+| DeKART (BLS12-381)       | 1    | <span style="color:#DAA520">7.36</span> | <span style="color:#dc2626">2.25</span> | <span style="color:#DAA520">9.61</span> | <span style="color:#dc2626">2,945</span> |
+| MissileProof (BLS12-381) | 1    | <span style="color:#15803d; font-weight:700">6.11</span> | <span style="color:#DAA520">2.03</span> | <span style="color:#15803d; font-weight:700">8.14</span> | <span style="color:#DAA520">688</span> |
+| Bulletproofs             | 4    | <span style="color:#dc2626">19.91</span> | <span style="color:#DAA520">2.30</span> | <span style="color:#dc2626">22.21</span> | <span style="color:#DAA520">736</span> |
+| DeKART (BLS12-381)       | 3    | <span style="color:#15803d; font-weight:700">8.07</span> | <span style="color:#15803d; font-weight:700">2.27</span> | <span style="color:#15803d; font-weight:700">10.34</span> | <span style="color:#dc2626">2,945</span> |
+| MissileProof (BLS12-381) | 3    | <span style="color:#DAA520">14.93</span> | <span style="color:#dc2626">2.43</span> | <span style="color:#DAA520">17.36</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 8    | <span style="color:#dc2626">40.13</span> | <span style="color:#dc2626">3.96</span> | <span style="color:#dc2626">44.09</span> | <span style="color:#DAA520">800</span> |
+| DeKART (BLS12-381)       | 7    | <span style="color:#15803d; font-weight:700">9.61</span> | <span style="color:#15803d; font-weight:700">2.26</span> | <span style="color:#15803d; font-weight:700">11.87</span> | <span style="color:#dc2626">2,945</span> |
+| MissileProof (BLS12-381) | 7    | <span style="color:#DAA520">19.67</span> | <span style="color:#DAA520">2.47</span> | <span style="color:#DAA520">22.14</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 16   | <span style="color:#dc2626">76.14</span> | <span style="color:#dc2626">6.69</span> | <span style="color:#dc2626">82.83</span> | <span style="color:#DAA520">864</span> |
+| DeKART (BLS12-381)       | 15   | <span style="color:#15803d; font-weight:700">10.48</span> | <span style="color:#15803d; font-weight:700">2.28</span> | <span style="color:#15803d; font-weight:700">12.76</span> | <span style="color:#dc2626">2,945</span> |
+| MissileProof (BLS12-381) | 15   | <span style="color:#DAA520">31.70</span> | <span style="color:#DAA520">2.42</span> | <span style="color:#DAA520">34.12</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 32   | <span style="color:#dc2626">149.45</span> | <span style="color:#dc2626">11.95</span> | <span style="color:#dc2626">161.40</span> | <span style="color:#DAA520">928</span> |
+| DeKART (BLS12-381)       | 31   | <span style="color:#15803d; font-weight:700">12.27</span> | <span style="color:#15803d; font-weight:700">2.30</span> | <span style="color:#15803d; font-weight:700">14.57</span> | <span style="color:#dc2626">2,945</span> |
+| MissileProof (BLS12-381) | 31   | <span style="color:#DAA520">53.81</span> | <span style="color:#DAA520">2.48</span> | <span style="color:#DAA520">56.29</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 64   | <span style="color:#dc2626">288.81</span> | <span style="color:#dc2626">22.40</span> | <span style="color:#dc2626">311.21</span> | <span style="color:#DAA520">992</span> |
+| DeKART (BLS12-381)       | 63   | <span style="color:#15803d; font-weight:700">14.23</span> | <span style="color:#15803d; font-weight:700">2.27</span> | <span style="color:#15803d; font-weight:700">16.50</span> | <span style="color:#dc2626">2,945</span> |
+| MissileProof (BLS12-381) | 63   | <span style="color:#DAA520">83.51</span> | <span style="color:#DAA520">2.49</span> | <span style="color:#DAA520">86.00</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 128  | <span style="color:#dc2626">572.05</span> | <span style="color:#dc2626">42.26</span> | <span style="color:#dc2626">614.31</span> | <span style="color:#DAA520">1,056</span> |
+| DeKART (BLS12-381)       | 127  | <span style="color:#15803d; font-weight:700">18.27</span> | <span style="color:#15803d; font-weight:700">2.35</span> | <span style="color:#15803d; font-weight:700">20.62</span> | <span style="color:#dc2626">2,945</span> |
+| MissileProof (BLS12-381) | 127  | <span style="color:#DAA520">148.21</span> | <span style="color:#DAA520">2.46</span> | <span style="color:#DAA520">150.67</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 256  | <span style="color:#dc2626">1,135.90</span> | <span style="color:#dc2626">83.23</span> | <span style="color:#dc2626">1,219.13</span> | <span style="color:#DAA520">1,120</span> |
+| DeKART (BLS12-381)       | 255  | <span style="color:#15803d; font-weight:700">25.99</span> | <span style="color:#15803d; font-weight:700">2.32</span> | <span style="color:#15803d; font-weight:700">28.31</span> | <span style="color:#dc2626">2,945</span> |
+| MissileProof (BLS12-381) | 255  | <span style="color:#DAA520">278.92</span> | <span style="color:#DAA520">2.44</span> | <span style="color:#DAA520">281.36</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 512  | <span style="color:#dc2626">2,240.80</span> | <span style="color:#dc2626">167.07</span> | <span style="color:#dc2626">2,407.87</span> | <span style="color:#DAA520">1,184</span> |
+| DeKART (BLS12-381)       | 511  | <span style="color:#15803d; font-weight:700">38.23</span> | <span style="color:#15803d; font-weight:700">2.30</span> | <span style="color:#15803d; font-weight:700">40.53</span> | <span style="color:#dc2626">2,945</span> |
+| MissileProof (BLS12-381) | 511  | <span style="color:#DAA520">506.91</span> | <span style="color:#DAA520">2.47</span> | <span style="color:#DAA520">509.38</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 1024 | <span style="color:#dc2626">4,527.10</span> | <span style="color:#dc2626">328.03</span> | <span style="color:#dc2626">4,855.13</span> | <span style="color:#DAA520">1,248</span> |
+| DeKART (BLS12-381)       | 1023 | <span style="color:#15803d; font-weight:700">64.28</span> | <span style="color:#15803d; font-weight:700">2.33</span> | <span style="color:#15803d; font-weight:700">66.61</span> | <span style="color:#dc2626">2,945</span> |
+| MissileProof (BLS12-381) | 1023 | <span style="color:#DAA520">902.62</span> | <span style="color:#DAA520">2.45</span> | <span style="color:#DAA520">905.07</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 2048 | <span style="color:#dc2626">8,911.40</span> | <span style="color:#dc2626">663.67</span> | <span style="color:#dc2626">9,575.07</span> | <span style="color:#DAA520">1,312</span> |
+| DeKART (BLS12-381)       | 2047 | <span style="color:#15803d; font-weight:700">113.14</span> | <span style="color:#15803d; font-weight:700">2.33</span> | <span style="color:#15803d; font-weight:700">115.47</span> | <span style="color:#dc2626">2,945</span> |
+| MissileProof (BLS12-381) | 2047 | <span style="color:#DAA520">1,713.00</span> | <span style="color:#DAA520">2.48</span> | <span style="color:#DAA520">1,715.48</span> | <span style="color:#15803d; font-weight:700">688</span> |
 
 #### $\ell = 64$ numbers
 
-| Scheme             | n    | Proving time (ms) | Verify time (ms) | Total time (ms) | Proof size (bytes) |
-|--------------------|------|-------------------|------------------|-----------------|--------------------|
-| Bulletproofs       | 2    |             19.59 |             2.42 |           22.01 | 736                |
-| DeKART (BLS12-381) | 1    | <span style="color:#dc2626">21.03</span> (0.93x) | <span style="color:#dc2626">4.34</span> (0.56x) | <span style="color:#dc2626">25.37</span> (0.87x) | <span style="color:#dc2626">5,488</span> (7.46x) |
-| Bulletproofs       | 4    |             37.80 |             3.89 |           41.69 | 800                |
-| DeKART (BLS12-381) | 3    | <span style="color:#15803d; font-weight:700">20.99</span> (1.80x) | <span style="color:#dc2626">4.39</span> (0.89x) | <span style="color:#15803d; font-weight:700">25.38</span> (1.64x) | <span style="color:#dc2626">5,488</span> (6.86x) |
-| Bulletproofs       | 8    |             74.05 |             6.67 |           80.72 | 864                |
-| DeKART (BLS12-381) | 7    | <span style="color:#15803d; font-weight:700">21.42</span> (3.46x) | <span style="color:#15803d; font-weight:700">4.32</span> (1.54x) | <span style="color:#15803d; font-weight:700">25.74</span> (3.14x) | <span style="color:#dc2626">5,488</span> (6.35x) |
-| Bulletproofs       | 16   |            143.14 |            11.62 |          154.76 | 928                |
-| DeKART (BLS12-381) | 15   | <span style="color:#15803d; font-weight:700">23.03</span> (6.22x) | <span style="color:#15803d; font-weight:700">4.37</span> (2.66x) | <span style="color:#15803d; font-weight:700">27.40</span> (5.65x) | <span style="color:#dc2626">5,488</span> (5.91x) |
-| Bulletproofs       | 32   |            288.07 |            21.73 |          309.80 | 992                |
-| DeKART (BLS12-381) | 31   | <span style="color:#15803d; font-weight:700">51.75</span> (5.57x) | <span style="color:#15803d; font-weight:700">4.39</span> (4.95x) | <span style="color:#15803d; font-weight:700">56.14</span> (5.52x) | <span style="color:#dc2626">5,488</span> (5.53x) |
-| Bulletproofs       | 64   |            549.63 |            42.65 |          592.28 | 1,056              |
-| DeKART (BLS12-381) | 63   | <span style="color:#15803d; font-weight:700">53.66</span> (10.24x) | <span style="color:#15803d; font-weight:700">4.35</span> (9.80x) | <span style="color:#15803d; font-weight:700">58.01</span> (10.21x) | <span style="color:#dc2626">5,488</span> (5.20x) |
-| Bulletproofs       | 128  |          1,100.30 |            84.91 |        1,185.21 | 1,120              |
-| DeKART (BLS12-381) | 127  | <span style="color:#15803d; font-weight:700">88.91</span> (12.38x) | <span style="color:#15803d; font-weight:700">4.36</span> (19.47x) | <span style="color:#15803d; font-weight:700">93.27</span> (12.71x) | <span style="color:#dc2626">5,488</span> (4.90x) |
-| Bulletproofs       | 256  |          2,208.40 |           163.01 |        2,371.41 | 1,184              |
-| DeKART (BLS12-381) | 255  | <span style="color:#15803d; font-weight:700">149.66</span> (14.76x) | <span style="color:#15803d; font-weight:700">4.33</span> (37.65x) | <span style="color:#15803d; font-weight:700">153.99</span> (15.40x) | <span style="color:#dc2626">5,488</span> (4.64x) |
-| Bulletproofs       | 512  |          4,351.90 |           329.06 |        4,680.96 | 1,248              |
-| DeKART (BLS12-381) | 511  | <span style="color:#15803d; font-weight:700">182.69</span> (23.82x) | <span style="color:#15803d; font-weight:700">4.28</span> (76.88x) | <span style="color:#15803d; font-weight:700">186.97</span> (25.04x) | <span style="color:#dc2626">5,488</span> (4.40x) |
-| Bulletproofs       | 1024 |          8,576.10 |           650.01 |        9,226.11 | 1,312              |
-| DeKART (BLS12-381) | 1023 | <span style="color:#15803d; font-weight:700">320.90</span> (26.73x) | <span style="color:#15803d; font-weight:700">4.29</span> (151.52x) | <span style="color:#15803d; font-weight:700">325.19</span> (28.37x) | <span style="color:#dc2626">5,488</span> (4.18x) |
-| Bulletproofs       | 2048 |         17,469.00 |         1,307.60 |       18,776.60 | 1,376              |
-| DeKART (BLS12-381) | 2047 | <span style="color:#15803d; font-weight:700">619.91</span> (28.18x) | <span style="color:#15803d; font-weight:700">4.49</span> (291.22x) | <span style="color:#15803d; font-weight:700">624.40</span> (30.07x) | <span style="color:#dc2626">5,488</span> (3.99x) |
-
+| Scheme                   | n    | Proving time (ms) | Verify time (ms) | Total time (ms) | Proof size (bytes) |
+|--------------------------|------|-------------------|------------------|-----------------|--------------------|
+| Bulletproofs             | 2    | <span style="color:#dc2626">19.59</span> | <span style="color:#DAA520">2.42</span> | <span style="color:#dc2626">22.01</span> | <span style="color:#DAA520">736</span> |
+| DeKART (BLS12-381)       | 1    | <span style="color:#DAA520">13.89</span> | <span style="color:#dc2626">2.55</span> | <span style="color:#DAA520">16.44</span> | <span style="color:#dc2626">5,505</span> |
+| MissileProof (BLS12-381) | 1    | <span style="color:#15803d; font-weight:700">9.93</span> | <span style="color:#15803d; font-weight:700">2.05</span> | <span style="color:#15803d; font-weight:700">11.98</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 4    | <span style="color:#dc2626">37.80</span> | <span style="color:#dc2626">3.89</span> | <span style="color:#dc2626">41.69</span> | <span style="color:#DAA520">800</span> |
+| DeKART (BLS12-381)       | 3    | <span style="color:#15803d; font-weight:700">14.60</span> | <span style="color:#DAA520">2.51</span> | <span style="color:#15803d; font-weight:700">17.11</span> | <span style="color:#dc2626">5,505</span> |
+| MissileProof (BLS12-381) | 3    | <span style="color:#DAA520">21.57</span> | <span style="color:#15803d; font-weight:700">2.45</span> | <span style="color:#DAA520">24.02</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 8    | <span style="color:#dc2626">74.05</span> | <span style="color:#dc2626">6.67</span> | <span style="color:#dc2626">80.72</span> | <span style="color:#DAA520">864</span> |
+| DeKART (BLS12-381)       | 7    | <span style="color:#15803d; font-weight:700">17.61</span> | <span style="color:#DAA520">2.54</span> | <span style="color:#15803d; font-weight:700">20.15</span> | <span style="color:#dc2626">5,505</span> |
+| MissileProof (BLS12-381) | 7    | <span style="color:#DAA520">33.10</span> | <span style="color:#15803d; font-weight:700">2.51</span> | <span style="color:#DAA520">35.61</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 16   | <span style="color:#dc2626">143.14</span> | <span style="color:#dc2626">11.62</span> | <span style="color:#dc2626">154.76</span> | <span style="color:#DAA520">928</span> |
+| DeKART (BLS12-381)       | 15   | <span style="color:#15803d; font-weight:700">19.33</span> | <span style="color:#DAA520">2.53</span> | <span style="color:#15803d; font-weight:700">21.86</span> | <span style="color:#dc2626">5,505</span> |
+| MissileProof (BLS12-381) | 15   | <span style="color:#DAA520">53.92</span> | <span style="color:#15803d; font-weight:700">2.51</span> | <span style="color:#DAA520">56.43</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 32   | <span style="color:#dc2626">288.07</span> | <span style="color:#dc2626">21.73</span> | <span style="color:#dc2626">309.80</span> | <span style="color:#DAA520">992</span> |
+| DeKART (BLS12-381)       | 31   | <span style="color:#15803d; font-weight:700">22.10</span> | <span style="color:#DAA520">2.56</span> | <span style="color:#15803d; font-weight:700">24.66</span> | <span style="color:#dc2626">5,505</span> |
+| MissileProof (BLS12-381) | 31   | <span style="color:#DAA520">82.83</span> | <span style="color:#15803d; font-weight:700">2.50</span> | <span style="color:#DAA520">85.33</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 64   | <span style="color:#dc2626">549.63</span> | <span style="color:#dc2626">42.65</span> | <span style="color:#dc2626">592.28</span> | <span style="color:#DAA520">1,056</span> |
+| DeKART (BLS12-381)       | 63   | <span style="color:#15803d; font-weight:700">24.49</span> | <span style="color:#DAA520">2.54</span> | <span style="color:#15803d; font-weight:700">27.03</span> | <span style="color:#dc2626">5,505</span> |
+| MissileProof (BLS12-381) | 63   | <span style="color:#DAA520">200.36</span> | <span style="color:#15803d; font-weight:700">2.46</span> | <span style="color:#DAA520">202.82</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 128  | <span style="color:#dc2626">1,100.30</span> | <span style="color:#dc2626">84.91</span> | <span style="color:#dc2626">1,185.21</span> | <span style="color:#DAA520">1,120</span> |
+| DeKART (BLS12-381)       | 127  | <span style="color:#15803d; font-weight:700">30.90</span> | <span style="color:#15803d; font-weight:700">2.56</span> | <span style="color:#15803d; font-weight:700">33.46</span> | <span style="color:#dc2626">5,505</span> |
+| MissileProof (BLS12-381) | 127  | <span style="color:#DAA520">274.46</span> | <span style="color:#DAA520">2.63</span> | <span style="color:#DAA520">277.09</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 256  | <span style="color:#dc2626">2,208.40</span> | <span style="color:#dc2626">163.01</span> | <span style="color:#dc2626">2,371.41</span> | <span style="color:#DAA520">1,184</span> |
+| DeKART (BLS12-381)       | 255  | <span style="color:#15803d; font-weight:700">40.83</span> | <span style="color:#DAA520">2.59</span> | <span style="color:#15803d; font-weight:700">43.42</span> | <span style="color:#dc2626">5,505</span> |
+| MissileProof (BLS12-381) | 255  | <span style="color:#DAA520">500.41</span> | <span style="color:#15803d; font-weight:700">2.49</span> | <span style="color:#DAA520">502.90</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 512  | <span style="color:#dc2626">4,351.90</span> | <span style="color:#dc2626">329.06</span> | <span style="color:#dc2626">4,680.96</span> | <span style="color:#DAA520">1,248</span> |
+| DeKART (BLS12-381)       | 511  | <span style="color:#15803d; font-weight:700">60.53</span> | <span style="color:#DAA520">2.58</span> | <span style="color:#15803d; font-weight:700">63.11</span> | <span style="color:#dc2626">5,505</span> |
+| MissileProof (BLS12-381) | 511  | <span style="color:#DAA520">863.90</span> | <span style="color:#15803d; font-weight:700">2.50</span> | <span style="color:#DAA520">866.40</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 1024 | <span style="color:#dc2626">8,576.10</span> | <span style="color:#dc2626">650.01</span> | <span style="color:#dc2626">9,226.11</span> | <span style="color:#DAA520">1,312</span> |
+| DeKART (BLS12-381)       | 1023 | <span style="color:#15803d; font-weight:700">100.29</span> | <span style="color:#DAA520">2.63</span> | <span style="color:#15803d; font-weight:700">102.92</span> | <span style="color:#dc2626">5,505</span> |
+| MissileProof (BLS12-381) | 1023 | <span style="color:#DAA520">1,650.10</span> | <span style="color:#15803d; font-weight:700">2.48</span> | <span style="color:#DAA520">1,652.58</span> | <span style="color:#15803d; font-weight:700">688</span> |
+| Bulletproofs             | 2048 | <span style="color:#dc2626">17,469.00</span> | <span style="color:#dc2626">1,307.60</span> | <span style="color:#dc2626">18,776.60</span> | <span style="color:#DAA520">1,376</span> |
+| DeKART (BLS12-381)       | 2047 | <span style="color:#15803d; font-weight:700">177.41</span> | <span style="color:#DAA520">2.60</span> | <span style="color:#15803d; font-weight:700">180.01</span> | <span style="color:#dc2626">5,505</span> |
+| MissileProof (BLS12-381) | 2047 | <span style="color:#DAA520">3,009.10</span> | <span style="color:#15803d; font-weight:700">2.50</span> | <span style="color:#DAA520">3,011.60</span> | <span style="color:#15803d; font-weight:700">688</span> |
 
 ## Conclusion
 
