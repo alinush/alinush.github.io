@@ -90,6 +90,16 @@ $</div> <!-- $ -->
 {% include defs-time-complexities.md %}
 {% include defs-zkp.md %}
 
+## Related work
+
+{: .todo}
+Groth's NI-DKG[^Grot21e].\
+Groth16-based PVSS by Nicholas Gailly; [see here](https://research.protocol.ai/blog/2022/a-deep-dive-into-dkg-chain-of-snarks-and-arkworks/#benchmarks).\
+Class-group-based PVSS[^KMM+23e]$^,$[^CD23e].\
+Lattice-based PVSS[^GHL21e].\
+eVRF-based PVSS[^BCK25e].
+
+
 ## Preliminaries
 
 We assume familiarity with:

@@ -231,6 +231,8 @@ cryptomat:
         url: /hyrax
       - title: KZH polynomial commitments
         url: /kzh
+      - title: Ligero
+        url: /ligero
       - title: Ligerito
         url: /ligerito
       - title: PST polynomial commitments
@@ -252,6 +254,8 @@ cryptomat:
         url: /2024/04/26/How-to-reshare-a-secret.html
       - title: "Chunky: Weighted PVSS"
         url: /chunky
+      - title: "Schoenmakers and SCRAPE PVSS"
+        url: /pvss
 
   - title: (Zero knowledge) proofs
     url: /zkps

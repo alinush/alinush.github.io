@@ -121,6 +121,9 @@ $f(R) \rightarrow r\in \Zp$:
  1. Let $(x,y)\in\Fq^2$ denote the elliptic curve coordinates of point $R \in \Gr$
  1. $r\gets \bar{x} \bmod p$ (recall that $\bar{x}$ is the integer representation of $x\in \Fq$)
 
+{: .note}
+[Later on](#recoverable-algorithms), we explain how $f$ can be modified to be invertible.
+
 ### Algorithms
 
 ECDSA key generation, signing and signature verification work as follows:
@@ -149,6 +152,7 @@ Signatures are [malleable](#signature-malleability).
 
 $\textcolor{grey}{\text{// assumes}\ \pk\in \Gr}\ \textcolor{grey}{\text{of prime order}}$\
 $\mathsf{ECDSA}$.$\mathsf{Verify}(m, \pk, \sigma) \rightarrow \\{0,1\\}$:
+{: #ecdsa-verify}
  - $(r,s)\gets \sigma$
  - **assert** $r \in (0,p)$
  - **assert** $s \in (0,p)$

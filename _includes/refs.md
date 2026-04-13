@@ -1498,7 +1498,7 @@
 
 [^DLS88]: **Consensus in the presence of partial synchrony**, by Cynthia Dwork and Nancy Lynch and Larry Stockmeyer, *in Journal of the {ACM}*, 1988, [[URL]](https://doi.org/10.1145%2F42282.42283)
 
-[^Lab24]: **Testing of enhanced Pollard's kangaroo algorithm**, by Distributed Lab, 2024, [[URL]](https://github.com/aptos-labs/pollard-kangaroo/blob/main/reference/kangaroo_plus_testing.pdf)
+[^DLab24]: **Testing of enhanced Pollard's kangaroo algorithm**, by Distributed Lab, 2024, [[URL]](https://github.com/aptos-labs/pollard-kangaroo/blob/main/reference/kangaroo_plus_testing.pdf)
 
 [^DM10]: **Efficient, Robust and Constant-Round Distributed RSA Key Generation**, by Damgård, Ivan and Mikkelsen, Gert Læssøe, *in Theory of Cryptography*, 2010
 
@@ -2152,6 +2152,8 @@
 
 [^Groth15]: **Efficient Fully Structure-Preserving Signatures for Large Messages**, by Jens Groth, *in Cryptology ePrint Archive, Report 2015/824*, 2015, [[URL]](https://eprint.iacr.org/2015/824)
 
+[^Grov96]: **A fast quantum mechanical algorithm for database search**, by Lov K. Grover, 1996, [[URL]](https://arxiv.org/abs/quant-ph/9605043)
+
 [^Grue24e]: **Some Improvements for the {PIOP} for {ZeroCheck**, by Angus Gruen, *in Cryptology {ePrint} Archive, Paper 2024/108*, 2024, [[URL]](https://eprint.iacr.org/2024/108)
 
 [^Gur06]: **Iterative Decoding of Low-Density Parity Check Codes (An Introductory Survey)**, by Venkatesan Guruswami, 2006, [[URL]](https://www.cs.cmu.edu/~venkatg/pubs/papers/ldpc.pdf)
@@ -2768,6 +2770,8 @@
 
 [^Lei05]: **LDPC Codes -- a brief Tutorial**, by Bernhard M.J. Leiner, 2005, [[URL]](http://www.bernh.net/media/download/papers/ldpc.pdf)
 
+[^Levy26]: **Quantum-Safe Bitcoin Transactions Without Softforks**, by Avihu Levy, 2026
+
 [^Libe15]: **Applications of Structure-Preserving Cryptography and Pairing-Based NIZK Proofs**, by Libert, Benoît, 2015, [[URL]](https://hal.inria.fr/tel-02151157)
 
 [^Lind01]: **Parallel Coin-Tossing and Constant-Round Secure Two-Party Computation**, by Yehuda Lindell, *in Cryptology ePrint Archive, Report 2001/107*, 2001, [[URL]](https://eprint.iacr.org/2001/107)
@@ -3233,6 +3237,8 @@
 [^RPKplus18]: **mLSM: Making Authenticated Storage Faster in Ethereum**, by Pandian Raju and Soujanya Ponnapalli and Evan Kaminsky and Gilad Oved and Zachary Keener and Vijay Chidambaram and Ittai Abraham, *in 10th {USENIX} Workshop on Hot Topics in Storage and File Systems (HotStorage 18)*, 2018, [[URL]](https://www.usenix.org/conference/hotstorage18/presentation/raju)
 
 [^RPXplus22e]: **ZEBRA}: {SNARK}-based Anonymous Credentials for Practical, Private and Accountable On-chain Access Control**, by Deevashwer Rathee and Guru Vamsi Policharla and Tiancheng Xie and Ryan Cottone and Dawn Song, *in Cryptology {ePrint} Archive, Paper 2022/1286*, 2022, [[URL]](https://eprint.iacr.org/2022/1286)
+
+[^RR02e]: **Better than {BiBa}: Short One-time Signatures with Fast Signing and Verifying**, by Leonid Reyzin and Natan Reyzin, *in Cryptology {ePrint} Archive, Paper 2002/014*, 2002, [[URL]](https://eprint.iacr.org/2002/014)
 
 [^RR21e]: **Proving as Fast as Computing: Succinct Arguments with Constant Prover Overhead**, by Noga Ron-Zewi and Ron D.  Rothblum, *in Cryptology ePrint Archive, Paper 2021/1673*, 2021, [[URL]](https://eprint.iacr.org/2021/1673)
 

@@ -549,6 +549,10 @@ Because we can nonetheless achieve competitively-small TXN sizes and cheap verif
 
 ## Appendix: Links
 
+Audit:
+
+ - [zkSecurity audit of v1.1 contract](https://reports.zksecurity.xyz/reports/aptos-confidential-assets/)
+
 Slides:
  - [Confidential assets: 10,000 feet view](https://docs.google.com/presentation/d/1wwkDuFBUSfDmVC83UdGsXRXdCQQES6Rpj7RskdaBgfY/edit?usp=sharing)
  - WIP: [Confidential assets: deep dive](https://docs.google.com/presentation/d/1AO2ft2WPgQ7YNr2WgGNiCtB28QfIoC9k1Q7JOrukoOQ/edit?usp=sharing)

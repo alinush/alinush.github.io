@@ -17,12 +17,14 @@ This is some of the stuff I (plan to) read and think others could find useful.
 
 ## Blogroll
 
- - [Michael Nielsen](https://michaelnielsen.org/)
- - [Scott Aaronson](https://scottaaronson.blog/)
  - [Oded Goldreich's essays](https://www.wisdom.weizmann.ac.il/~oded/essays.html)
- - [cr.yp.to](https://cr.yp.to)
+ - [blog.cr.yp.to](https://blog.cr.yp.to)
  - [David Wong's Cryptologie](https://cryptologie.net)
  - [Dcentralized thoughts](https://decentralizedthoughts.github.io)
+ - [Scott Aaronson](https://scottaaronson.blog/)
+ - [Michael Nielsen](https://michaelnielsen.org/)
+ - [Filippo Valsorda](https://words.filippo.io/)
+ - [Craig Gidney](https://algassert.com)
 
 ## Cryptography and (zero-knowledge) proof systems
 

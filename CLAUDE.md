@@ -33,6 +33,18 @@ In the preliminaries, newly-introduced terms should also be hyperlinked / bolded
 
 When writing math derivations in blog posts, each new equation/line should introduce only **one small change** from the previous line. Do not skip steps or combine multiple operations into a single line.
 
+## Anchors and links
+
+To create an anchor at a specific point in the text, write:
+```
+{: #anchor-name}
+```
+right after the element you want to anchor (a paragraph, heading, etc.). Then link to it with `[link text](#anchor-name)`.
+
+## LaTeX in Markdown
+
+In Markdown LaTeX, always use `\sizeof{expr}` instead of `|expr|` for set/collection sizes. The `|` character conflicts with Markdown table syntax and causes rendering issues. The `\sizeof` macro is defined globally in `_includes/markdown-enhancements/mathjax.html` and renders as `‖expr‖`.
+
 ## LaTeX macros
 
 When writing blog posts, do NOT redefine LaTeX macros that are already defined globally in `_includes/markdown-enhancements/mathjax.html` (in the `window.MathJax.tex.macros` object). Globally-available macros include: `\pk`, `\sk`, `\vk`, `\aux`, `\negl`, `\poly`, `\F`, `\Fp`, `\Fq`, `\Fr`, `\Gr`, `\Z`, `\Zp`, `\Zq`, `\N`, and others. Check that file before adding per-page `\def` macros in a hidden div.
