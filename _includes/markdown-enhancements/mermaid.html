@@ -3,8 +3,13 @@
 <script>
   window.Lazyload.js('{{ _sources.mermaid }}', function() {
     mermaid.initialize({
-      startOnLoad: true
+      startOnLoad: false,
+      themeVariables: {
+        fontSize: '13px'
+      }
     });
-    mermaid.init(undefined, '.language-mermaid');
+    mermaid.run({
+      nodes: document.querySelectorAll('.language-mermaid')
+    });
   });
 </script>

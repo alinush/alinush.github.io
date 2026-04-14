@@ -1,3 +1,4 @@
+
 default:
   text_skin: default
   highlight_theme: default
@@ -62,7 +63,7 @@ sources:
     valine: 'https//unpkg.com/valine/dist/Valine.min.js'
     # Using a local copy since otherwise math does not render when offline
     mathjax: '/assets/mathjax-3.2.2-es5-tex-mml-chtml.min.js'
-    mermaid: 'https://unpkg.com/mermaid@8.0.0-rc.8/dist/mermaid.min.js'
+    mermaid: 'https://unpkg.com/mermaid@11.4.1/dist/mermaid.min.js'
 
 # Bad URLs:
     #mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_CHTML' # seems to not work

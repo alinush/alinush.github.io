@@ -547,6 +547,75 @@ Because we can nonetheless achieve competitively-small TXN sizes and cheap verif
 3. The implementation is much easier to get right
     + We can sleep well at night knowing our users' funds are safe
 
+## Integration with Petra
+
+### Keyless accounts
+{: #supporting-keyless-confidential-accounts}
+
+[Aptos Keyless accounts](/keyless) are both a blessing and a curse when it comes to building confidential dapps.
+
+_On one hand_, they are great: we can build confidential dapps like [confidential.aptoslabs.com](https://confidential.aptoslabs.com) without having to wait for wallets like [Petra](https://petra.app) to implement support for confidential assets.
+How come?
+Keyless dapps are walletless: they internally implement support for sending transactions.
+Therefore, it is very easy to extend them to send confidential transfers (case in point: [confidential.aptoslabs.com](https://confidential.aptoslabs.com)).
+Even better, a keyless dapp can derive each account's confidential asset decryption key (DK) from that account's keyless pepper[^pepper-privacy].
+As a result, things can remain keyless even though the dapp is performing confidential transfers.
+
+**On the other hand**, it is difficult to change keyless wallets like [Petra](https://web.petra.app) to support confidentiality for keyless accounts.
+The main reason: Petra keyless accounts have the option of installing a backup Ed25519 key, allowing them to operate in a 1-out-of-2 fashion.
+While this allows keyless users to recover their account if they lose their OIDC account, it complicates management of the confidential asset decryption key (DK): we need to figure out a way to recover the DK when the user only has their backup Ed25519.
+This is further complicated by the various states that a keyless account can be in Petra:
+
+```mermaid
+graph TB;
+    classDef noConf fill:#d4edda,stroke:#28a745;
+
+    A["<u>1-factor</u>: OIDC<br/>(_no_ confidentiality)"]:::noConf
+    B["<u>2-factor</u>: OIDC or Ed25519<br/>(_no_ confidentiality)"]:::noConf
+    A-- install Ed25519 backup key -->B;
+    B-- rotate Ed25519 backup key -->B;
+    linkStyle 0 stroke:#2196F3,stroke-width:2px
+    linkStyle 1 stroke:#9C27B0,stroke-width:2px
+```
+
+**Our task:**
+Ensure that, regardless of the account's state (1-factor or 2-factor) or which factors the owner has (OIDC, backup key), the owner can _always_ recover the account's DK.
+
+**Our approach:**
+First, we always deterministically derive the DK from the `pepper_base`, from which the pepper is derived. 
+Second, if the account reaches the 2-factor state, we maintain an encryption of the DK under the backup key on-chain.
+
+{: .todo}
+Update the [keyless blog](/keyless) with the pepper derivation scheme.)
+
+The state machine below depicts all the states we need to handle.
+```mermaid
+graph TB;
+    classDef noConf fill:#d4edda,stroke:#28a745;
+    classDef withConfNoDK fill:#fff3cd,stroke:#ffc107;
+    classDef withConfDK fill:#e6ccb3,stroke:#8b4513;
+
+    A["<u>1-factor</u>: OIDC<br/>(_no_ confidentiality)"]:::noConf
+    B["<u>2-factor</u>: OIDC or Ed25519<br/>(_no_ confidentiality)"]:::noConf
+    C["<u>1-factor</u>: OIDC<br/>(confidential **with** _pepper_ DK)"]:::withConfNoDK
+    D["<u>2-factor</u>: OIDC or Ed25519<br/>(confidential **with** _pepper_ DK encrypted on-chain)"]:::withConfDK
+    E["<u>Traditional</u> Ed25519<br/>(with signing key reused as DK)"]
+    A-- install Ed25519 backup key -->B;
+    A-- enable confidentiality -->C
+    B-- rotate Ed25519 backup key -->B;
+    B-- enable confidentiality<br/>(via OIDC factor and Ed25519 factor) -->D
+    B-- enable confidentiality and rotate to Ed25519<br/>(via Ed25519 factor after account recovery) -->E
+    C-- install Ed25519 backup key -->D
+    D-- rotate Ed25519 backup key -->D;
+    linkStyle 0,5 stroke:#2196F3,stroke-width:2px
+    linkStyle 2,6 stroke:#9C27B0,stroke-width:2px
+    linkStyle 1,3,4 stroke:#FF9800,stroke-width:2px
+```
+
+Note that there is a bit of nuance:
+1. If the keyless account has an Ed25519 backup key and wants to enable confidentiality, the user needs to enter their backup key so as to encrypt their pepper-derived DK on-chain. This will make that DK recoverable in case the user ever loses their OIDC factor. 
+2. Similarly, if the keyless account has an Ed25519 backup, has just been recovered in Petra via that backup key **and** wants to enable confidentiality, we must rotate away from the inaccessible OIDC factor. Otherwise, the account would be left in a weird state where the encrypted DK must be picked randomly rather than pepper-derived, which would lock the user out of their confidential assets if they log in later via their OIDC factor.
+
 ## Appendix: Links
 
 Audit:
@@ -575,9 +644,11 @@ Apps:
 
 ### v1.1 pull requests (PRs)
 
- - **Merged:** v1.1 Move contract in [aptos-core](https://github.com/aptos-labs/aptos-core/pull/18973)
- - **Merged:** v1.1.1 Move contract in [aptos-core](https://github.com/aptos-labs/aptos-core/pull/19197)
- - v1.1.2 Move contract in [aptos-core](https://github.com/aptos-labs/aptos-core/pull/19370)
+ - **Merged:** v1.1 Move contract in [aptos-core](https://github.com/aptos-labs/aptos-core/pull/18973): new $\Sigma$ protocol homomorphism framework, domain-separated Fiat-Shamir transform, global and asset-specific auditors, upgradability via `enum`'s
+ - **Merged:** v1.1.1 Move contract in [aptos-core](https://github.com/aptos-labs/aptos-core/pull/19197): enforce allow-listing on testnet too
+ - **Merged:** v1.1.2 Move contract in [aptos-core](https://github.com/aptos-labs/aptos-core/pull/19370): auditor EK fix and other minor fixes
+ - v1.1.3 Move contract in [aptos-core](https://github.com/aptos-labs/aptos-core/pull/19433): emergency pause
+ - v1.1.4 Move contract in [aptos-core](https://github.com/aptos-labs/aptos-core/pull/19458): keyless integration
  - **Merged:** DL algorithms in [ristretto255-dlog](https://github.com/aptos-labs/ristretto255-dlog/pull/2)
    + **Merged:** WASM bindings for DL algorithms and Bulletproofs in [confidential-asset-wasm-bindings](https://github.com/aptos-labs/confidential-asset-wasm-bindings/pull/3)
  - **Merged:** v1.1 SDK in [aptos-ts-sdk](https://github.com/aptos-labs/aptos-ts-sdk/pull/822)
@@ -1000,5 +1071,8 @@ For cited works, see below 👇👇
 
 [^best-effort]: Auditor balance ciphertexts are maintained on a "best-effort" basis: they can only be updated during a transfer out of an account, during a public withdrawal, or during a normalization. But they cannot be updated after an incoming transfer. They can be slightly stale in this sense. Put differently, only the "available" balance ciphertext is encrypted under the effective auditor's EK, but not the "pending" balance.
 
+[^pepper-privacy]: This convenience does come at the price of reducing confidentiality to the privacy of the keyless pepper service: if the service is compromised, then the pepper is revealed and thus confidentiality is lost.
+(In terms of availability, this does not impose extra assumptions: the pepper service is already trusted for availability.)
+As a result, decentralizing the pepper service becomes very important if users are to rely on it in this way.
 
 {% include refs.md %}
