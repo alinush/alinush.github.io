@@ -92,13 +92,40 @@ $</div> <!-- $ -->
 
 ## Related work
 
-{: .todo}
-Groth's NI-DKG[^Grot21e].\
-Groth16-based PVSS by Nicholas Gailly; [see here](https://research.protocol.ai/blog/2022/a-deep-dive-into-dkg-chain-of-snarks-and-arkworks/#benchmarks).\
-Class-group-based PVSS[^KMM+23e]$^,$[^CD23e].\
-Lattice-based PVSS[^GHL21e].\
-eVRF-based PVSS[^BCK25e].
+A recent **lattice-based PVSS**[^GHL21e] scheme reduces the overhead of elliptic curve scalar multiplications during dealing and verification by replacing the encryption scheme with a lattice scheme.
+Unfortunately, it introduces too much lattice field work, resulting in [an overall slower scheme than Chunky](#ghl21e-benchmarks).
+On the other hand, it claims a much smaller 300 KiB transcript for $n=1024$ players[^oneliner].
+Furthermore, \[GHL21\][^GHL21e] has post-quantum privacy (not sound, because Bulletproofs), which Chunky does not.
+(Assuming it is not used for bootstrapping DL cryptosystems though.)
 
+Groth's NI-DKG[^Grot21e], henceforth **Groth21**, uses chunked ElGamal encryption with Schnorr-style NIZK proofs for correct sharing and correct chunking.
+In particular, it uses a novel **relaxed ZK range proof** via rejection sampling.
+
+{: .todo}
+It has ??x faster dealing and ??x slower verification when benchmarked over BLS12-381.
+Decryption time is very slow though in the worst-case.
+
+When the goal is merely to PVSS a secret over _any_ field $\F$, our comparison against Groth21 is unfair, since Groth21 can use faster curves: e.g., secp256k1 or Curve25519.
+But if the goal is to PVSS a secret over a pairing-friendly curve (e.g., the BLS12-381 curve), this comparison is fair and evidences what Groth21 loses in staying away from pairings.
+
+Groth21's advantage is its _versatility_: it does not require pairings, which means it can be used in more settings.
+We note that our [Chunky2](#chunky2) variant does not necessarily require pairings either, except for its use of the [univariate DeKART](/dekart) range proof.
+In the future, we believe a sumcheck-based, multivariate variant of DeKART[^BDFplus25e] could be instantiated to avoid the use of pairings.
+
+**Golden PVSS**[^BCK25e] is a novel design based on _exponent VRFs (eVRFs)_.
+It features the smallest transcript sizes by elegantly avoiding the typical pitfalls: chunking, hidden-order groups, lattices.
+However, its reliance on general-purpose ZKPs and its currently-naive, non-batched, PLONK-based implementation make it very slow in practice.
+While this should be addressable with a better combination of eVRF and zkSNARK schemes, it is difficult to predict what speedup it would give.
+
+There is also a very exciting line of work on class-group-based PVSS[^KMMplus23e]$^,$[^CD23e].
+These schemes can avoid chunking by relying on additively-homomorphic encryption schemes for field elements with efficient decryption[^CL15] (unlike ElGamal).
+Not surprisingly, the cgVSS transcript is 2.2x smaller than Chunky consistently across all $(t, n)$ threshold configurations.
+Furthermore, dealing time is roughly the same as Chunky.
+On the other hand, cgVSS transcript verification is 6-8x slower.
+In practice, the 2x smaller transcript may make up for the slower verification time in certain settings (e.g., DKGs).
+
+{: .note}
+The original cgVSS paper[^KMMplus23e] seems to over-estimate Groth21's execution times.
 
 ## Preliminaries
 
@@ -702,9 +729,11 @@ Now:
 
 ## Benchmarks
 
-Single-threaded numbers from my Apple Macbook Pro M4 Max:
+### Aptos mainnet
 
-| Scheme  | $\ell$ | Setup                        | Transcript size | Deal (ms)      | Serialize (ms) | Aggregate (ms) | Verify (ms)   | Decrypt-share (ms) |
+Single-threaded numbers from my Apple Macbook Pro M4 Max for the setup we expect to use on Aptos mainnet:
+
+| Scheme  | $\ell$ | Setup                        | Transcript size | Deal (ms)      | Serialize (ms) | Sub-aggregate (ms) | Verify (ms)   | Decrypt-share (ms) |
 |---------|--------|------------------------------|-----------------|----------------|----------------|----------------|---------------|--------------------|
 | Chunky  | 32     | 129-out-of-219 / 136 players | 259.24 KiB      |         373.30 |           0.24 |           1.29 |         63.05 |              10.73 |
 | Chunky2 | 32     | 129-out-of-219 / 136 players | 279.78 KiB      | <span style="color:#dc2626">401.96</span> (0.93x) | <span style="color:#dc2626">0.27</span> (0.89x) | <span style="color:#dc2626">1.35</span> (0.96x) | <span style="color:#dc2626">72.45</span> (0.87x) | <span style="color:#dc2626">11.09</span> (0.97x) |
@@ -717,6 +746,202 @@ cd aptos-core/crates/aptos-crypto/benches/
 ./run-pvss-benches.sh
 ```
 
+### Full benchmarks
+
+{: .warning}
+**Parallelization:** *Chunky** and *Groth21* run single-threaded. 
+But *Golden* sets `gnark` and `gnark-crypto` to default to `NbTasks = runtime.NumCPU()*2` for MSMs and FFTs.
+So, each PLONK proof uses all logical cores.
+The $n-1$ proofs in a dealing are still generated serially in a for-loop; it is the MSM/FFT work inside each proof that is parallelized.
+Our comparison is overly-generous to *Golden*, as a result.
+
+<style>
+/* Thick top border above every Chunky row to visually separate groups */
+#full-benchmarks-table tbody tr:nth-child(5n+1) { border-top: 3px solid #555; }
+</style>
+
+{: #full-benchmarks-table}
+| Scheme | Curve | Library | $\ell$ | $t$ | $n$ | Transcript size | Deal (ms) | Verify (ms) | Decrypt share (ms) |
+|--------|-------|---------|--------|-----|-----|-----------------|-----------|-------------|--------------------|
+| **Chunky** | BLS12-381 | `arkworks` v0.5.0 | 32 | 6 | 8 | 13.37 KiB |     29.83 |        <span style="color:#15803d; font-weight:700">7.87</span> |               2.96 |
+| Groth21 | BLS12-381 | `blstrs` v0.7.1 | 8 | 6 | 8 | <span style="color:#dc2626">20.15 KiB</span> (1.51x) | <span style="color:#15803d; font-weight:700">27.8</span> (1.07x) | <span style="color:#dc2626">12.4</span> (1.57x) | <span style="color:#dc2626">≈ 12,424</span> (≈ 4,200x) |
+| Golden | BN254 + BJJ | `gnark` v0.14.0 | -- | 6 | 8 | <span style="color:#15803d; font-weight:700">5.29 KiB</span> (2.53x) | <span style="color:#dc2626">8,060</span> (270x) | <span style="color:#dc2626">10.25</span> (1.30x) | <span style="color:#15803d; font-weight:700">0.31</span> (9.55x) |
+| [GHL21e][^GHL21e] | Curve25519 | [`cpp-lwevss`](https://github.com/alinush/cpp-lwevss) | -- | 6 | 8 | <span style="color:#dc2626">178.13 KiB</span> (13.3x) | <span style="color:#dc2626">5,553</span> (186x) | <span style="color:#dc2626">466</span> (59.2x) | <span style="color:#15803d; font-weight:700">0.48</span> (6.21x) |
+| cgVSS[^KMMplus23e] | BLS12-381 + CL | [`cgdkg_artifact`](https://github.com/Entropy-Foundation/cgdkg_artifact) | -- | 6 | 8 | <span style="color:#15803d; font-weight:700">5.16 KiB</span> (2.59x) | <span style="color:#dc2626">50.25</span> (1.68x) | <span style="color:#dc2626">60.18</span> (7.65x) | <span style="color:#dc2626">10.48</span> (3.54x) |
+| **Chunky** | BLS12-381 | `arkworks` v0.5.0 | 32 | 11 | 16 | 22.56 KiB |     <span style="color:#15803d; font-weight:700">49.19</span> |       <span style="color:#15803d; font-weight:700">11.24</span> |               3.03 |
+| Groth21 | BLS12-381 | `blstrs` v0.7.1 | 8 | 11 | 16 | <span style="color:#dc2626">34.27 KiB</span> (1.52x) | 49.9 (~1.00x) | <span style="color:#dc2626">20.7</span> (1.84x) | <span style="color:#dc2626">≈ 17,686</span> (≈ 5,800x) |
+| Golden | BN254 + BJJ | `gnark` v0.14.0 | -- | 11 | 16 | <span style="color:#15803d; font-weight:700">10.50 KiB</span> (2.15x) | <span style="color:#dc2626">17,594</span> (358x) | <span style="color:#dc2626">21.31</span> (1.90x) | <span style="color:#15803d; font-weight:700">0.30</span> (10.1x) |
+| [GHL21e][^GHL21e] | Curve25519 | [`cpp-lwevss`](https://github.com/alinush/cpp-lwevss) | -- | 11 | 16 | <span style="color:#dc2626">180.94 KiB</span> (8.02x) | <span style="color:#dc2626">5,591</span> (114x) | <span style="color:#dc2626">551</span> (49.0x) | <span style="color:#15803d; font-weight:700">0.49</span> (6.20x) |
+| cgVSS[^KMMplus23e] | BLS12-381 + CL | [`cgdkg_artifact`](https://github.com/Entropy-Foundation/cgdkg_artifact) | -- | 11 | 16 | <span style="color:#15803d; font-weight:700">9.51 KiB</span> (2.37x) | <span style="color:#dc2626">64.54</span> (1.31x) | <span style="color:#dc2626">72.40</span> (6.44x) | <span style="color:#dc2626">10.24</span> (3.38x) |
+| **Chunky** | BLS12-381 | `arkworks` v0.5.0 | 32 | 22 | 32 | 40.94 KiB |     <span style="color:#15803d; font-weight:700">84.70</span> |       <span style="color:#15803d; font-weight:700">16.79</span> |               3.05 |
+| Groth21 | BLS12-381 | `blstrs` v0.7.1 | 8 | 22 | 32 | <span style="color:#dc2626">62.52 KiB</span> (1.53x) | <span style="color:#dc2626">92.1</span> (1.09x) | <span style="color:#dc2626">34.9</span> (2.08x) | <span style="color:#dc2626">≈ 24,722</span> (≈ 8,100x) |
+| Golden | BN254 + BJJ | `gnark` v0.14.0 | -- | 22 | 32 | <span style="color:#15803d; font-weight:700">20.97 KiB</span> (1.95x) | <span style="color:#dc2626">37,458</span> (442x) | <span style="color:#dc2626">50.56</span> (3.01x) | <span style="color:#15803d; font-weight:700">0.30</span> (10.2x) |
+| [GHL21e][^GHL21e] | Curve25519 | [`cpp-lwevss`](https://github.com/alinush/cpp-lwevss) | -- | 22 | 32 | <span style="color:#dc2626">183.13 KiB</span> (4.47x) | <span style="color:#dc2626">5,836</span> (68.9x) | <span style="color:#dc2626">481</span> (28.6x) | <span style="color:#15803d; font-weight:700">0.50</span> (6.06x) |
+| cgVSS[^KMMplus23e] | BLS12-381 + CL | [`cgdkg_artifact`](https://github.com/Entropy-Foundation/cgdkg_artifact) | -- | 22 | 32 | <span style="color:#15803d; font-weight:700">18.26 KiB</span> (2.24x) | 85.74 (~1.01x) | <span style="color:#dc2626">98.76</span> (5.88x) | <span style="color:#dc2626">10.32</span> (3.38x) |
+| **Chunky** | BLS12-381 | `arkworks` v0.5.0 | 32 | 43 | 64 | 77.69 KiB |    <span style="color:#15803d; font-weight:700">150.63</span> |       <span style="color:#15803d; font-weight:700">26.17</span> |               3.03 |
+| Groth21 | BLS12-381 | `blstrs` v0.7.1 | 8 | 43 | 64 | <span style="color:#dc2626">119.02 KiB</span> (1.53x) | <span style="color:#dc2626">181.4</span> (1.20x) | <span style="color:#dc2626">68.0</span> (2.60x) | <span style="color:#dc2626">≈ 26,463</span> (≈ 8,700x) |
+| Golden | BN254 + BJJ | `gnark` v0.14.0 | -- | 43 | 64 | <span style="color:#15803d; font-weight:700">41.88 KiB</span> (1.85x) | <span style="color:#dc2626">73,967</span> (491x) | <span style="color:#dc2626">145.74</span> (5.57x) | <span style="color:#15803d; font-weight:700">0.29</span> (10.4x) |
+| [GHL21e][^GHL21e] | Curve25519 | [`cpp-lwevss`](https://github.com/alinush/cpp-lwevss) | -- | 43 | 64 | <span style="color:#dc2626">187.50 KiB</span> (2.41x) | <span style="color:#dc2626">6,039</span> (40.1x) | <span style="color:#dc2626">483</span> (18.5x) | <span style="color:#15803d; font-weight:700">0.52</span> (5.88x) |
+| cgVSS[^KMMplus23e] | BLS12-381 + CL | [`cgdkg_artifact`](https://github.com/Entropy-Foundation/cgdkg_artifact) | -- | 43 | 64 | <span style="color:#15803d; font-weight:700">35.66 KiB</span> (2.18x) | <span style="color:#15803d; font-weight:700">137.22</span> (1.10x) | <span style="color:#dc2626">151.54</span> (5.79x) | <span style="color:#dc2626">10.33</span> (3.41x) |
+| **Chunky** | BLS12-381 | `arkworks` v0.5.0 | 32 | 85 | 128 | 151.19 KiB |    <span style="color:#15803d; font-weight:700">281.35</span> |       <span style="color:#15803d; font-weight:700">44.24</span> |               3.03 |
+| Groth21 | BLS12-381 | `blstrs` v0.7.1 | 8 | 85 | 128 | <span style="color:#dc2626">232.02 KiB</span> (1.53x) | <span style="color:#dc2626">355.7</span> (1.26x) | <span style="color:#dc2626">121.0</span> (2.74x) | <span style="color:#dc2626">≈ 37,445</span> (≈ 12,400x) |
+| Golden | BN254 + BJJ | `gnark` v0.14.0 | -- | 85 | 128 | <span style="color:#15803d; font-weight:700">83.69 KiB</span> (1.81x) | <span style="color:#dc2626">151,163</span> (537x) | <span style="color:#dc2626">518.78</span> (11.7x) | <span style="color:#15803d; font-weight:700">0.30</span> (10.1x) |
+| [GHL21e][^GHL21e] | Curve25519 | [`cpp-lwevss`](https://github.com/alinush/cpp-lwevss) | -- | 85 | 128 | <span style="color:#dc2626">192.63 KiB</span> (1.27x) | <span style="color:#dc2626">6,093</span> (21.7x) | <span style="color:#dc2626">490</span> (11.1x) | <span style="color:#15803d; font-weight:700">0.54</span> (5.66x) |
+| cgVSS[^KMMplus23e] | BLS12-381 + CL | [`cgdkg_artifact`](https://github.com/Entropy-Foundation/cgdkg_artifact) | -- | 85 | 128 | <span style="color:#15803d; font-weight:700">70.52 KiB</span> (2.14x) | <span style="color:#15803d; font-weight:700">273.84</span> (1.03x) | <span style="color:#dc2626">273.01</span> (6.17x) | <span style="color:#dc2626">10.46</span> (3.45x) |
+| **Chunky** | BLS12-381 | `arkworks` v0.5.0 | 32 | 169 | 256 | 298.19 KiB |    <span style="color:#15803d; font-weight:700">521.81</span> |       <span style="color:#15803d; font-weight:700">76.97</span> |               3.02 |
+| Groth21 | BLS12-381 | `blstrs` v0.7.1 | 8 | 169 | 256 | <span style="color:#dc2626">458.02 KiB</span> (1.54x) | <span style="color:#dc2626">688.4</span> (1.32x) | <span style="color:#dc2626">232.4</span> (3.02x) | <span style="color:#dc2626">≈ 54,549</span> (≈ 18,100x) |
+| Golden | BN254 + BJJ | `gnark` v0.14.0 | -- | 169 | 256 | <span style="color:#15803d; font-weight:700">167.32 KiB</span> (1.78x) | <span style="color:#dc2626">308,051</span> (590x) | <span style="color:#dc2626">1,854.27</span> (24.1x) | <span style="color:#15803d; font-weight:700">0.30</span> (10.1x) |
+| [GHL21e][^GHL21e] | Curve25519 | [`cpp-lwevss`](https://github.com/alinush/cpp-lwevss) | -- | 169 | 256 | <span style="color:#15803d; font-weight:700">201.81 KiB</span> (1.48x) | <span style="color:#dc2626">6,899</span> (13.2x) | <span style="color:#dc2626">509</span> (6.61x) | <span style="color:#15803d; font-weight:700">0.53</span> (5.73x) |
+| cgVSS[^KMMplus23e] | BLS12-381 + CL | [`cgdkg_artifact`](https://github.com/Entropy-Foundation/cgdkg_artifact) | -- | 169 | 256 | <span style="color:#15803d; font-weight:700">140.23 KiB</span> (2.13x) | <span style="color:#dc2626">664.30</span> (1.27x) | <span style="color:#dc2626">580.35</span> (7.54x) | <span style="color:#dc2626">10.75</span> (3.56x) |
+
+
+To reproduce the **Chunky** numbers, clone [aptos-core](https://github.com/aptos-labs/aptos-core) and run:
+```bash
+cd aptos-core/crates/aptos-crypto/benches/
+# TODO: modify the code to test the desired thresholds
+./run-pvss-benches.sh
+```
+
+### Golden notes
+
+To reproduce the **Golden** numbers, clone [`alinush/fy`](https://github.com/alinush/fy) and run:
+```bash
+cd fy/
+# Transcript size only (one row per (t, n)):
+go test ./golden/ -run TestPrintTranscriptSize -v -timeout 2h
+
+# Full benchmark (transcript size + deal/verify/serialize/decrypt-share):
+go test ./golden/ -run TestPrintBenchmarks -v -timeout 2h
+
+# Custom (t, n) pairs, comma-separated as "t:n":
+GOLDEN_SIZES=6:8,11:16 go test ./golden/ -run TestPrintBenchmarks -v
+```
+
+#### Why is Golden dealing so slow?
+
+Golden is the only scheme in the table that relies on a SNARK: for every recipient, the dealer produces a [gnark](https://github.com/Consensys/gnark) PLONK proof attesting that an eVRF-derived pad was computed correctly. Each PLONK proof costs ~1.2 s on our machine, and a dealing contains $n-1$ of them, which is why Deal scales as $\approx 1{,}200(n-1)$ ms. Verification is much cheaper ($\approx 7$ ms/proof) since PLONK verify is fast, and per-recipient share decryption is just one Diffie–Hellman operation plus a scalar subtraction.
+
+
+### Groth21 notes
+
+To reproduce the **Groth21** numbers, clone our [e2e-vss fork](https://github.com/alinush/groth21-rs) and run:
+```bash
+cd groth21-rs/
+./benches/run-pvss-benches.sh --features chunks-8bit
+```
+The `--features chunks-8bit` flag switches the code to 8-bit chunks (`m=32`, `B=2^8`). Drop it to use the default 16-bit chunks (`m=16`, `B=2^16`). 
+The "Decrypt share" benchmark builds the batched BSGS table before the benchmarks run.
+
+#### How we picked the baseline
+
+Groth21 has two known implementations:
+
+1. [DFINITY's production Rust implementation](https://github.com/dfinity/ic/tree/master/rs/crypto/internal/crypto_lib/threshold_sig/bls12_381/src/ni_dkg), which includes forward-secure binary tree encryption (BTE), epoch-based key updates, and custom-optimized BLS12-381 primitives (windowed Pippenger MSMs, precomputed `mul2` tables).
+2. [Sourav Das's `e2e-vss` implementation](https://github.com/sourav1547/e2e-vss), which implements the same Groth21 PVSS protocol but with plain (non-forward-secure) ElGamal encryption and uses the much faster `blstrs` crate for BLS12-381 arithmetic.
+
+Both implementations use identical NIZK proofs (correct sharing and correct chunking, from Sections 6.4 and 6.5 of the paper) and the same chunking parameters: 
+ - `NUM_CHUNKS=16` (i.e., $\emph{m}$)
+ - `CHUNK_SIZE=65536` (i.e., $\emph{B}$)
+ - `NUM_ZK_REPETITIONS=32` (i.e., $\ell$ in their paper, but baptized as $\term{\tau}$ here)
+
+The two implementations differ only in the encryption layer (forward-secure BTE vs. plain ElGamal) and the underlying curve library.
+
+We chose to benchmark Sourav's implementation, after verifying it is the **fastest** of the two.
+To confirm this, we modified DFINITY's codebase to:
+1. remove the forward-secure BTE layer from encryption, replacing it with vanilla ElGamal, as in `e2e-vss`
+2. remove the pairing-based ciphertext integrity checks that are specific to BTE
+3. switch the sharing proof from $\mathbb{G}_2$ polynomial coefficient commitments to $\mathbb{G}_1$ commitments, matching `e2e-vss`'s approach, for an apples-to-apples comparison
+
+We then benchmarked both implementations on the same machine, calling the raw cryptographic functions directly (bypassing serialization overhead) with the same parameters ($n \in \\{64, 128, 256, 512, 1024\\}$).
+The result: Sourav's implementation was consistently **1.4-1.5x faster** for both dealing and verification.
+I suspect this is because `blstrs` includes hand-tuned C and assembly for BLS12-381 that is difficult to beat.
+
+We further improved Sourav's implementation by upgrading `blstrs` from v0.6.1 to v0.7.1 and `blst` from v0.3.11 to v0.3.16, which yielded an additional **~20% faster dealing** and **~2x faster verification**.
+
+{: .success}
+Note that this overly-generous towards Groth21, since blstrs is **faster** than arkworks, which we use in Chunky.
+
+#### Why is Groth21's worst-case decrypt-share so expensive?
+
+Groth21's chunking proof is _approximate_: it does not guarantee that each encrypted chunk $s_{i,j}$ lies in $[0, B)$ where $B = 2^\ell = 2^8 = 256$.
+Instead, for each $i,j$ it guarantees that there exists a small multiplicative factor $\term{\Delta_{i,j}} \in [1, \term{E})$, where:
+ - $\emph{E} = 2^{\lceil \lambda / \term{\tau} \rceil} = 2^8 = 256$
+     - $\lambda = 256$ is the security level
+     - $\emph{\tau} = 32$ is the number of parallel ZK repetitions in the chunking proof
+ - $\emph{\Delta_{i,j}} \cdot s_{i,j}$ lies in the signed range $[1-\term{Z},\,\emph{Z}-1]$, where:
+\\[\emph{Z} = 2 \tau n m (B-1)(E-1)\\]
+
+So, decrypting 1 _chunk_ may need up to $E-1 = 255$ baby-step giant-step (BSGS) invocations, each for a range of size $2Z-1$. 
+Since a full _share_ has $m = 32$ chunks, this yields $\term{k} = m \cdot (E-1) = 8{,}160$ BSGS invocations to decrypt 1 share.
+If done naively, this would take $O(k\sqrt{2Z-1})$ time.
+But, if we use a **batched BSGS** variant with larger tables, we can reduce this to $O(\sqrt{k (2Z-1)})$ time, a $\sqrt{k} \approx 90\times$ improvement. 
+
+Plugging in the actual $(n, m, B, E, \tau)$ from the benchmark:
+
+| $n$ | $Z$                                                | $\log_2 (2Z-1)$ | $\sqrt{k}$ | $\ceil{\sqrt{2Z-1}}$ | batched BSGS table # entries $\approx\sqrt{k \cdot (2Z-1)}$) |
+|-----|----------------------------------------------------|-----------------|-----------|---------------------------|----------------------------------------|
+|   8 | $2 \cdot 32 \cdot 8 \cdot 32 \cdot 255 \cdot 255 \approx 1.07 \cdot 10^9$ | 31.0 | $\sqrt{8{,}160}$ | 46,161 | $\approx 4.17 \cdot 10^6$ |
+| 256 | $2 \cdot 32 \cdot 256 \cdot 32 \cdot 255 \cdot 255 \approx 3.41 \cdot 10^{10}$ | 36.0 | same | 261,121 | $\approx 2.36 \cdot 10^7$ |
+
+The worst-case numbers above only ever materialize for a fully adversarial dealer who evades detection by the chunking proof at every chunk and every receiver simultaneously.
+
+{: .todo}
+How much work does the dealer need to do to trigger a worst case?
+
+### [GHL21e] notes
+
+To reproduce, clone our [`alinush/cpp-lwevss`](https://github.com/alinush/cpp-lwevss) fork, which rewrites the reference `main.cpp` to benchmark a **fresh PVSS deal** instead of the re-sharing scenario. 
+Specifically, it drops the `n−1` dummy "previous dealings", the `t` corresponding decryptions, and the three re-share/one-time-setup proofs (`commit(sk)`, `proveDecryption`, `proveKeyGen`).
+Only `proveEncryption`, `proveSmallness`, and `proveReShare` (the Shamir parity-check) remain, which is what a fresh PVSS dealer actually needs.
+```bash
+# 1. Install dependencies
+brew install gmp ntl libsodium cmake   # macOS
+# Debian/Ubuntu: apt install libgmp-dev libntl-dev libsodium-dev cmake
+
+# 2. Clone the fork and build
+git clone https://github.com/alinush/cpp-lwevss
+cd cpp-lwevss
+mkdir -p build && cd build && cmake .. && make -j lwe-pvss-main && cd ..
+
+# 3. Run sequentially (NOT in parallel: memory-bandwidth contention causes noise)
+for tn in "6 8" "11 16" "22 32" "43 64" "85 128" "169 256"; do
+    set -- $tn
+    ./build/lwe-pvss-main $2 $1
+done
+```
+
+We also include the original numbers from the [GHL21e] paper[^GHL21e] and compare them to Chunky, making sure to be generous and use a higher threshold $t$ for Chunky.
+
+| Scheme  | $\ell$ | Setup                          | Transcript size | Deal (ms)        | Verify (ms)    | Decrypt-share (ms) |
+|---------|--------|--------------------------------|-----------------|------------------|----------------|--------------------|
+| Chunky  | 32     | 683-out-of-1024 / 1024 players | 1.15 MiB        |         1,972.80 |         252.06 |               3.12 |
+| [GHL21e][^GHL21e] | N/A  | 512-out-of-1024 / 1024 players | <span style="color:#15803d; font-weight:700">$\approx$300 KiB</span> (3.93x) | <span style="color:#dc2626">34,000</span> (17.24x) | <span style="color:#dc2626">20,000</span> (79.35x) | <span style="color:#15803d; font-weight:700">1.4</span> (2.23x) |
+
+{: .note}
+The C++ implementation uses a faster elliptic curve (Curve25519) compared to us (pairing-friendly BLS12-381).
+However, the actual implementation is naive: (likely inefficiently) re-implements Bulletproofs from scratch using `libsodium` and it does not leverage MSMs.
+Nonetheless, the paper stresses that _"only about 25-30% of the prover time and about 15% of the verifier time was spent performing scalar-point multiplications on the curve"_, suggesting that MSM/Bulletproof speed-ups would not make a huge difference.
+I attempted optimizing their implementation, but it was fairly non-trivial: improvements there would warrant a separate publication.
+
+### cgVSS notes
+
+The share-correctness proof uses polynomial commitments in $\Gr_1$ of BLS12-381; only the encryption layer and the associated ZK proof live in the class group.
+
+To reproduce, clone the [`alinush/cgdkg_artifact`](https://github.com/alinush/cgdkg_artifact) repo which is a small modification of mine that:
+ - adds the PVSS abstraction in `classgroup/src/pvss.rs`
+ - adds PVSS benchmarks in `benches/benchmarks_pvss.rs`
+ - TODO: swaps MIRACL for blstrs, which is faster
+
+...and run:
+
+```bash
+# macOS/arm64 may need: -L /opt/homebrew/lib -L /opt/homebrew/opt/openssl@3/lib
+cargo bench --bench benchmarks_pvss
+```
+
+## Future work
+
+ - It would be intriguing to optimize a Groth16-based approach for PVSS, like the one by Nicholas Gailly [here](https://research.protocol.ai/blog/2022/a-deep-dive-into-dkg-chain-of-snarks-and-arkworks/#benchmarks).
 
 ## Acknowledgements
 
@@ -850,6 +1075,7 @@ For cited works, see below 👇👇
 [^dummy]: Technically, they have to add a dummy proof to the _subtranscript_, obtaining a proper _transcript_, which they can now feed in to $\pvssDecrypt$ in a type-safe way.
 [^eventually]: This may require that each validator $i'$ poll other validators for the transcripts in the proposed set $Q$ that $i'$ is missing.
 [^equivocation]: If $i'$ receives two transcripts signed by the same validator $j'$, then that constitute equivocation and would be provable misbehavior. So $i'$ should (or may?) not attest to $Q$ since it includes a malicious player $j'$.
+[^oneliner]: The 300 KiB proof size just mentioned in passing in the introduction. It is unclear whether they actually measured it correctly: is this the size of the publicly-verifiable transcript that includes **all** encryptions and proofs for **all** users?
 [^vaba]: This can be viewed through the lens of collecting $f+1$ attestations in validated Byzantine agreement (VABA).
 
 {% include refs.md %}
