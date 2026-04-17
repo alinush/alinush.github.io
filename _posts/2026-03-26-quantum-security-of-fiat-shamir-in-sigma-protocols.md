@@ -5,7 +5,7 @@ tags:
  - post-quantum
 title: "The quantum security of Fiat-Shamir in $\\Sigma$-protocols"
 #date: 2020-11-05 20:45:59
-#published: false
+published: false
 permalink: quantum-fiat-shamir
 sidebar:
     nav: cryptomat
