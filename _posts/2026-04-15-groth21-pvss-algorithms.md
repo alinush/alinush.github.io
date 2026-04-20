@@ -492,7 +492,7 @@ It will not get this bad because the range of the DLs will get smaller as $\Delt
 - Sourav's implementation: [e2e-vss on GitHub](https://github.com/sourav1547/e2e-vss)
 - DFINITY's implementation: [ni_dkg on GitHub](https://github.com/dfinity/ic/tree/c9879cb1ad485accd438d5560748a0d0ddcba83f/rs/crypto/internal/crypto_lib/threshold_sig/bls12_381/src/ni_dkg)
 
-### DFINITY's PVSS parameterization ($\emph{\lambda},\emph{\ell}, \emph{E}, \emph{B}, \emph{S}, \emph{Z}$)
+### DFINITY's PVSS parameterization (${\lambda},{\ell}, {E}, {B}, {S}, {Z}$)
 {: #dfinity-parameterization}
 
 - $\emph{\lambda}$ = `SECURITY_LEVEL` = 256 ([source](https://github.com/dfinity/ic/blob/714c85c6a4245fb5b39e76f5c8003e6d90e49c4d/rs/crypto/internal/crypto_lib/threshold_sig/bls12_381/src/ni_dkg/fs_ni_dkg/nizk_chunking.rs#L18))
@@ -527,7 +527,7 @@ Due to the approximate guarantees of the [proof of correct chunking](#correct-ch
 
 Sourav used the same parameterization as [DFINITY's above](#dfinity-parameterization).
 
-These benchmarks were run 2024, or earlier:
+These benchmarks were run in 2024, or earlier:
 ```
 groth/deal-t=660/n=1024 time: [3.6432 s 3.6925 s 3.7592 s]
 groth/verify-t=660/n=1024 time: [2.1861 s 2.2049 s 2.2291 s]

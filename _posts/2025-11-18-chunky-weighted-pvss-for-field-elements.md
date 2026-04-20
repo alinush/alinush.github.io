@@ -119,8 +119,9 @@ While this should be addressable with a better combination of eVRF and zkSNARK s
 
 There is also a very exciting line of work on **class-group-based PVSS**[^KMMplus23e]$^,$[^CD23e].
 These schemes can avoid chunking by relying on additively-homomorphic encryption schemes for field elements with efficient decryption[^CL15] (unlike ElGamal).
-Not surprisingly, the cgVSS transcript is 2.1-2.6x smaller than Chunky consistently across all $(t, n)$ threshold configurations.
-But this comes at a cost: cgVSS dealing time is 1.1-1.7x slower than Chunky and transcript verification is 5-8x slower.
+Not surprisingly, the cgVSS transcript is 2.0-2.9x smaller than Chunky consistently across all $(t, n)$ threshold configurations.
+But this comes at a cost: cgVSS transcript verification is 7-13x slower than Chunky.
+Dealing time depends on $n$: at $n \le 32$ cgVSS is 1.2-3.6x slower, but at $n \ge 64$ the constant class-group overhead amortizes and cgVSS actually pulls ahead, becoming 1.1-1.6x faster than Chunky.
 Nonetheless, in practice, the 2x smaller transcript may make up for the slower verification time in certain settings (e.g., DKGs).
 
 {: .note}
@@ -756,78 +757,102 @@ This can actually matter a lot in practice too.
 
 {: .warning}
 **Parallelization:** *Chunky*, *Groth21* and *cgVSS* run single-threaded. 
-But *Golden* sets `gnark` and `gnark-crypto` to default to `NbTasks = runtime.NumCPU()*2` for MSMs and FFTs.
-So, each PLONK proof uses all logical cores.
-The $n-1$ proofs in a dealing are still generated serially in a for-loop; it is the MSM/FFT work inside each proof that is parallelized.
-Our comparison is overly-generous to *Golden*, as a result.
+But, for *Golden*, we _generously_ run it multi-threded with `GOMAXPROCS=16`, which speeds up MSMs and FFTs significantly.
 
 | Scheme | Curve | Library | Assumptions | Decrypt 1 share time |
 |--------|-------|---------|-------------|--------------------|
-| **Chunky $(\ell = 32)$** | BLS12-381 | `arkworks` v0.5.0 | pairings, ROM | $m$ DLs of $b=32$ bits |
+| **Chunky $(\ell = 32)$** | BLS12-381 | `blstrs` v0.7.1 | pairings, ROM | $m$ DLs of $b=32$ bits |
 | Groth21 $(\ell = 8)$ | BLS12-381 | `blstrs` v0.7.1 | DL, ROM | $m$ DLs of $b \in [30,38]$ bits |
+| Groth21 $(\ell = 16)$ | BLS12-381 | `blstrs` v0.7.1 | DL, ROM | $m$ DLs of $b \in [37,45]$ bits |
+| Groth21 $(\ell = 32)$ | BLS12-381 | `blstrs` v0.7.1 | DL, ROM | $m$ DLs of $b \in [52,60]$ bits |
 | Golden | BN254 + BJJ | `gnark` v0.14.0 | DL, ROM | 0.30 ms |
 | [GHL21e][^GHL21e] | Curve25519 | `libsodium` v1.0.21 + `NTL` v11.6.0 | lattices, DL, ROM | 0.50 ms |
 | cgVSS[^KMMplus23e] | BLS12-381 + CL15 | `blstrs` v0.7.1 + `bicycl` v0.1.0 | class groups, DL, ROM | 10.ms |
 
 <style>
 /* Thick top border above every Chunky row to visually separate groups */
-#full-benchmarks-table tbody tr:nth-child(5n+1) { border-top: 3px solid #555; }
+#full-benchmarks-table tbody tr:nth-child(7n+1) { border-top: 3px solid #555; }
 </style>
 
 {: #full-benchmarks-table}
 | Scheme | $t$ | $n$ | Transcript size | Deal (ms) | Verify (ms) |
 |--------|-----|-----|-----------------|-----------|-------------|
-| **Chunky ($\ell = 32$)** | 3 | 4 | TBD | TBD | TBD |
-| Groth21 ($\ell = 8$) | 3 | 4 | TBD | TBD | TBD |
-| Golden | 3 | 4 | TBD | TBD | TBD |
-| [GHL21e][^GHL21e] | 3 | 4 | TBD | TBD | TBD |
-| cgVSS[^KMMplus23e] | 3 | 4 | TBD | TBD | TBD |
-| **Chunky ($\ell = 32$)** | 6 | 8 | 13.37 KiB |     29.83 |        <span style="color:#15803d; font-weight:700">7.87</span> |
-| Groth21 ($\ell = 8$) | 6 | 8 | <span style="color:#dc2626">20.15 KiB</span> (1.51x) | <span style="color:#15803d; font-weight:700">27.8</span> (1.07x) | <span style="color:#dc2626">12.4</span> (1.57x) |
-| Golden | 6 | 8 | <span style="color:#15803d; font-weight:700">5.29 KiB</span> (2.53x) | <span style="color:#dc2626">8,060</span> (270x) | <span style="color:#dc2626">10.25</span> (1.30x) |
-| [GHL21e][^GHL21e] | 6 | 8 | <span style="color:#dc2626">178.13 KiB</span> (13.3x) | <span style="color:#dc2626">5,553</span> (186x) | <span style="color:#dc2626">466</span> (59.2x) |
-| cgVSS[^KMMplus23e] | 6 | 8 | <span style="color:#15803d; font-weight:700">5.16 KiB</span> (2.59x) | <span style="color:#dc2626">51.57</span> (1.73x) | <span style="color:#dc2626">59.10</span> (7.51x) |
-| **Chunky ($\ell = 32$)** | 11 | 16 | 22.56 KiB |     <span style="color:#15803d; font-weight:700">49.19</span> |       <span style="color:#15803d; font-weight:700">11.24</span> |
-| Groth21 ($\ell = 8$) | 11 | 16 | <span style="color:#dc2626">34.27 KiB</span> (1.52x) | 49.9 | <span style="color:#dc2626">20.7</span> (1.84x) |
-| Golden | 11 | 16 | <span style="color:#15803d; font-weight:700">10.50 KiB</span> (2.15x) | <span style="color:#dc2626">17,594</span> (358x) | <span style="color:#dc2626">21.31</span> (1.90x) |
-| [GHL21e][^GHL21e] | 11 | 16 | <span style="color:#dc2626">180.94 KiB</span> (8.02x) | <span style="color:#dc2626">5,591</span> (114x) | <span style="color:#dc2626">551</span> (49.0x) |
-| cgVSS[^KMMplus23e] | 11 | 16 | <span style="color:#15803d; font-weight:700">9.51 KiB</span> (2.37x) | <span style="color:#dc2626">60.99</span> (1.24x) | <span style="color:#dc2626">72.59</span> (6.46x) |
-| **Chunky ($\ell = 32$)** | 22 | 32 | 40.94 KiB |     <span style="color:#15803d; font-weight:700">84.70</span> |       <span style="color:#15803d; font-weight:700">16.79</span> |
-| Groth21 ($\ell = 8$) | 22 | 32 | <span style="color:#dc2626">62.52 KiB</span> (1.53x) | <span style="color:#dc2626">92.1</span> (1.09x) | <span style="color:#dc2626">34.9</span> (2.08x) |
-| Golden | 22 | 32 | <span style="color:#15803d; font-weight:700">20.97 KiB</span> (1.95x) | <span style="color:#dc2626">37,458</span> (442x) | <span style="color:#dc2626">50.56</span> (3.01x) |
-| [GHL21e][^GHL21e] | 22 | 32 | <span style="color:#dc2626">183.13 KiB</span> (4.47x) | <span style="color:#dc2626">5,836</span> (68.9x) | <span style="color:#dc2626">481</span> (28.6x) |
-| cgVSS[^KMMplus23e] | 22 | 32 | <span style="color:#15803d; font-weight:700">18.26 KiB</span> (2.24x) | <span style="color:#15803d; font-weight:700">78.91</span> (1.07x) | <span style="color:#dc2626">91.91</span> (5.47x) |
-| **Chunky ($\ell = 32$)** | 43 | 64 | 77.69 KiB |    <span style="color:#15803d; font-weight:700">150.63</span> |       <span style="color:#15803d; font-weight:700">26.17</span> |
-| Groth21 ($\ell = 8$) | 43 | 64 | <span style="color:#dc2626">119.02 KiB</span> (1.53x) | <span style="color:#dc2626">181.4</span> (1.20x) | <span style="color:#dc2626">68.0</span> (2.60x) |
-| Golden | 43 | 64 | <span style="color:#15803d; font-weight:700">41.88 KiB</span> (1.85x) | <span style="color:#dc2626">73,967</span> (491x) | <span style="color:#dc2626">145.74</span> (5.57x) |
-| [GHL21e][^GHL21e] | 43 | 64 | <span style="color:#dc2626">187.50 KiB</span> (2.41x) | <span style="color:#dc2626">6,039</span> (40.1x) | <span style="color:#dc2626">483</span> (18.5x) |
-| cgVSS[^KMMplus23e] | 43 | 64 | <span style="color:#15803d; font-weight:700">35.66 KiB</span> (2.18x) | <span style="color:#15803d; font-weight:700">111.14</span> (1.36x) | <span style="color:#dc2626">133.54</span> (5.10x) |
-| **Chunky ($\ell = 32$)** | 85 | 128 | 151.19 KiB |    <span style="color:#15803d; font-weight:700">281.35</span> |       <span style="color:#15803d; font-weight:700">44.24</span> |
-| Groth21 ($\ell = 8$) | 85 | 128 | <span style="color:#dc2626">232.02 KiB</span> (1.53x) | <span style="color:#dc2626">355.7</span> (1.26x) | <span style="color:#dc2626">121.0</span> (2.74x) |
-| Golden | 85 | 128 | <span style="color:#15803d; font-weight:700">83.69 KiB</span> (1.81x) | <span style="color:#dc2626">151,163</span> (537x) | <span style="color:#dc2626">518.78</span> (11.7x) |
-| [GHL21e][^GHL21e] | 85 | 128 | <span style="color:#dc2626">192.63 KiB</span> (1.27x) | <span style="color:#dc2626">6,093</span> (21.7x) | <span style="color:#dc2626">490</span> (11.1x) |
-| cgVSS[^KMMplus23e] | 85 | 128 | <span style="color:#15803d; font-weight:700">70.51 KiB</span> (2.14x) | <span style="color:#15803d; font-weight:700">247.62</span> (1.14x) | <span style="color:#dc2626">214.87</span> (4.86x) |
-| **Chunky ($\ell = 32$)** | 169 | 256 | 298.19 KiB |    <span style="color:#15803d; font-weight:700">521.81</span> |       <span style="color:#15803d; font-weight:700">76.97</span> |
-| Groth21 ($\ell = 8$) | 169 | 256 | <span style="color:#dc2626">458.02 KiB</span> (1.54x) | <span style="color:#dc2626">688.4</span> (1.32x) | <span style="color:#dc2626">232.4</span> (3.02x) |
-| Golden | 169 | 256 | <span style="color:#15803d; font-weight:700">167.32 KiB</span> (1.78x) | <span style="color:#dc2626">308,051</span> (590x) | <span style="color:#dc2626">1,854.27</span> (24.1x) |
-| [GHL21e][^GHL21e] | 169 | 256 | <span style="color:#15803d; font-weight:700">201.81 KiB</span> (1.48x) | <span style="color:#dc2626">6,899</span> (13.2x) | <span style="color:#dc2626">509</span> (6.61x) |
-| cgVSS[^KMMplus23e] | 169 | 256 | <span style="color:#15803d; font-weight:700">140.22 KiB</span> (2.13x) | <span style="color:#15803d; font-weight:700">301.93</span> (1.73x) | <span style="color:#dc2626">369.53</span> (4.80x) |
-| **Chunky ($\ell = 32$)** | 342 | 512 | TBD | TBD | TBD |
-| Groth21 ($\ell = 8$) | 342 | 512 | TBD | TBD | TBD |
-| Golden | 342 | 512 | TBD | TBD | TBD |
-| [GHL21e][^GHL21e] | 342 | 512 | TBD | TBD | TBD |
-| cgVSS[^KMMplus23e] | 342 | 512 | TBD | TBD | TBD |
-| **Chunky ($\ell = 32$)** | 683 | 1024 | TBD | TBD | TBD |
-| Groth21 ($\ell = 8$) | 683 | 1024 | TBD | TBD | TBD |
-| Golden | 683 | 1024 | TBD | TBD | TBD |
-| [GHL21e][^GHL21e] | 683 | 1024 | TBD | TBD | TBD |
-| cgVSS[^KMMplus23e] | 683 | 1024 | TBD | TBD | TBD |
+| **Chunky ($\ell = 32$)** | 3 | 4 | 8.50 KiB | 12.49 | <span style="color:#15803d; font-weight:700">3.63</span> |
+| Groth21 ($\ell = 8$) | 3 | 4 | <span style="color:#dc2626">13.09 KiB</span> (1.54x) | <span style="color:#dc2626">21.5</span> (1.72x) | <span style="color:#dc2626">11.1</span> (3.05x) |
+| Groth21 ($\ell = 16$) | 3 | 4 | <span style="color:#dc2626">9.34 KiB</span> (1.10x) | <span style="color:#dc2626">15.1</span> (1.21x) | <span style="color:#dc2626">10.4</span> (2.86x) |
+| Groth21 ($\ell = 32$) | 3 | 4 | <span style="color:#15803d; font-weight:700">7.46 KiB</span> (0.88x) | <span style="color:#15803d; font-weight:700">11.9</span> (0.95x) | <span style="color:#dc2626">7.9</span> (2.17x) |
+| Golden | 3 | 4 | <span style="color:#15803d; font-weight:700">2.66 KiB</span> (3.20x) | <span style="color:#dc2626">4,631</span> (371x) | <span style="color:#dc2626">5.52</span> (1.52x) |
+| [GHL21e][^GHL21e] | 3 | 4 | <span style="color:#dc2626">176.69 KiB</span> (20.8x) | <span style="color:#dc2626">5,512</span> (441x) | <span style="color:#dc2626">455</span> (125x) |
+| cgVSS[^KMMplus23e] | 3 | 4 | <span style="color:#15803d; font-weight:700">2.95 KiB</span> (2.88x) | <span style="color:#dc2626">44.36</span> (3.55x) | <span style="color:#dc2626">47.46</span> (13.07x) |
+| **Chunky ($\ell = 32$)** | 6 | 8 | 12.90 KiB |     19.99 |        <span style="color:#15803d; font-weight:700">4.73</span> |
+| Groth21 ($\ell = 8$) | 6 | 8 | <span style="color:#dc2626">20.15 KiB</span> (1.56x) | <span style="color:#dc2626">36.4</span> (1.82x) | <span style="color:#dc2626">18.0</span> (3.81x) |
+| Groth21 ($\ell = 16$) | 6 | 8 | <span style="color:#dc2626">13.40 KiB</span> (1.04x) | <span style="color:#dc2626">23.7</span> (1.19x) | <span style="color:#dc2626">16.0</span> (3.38x) |
+| Groth21 ($\ell = 32$) | 6 | 8 | <span style="color:#15803d; font-weight:700">10.02 KiB</span> (0.78x) | <span style="color:#15803d; font-weight:700">17.6</span> (0.88x) | <span style="color:#dc2626">10.9</span> (2.30x) |
+| Golden | 6 | 8 | <span style="color:#15803d; font-weight:700">5.29 KiB</span> (2.44x) | <span style="color:#dc2626">9,196</span> (460x) | <span style="color:#dc2626">11.02</span> (2.33x) |
+| [GHL21e][^GHL21e] | 6 | 8 | <span style="color:#dc2626">178.12 KiB</span> (13.8x) | <span style="color:#dc2626">5,607</span> (280x) | <span style="color:#dc2626">468</span> (98.9x) |
+| cgVSS[^KMMplus23e] | 6 | 8 | <span style="color:#15803d; font-weight:700">5.14 KiB</span> (2.51x) | <span style="color:#dc2626">48.48</span> (2.43x) | <span style="color:#dc2626">56.50</span> (11.95x) |
+| **Chunky ($\ell = 32$)** | 11 | 16 | 21.71 KiB |     34.61 |       <span style="color:#15803d; font-weight:700">6.69</span> |
+| Groth21 ($\ell = 8$) | 11 | 16 | <span style="color:#dc2626">34.27 KiB</span> (1.58x) | <span style="color:#dc2626">64.3</span> (1.86x) | <span style="color:#dc2626">30.7</span> (4.59x) |
+| Groth21 ($\ell = 16$) | 11 | 16 | <span style="color:#15803d; font-weight:700">21.52 KiB</span> (0.99x) | <span style="color:#dc2626">41.0</span> (1.18x) | <span style="color:#dc2626">27.3</span> (4.07x) |
+| Groth21 ($\ell = 32$) | 11 | 16 | <span style="color:#15803d; font-weight:700">15.15 KiB</span> (0.70x) | <span style="color:#15803d; font-weight:700">28.0</span> (0.81x) | <span style="color:#dc2626">17.5</span> (2.61x) |
+| Golden | 11 | 16 | <span style="color:#15803d; font-weight:700">10.50 KiB</span> (2.07x) | <span style="color:#dc2626">18,430</span> (533x) | <span style="color:#dc2626">22.46</span> (3.36x) |
+| [GHL21e][^GHL21e] | 11 | 16 | <span style="color:#dc2626">180.94 KiB</span> (8.33x) | <span style="color:#dc2626">6,002</span> (173x) | <span style="color:#dc2626">591</span> (88.3x) |
+| cgVSS[^KMMplus23e] | 11 | 16 | <span style="color:#15803d; font-weight:700">9.49 KiB</span> (2.29x) | <span style="color:#dc2626">57.24</span> (1.65x) | <span style="color:#dc2626">67.85</span> (10.14x) |
+| **Chunky ($\ell = 32$)** | 22 | 32 | 39.32 KiB |     63.06 |       <span style="color:#15803d; font-weight:700">10.57</span> |
+| Groth21 ($\ell = 8$) | 22 | 32 | <span style="color:#dc2626">62.52 KiB</span> (1.59x) | <span style="color:#dc2626">121.8</span> (1.93x) | <span style="color:#dc2626">54.6</span> (5.17x) |
+| Groth21 ($\ell = 16$) | 22 | 32 | <span style="color:#15803d; font-weight:700">37.77 KiB</span> (0.96x) | <span style="color:#dc2626">72.6</span> (1.15x) | <span style="color:#dc2626">48.2</span> (4.56x) |
+| Groth21 ($\ell = 32$) | 22 | 32 | <span style="color:#15803d; font-weight:700">25.40 KiB</span> (0.65x) | <span style="color:#15803d; font-weight:700">48.2</span> (0.76x) | <span style="color:#dc2626">29.1</span> (2.76x) |
+| Golden | 22 | 32 | <span style="color:#15803d; font-weight:700">20.97 KiB</span> (1.87x) | <span style="color:#dc2626">36,790</span> (583x) | <span style="color:#dc2626">51.85</span> (4.91x) |
+| [GHL21e][^GHL21e] | 22 | 32 | <span style="color:#dc2626">183.12 KiB</span> (4.66x) | <span style="color:#dc2626">5,735</span> (90.9x) | <span style="color:#dc2626">486</span> (46.0x) |
+| cgVSS[^KMMplus23e] | 22 | 32 | <span style="color:#15803d; font-weight:700">18.23 KiB</span> (2.16x) | <span style="color:#dc2626">76.08</span> (1.21x) | <span style="color:#dc2626">89.30</span> (8.45x) |
+| **Chunky ($\ell = 32$)** | 43 | 64 | 74.54 KiB |    119.46 |       <span style="color:#15803d; font-weight:700">16.90</span> |
+| Groth21 ($\ell = 8$) | 43 | 64 | <span style="color:#dc2626">119.02 KiB</span> (1.60x) | <span style="color:#dc2626">232.2</span> (1.94x) | <span style="color:#dc2626">95.8</span> (5.67x) |
+| Groth21 ($\ell = 16$) | 43 | 64 | <span style="color:#15803d; font-weight:700">70.27 KiB</span> (0.94x) | <span style="color:#dc2626">136.4</span> (1.14x) | <span style="color:#dc2626">88.7</span> (5.25x) |
+| Groth21 ($\ell = 32$) | 43 | 64 | <span style="color:#15803d; font-weight:700">45.90 KiB</span> (0.62x) | <span style="color:#15803d; font-weight:700">89.0</span> (0.74x) | <span style="color:#dc2626">51.8</span> (3.07x) |
+| Golden | 43 | 64 | <span style="color:#15803d; font-weight:700">41.88 KiB</span> (1.78x) | <span style="color:#dc2626">74,098</span> (620x) | <span style="color:#dc2626">148.57</span> (8.79x) |
+| [GHL21e][^GHL21e] | 43 | 64 | <span style="color:#dc2626">187.50 KiB</span> (2.52x) | <span style="color:#dc2626">5,896</span> (49.4x) | <span style="color:#dc2626">487</span> (28.8x) |
+| cgVSS[^KMMplus23e] | 43 | 64 | <span style="color:#15803d; font-weight:700">35.66 KiB</span> (2.09x) | <span style="color:#15803d; font-weight:700">108.93</span> (1.10x) | <span style="color:#dc2626">131.16</span> (7.76x) |
+| **Chunky ($\ell = 32$)** | 86 | 128 | 144.98 KiB |    232.74 |       <span style="color:#15803d; font-weight:700">29.76</span> |
+| Groth21 ($\ell = 8$) | 86 | 128 | <span style="color:#dc2626">232.02 KiB</span> (1.60x) | <span style="color:#dc2626">453.6</span> (1.95x) | <span style="color:#dc2626">185.1</span> (6.22x) |
+| Groth21 ($\ell = 16$) | 86 | 128 | <span style="color:#15803d; font-weight:700">135.27 KiB</span> (0.93x) | <span style="color:#dc2626">262.1</span> (1.13x) | <span style="color:#dc2626">164.4</span> (5.53x) |
+| Groth21 ($\ell = 32$) | 86 | 128 | <span style="color:#15803d; font-weight:700">86.90 KiB</span> (0.60x) | <span style="color:#15803d; font-weight:700">172.1</span> (0.74x) | <span style="color:#dc2626">96.1</span> (3.23x) |
+| Golden | 86 | 128 | <span style="color:#15803d; font-weight:700">83.72 KiB</span> (1.73x) | <span style="color:#dc2626">148,814</span> (639x) | <span style="color:#dc2626">519.11</span> (17.4x) |
+| [GHL21e][^GHL21e] | 86 | 128 | <span style="color:#dc2626">192.62 KiB</span> (1.33x) | <span style="color:#dc2626">5,965</span> (25.6x) | <span style="color:#dc2626">486</span> (16.3x) |
+| cgVSS[^KMMplus23e] | 86 | 128 | <span style="color:#15803d; font-weight:700">70.57 KiB</span> (2.05x) | <span style="color:#15803d; font-weight:700">176.72</span> (1.32x) | <span style="color:#dc2626">216.53</span> (7.28x) |
+| **Chunky ($\ell = 32$)** | 171 | 256 | 285.85 KiB |    471.83 |       <span style="color:#15803d; font-weight:700">51.38</span> |
+| Groth21 ($\ell = 8$) | 171 | 256 | <span style="color:#dc2626">458.02 KiB</span> (1.60x) | <span style="color:#dc2626">894.1</span> (1.89x) | <span style="color:#dc2626">353.9</span> (6.89x) |
+| Groth21 ($\ell = 16$) | 171 | 256 | <span style="color:#15803d; font-weight:700">265.27 KiB</span> (0.93x) | <span style="color:#dc2626">516.1</span> (1.09x) | <span style="color:#dc2626">320.4</span> (6.24x) |
+| Groth21 ($\ell = 32$) | 171 | 256 | <span style="color:#15803d; font-weight:700">168.90 KiB</span> (0.59x) | <span style="color:#15803d; font-weight:700">333.0</span> (0.71x) | <span style="color:#dc2626">179.2</span> (3.49x) |
+| Golden | 171 | 256 | <span style="color:#15803d; font-weight:700">167.38 KiB</span> (1.71x) | <span style="color:#dc2626">298,193</span> (632x) | <span style="color:#dc2626">1,882.84</span> (36.6x) |
+| [GHL21e][^GHL21e] | 171 | 256 | <span style="color:#15803d; font-weight:700">201.81 KiB</span> (1.42x) | <span style="color:#dc2626">6,569</span> (13.9x) | <span style="color:#dc2626">512</span> (9.96x) |
+| cgVSS[^KMMplus23e] | 171 | 256 | <span style="color:#15803d; font-weight:700">140.33 KiB</span> (2.04x) | <span style="color:#15803d; font-weight:700">312.63</span> (1.51x) | <span style="color:#dc2626">390.13</span> (7.59x) |
+| **Chunky ($\ell = 32$)** | 342 | 512 | 567.60 KiB | 941.18 | <span style="color:#15803d; font-weight:700">93.72</span> |
+| Groth21 ($\ell = 8$) | 342 | 512 | <span style="color:#dc2626">910.02 KiB</span> (1.60x) | <span style="color:#dc2626">1,776.7</span> (1.89x) | <span style="color:#dc2626">690.6</span> (7.37x) |
+| Groth21 ($\ell = 16$) | 342 | 512 | <span style="color:#15803d; font-weight:700">525.27 KiB</span> (0.93x) | <span style="color:#dc2626">1,032.5</span> (1.10x) | <span style="color:#dc2626">626.4</span> (6.68x) |
+| Groth21 ($\ell = 32$) | 342 | 512 | <span style="color:#15803d; font-weight:700">332.90 KiB</span> (0.59x) | <span style="color:#15803d; font-weight:700">649.6</span> (0.69x) | <span style="color:#dc2626">347.9</span> (3.71x) |
+| Golden | 342 | 512 | <span style="color:#15803d; font-weight:700">334.72 KiB</span> (1.70x) | <span style="color:#dc2626">596,091</span> (633x) | <span style="color:#dc2626">7,151.19</span> (76.3x) |
+| [GHL21e][^GHL21e] | 342 | 512 | <span style="color:#15803d; font-weight:700">220.25 KiB</span> (2.58x) | <span style="color:#dc2626">6,860</span> (7.29x) | <span style="color:#dc2626">522</span> (5.57x) |
+| cgVSS[^KMMplus23e] | 342 | 512 | <span style="color:#15803d; font-weight:700">279.88 KiB</span> (2.03x) | <span style="color:#15803d; font-weight:700">582.25</span> (1.62x) | <span style="color:#dc2626">726.68</span> (7.75x) |
+| **Chunky ($\ell = 32$)** | 683 | 1024 | 1,131.10 KiB | 1,825.50 | <span style="color:#15803d; font-weight:700">170.23</span> |
+| Groth21 ($\ell = 8$) | 683 | 1024 | <span style="color:#dc2626">1,814.02 KiB</span> (1.60x) | <span style="color:#dc2626">3,478.1</span> (1.91x) | <span style="color:#dc2626">1,366.0</span> (8.02x) |
+| Groth21 ($\ell = 16$) | 683 | 1024 | <span style="color:#15803d; font-weight:700">1,045.27 KiB</span> (0.92x) | <span style="color:#dc2626">2,044.7</span> (1.12x) | <span style="color:#dc2626">1,227.3</span> (7.21x) |
+| Groth21 ($\ell = 32$) | 683 | 1024 | <span style="color:#15803d; font-weight:700">660.90 KiB</span> (0.58x) | <span style="color:#15803d; font-weight:700">1,292.5</span> (0.71x) | <span style="color:#dc2626">679.5</span> (3.99x) |
+| Golden | 683 | 1024 | <span style="color:#15803d; font-weight:700">669.38 KiB</span> (1.69x) | <span style="color:#dc2626">1,179,519</span> (646x) | <span style="color:#dc2626">27,747.90</span> (163x) |
+| [GHL21e][^GHL21e] | 683 | 1024 | <span style="color:#15803d; font-weight:700">253.38 KiB</span> (4.46x) | <span style="color:#dc2626">7,879</span> (4.32x) | <span style="color:#dc2626">562</span> (3.30x) |
+| cgVSS[^KMMplus23e] | 683 | 1024 | <span style="color:#15803d; font-weight:700">558.96 KiB</span> (2.02x) | <span style="color:#15803d; font-weight:700">1,170.40</span> (1.56x) | <span style="color:#dc2626">1,418.00</span> (8.33x) |
 
 
-To reproduce the **Chunky** numbers, clone [aptos-core](https://github.com/aptos-labs/aptos-core) and run:
+To reproduce the **Chunky** numbers:
 ```bash
-cd aptos-core/crates/aptos-crypto/benches/
-# TODO: modify the code to test the desired thresholds
+# clone repo
+git clone https://github.com/aptos-labs/aptos-core
+
+# checkout branch
+cd aptos-core/
+git checkout alin/chunky-blstrs
+
+# run benches
+cd crates/aptos-crypto/benches/
 ./run-pvss-benches.sh
 ```
 
@@ -839,16 +864,17 @@ cd fy/
 # Transcript size only (one row per (t, n)):
 go test ./golden/ -run TestPrintTranscriptSize -v -timeout 2h
 
-# Full benchmark (transcript size + deal/verify/serialize/decrypt-share):
-go test ./golden/ -run TestPrintBenchmarks -v -timeout 2h
-
-# Custom (t, n) pairs, comma-separated as "t:n":
-GOMAXPROCS=10 GOLDEN_SIZES=6:8,11:16 go test ./golden/ -run TestPrintBenchmarks -v
+# Full benchmark (transcript size + deal/verify/serialize/decrypt-share).
+GOMAXPROCS=16 go test ./golden/ -run TestPrintBenchmarks -v -timeout 2h
 ```
+
+{: .smallnote}
+To benchmark custom $(t, n)$ pairs, comma-separate them as "t:n" via, say:
+`GOMAXPROCS=16 GOLDEN_SIZES=6:8,11:16 go test ./golden/ -run TestPrintBenchmarks -v`
 
 #### Why is Golden dealing so slow?
 
-Golden is the only scheme in the table that relies on a SNARK: for every recipient, the dealer produces a [gnark](https://github.com/Consensys/gnark) PLONK proof attesting that an eVRF-derived pad was computed correctly. Each PLONK proof costs ~1.2 s on our machine, and a dealing contains $n-1$ of them, which is why Deal scales as $\approx 1{,}200(n-1)$ ms. Verification is much cheaper ($\approx 7$ ms/proof) since PLONK verify is fast, and per-recipient share decryption is just one Diffie–Hellman operation plus a scalar subtraction.
+Golden is the only scheme in the table that relies on a SNARK: for every recipient, the dealer produces a [gnark](https://github.com/Consensys/gnark) PLONK proof attesting that an eVRF-derived pad was computed correctly. Each PLONK proof costs ~1.15 seconds on our machine, and a dealing contains $n$ of them, which is why Deal scales as $\approx 1{,}150\cdot n$ ms. Verification is much cheaper ($\approx 7$ ms/proof) since PLONK verify is fast, and per-recipient share decryption is just one Diffie–Hellman operation plus a scalar subtraction.
 
 
 ### Groth21 notes
@@ -894,9 +920,6 @@ The result: Sourav's implementation was consistently **1.4-1.5x faster** for bot
 I suspect this is because `blstrs` includes hand-tuned C and assembly for BLS12-381 that is difficult to beat.
 
 We further improved Sourav's implementation by upgrading `blstrs` from v0.6.1 to v0.7.1 and `blst` from v0.3.11 to v0.3.16, which yielded an additional **~20% faster dealing** and **~2x faster verification**.
-
-{: .success}
-Note that this overly-generous towards Groth21, since blstrs is **faster** than arkworks, which we use in Chunky.
 
 #### What Groth21's knowledge soundness proof guarantees about worst-case decryption times
 {: #groth21-worst-case}
