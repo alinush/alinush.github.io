@@ -967,35 +967,35 @@ Applying the formula from Eq. \ref{eq:groth21-Z}, we get the following numbers.
 {: .note}
 The number of bits needed to represent a number $n > 0$ is $\floor{\log_2{n}}+1 = \ceil{\log_2{(n)} + 1}$.
 
-| $\ell$ | $n$   | $\ceil{\log_2(2Z)}$ |
-|--------|-------|---------------------|
-| 8      | 4     | 30 bits |
-| 8      | 8     | 31 bits |
-| 8      | 16    | 32 bits |
-| 8      | 32    | 33 bits |
-| 8      | 64    | 34 bits |
-| 8      | 128   | 35 bits |
-| 8      | 256   | 36 bits |
-| 8      | 512   | 37 bits |
-| 8      | 1024  | 38 bits |
-| 16     | 4     | 37 bits |
-| 16     | 8     | 38 bits |
-| 16     | 16    | 39 bits |
-| 16     | 32    | 40 bits |
-| 16     | 64    | 41 bits |
-| 16     | 128   | 42 bits |
-| 16     | 256   | 43 bits |
-| 16     | 512   | 44 bits |
-| 16     | 1024  | 45 bits |
-| 32     | 4     | 52 bits |
-| 32     | 8     | 53 bits |
-| 32     | 16    | 54 bits |
-| 32     | 32    | 55 bits |
-| 32     | 64    | 56 bits |
-| 32     | 128   | 57 bits |
-| 32     | 256   | 58 bits |
-| 32     | 512   | 59 bits |
-| 32     | 1024  | 60 bits |
+| $\ell$ | $n$   | $\ceil{\log_2(2Z)}$ | $\log_2(Z/E)$ |
+|--------|-------|---------------------|---------------|
+| 8      | 4     | 30 bits | 21 bits |
+| 8      | 8     | 31 bits | 22 bits |
+| 8      | 16    | 32 bits | 23 bits |
+| 8      | 32    | 33 bits | 24 bits |
+| 8      | 64    | 34 bits | 25 bits |
+| 8      | 128   | 35 bits | 26 bits |
+| 8      | 256   | 36 bits | 27 bits |
+| 8      | 512   | 37 bits | 28 bits |
+| 8      | 1024  | 38 bits | 29 bits |
+| 16     | 4     | 37 bits | 28 bits |
+| 16     | 8     | 38 bits | 29 bits |
+| 16     | 16    | 39 bits | 30 bits |
+| 16     | 32    | 40 bits | 31 bits |
+| 16     | 64    | 41 bits | 32 bits |
+| 16     | 128   | 42 bits | 33 bits |
+| 16     | 256   | 43 bits | 34 bits |
+| 16     | 512   | 44 bits | 35 bits |
+| 16     | 1024  | 45 bits | 36 bits |
+| 32     | 4     | 52 bits | 43 bits |
+| 32     | 8     | 53 bits | 44 bits |
+| 32     | 16    | 54 bits | 45 bits |
+| 32     | 32    | 55 bits | 46 bits |
+| 32     | 64    | 56 bits | 47 bits |
+| 32     | 128   | 57 bits | 48 bits |
+| 32     | 256   | 58 bits | 49 bits |
+| 32     | 512   | 59 bits | 50 bits |
+| 32     | 1024  | 60 bits | 51 bits |
 
 The **key takeaway** is that we choose Groth21 with $\ell = 8$ to benchmark against, since it would have the most comparable decryption times to Chunky at $\ell = 32$.
 

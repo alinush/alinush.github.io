@@ -424,6 +424,10 @@ Lastly, although cryptography is about power, it is important to understand its 
 
 This makes me think of (and be grateful to) all the people who have contributed so much to anti mass surveillance technologies.
 
+## Appendix: Resources
+
+ - [Coin Center's "Software is speech"](/files/Software-is-Speech-Coin-Center.pdf)
+
 ## References
 
 For cited works, see below 👇👇
