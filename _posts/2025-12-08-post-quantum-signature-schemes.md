@@ -1,4 +1,5 @@
 ---
+type: note
 tags:
  - benchmarks
  - digital signatures

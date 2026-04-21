@@ -1,4 +1,5 @@
 ---
+type: note
 tags:
  - benchmarks
 title: "TIL: Field multiplications are faster than hashing!"

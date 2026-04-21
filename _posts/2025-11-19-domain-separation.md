@@ -1,4 +1,5 @@
 ---
+type: note
 tags:
  - domain-separation
 title: Domain separation

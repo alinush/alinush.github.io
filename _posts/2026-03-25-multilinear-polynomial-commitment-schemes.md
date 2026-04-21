@@ -1,4 +1,5 @@
 ---
+type: note
 tags:
  - polynomial commitments
  - multilinear extensions (MLEs)

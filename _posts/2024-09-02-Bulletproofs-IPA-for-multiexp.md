@@ -1,4 +1,5 @@
 ---
+type: note
 tags:
  - Bulletproofs
  - inner-product arguments (IPAs)

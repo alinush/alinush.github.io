@@ -1,4 +1,5 @@
 ---
+type: note
 tags:
  - post-quantum
  - Shor

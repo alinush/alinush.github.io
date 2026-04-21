@@ -1,4 +1,5 @@
 ---
+type: note
 tags: 
 - vector commitments (VCs)
 - inner-product arguments (IPAs)

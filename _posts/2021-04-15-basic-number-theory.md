@@ -1,4 +1,5 @@
 ---
+type: note
 tags:
  - math
  - number theory

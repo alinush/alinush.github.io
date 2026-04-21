@@ -1,4 +1,5 @@
 ---
+type: note
 tags: LLM
 title: Large language models (LLMs)
 #date: 2020-11-05 20:45:59
@@ -12,7 +13,7 @@ permalink: llm
 ---
 
 {: .info}
-**tl;dr:** Write an intro paragraph here.
+**tl;dr:** Collecting some resources.
 
 <!--more-->
 

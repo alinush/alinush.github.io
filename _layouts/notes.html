@@ -1,0 +1,22 @@
+---
+layout: page
+titles:
+  en      : &EN       Notes
+  en-GB   : *EN
+  en-US   : *EN
+  en-CA   : *EN
+  en-AU   : *EN
+---
+{%- assign _notes_only = site.posts | where_exp: "p", "p.type == 'note'" -%}
+<div class="layout--archive js-all">
+  {%- include tags.html posts=_notes_only -%}
+  <div class="js-result layout--archive__result d-none">
+    {%- include article-list.html articles=_notes_only type='brief' show_info=true reverse=true group_by='year' -%}
+  </div>
+</div>
+
+<script>
+  {%- include scripts/archieve.js -%}
+</script>
+
+{{ content }}

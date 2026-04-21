@@ -1,4 +1,5 @@
 ---
+type: note
 tags:
  - zero-knowledge proofs (ZKPs)
 title: Polynomial Interactive Oracle Proofs (PIOPs)

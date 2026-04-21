@@ -1,4 +1,5 @@
 ---
+type: note
 tags:
  - zero-knowledge proofs (ZKPs)
 title: Interactive Oracle Proofs (IOPs)

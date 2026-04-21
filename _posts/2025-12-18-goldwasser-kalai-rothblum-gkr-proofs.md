@@ -1,4 +1,5 @@
 ---
+type: note
 tags:
 title: Goldwasser-Kalai-Rothblum (GKR) proofs
 #date: 2020-11-05 20:45:59

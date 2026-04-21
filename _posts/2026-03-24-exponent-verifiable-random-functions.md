@@ -1,4 +1,5 @@
 ---
+type: note
 tags:
  - verifiable random functions (VRFs)
  - exponent VRFs (eVRFs)

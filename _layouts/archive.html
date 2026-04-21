@@ -2,7 +2,7 @@
 layout: page
 titles:
   # @start locale config
-  en      : &EN       Archive
+  en      : &EN       Posts
   en-GB   : *EN
   en-US   : *EN
   en-CA   : *EN
@@ -29,7 +29,7 @@ titles:
 <div class="layout--archive js-all">
   {%- include tags.html -%}
   <div class="js-result layout--archive__result d-none">
-    {%- include article-list.html articles=site.posts type='brief' show_info=true reverse=true group_by='year' -%}
+    {%- include article-list.html articles=site.posts type='brief' show_info=true reverse=true group_by='year' emoji_prefix=true -%}
   </div>
 </div>
 

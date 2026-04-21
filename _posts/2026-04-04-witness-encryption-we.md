@@ -1,4 +1,5 @@
 ---
+type: note
 tags:
  - witness encryption (WE)
  - encryption

@@ -35,6 +35,11 @@ This is some of the stuff I (plan to) read and think others could find useful.
  <!-- - [Notes on programmable cryptography](https://github.com/0xPARC/0xparc-intro-book/releases), 0xPARC `toread`{:.warning} -->
  - [PLONK notes (wave 1)](https://www.ret2basic.me/2024/08/21/plonk-notes-wave-1.html), ret2basic.eth `toread`{:.warning}
  - [A brief history of lookup arguments](https://github.com/ingonyama-zk/papers/blob/main/lookups.pdf), Tomer Solberg, Ingonyama, 2023
+ - RSA accumulators without hashing to prime[^KL24e]`toread`{:.warning}
+ - Lasso explanation by Distributed Labs[^FL25e]`toread`{:.warning}
+ - All of the MLE PCSs in my [RobertoFest slides](https://docs.google.com/presentation/d/1aKFLECpi4nikzU3qzCx51xl1fmuJQq183jEdWbcks-k)[^Lee21]$^,$[^BCHO22]$^,$[^KT23e]$^,$[^GPS25e]$^,$[^EG25e]`toread`{:.warning}
+ - Goldreich's short tutorial on ZK[^Gold10]`toread`{:.warning}
+ - Mutator sets[^SV23e]`toread`{:.warning}
 
 ## Group theory
 

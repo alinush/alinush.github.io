@@ -1,4 +1,5 @@
 ---
+type: note
 tags: 
  - elliptic curves
  - math

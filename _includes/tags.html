@@ -1,11 +1,27 @@
+{%- assign _posts_for_tags = include.posts | default: site.posts -%}
+
+{%- comment -%}
+  Build a unique, sorted list of tag names from _posts_for_tags,
+  so that posts filtered out upstream (e.g. type == 'note') don't
+  contribute tags here.
+{%- endcomment -%}
+{%- assign _tag_names = '' | split: '' -%}
+{%- for _post in _posts_for_tags -%}
+  {%- for _tag_name in _post.tags -%}
+    {%- unless _tag_names contains _tag_name -%}
+      {%- assign _tag_names = _tag_names | push: _tag_name -%}
+    {%- endunless -%}
+  {%- endfor -%}
+{%- endfor -%}
+{%- assign _tag_names = _tag_names | sort -%}
+
 {%- assign _tag_max_size = 1 -%}
 {%- assign _tag_min_size = 1 -%}
-{%- assign _tag_cur_size = 1 -%}
-{%- assign _tags = site.tags | sort -%}
-{%- for _tag in _tags -%}
-  {%- assign _tag_cur_size = _tag[1].size -%}
+{%- for _tag_name in _tag_names -%}
+  {%- assign _tag_posts = _posts_for_tags | where_exp: "p", "p.tags contains _tag_name" -%}
+  {%- assign _tag_cur_size = _tag_posts | size -%}
   {%- if _tag_cur_size > _tag_max_size -%}
-    {%- assign _tag_max_size =  _tag_cur_size -%}
+    {%- assign _tag_max_size = _tag_cur_size -%}
   {%- endif -%}
   {%- if _tag_cur_size < _tag_min_size -%}
     {%- assign _tag_min_size = _tag_cur_size -%}
@@ -19,11 +35,12 @@
   <ul class="menu">
     <li>
       <button type="button" class="button button--secondary button--pill tag-button tag-button--all" data-encode="">
-        Show All<div class="tag-button__count">{{ site.posts | size }}</div>
+        Show All<div class="tag-button__count">{{ _posts_for_tags | size }}</div>
       </button>
     </li>
-    {%- for _tag in _tags -%}
-      {%- assign _tag_cur_size = _tag[1].size -%}
+    {%- for _tag_name in _tag_names -%}
+      {%- assign _tag_posts = _posts_for_tags | where_exp: "p", "p.tags contains _tag_name" -%}
+      {%- assign _tag_cur_size = _tag_posts | size -%}
       {%- assign _tag_min_1 = _tag_min_size -%}
       {%- assign _tag_max_1 = _tag_min_1 | plus: _tag_gap_size -%}
       {%- assign _tag_min_2 = _tag_max_1 -%}
@@ -43,8 +60,8 @@
       {%- else -%}
         {%- assign _c_index = 4 -%}
       {%- endif -%}
-      <li><button type="button" class="button button--pill tag-button tag-button-{{ _c_index }}" data-encode="{{ _tag[0] | strip | url_encode }}">
-          <span>{{ _tag[0] | strip }}</span><div class="tag-button__count">{{ _tag[1].size }}</div>
+      <li><button type="button" class="button button--pill tag-button tag-button-{{ _c_index }}" data-encode="{{ _tag_name | strip | url_encode }}">
+          <span>{{ _tag_name | strip }}</span><div class="tag-button__count">{{ _tag_cur_size }}</div>
         </button>
       </li>
     {%- endfor -%}

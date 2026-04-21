@@ -26,6 +26,10 @@ header:
     url: /archive.html
 
   - titles:
+      en      : &EN       Notes
+    url: /notes.html
+
+  - titles:
       en      : &EN       Talks
     url: /talks
   - titles:
@@ -34,9 +38,6 @@ header:
   - titles:
       en      : &EN       Cryptomat
     url: /cryptomat
-  - titles:
-      en      : &EN       To read
-    url: /to-read
 
   - titles:
       en      : &EN       Paraphernalia
