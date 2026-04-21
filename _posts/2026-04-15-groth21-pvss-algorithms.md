@@ -7,7 +7,6 @@ tags:
  - sigma protocols
  - distributed key generation (DKG)
 title: "Groth21 PVSS"
-type: note
 #date: 2020-11-05 20:45:59
 #published: false
 permalink: groth21
@@ -90,7 +89,7 @@ This is more general and in line with DFINITY's implementation over BLS12-381 wh
         - The decrypted chunk is guaranteed to be in $[1-Z, Z-1]$
             + **TODO:** What about $\Delta$?
         - So the max range of a discrete log is $(Z-1)-(1-Z)+1= 2Z-1$
-            - The receiver needs to compute $E-1$ discrete logs from a range of size $2Z-1$.
+            - The verifier needs to compute $E-1$ discrete logs from a range of size $2Z-1$.
             - The cost of this computation is $(E-1)\cdot \sqrt{2Z-1}$. 
                 * This means that we will need to use a much smaller $B$.
                 * We can do slightly better by using batched BSGS DL algorithms
@@ -272,6 +271,7 @@ Y,\\\\
 z_\beta
 \end{pmatrix}$
 
+{: #verchunk}
 $\VerChunk
 \begin{pmatrix}
 \ek_1,\ldots,\ek_n,
@@ -533,6 +533,172 @@ These benchmarks were run in 2024, or earlier:
 groth/deal-t=660/n=1024 time: [3.6432 s 3.6925 s 3.7592 s]
 groth/verify-t=660/n=1024 time: [2.1861 s 2.2049 s 2.2291 s]
 ```
+
+## Appendix
+
+### Attack: Inflate 1 chunk to $\approx Z/E$
+{: #malicious-single-chunk-inflation}
+
+The soundness of [$\ProveChunk$](#correct-chunking-zkp) only guarantees that the extracted chunk $s_{i,j}$ satisfies:
+
+$$\term{\Delta_{i,j}} \cdot s_{i,j} \in [1-Z, Z-1]\,$$
+
+for some $\emph{\Delta_{i,j}}\in[1,E-1]$.
+
+Worst case has $\Delta_{i,j}=1 \Rightarrow$ admits $\sizeof{s_{i,j}}$ up to $Z-1$.
+
+But an efficient adversary cannot reach this worst case.
+Below we show a one-shot deterministic attack that installs a single chunk of size $c \approx Z/E$.
+
+The dealer will set $s_{1,1} = \term{c}$, where:
+
+$$\emph{c} = \left\lfloor \frac{Z-1-S}{E-1}\right\rfloor \approx \frac{Z}{E} \approx 2\ell n m B$$
+
+while setting all other $s_{i,j} \in [0, B-1]$. Recall $\emph{S} = nm(B-1)(E-1)$ and $\emph{Z}=2\ell S$.
+
+#### Step 1: Pick polynomial with $p(1) = c$
+
+PVSS dealing can take place in one out of two settings:
+
+**Dealer can freely pick the secret $a_0$**:
+
+- Sample $a_1, \ldots, a_{t-1}\randget\Zp$
+- Solve for $a_0$ such that $c = p(1) \Leftrightarrow c = \sum_{k=0}^{t-1} a_k \cdot 1^k$
+    + $\Rightarrow a_0 \gets c - \sum_{k=1}^{t-1} a_k$
+
+**Dealer's secret $a_0$ is fixed; they cannot pick it**:
+
+- Requires $t \geq 2$ (so there is at least one free coefficient besides $a_0$).
+    + $t=1$ is a degenerate threshold.
+    + In other words, the secret sharing is trivial: everyone has the same share: $a_0$, which makes this case uninteresting.
+- Sample $a_2, \ldots, a_{t-1}\randget\Zp$
+- Solve for $a_1$ such that $c = p(1) \Leftrightarrow c = \sum_{k=0}^{t-1} a_k \cdot 1^k$
+    + $\Rightarrow a_1 \gets c - \sum_{k\in[0,t-1],\ k\neq 1} a_k$
+
+{: .note}
+$\ProveSh$ only verifies the polynomial-evaluation relation.
+It doesn't care how coefficients were chosen. 
+
+#### Step 2: Chunk share 1 such that its 1st chunk is oversized
+
+**First**, chunk $s_1 = c$ as $(s_{1,1}, s_{1,2}, \ldots, s_{1,m}) = (c, 0, 0, \ldots, 0)$. 
+Mathematically, this is a valid radix-$B$ decomposition:
+
+$$\sum_{j=1}^m s_{1,j} B^{j-1} = c\,$$
+
+except it is not a base-$B$ decomposition, since one of its digits is above $B$.
+This is exactly the core of the issue: the approximate range proof cannot enforce $s_{i,j} \in [0, B)$.
+
+**Second**, chunk all other $s_i$'s for $i \geq 2$ honestly into $[0, B-1]^m$.
+
+{: .note}
+First, the position of the inflated chunk $c$ can also be arbitrary rather than fixed as the 1st chunk.
+Second, the zeros in $(c, 0, 0, \ldots, 0)$ are not essential: any values $s_{1,j}\in[0,B-1]$ work for $j\geq 2$.
+The bound on $c$ shifts only by $(m-1)(B-1)$, negligible compared to $c\approx Z/E$, so we can replace them with arbitrary random values in $[0, B-1]$ and pin $p(1)$ to the corresponding $s_1 = c + \sum_{j\geq 2} s_{1,j}B^{j-1}$.
+
+#### Step 3: ElGamal-encrypt, run $\ProveSh$ honestly
+
+$\ProveSh$ checks only the polynomial-evaluation and scalar-recombination relations, both of which hold by construction.
+
+#### Step 4: Run $\ProveChunk$ with $\sigma_k = 0$
+
+[$\VerChunk$](#verchunk) checks:
+1. $z_{s,k} \in [0, Z-1]$ for all $k$
+2. three algebraic identities over $\mathbb{G}\_1$ relating $B_k, C_k, D_i, z_{r,i}, z_{s,k}, z_\beta, Y$.
+
+**Critically: there is no check on $\sigma_k$.**
+The verifier sees $\sigma_k$ only through the commitment $C_k = \beta_k \cdot ek_0 + \sigma_k \cdot G_1$, and the algebraic identities will continue to hold for any $\sigma_k$ the prover picks.
+The honest prover picks $\sigma_k \randget [-S, Z-1]$ for **zero-knowledge** (to statistically hide $s_{i,j}$'s contribution to $z_{s,k}$).
+A malicious dealer may have no interest in preserving ZK.
+
+**The dealer will pick $\sigma_k = 0$ for all $k$.** With this choice, $z_{s,k} = \sum_{i,j} e_{i,j,k}\, s_{i,j} + 0 = \term{V_k}$, where
+
+$$\emph{V_k} \triangleq e_{1,1,k} \cdot c + \term{T_k},\qquad \emph{T_k} \triangleq \sum_{(i,j)\neq(1,1)} e_{i,j,k}\, s_{i,j} \in [0, S]$$
+
+Upper bound on $V_k$:
+
+$$V_k \leq (E-1)\cdot c + S$$
+
+By our choice of $c$:
+
+$$V_k \leq (E-1)\cdot \frac{Z-1-S}{E-1} + S = Z - 1$$
+
+Lower bound $V_k \geq 0$ holds trivially. So $z_{s,k} = V_k \in [0, Z-1]$ **always**, regardless of FS challenges. The rejection check in $\ProveChunk$ passes on the first try, every time.
+No grinding, no probability analysis.
+
+<!-- NOTE: There must be more sophisticated attacks than this that target multiple chunks, rather than 1
+
+#### Can we push $c$ beyond $Z/E$?
+
+No. For **any** prover strategy (including adaptive choice of $\sigma_k$ and arbitrary grinding), fix all FS inputs except $e_{1,1,k}$. The rejection check translates to $e_{1,1,k}\cdot c$ landing in a width-$Z-1$ interval, which contains at most $\lceil Z/c\rceil$ multiples of $c$ (and at most $E$, since $e_{1,1,k}\in[0,E-1]$). So for any strategy:
+
+$$\Pr[\text{run } k \text{ accepts}] \leq \frac{\min(\lceil Z/c\rceil,\ E)}{E}$$
+
+- **$c \leq Z/E$:** $\lceil Z/c\rceil \geq E$, bound $= E/E = 1$. Our $\sigma_k=0$ attack **realizes** it deterministically.
+- **$c > Z/E$:** bound $< 1$, and $\ell$ runs compound as $(\lceil Z/c\rceil/E)^\ell$. At $c=Z$ this is $E^{-\ell} = 2^{-\lambda}$ — the soundness floor.
+
+So $c\approx Z/E$ is simultaneously what our attack achieves and the provable PPT ceiling. The two statements are not in tension — they are the same statement viewed from two sides.
+
+-->
+
+#### Impact on share decryption
+
+For DFINITY's parameters ($n=40$, $m=16$, $B=2^{16}$, $E=256$, $\ell=32$, $\lambda=256$):
+
+- $S \approx 2^{33.3}$, $Z \approx 2^{39.3}$, $Z/E \approx 2^{31.3}$.
+- Honest chunk: $B-1 \approx 2^{16}$
+- Malicious chunk from this attack: $c\approx 2^{31}$
+- See more cases [here](/chunky#but-does-the-worst-case-ever-materialize) for different chunk sizes $B$ and # of players $n$
+
+#### Implementation
+
+A working Rust implementation of this attack against the DFINITY parameterization is in [`alinush/groth21`](https://github.com/alinush/groth21) under `src/groth21/malicious.rs`, with a test `malicious_deal_passes_verification` confirming the transcript clears the Groth21 verifier.
+
+### Attack: Inflate $m$ chunks to $\approx 2\ell nB$
+{: #malicious-all-chunk-inflation}
+
+Same $\sigma_k = 0$ machinery, same pinned-$p(1)$ polynomial trick.
+We only spread the chunk-mass budget across all $m$ chunks of share 1 instead of concentrating it in one.
+
+**Setup.** Pick a new per-chunk magnitude $c$, to be bounded below
+This is **not** the $c \approx Z/E$ from the single-chunk attack above.
+Set $(s_{1,1}, \ldots, s_{1,m}) = (c, c, \ldots, c)$.
+Chunk the other shares $i\in \\{2,\ldots,n\\}$ honestly.
+Pin $p(1) \equiv c\cdot\frac{B^m-1}{B-1} \pmod p$ by solving for $a_1$, [as described before](#step-1-pick-polynomial-with-p1--c).
+
+**Bound on $c$.** With $\sigma_k = 0$, honest chunks on shares $2,\ldots,n$, and all $m$ chunks of share 1 at $c$, redefine
+
+$$\term{V_k} \triangleq \underbrace{\sum_{j=1}^m e_{1,j,k}\cdot c}_{\text{share 1 (all inflated)}} + \underbrace{\sum_{i=2}^n\sum_{j=1}^m e_{i,j,k}\cdot s_{i,j}}_{\text{honest shares}\,\in\, [0,\,(n-1)m(B-1)(E-1)]}$$
+
+Assume worst case FS challenges, then solve for $c$ (recall from the [preliminaries](#notation) that $\emph{Z} = 2\ell nm(B-1)(E-1)$):
+
+\begin{align}
+V_k \leq (E-1)\bigl[mc + (n-1)m(B-1)\bigr] &\leq Z-1 \Leftrightarrow\\\\\
+(E-1)mc + (E-1)(n-1)m(B-1) &\leq Z-1 \Leftrightarrow\\\\\
+(E-1)mc &\leq Z-1 - (E-1)(n-1)m(B-1) \Leftrightarrow\\\\\
+c &\leq \frac{Z-1 - (E-1)(n-1)m(B-1)}{(E-1)m}\\\\\
+&= \frac{Z-1}{m(E-1)} - (n-1)(B-1)\\\\\
+&= \frac{2\ell nm(B-1)(E-1) - 1}{m(E-1)} - (n-1)(B-1)\\\\\
+&\leq \frac{2\ell nm(B-1)(E-1)}{m(E-1)} - (n-1)(B-1)\\\\\
+&= 2\ell n(B-1) - (n-1)(B-1)\\\\\
+&= (B-1)\bigl[2\ell n - (n-1)\bigr]\\\\\
+&= (B-1)\bigl[n(2\ell-1) + 1\bigr]\\\\\
+&\leq 2\ell n B
+\end{align}
+
+**Cost comparison.** Recall that batched BSGS can solve $k$ DLs each in a range of size $\leq R$ in time $\sqrt{k \cdot R}$. 
+Applying this to share 1's $m$ chunks:
+
+- **Honest dealer:** $m$ DLs of size $B \rightarrow \sqrt{mB}$ time via batched BSGS
+- [Single-chunk attack](#malicious-single-chunk-inflation): $m-1$ DLs of size $B$ and 1 DL of size $Z/E\approx 2\ell n m B$
+    + _Smartest algorithm:_ $\sqrt{mB}$ time for a batched BSGS, which actually identifies the inflated chunk. Then, do a BSGS in time $\sqrt{2\ell n m B}$ for the inflated chunk. This last one dominates.
+- [All-$m$-chunks attack](#malicious-all-chunk-inflation) (this section): $m$ DLs of size $2\ell nB$
+    + Cost: $\sqrt{m \cdot 2\ell nB} = \sqrt{2\ell n m B}$ via batched BSGS. Same as the single chunk attack. Slightly cheaper actually.
+    + The problem is the verifier doesn't know which attack took place. So he will often incur the worst-case of the single-chunk attack if he is smart and tries to guess the attack.
+
+#### Implementation
+
+This variant is implemented in [`alinush/groth21`](https://github.com/alinush/groth21) as `malicious_deal_full_share` in `src/groth21/malicious.rs`, with a test `malicious_deal_full_share_passes_verification` confirming the transcript clears the Groth21 verifier.
 
 ## References
 

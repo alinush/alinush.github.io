@@ -93,17 +93,18 @@ $</div> <!-- $ -->
 ## Related work
 
 A recent **lattice-based PVSS**[^GHL21e] scheme reduces the overhead of elliptic curve scalar multiplications during dealing and verification by replacing the encryption scheme with a lattice scheme.
-Unfortunately, it introduces too much lattice field work, resulting in [an overall slower scheme than Chunky](#ghl21e-benchmarks): up to ~190x slower dealing and ~60x slower verification.
+Unfortunately, it introduces too much lattice field work, resulting in [a slower scheme than Chunky](#ghl21e-benchmarks): 441x slower dealing and 125x slower verification at $n=4$, narrowing to 4.3x and 3.3x at $n=1024$.
 On the other hand, it claims a much smaller 300 KiB transcript for $n=1024$ players[^oneliner].
-Because the GHL21e transcript is nearly constant in $n$ (~180-200 KiB in our benchmarks), this only wins at large $n$; at small $n$ (e.g., $n=8$), it is ~13x _larger_ than Chunky.
-Furthermore, \[GHL21\][^GHL21e] has post-quantum privacy (not sound, because Bulletproofs), which Chunky does not.
-(Assuming it is not used for bootstrapping DL cryptosystems though.)
+Because the GHL21e transcript grows much more slowly than $n$ (~177 KiB at $n=4$ to ~253 KiB at $n=1024$), it crosses over around $n=256$: at $n=8$ it is ~13.8x _larger_ than Chunky, but at $n=1024$ it is ~4.5x _smaller_.
+One genuine advantage of \[GHL21\][^GHL21e] is **post-quantum privacy** for the shared secret: a future quantum adversary observing the transcript cannot recover the secret (though it could forge proofs, since Bulletproofs are not PQ-sound).
+This matters when the secret must outlive DL cryptography (e.g., a long-lived encryption or identity key) and matters less when the PVSS bootstraps a DL-based cryptosystem whose own keys are equally vulnerable.
+Chunky has no such property.
 
 Groth's NI-DKG[^Grot21e], henceforth **Groth21**, uses chunked ElGamal encryption with Schnorr-style NIZK proofs for correct sharing and correct chunking.
-In particular, it uses a novel **relaxed ZK range proof** via rejection sampling.
+In particular, it uses a novel **approximate ZK range proof** via small-challenge parallel repetitions.
 
-When parameterized with $\ell=8$-bit chunks, Groth21 achieves slightly slower decryption times than Chunky with $\ell=32$-bit chunks, due to the loose guarantees of its approximate range proofs.
-In this regime, it has up to 1.2x slower dealing time, 1.5x to 3x to slower verification, and 1.5x bigger transcripts.
+When parameterized with $\ell=16$-bit chunks, Groth21 achieves slightly slower decryption times than Chunky with $\ell=32$-bit chunks, due to the loose guarantees of its approximate range proofs.
+In this regime, it has 1.1x–1.2x slower dealing, 2.9x–7.2x slower verification, and transcript sizes within ±10% of Chunky's (slightly larger at $n\le 8$; ~8% smaller at $n=1024$).
 
 When the goal is merely to PVSS a secret over _any_ field $\F$, our comparison against Groth21 is unfair, since Groth21 can use faster curves: e.g., secp256k1 or Curve25519.
 But if the goal is to PVSS a secret over a pairing-friendly curve (e.g., the BLS12-381 curve), this comparison is fair and evidences what Groth21 loses in staying away from pairings.
@@ -114,15 +115,20 @@ In the future, we believe a sumcheck-based, multivariate variant of DeKART[^BDFp
 
 **Golden PVSS**[^BCK25e] is a novel design based on _exponent VRFs (eVRFs)_.
 It features the smallest transcript sizes by elegantly avoiding the typical pitfalls: chunking, hidden-order groups, lattices.
-However, its reliance on general-purpose ZKPs and its currently-naive, non-batched, PLONK-based implementation make it very slow in practice.
-While this should be addressable with a better combination of eVRF and zkSNARK schemes, it is difficult to predict what speedup it would give.
+Its verify time is roughly linear in $n$ (once the per-share Feldman consistency checks are batched into a single randomized linear combination) and sits 1.6x-7.9x slower than Chunky across the table -- on par with Groth21 and cgVSS.
+However, its reliance on general-purpose ZKPs makes **dealing roughly 900x slower than Chunky** at every $(t, n)$: each recipient requires a fresh PLONK proof, for ~1.6 s of proving per recipient.
+This should be addressable with a better combination of eVRF and zkSNARK schemes, but it is difficult to predict what speedup it would give.
+
+On top of that, the verifier is not yet batched across the $n$ PLONK proofs: each one is checked individually, incurring its own multi-pairing and MSMs, even though all $n$ proofs share the same circuit and therefore the same verification key.
+A standard randomized-linear-combination batch verification should reduce the verification time significantly, likely by more than 2x.
 
 There is also a very exciting line of work on **class-group-based PVSS**[^KMMplus23e]$^,$[^CD23e].
 These schemes can avoid chunking by relying on additively-homomorphic encryption schemes for field elements with efficient decryption[^CL15] (unlike ElGamal).
-Not surprisingly, the cgVSS transcript is 2.0-2.9x smaller than Chunky consistently across all $(t, n)$ threshold configurations.
-But this comes at a cost: cgVSS transcript verification is 7-13x slower than Chunky.
-Dealing time depends on $n$: at $n \le 32$ cgVSS is 1.2-3.6x slower, but at $n \ge 64$ the constant class-group overhead amortizes and cgVSS actually pulls ahead, becoming 1.1-1.6x faster than Chunky.
-Nonetheless, in practice, the 2x smaller transcript may make up for the slower verification time in certain settings (e.g., DKGs).
+cgVSS offers a clean tradeoff surface.
+Its transcripts are 2.0-2.9x smaller than Chunky across all $(t, n)$ configurations, and once $n \ge 64$ the constant class-group setup amortizes and dealing is actually 1.1-1.6x _faster_ than Chunky too.
+The price is paid at verification time, where cgVSS is 7-13x slower than Chunky.
+(At small $n \le 32$ dealing also runs 1.2-3.6x slower.)
+In DKG-like settings, the smaller transcript may well make up for the slower verification.
 
 {: .note}
 The original cgVSS paper[^KMMplus23e] seems to over-estimate Groth21's execution times.
@@ -753,21 +759,19 @@ cd aptos-core/crates/aptos-crypto/benches/
 This can actually matter a lot in practice too.
 
 {: .warning}
-**Groth21:** It is possible that I misunderstand what the average case for Groth21 decryption time looks like (see [my analysis here](#groth21-worst-case)).
-
-{: .warning}
 **Parallelization:** *Chunky*, *Groth21* and *cgVSS* run single-threaded. 
-But, for *Golden*, we _generously_ run it multi-threded with `GOMAXPROCS=16`, which speeds up MSMs and FFTs significantly.
+But, for *Golden*, we _generously_ run it multi-threaded with `GOMAXPROCS=8`, which speeds up MSMs and FFTs significantly.
+(Each individual PLONK proof still stays in the high-efficiency regime at 8 threads; scaling past that runs into diminishing returns as the M4 Max pulls in efficiency cores.)
 
-| Scheme | Curve | Library | Assumptions | Decrypt 1 share time |
+| Scheme | Curve | Library | Assumptions | Decrypt 1 share (worst-case) time |
 |--------|-------|---------|-------------|--------------------|
-| **Chunky $(\ell = 32)$** | BLS12-381 | `blstrs` v0.7.1 | pairings, ROM | $m$ DLs of $b=32$ bits |
-| Groth21 $(\ell = 8)$ | BLS12-381 | `blstrs` v0.7.1 | DL, ROM | $m$ DLs of $b \in [30,38]$ bits |
-| Groth21 $(\ell = 16)$ | BLS12-381 | `blstrs` v0.7.1 | DL, ROM | $m$ DLs of $b \in [37,45]$ bits |
-| Groth21 $(\ell = 32)$ | BLS12-381 | `blstrs` v0.7.1 | DL, ROM | $m$ DLs of $b \in [52,60]$ bits |
+| **Chunky $(\ell = 32)$** | BLS12-381 | `blstrs` v0.7.1 | pairings, ROM | $m$ DLs $<2^{32}$ |
+| Groth21 $(\ell = 8)$ | BLS12-381 | `blstrs` v0.7.1 | DL, ROM | $m-1$ DLs $< 2^8$ and 1 DL of $b \in [21,29]$ bits |
+| Groth21 $(\ell = 16)$ | BLS12-381 | `blstrs` v0.7.1 | DL, ROM | $m-1$ DLs $< 2^{16}$ and 1 DL of $b \in [28,36]$ bits |
+| Groth21 $(\ell = 32)$ | BLS12-381 | `blstrs` v0.7.1 | DL, ROM | $m-1$ DLs $< 2^{32}$ and 1 DL of $b \in [43,51]$ bits |
 | Golden | BN254 + BJJ | `gnark` v0.14.0 | DL, ROM | 0.30 ms |
 | [GHL21e][^GHL21e] | Curve25519 | `libsodium` v1.0.21 + `NTL` v11.6.0 | lattices, DL, ROM | 0.50 ms |
-| cgVSS[^KMMplus23e] | BLS12-381 + CL15 | `blstrs` v0.7.1 + `bicycl` v0.1.0 | class groups, DL, ROM | 10.ms |
+| cgVSS[^KMMplus23e] | BLS12-381 + CL15 | `blstrs` v0.7.1 + `bicycl` v0.1.0 | class groups, DL, ROM | 10 ms |
 
 <style>
 /* Thick top border above every Chunky row to visually separate groups */
@@ -781,63 +785,63 @@ But, for *Golden*, we _generously_ run it multi-threded with `GOMAXPROCS=16`, wh
 | Groth21 ($\ell = 8$) | 3 | 4 | <span style="color:#dc2626">13.09 KiB</span> (1.54x) | <span style="color:#dc2626">21.5</span> (1.72x) | <span style="color:#dc2626">11.1</span> (3.05x) |
 | Groth21 ($\ell = 16$) | 3 | 4 | <span style="color:#dc2626">9.34 KiB</span> (1.10x) | <span style="color:#dc2626">15.1</span> (1.21x) | <span style="color:#dc2626">10.4</span> (2.86x) |
 | Groth21 ($\ell = 32$) | 3 | 4 | <span style="color:#15803d; font-weight:700">7.46 KiB</span> (0.88x) | <span style="color:#15803d; font-weight:700">11.9</span> (0.95x) | <span style="color:#dc2626">7.9</span> (2.17x) |
-| Golden | 3 | 4 | <span style="color:#15803d; font-weight:700">2.66 KiB</span> (3.20x) | <span style="color:#dc2626">4,631</span> (371x) | <span style="color:#dc2626">5.52</span> (1.52x) |
+| Golden | 3 | 4 | <span style="color:#15803d; font-weight:700">2.66 KiB</span> (3.20x) | <span style="color:#dc2626">7,567</span> (606x) | <span style="color:#dc2626">6.00</span> (1.65x) |
 | [GHL21e][^GHL21e] | 3 | 4 | <span style="color:#dc2626">176.69 KiB</span> (20.8x) | <span style="color:#dc2626">5,512</span> (441x) | <span style="color:#dc2626">455</span> (125x) |
 | cgVSS[^KMMplus23e] | 3 | 4 | <span style="color:#15803d; font-weight:700">2.95 KiB</span> (2.88x) | <span style="color:#dc2626">44.36</span> (3.55x) | <span style="color:#dc2626">47.46</span> (13.07x) |
 | **Chunky ($\ell = 32$)** | 6 | 8 | 12.90 KiB |     19.99 |        <span style="color:#15803d; font-weight:700">4.73</span> |
 | Groth21 ($\ell = 8$) | 6 | 8 | <span style="color:#dc2626">20.15 KiB</span> (1.56x) | <span style="color:#dc2626">36.4</span> (1.82x) | <span style="color:#dc2626">18.0</span> (3.81x) |
 | Groth21 ($\ell = 16$) | 6 | 8 | <span style="color:#dc2626">13.40 KiB</span> (1.04x) | <span style="color:#dc2626">23.7</span> (1.19x) | <span style="color:#dc2626">16.0</span> (3.38x) |
 | Groth21 ($\ell = 32$) | 6 | 8 | <span style="color:#15803d; font-weight:700">10.02 KiB</span> (0.78x) | <span style="color:#15803d; font-weight:700">17.6</span> (0.88x) | <span style="color:#dc2626">10.9</span> (2.30x) |
-| Golden | 6 | 8 | <span style="color:#15803d; font-weight:700">5.29 KiB</span> (2.44x) | <span style="color:#dc2626">9,196</span> (460x) | <span style="color:#dc2626">11.02</span> (2.33x) |
+| Golden | 6 | 8 | <span style="color:#15803d; font-weight:700">5.29 KiB</span> (2.44x) | <span style="color:#dc2626">15,031</span> (752x) | <span style="color:#dc2626">11.58</span> (2.45x) |
 | [GHL21e][^GHL21e] | 6 | 8 | <span style="color:#dc2626">178.12 KiB</span> (13.8x) | <span style="color:#dc2626">5,607</span> (280x) | <span style="color:#dc2626">468</span> (98.9x) |
 | cgVSS[^KMMplus23e] | 6 | 8 | <span style="color:#15803d; font-weight:700">5.14 KiB</span> (2.51x) | <span style="color:#dc2626">48.48</span> (2.43x) | <span style="color:#dc2626">56.50</span> (11.95x) |
 | **Chunky ($\ell = 32$)** | 11 | 16 | 21.71 KiB |     34.61 |       <span style="color:#15803d; font-weight:700">6.69</span> |
 | Groth21 ($\ell = 8$) | 11 | 16 | <span style="color:#dc2626">34.27 KiB</span> (1.58x) | <span style="color:#dc2626">64.3</span> (1.86x) | <span style="color:#dc2626">30.7</span> (4.59x) |
 | Groth21 ($\ell = 16$) | 11 | 16 | <span style="color:#15803d; font-weight:700">21.52 KiB</span> (0.99x) | <span style="color:#dc2626">41.0</span> (1.18x) | <span style="color:#dc2626">27.3</span> (4.07x) |
 | Groth21 ($\ell = 32$) | 11 | 16 | <span style="color:#15803d; font-weight:700">15.15 KiB</span> (0.70x) | <span style="color:#15803d; font-weight:700">28.0</span> (0.81x) | <span style="color:#dc2626">17.5</span> (2.61x) |
-| Golden | 11 | 16 | <span style="color:#15803d; font-weight:700">10.50 KiB</span> (2.07x) | <span style="color:#dc2626">18,430</span> (533x) | <span style="color:#dc2626">22.46</span> (3.36x) |
+| Golden | 11 | 16 | <span style="color:#15803d; font-weight:700">10.50 KiB</span> (2.07x) | <span style="color:#dc2626">30,050</span> (868x) | <span style="color:#dc2626">22.95</span> (3.43x) |
 | [GHL21e][^GHL21e] | 11 | 16 | <span style="color:#dc2626">180.94 KiB</span> (8.33x) | <span style="color:#dc2626">6,002</span> (173x) | <span style="color:#dc2626">591</span> (88.3x) |
 | cgVSS[^KMMplus23e] | 11 | 16 | <span style="color:#15803d; font-weight:700">9.49 KiB</span> (2.29x) | <span style="color:#dc2626">57.24</span> (1.65x) | <span style="color:#dc2626">67.85</span> (10.14x) |
 | **Chunky ($\ell = 32$)** | 22 | 32 | 39.32 KiB |     63.06 |       <span style="color:#15803d; font-weight:700">10.57</span> |
 | Groth21 ($\ell = 8$) | 22 | 32 | <span style="color:#dc2626">62.52 KiB</span> (1.59x) | <span style="color:#dc2626">121.8</span> (1.93x) | <span style="color:#dc2626">54.6</span> (5.17x) |
 | Groth21 ($\ell = 16$) | 22 | 32 | <span style="color:#15803d; font-weight:700">37.77 KiB</span> (0.96x) | <span style="color:#dc2626">72.6</span> (1.15x) | <span style="color:#dc2626">48.2</span> (4.56x) |
 | Groth21 ($\ell = 32$) | 22 | 32 | <span style="color:#15803d; font-weight:700">25.40 KiB</span> (0.65x) | <span style="color:#15803d; font-weight:700">48.2</span> (0.76x) | <span style="color:#dc2626">29.1</span> (2.76x) |
-| Golden | 22 | 32 | <span style="color:#15803d; font-weight:700">20.97 KiB</span> (1.87x) | <span style="color:#dc2626">36,790</span> (583x) | <span style="color:#dc2626">51.85</span> (4.91x) |
+| Golden | 22 | 32 | <span style="color:#15803d; font-weight:700">20.97 KiB</span> (1.87x) | <span style="color:#dc2626">59,612</span> (945x) | <span style="color:#dc2626">45.70</span> (4.32x) |
 | [GHL21e][^GHL21e] | 22 | 32 | <span style="color:#dc2626">183.12 KiB</span> (4.66x) | <span style="color:#dc2626">5,735</span> (90.9x) | <span style="color:#dc2626">486</span> (46.0x) |
 | cgVSS[^KMMplus23e] | 22 | 32 | <span style="color:#15803d; font-weight:700">18.23 KiB</span> (2.16x) | <span style="color:#dc2626">76.08</span> (1.21x) | <span style="color:#dc2626">89.30</span> (8.45x) |
 | **Chunky ($\ell = 32$)** | 43 | 64 | 74.54 KiB |    119.46 |       <span style="color:#15803d; font-weight:700">16.90</span> |
 | Groth21 ($\ell = 8$) | 43 | 64 | <span style="color:#dc2626">119.02 KiB</span> (1.60x) | <span style="color:#dc2626">232.2</span> (1.94x) | <span style="color:#dc2626">95.8</span> (5.67x) |
 | Groth21 ($\ell = 16$) | 43 | 64 | <span style="color:#15803d; font-weight:700">70.27 KiB</span> (0.94x) | <span style="color:#dc2626">136.4</span> (1.14x) | <span style="color:#dc2626">88.7</span> (5.25x) |
 | Groth21 ($\ell = 32$) | 43 | 64 | <span style="color:#15803d; font-weight:700">45.90 KiB</span> (0.62x) | <span style="color:#15803d; font-weight:700">89.0</span> (0.74x) | <span style="color:#dc2626">51.8</span> (3.07x) |
-| Golden | 43 | 64 | <span style="color:#15803d; font-weight:700">41.88 KiB</span> (1.78x) | <span style="color:#dc2626">74,098</span> (620x) | <span style="color:#dc2626">148.57</span> (8.79x) |
+| Golden | 43 | 64 | <span style="color:#15803d; font-weight:700">41.88 KiB</span> (1.78x) | <span style="color:#dc2626">119,360</span> (999x) | <span style="color:#dc2626">93.22</span> (5.52x) |
 | [GHL21e][^GHL21e] | 43 | 64 | <span style="color:#dc2626">187.50 KiB</span> (2.52x) | <span style="color:#dc2626">5,896</span> (49.4x) | <span style="color:#dc2626">487</span> (28.8x) |
 | cgVSS[^KMMplus23e] | 43 | 64 | <span style="color:#15803d; font-weight:700">35.66 KiB</span> (2.09x) | <span style="color:#15803d; font-weight:700">108.93</span> (1.10x) | <span style="color:#dc2626">131.16</span> (7.76x) |
 | **Chunky ($\ell = 32$)** | 86 | 128 | 144.98 KiB |    232.74 |       <span style="color:#15803d; font-weight:700">29.76</span> |
 | Groth21 ($\ell = 8$) | 86 | 128 | <span style="color:#dc2626">232.02 KiB</span> (1.60x) | <span style="color:#dc2626">453.6</span> (1.95x) | <span style="color:#dc2626">185.1</span> (6.22x) |
 | Groth21 ($\ell = 16$) | 86 | 128 | <span style="color:#15803d; font-weight:700">135.27 KiB</span> (0.93x) | <span style="color:#dc2626">262.1</span> (1.13x) | <span style="color:#dc2626">164.4</span> (5.53x) |
 | Groth21 ($\ell = 32$) | 86 | 128 | <span style="color:#15803d; font-weight:700">86.90 KiB</span> (0.60x) | <span style="color:#15803d; font-weight:700">172.1</span> (0.74x) | <span style="color:#dc2626">96.1</span> (3.23x) |
-| Golden | 86 | 128 | <span style="color:#15803d; font-weight:700">83.72 KiB</span> (1.73x) | <span style="color:#dc2626">148,814</span> (639x) | <span style="color:#dc2626">519.11</span> (17.4x) |
+| Golden | 86 | 128 | <span style="color:#15803d; font-weight:700">83.72 KiB</span> (1.73x) | <span style="color:#dc2626">243,503</span> (1046x) | <span style="color:#dc2626">181.22</span> (6.09x) |
 | [GHL21e][^GHL21e] | 86 | 128 | <span style="color:#dc2626">192.62 KiB</span> (1.33x) | <span style="color:#dc2626">5,965</span> (25.6x) | <span style="color:#dc2626">486</span> (16.3x) |
 | cgVSS[^KMMplus23e] | 86 | 128 | <span style="color:#15803d; font-weight:700">70.57 KiB</span> (2.05x) | <span style="color:#15803d; font-weight:700">176.72</span> (1.32x) | <span style="color:#dc2626">216.53</span> (7.28x) |
 | **Chunky ($\ell = 32$)** | 171 | 256 | 285.85 KiB |    471.83 |       <span style="color:#15803d; font-weight:700">51.38</span> |
 | Groth21 ($\ell = 8$) | 171 | 256 | <span style="color:#dc2626">458.02 KiB</span> (1.60x) | <span style="color:#dc2626">894.1</span> (1.89x) | <span style="color:#dc2626">353.9</span> (6.89x) |
 | Groth21 ($\ell = 16$) | 171 | 256 | <span style="color:#15803d; font-weight:700">265.27 KiB</span> (0.93x) | <span style="color:#dc2626">516.1</span> (1.09x) | <span style="color:#dc2626">320.4</span> (6.24x) |
 | Groth21 ($\ell = 32$) | 171 | 256 | <span style="color:#15803d; font-weight:700">168.90 KiB</span> (0.59x) | <span style="color:#15803d; font-weight:700">333.0</span> (0.71x) | <span style="color:#dc2626">179.2</span> (3.49x) |
-| Golden | 171 | 256 | <span style="color:#15803d; font-weight:700">167.38 KiB</span> (1.71x) | <span style="color:#dc2626">298,193</span> (632x) | <span style="color:#dc2626">1,882.84</span> (36.6x) |
+| Golden | 171 | 256 | <span style="color:#15803d; font-weight:700">167.38 KiB</span> (1.71x) | <span style="color:#dc2626">447,822</span> (949x) | <span style="color:#dc2626">343.76</span> (6.69x) |
 | [GHL21e][^GHL21e] | 171 | 256 | <span style="color:#15803d; font-weight:700">201.81 KiB</span> (1.42x) | <span style="color:#dc2626">6,569</span> (13.9x) | <span style="color:#dc2626">512</span> (9.96x) |
 | cgVSS[^KMMplus23e] | 171 | 256 | <span style="color:#15803d; font-weight:700">140.33 KiB</span> (2.04x) | <span style="color:#15803d; font-weight:700">312.63</span> (1.51x) | <span style="color:#dc2626">390.13</span> (7.59x) |
 | **Chunky ($\ell = 32$)** | 342 | 512 | 567.60 KiB | 941.18 | <span style="color:#15803d; font-weight:700">93.72</span> |
 | Groth21 ($\ell = 8$) | 342 | 512 | <span style="color:#dc2626">910.02 KiB</span> (1.60x) | <span style="color:#dc2626">1,776.7</span> (1.89x) | <span style="color:#dc2626">690.6</span> (7.37x) |
 | Groth21 ($\ell = 16$) | 342 | 512 | <span style="color:#15803d; font-weight:700">525.27 KiB</span> (0.93x) | <span style="color:#dc2626">1,032.5</span> (1.10x) | <span style="color:#dc2626">626.4</span> (6.68x) |
 | Groth21 ($\ell = 32$) | 342 | 512 | <span style="color:#15803d; font-weight:700">332.90 KiB</span> (0.59x) | <span style="color:#15803d; font-weight:700">649.6</span> (0.69x) | <span style="color:#dc2626">347.9</span> (3.71x) |
-| Golden | 342 | 512 | <span style="color:#15803d; font-weight:700">334.72 KiB</span> (1.70x) | <span style="color:#dc2626">596,091</span> (633x) | <span style="color:#dc2626">7,151.19</span> (76.3x) |
+| Golden | 342 | 512 | <span style="color:#15803d; font-weight:700">334.72 KiB</span> (1.70x) | <span style="color:#dc2626">836,448</span> (889x) | <span style="color:#dc2626">676.44</span> (7.22x) |
 | [GHL21e][^GHL21e] | 342 | 512 | <span style="color:#15803d; font-weight:700">220.25 KiB</span> (2.58x) | <span style="color:#dc2626">6,860</span> (7.29x) | <span style="color:#dc2626">522</span> (5.57x) |
 | cgVSS[^KMMplus23e] | 342 | 512 | <span style="color:#15803d; font-weight:700">279.88 KiB</span> (2.03x) | <span style="color:#15803d; font-weight:700">582.25</span> (1.62x) | <span style="color:#dc2626">726.68</span> (7.75x) |
 | **Chunky ($\ell = 32$)** | 683 | 1024 | 1,131.10 KiB | 1,825.50 | <span style="color:#15803d; font-weight:700">170.23</span> |
 | Groth21 ($\ell = 8$) | 683 | 1024 | <span style="color:#dc2626">1,814.02 KiB</span> (1.60x) | <span style="color:#dc2626">3,478.1</span> (1.91x) | <span style="color:#dc2626">1,366.0</span> (8.02x) |
 | Groth21 ($\ell = 16$) | 683 | 1024 | <span style="color:#15803d; font-weight:700">1,045.27 KiB</span> (0.92x) | <span style="color:#dc2626">2,044.7</span> (1.12x) | <span style="color:#dc2626">1,227.3</span> (7.21x) |
 | Groth21 ($\ell = 32$) | 683 | 1024 | <span style="color:#15803d; font-weight:700">660.90 KiB</span> (0.58x) | <span style="color:#15803d; font-weight:700">1,292.5</span> (0.71x) | <span style="color:#dc2626">679.5</span> (3.99x) |
-| Golden | 683 | 1024 | <span style="color:#15803d; font-weight:700">669.38 KiB</span> (1.69x) | <span style="color:#dc2626">1,179,519</span> (646x) | <span style="color:#dc2626">27,747.90</span> (163x) |
+| Golden | 683 | 1024 | <span style="color:#15803d; font-weight:700">669.38 KiB</span> (1.69x) | <span style="color:#dc2626">1,673,056</span> (916x) | <span style="color:#dc2626">1,346.11</span> (7.91x) |
 | [GHL21e][^GHL21e] | 683 | 1024 | <span style="color:#15803d; font-weight:700">253.38 KiB</span> (4.46x) | <span style="color:#dc2626">7,879</span> (4.32x) | <span style="color:#dc2626">562</span> (3.30x) |
 | cgVSS[^KMMplus23e] | 683 | 1024 | <span style="color:#15803d; font-weight:700">558.96 KiB</span> (2.02x) | <span style="color:#15803d; font-weight:700">1,170.40</span> (1.56x) | <span style="color:#dc2626">1,418.00</span> (8.33x) |
 
@@ -845,7 +849,7 @@ But, for *Golden*, we _generously_ run it multi-threded with `GOMAXPROCS=16`, wh
 To reproduce the **Chunky** numbers:
 ```bash
 # clone repo
-git clone https://github.com/aptos-labs/aptos-core
+git clone https://github.com/alinush/aptos-core
 
 # checkout branch
 cd aptos-core/
@@ -865,16 +869,18 @@ cd fy/
 go test ./golden/ -run TestPrintTranscriptSize -v -timeout 2h
 
 # Full benchmark (transcript size + deal/verify/serialize/decrypt-share).
-GOMAXPROCS=16 go test ./golden/ -run TestPrintBenchmarks -v -timeout 2h
+GOMAXPROCS=8 go test ./golden/ -run TestPrintBenchmarks -v -timeout 2h
 ```
 
 {: .smallnote}
 To benchmark custom $(t, n)$ pairs, comma-separate them as "t:n" via, say:
-`GOMAXPROCS=16 GOLDEN_SIZES=6:8,11:16 go test ./golden/ -run TestPrintBenchmarks -v`
+`GOMAXPROCS=8 GOLDEN_SIZES=6:8,11:16 go test ./golden/ -run TestPrintBenchmarks -v`
 
 #### Why is Golden dealing so slow?
 
-Golden is the only scheme in the table that relies on a SNARK: for every recipient, the dealer produces a [gnark](https://github.com/Consensys/gnark) PLONK proof attesting that an eVRF-derived pad was computed correctly. Each PLONK proof costs ~1.15 seconds on our machine, and a dealing contains $n$ of them, which is why Deal scales as $\approx 1{,}150\cdot n$ ms. Verification is much cheaper ($\approx 7$ ms/proof) since PLONK verify is fast, and per-recipient share decryption is just one Diffie–Hellman operation plus a scalar subtraction.
+Golden is the only scheme in the table that relies on a SNARK: for every recipient, the dealer produces a [gnark](https://github.com/Consensys/gnark) PLONK proof attesting that an eVRF-derived pad was computed correctly. Each PLONK proof costs ~1.6 seconds on our machine at `GOMAXPROCS=8`, and a dealing contains $n$ of them, which is why Deal scales as $\approx 1{,}600\cdot n$ ms.
+
+Verification is much cheaper: $\approx 1.3$ ms/proof for PLONK verify, plus an $O(n + t)$-cost batched Feldman consistency check (one randomized linear combination of all $n$ per-share equations, sound by Schwartz-Zippel), so Verify stays linear in $n$. Per-recipient share decryption is just one Diffie–Hellman operation plus a scalar subtraction.
 
 
 ### Groth21 notes
@@ -883,7 +889,7 @@ To reproduce the **Groth21** numbers:
 ```bash
 # 1. Install Rust (if needed): see https://rustup.rs
 
-# 2. Clone our e2e-vss fork
+# 2. Clone our repo
 git clone https://github.com/alinush/groth21-rs
 cd groth21-rs/
 
@@ -891,9 +897,13 @@ cd groth21-rs/
 #    RAYON_NUM_THREADS=1 is belt-and-suspenders; the Cargo.toml also pins blst
 #    to its `no-threads` build so blst's internal Pippenger MSM doesn't secretly
 #    spawn a thread pool.
-RAYON_NUM_THREADS=1 ./benches/run-pvss-benches.sh
+RAYON_NUM_THREADS=1 cargo bench --bench groth21
+
+# 4. Print serialized transcript sizes
+cargo test --release --test transcript_sizes -- --ignored --nocapture transcript_sizes
 ```
-This uses the default 16-bit chunks ($m=16$, $B=2^\ell=2^{16}$). Pass `--features chunks-8bit` to switch to 8-bit chunks ($m=32$, $B=2^8$) instead.
+This uses the default 16-bit chunks ($m=16$, $B=2^\ell=2^{16}$).
+If that's not what you want, append `--features chunks-8bit` (8-bit chunks) or `--features chunks-32bit` (32-bit chunks) to each of the commands above.
 
 #### How we picked the baseline
 
@@ -924,11 +934,11 @@ We further improved Sourav's implementation by upgrading `blstrs` from v0.6.1 to
 #### What Groth21's knowledge soundness proof guarantees about worst-case decryption times
 {: #groth21-worst-case}
 
-Groth21's chunking proof is _approximate_: it does not guarantee that each encrypted chunk $s_{i,j}$ lies in $[0, B)$ where $B = 2^\ell = 2^8 = 256$.
+Groth21's chunking proof is _approximate_: it does not guarantee that each encrypted chunk $s_{i,j}$ lies in $[0, B)$ where $B = 2^\ell$.
 Instead, for each $i,j$ it guarantees that there exists a small multiplicative factor $\term{\Delta_{i,j}} \in [1, \term{E})$, where:
- - $\emph{E} = 2^{\lceil \lambda / \term{\tau} \rceil} = 2^8 = 256$
-     - $\emph{\tau} = 32$ is the number of parallel ZK repetitions in the chunking proof
-     - $\lambda = 256$ is the security level
+ - $\emph{E} = 2^{\lceil \lambda / \term{\tau} \rceil}$
+     - $\emph{\tau}$ is the number of parallel ZK repetitions in the chunking proof
+     - $\lambda$ is the security level
  - $\emph{\Delta_{i,j}} \cdot s_{i,j}$ lies in the signed range $[1-\term{Z},\,\emph{Z}-1]$, where:
 
 \begin{align}
@@ -936,10 +946,10 @@ Instead, for each $i,j$ it guarantees that there exists a small multiplicative f
 \emph{Z} = 2 \tau n m (B-1)(E-1)
 \end{align}
 
-So, decrypting 1 _chunk_ may need up to $E-1 = 255$ baby-step giant-step (BSGS) invocations, each for a range of size $2Z-1$. 
-Since a full _share_ has $m = 32$ chunks, this yields **in the worst-case** $\term{k} = m \cdot (E-1) = 8{,}160$ BSGS invocations to decrypt 1 share.
+So, decrypting 1 _chunk_ may need up to $E-1$ baby-step giant-step (BSGS) invocations, each for a range of size $\le 2Z-1$. 
+Since a full _share_ has $m$ chunks, this yields **in the worst-case** $\term{k} = m \cdot (E-1)$ BSGS invocations to decrypt 1 share.
 If done naively, this would take $O(k\sqrt{2Z-1})$ time.
-But, if we use a **batched BSGS** variant with larger tables, we can reduce this to $O(\sqrt{k (2Z-1)})$ time, a $\sqrt{k} \approx 90\times$ improvement. 
+But, if we use a **batched BSGS** variant with larger tables, we can reduce this to $O(\sqrt{k (2Z-1)})$ time, a $\sqrt{k}$ improvement. 
 
 <!--
 
@@ -954,18 +964,17 @@ Plugging in the actual $(n, m, B, E, \tau)$ from the benchmark:
 
 #### But does the worst-case ever materialize?
 
-Technically, the _worst-case numbers above_ only materialize for an adversarial dealer who evades detection for all of its encrypted chunks.
-It is not immediately clear (to me) how much work does a malicious dealer need to do to trigger this worst case.
-Or, if it is even possible.
+The $[1-Z, Z-1]$ bound follows from the knowledge-soundness proof. 
+However, it is unclear whether a malicious dealer can reach that bound efficiently.
+Nonetheless, there is a **zero-cost attack** that installs a chunk of magnitude $\approx Z/E$.
+See [this appendix in the Groth21 post](/groth21#malicious-single-chunk-inflation) for the concrete attack.
 
-As a result, I will generously assume **the best-case**: that decryption with $\Delta=1$ always succeeds and only a single BSGS invocation is needed per chunk, where each chunk is $\le 2Z-1$[^may-be-larger].
-
-We analyze how big these chunks get, in bits.
+We analyze how big such a malicious chunk can get, in bits.
 We fix the # of range proof repetitions $\tau = 32$ (so $E = 2^{\lceil 256/32 \rceil} = 256$) and the # of chunks $m = \lambda / \ell = 256 / \ell$ with chunks $< B = 2^\ell$.
 Applying the formula from Eq. \ref{eq:groth21-Z}, we get the following numbers.
 
 {: .note}
-The number of bits needed to represent a number $n > 0$ is $\floor{\log_2{n}}+1 = \ceil{\log_2{(n)} + 1}$.
+The number of bits needed to represent a number $n > 0$ is $\floor{\log_2{n}}+1 = \ceil{\log_2{(n+1)}}$.
 
 | $\ell$ | $n$   | $\ceil{\log_2(2Z)}$ | $\log_2(Z/E)$ |
 |--------|-------|---------------------|---------------|
@@ -997,11 +1006,11 @@ The number of bits needed to represent a number $n > 0$ is $\floor{\log_2{n}}+1 
 | 32     | 512   | 59 bits | 50 bits |
 | 32     | 1024  | 60 bits | 51 bits |
 
-The **key takeaway** is that we choose Groth21 with $\ell = 8$ to benchmark against, since it would have the most comparable decryption times to Chunky at $\ell = 32$.
+The **key takeaway** is that Groth21 (with $\ell = 16$) would have the most comparable decryption times to Chunky (with $\ell = 32$).
 
 **Notes:**
  - Doubling $n$ adds 1 bit to the BSGS range, since $Z$ is linear in $n$ (see Eq. \ref{eq:groth21-Z}).
- - Doubling $\ell$ from 4 to 8 adds ~3 bits, from 8 to 16 adds ~7 bits, and from 16 to 32 adds ~15 bits
+ - Doubling $\ell$ from 8 to 16 adds ~7 bits, and from 16 to 32 adds ~15 bits
     + Because $m(B-1) = (256/\ell)(2^\ell - 1)$ grows super-linearly in $\ell$ (see Eq. \ref{eq:groth21-Z})
 
 ### [GHL21e] notes
@@ -1014,10 +1023,17 @@ Only `proveEncryption`, `proveSmallness`, and `proveReShare` remain, which is wh
 brew install gmp ntl libsodium cmake   # macOS
 # Debian/Ubuntu: apt install libgmp-dev libntl-dev libsodium-dev cmake
 
-# 2. Clone the fork and build
+# 2. Clone the fork and build in Release mode.
+#    `-DCMAKE_BUILD_TYPE=Release` is critical: the default build has no `-O`
+#    flag (unoptimized), which tanks benchmark numbers. Release also defines
+#    `NDEBUG`, disabling an `assert(tee>0)` that otherwise aborts at n=4.
+#    `-DCMAKE_POLICY_VERSION_MINIMUM=3.5` works around CMake 4.x rejecting
+#    the upstream's `cmake_minimum_required(VERSION 3.0.0)`.
 git clone https://github.com/alinush/cpp-lwevss
 cd cpp-lwevss
-mkdir -p build && cd build && cmake .. && make -j lwe-pvss-main && cd ..
+rm -rf build && mkdir build && cd build
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5 .. \
+    && make -j lwe-pvss-main && cd ..
 
 # 3. Run sequentially (NOT in parallel: memory-bandwidth contention causes noise).
 #    (t, n) pairs with t = ceil(2n/3).
@@ -1049,11 +1065,27 @@ To reproduce, clone the [`alinush/cgdkg_artifact`](https://github.com/alinush/cg
  - adds PVSS benchmarks in `benches/benchmarks_pvss.rs`
  - swaps the BLS12-381 backend from [`miracl_core`](https://github.com/miracl/core) to [`blstrs`](https://github.com/filecoin-project/blstrs) v0.7.1, to be overly-generous to cgVSS
 
-...and run:
+The build needs GMP, OpenSSL, CMake, and a C++ toolchain.
+On macOS (via [Homebrew](https://brew.sh)):
 
 ```bash
-# macOS/arm64 may need: -L /opt/homebrew/lib -L /opt/homebrew/opt/openssl@3/lib
-RAYON_NUM_THREADS=1 cargo bench --bench benchmarks_pvss
+brew install gmp openssl@3 cmake
+```
+
+On Debian/Ubuntu:
+
+```bash
+sudo apt-get install libgmp-dev libssl-dev cmake build-essential
+```
+
+Then run the benchmarks:
+
+```bash
+# On macOS/arm64, the linker needs to find gmp/openssl from Homebrew —
+# pass their paths via RUSTFLAGS. On Linux, apt installs these into the
+# default library search path, so the RUSTFLAGS prefix can be dropped.
+RUSTFLAGS="-L /opt/homebrew/lib -L /opt/homebrew/opt/openssl@3/lib" \
+    RAYON_NUM_THREADS=1 cargo bench --bench benchmarks_pvss
 ```
 
 ## Future work
@@ -1194,6 +1226,5 @@ For cited works, see below 👇👇
 [^equivocation]: If $i'$ receives two transcripts signed by the same validator $j'$, then that constitute equivocation and would be provable misbehavior. So $i'$ should (or may?) not attest to $Q$ since it includes a malicious player $j'$.
 [^oneliner]: The 300 KiB proof size just mentioned in passing in the introduction. It is unclear whether they actually measured it correctly: is this the size of the publicly-verifiable transcript that includes **all** encryptions and proofs for **all** users?
 [^vaba]: This can be viewed through the lens of collecting $f+1$ attestations in validated Byzantine agreement (VABA).
-[^may-be-larger]: There must be some attacks that induce more work for the adversary: e.g., maybe with a $2^k$ times more work, the adversary can add $k$ bits to the max DL. But I would need to investigate more closely.
 
 {% include refs.md %}
