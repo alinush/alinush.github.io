@@ -392,7 +392,7 @@ Find a $2^\kappa$-th **root of unity** $\term{\omega} \in \F$ such that we can e
 **Step 1:** Pick the degree-$\threshWeight$ random secret sharing polynomial and compute the $j$th share of player $i$:
 \begin{align}
 \term{a_1,\ldots,a_t} &\randget \F\\\\\
-\term{f(X)} &\bydef \emph{a_0} + a_1 X + a_2 X^2 + \ldots + a_t X^\threshWeight\\\\\
+\term{f(X)} &\bydef \emph{a_0} + a_1 X + a_2 X^2 + \ldots + a_t X^{\threshWeight}\\\\\
 \label{eq:eval}
 \term{s_{i, j}} &\gets f\left(\term{\chi_{i,j}}\right),\forall i\in[n],\forall j\in[w_i]
 \end{align}
@@ -976,35 +976,37 @@ Applying the formula from Eq. \ref{eq:groth21-Z}, we get the following numbers.
 {: .note}
 The number of bits needed to represent a number $n > 0$ is $\floor{\log_2{n}}+1 = \ceil{\log_2{(n+1)}}$.
 
-| $\ell$ | $n$   | $\ceil{\log_2(2Z)}$ | $\log_2(Z/E)$ |
-|--------|-------|---------------------|---------------|
-| 8      | 4     | 30 bits | 21 bits |
-| 8      | 8     | 31 bits | 22 bits |
-| 8      | 16    | 32 bits | 23 bits |
-| 8      | 32    | 33 bits | 24 bits |
-| 8      | 64    | 34 bits | 25 bits |
-| 8      | 128   | 35 bits | 26 bits |
-| 8      | 256   | 36 bits | 27 bits |
-| 8      | 512   | 37 bits | 28 bits |
-| 8      | 1024  | 38 bits | 29 bits |
-| 16     | 4     | 37 bits | 28 bits |
-| 16     | 8     | 38 bits | 29 bits |
-| 16     | 16    | 39 bits | 30 bits |
-| 16     | 32    | 40 bits | 31 bits |
-| 16     | 64    | 41 bits | 32 bits |
-| 16     | 128   | 42 bits | 33 bits |
-| 16     | 256   | 43 bits | 34 bits |
-| 16     | 512   | 44 bits | 35 bits |
-| 16     | 1024  | 45 bits | 36 bits |
-| 32     | 4     | 52 bits | 43 bits |
-| 32     | 8     | 53 bits | 44 bits |
-| 32     | 16    | 54 bits | 45 bits |
-| 32     | 32    | 55 bits | 46 bits |
-| 32     | 64    | 56 bits | 47 bits |
-| 32     | 128   | 57 bits | 48 bits |
-| 32     | 256   | 58 bits | 49 bits |
-| 32     | 512   | 59 bits | 50 bits |
-| 32     | 1024  | 60 bits | 51 bits |
+The rightmost column estimates the wall-clock cost of a single BSGS DLog as $\sqrt{Z/E} = \sqrt{2\ell n m B}$ $\mathbb{G}_1$ additions at an assumed $\approx 317.68$ ns/addition (`blstrs` v0.7.1, Apple silicon, single-threaded).
+
+| $\ell$ | $n$   | $\ceil{\log_2(2Z)}$ | $\log_2(Z/E)$ | BSGS DLog time |
+|--------|-------|---------------------|---------------|----------------|
+| 8      | 4     | 30 bits | 21 bits | 0.46 ms   |
+| 8      | 8     | 31 bits | 22 bits | 0.65 ms   |
+| 8      | 16    | 32 bits | 23 bits | 0.92 ms   |
+| 8      | 32    | 33 bits | 24 bits | 1.30 ms   |
+| 8      | 64    | 34 bits | 25 bits | 1.84 ms   |
+| 8      | 128   | 35 bits | 26 bits | 2.60 ms   |
+| 8      | 256   | 36 bits | 27 bits | 3.68 ms   |
+| 8      | 512   | 37 bits | 28 bits | 5.20 ms   |
+| 8      | 1024  | 38 bits | 29 bits | 7.36 ms   |
+| 16     | 4     | 37 bits | 28 bits | 5.20 ms   |
+| 16     | 8     | 38 bits | 29 bits | 7.36 ms   |
+| 16     | 16    | 39 bits | 30 bits | 10.41 ms  |
+| 16     | 32    | 40 bits | 31 bits | 14.72 ms  |
+| 16     | 64    | 41 bits | 32 bits | 20.82 ms  |
+| 16     | 128   | 42 bits | 33 bits | 29.44 ms  |
+| 16     | 256   | 43 bits | 34 bits | 41.64 ms  |
+| 16     | 512   | 44 bits | 35 bits | 58.89 ms  |
+| 16     | 1024  | 45 bits | 36 bits | 83.28 ms  |
+| 32     | 4     | 52 bits | 43 bits | 942.18 ms |
+| 32     | 8     | 53 bits | 44 bits | 1.33 s    |
+| 32     | 16    | 54 bits | 45 bits | 1.88 s    |
+| 32     | 32    | 55 bits | 46 bits | 2.66 s    |
+| 32     | 64    | 56 bits | 47 bits | 3.77 s    |
+| 32     | 128   | 57 bits | 48 bits | 5.33 s    |
+| 32     | 256   | 58 bits | 49 bits | 7.54 s    |
+| 32     | 512   | 59 bits | 50 bits | 10.66 s   |
+| 32     | 1024  | 60 bits | 51 bits | 15.07 s   |
 
 The **key takeaway** is that Groth21 (with $\ell = 16$) would have the most comparable decryption times to Chunky (with $\ell = 32$).
 
