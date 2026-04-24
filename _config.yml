@@ -206,6 +206,10 @@ exclude:
   - /screenshots
   - /test
   - /vendor
+  - files/chunky/chunky.md
+  - files/chunky/CLAUDE.md
+  - files/chunky/compile.sh
+  - files/chunky/run.sh
 
 defaults:
   - scope:

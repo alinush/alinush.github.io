@@ -653,7 +653,7 @@ Apps:
  - **Merged:** DL algorithms in [ristretto255-dlog](https://github.com/aptos-labs/ristretto255-dlog/pull/2)
    + **Merged:** WASM bindings for DL algorithms and Bulletproofs in [confidential-asset-wasm-bindings](https://github.com/aptos-labs/confidential-asset-wasm-bindings/pull/3)
  - **Merged:** v1.1 SDK in [aptos-ts-sdk](https://github.com/aptos-labs/aptos-ts-sdk/pull/822)
- - v1.1.2 SDK in [aptos-ts-sdk](https://github.com/aptos-labs/aptos-ts-sdk/pull/882)
+ - **Merged:** v1.1.2 and v1.1.3 SDK in [aptos-ts-sdk](https://github.com/aptos-labs/aptos-ts-sdk/pull/882)
  - aptos.dev docs in [aptos-docs](https://github.com/aptos-labs/aptos-docs/pull/389)
  - Confidential payments demo webapp in [confidential-payments-example](https://github.com/aptos-labs/confidential-payments-example/pull/53)
 

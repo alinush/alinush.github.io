@@ -1,0 +1,676 @@
+---
+title: "Chunky: Weighted PVSS for field elements via batched range proofs"
+separator: "^---$"
+verticalSeparator: "^--$"
+theme: white
+# available themes:
+#   black
+#   white
+#   league
+#   beige
+#   night
+#   serif
+#   simple
+#   solarized
+#   moon
+#   dracula
+#   sky
+#   blood
+revealOptions:
+  width: 1280
+  height: 800
+  margin: 0.04
+  transition: fade
+  slideNumber: true
+  math:
+    config: 'TeX-AMS_SVG-full' # actually uses the font I expect and makes \widetilde{G} render properly
+    TeX:
+      extensions: ["color.js", "bbox.js"]
+      equationNumbers:
+        autoNumber: AMS
+---
+
+$$
+\def\F{\mathbb{F}}
+\def\Gr{\mathbb{G}}
+\newcommand{\vect}[1]{\mathbf{#1}}
+\newcommand{\pvss}{\mathsf{PVSS}}
+\newcommand{\dekart}{\mathsf{DeKART}}
+\def\secret#1{\textcolor{##b58900}{#1}}
+\def\bydef{\stackrel{\mathsf{def}}{=}}
+\def\randget{\stackrel{\\$}{\leftarrow}}
+\def\ek{\textcolor{#d33682}{\mathsf{ek}}}
+\def\dk{\secret{\mathsf{dk}}}
+\def\pk{\mathsf{pk}}
+\def\G{\widetilde{G}}
+\def\V{\widetilde{V}}
+\def\H{\mathbb{H}}
+\def\L{\mathcal{L}}
+\def\s{\secret{s}}
+\def\trx{\textcolor{#268bd2}{\mathsf{trx}}}
+\def\piRange{\pi_\mathsf{range}}
+\def\piPoK{\pi_\mathsf{PoK}}
+\def\ck{\mathsf{ck}}
+\def\vk{\mathsf{vk}}
+\def\prk{\mathsf{prk}}
+\def\term#1{\bbox[border:2.5px solid yellowgreen; padding: 2px; background-color: transparent]{#1}}
+$$
+
+<!-- _ -->
+
+<style>
+    /* Per-slide opt-in shrink for dense slides that overflow the fixed 1280x800 canvas.
+       Tag with `<!-- .slide: class="medium" -->`, `"small"`, or `"smaller"`
+       (combinable with e.g. `"left small"`). Reveal's default base is ~42px;
+       `medium` → ~38px (0.92em), `small` → ~36px (0.85em), `smaller` → ~31px
+       (0.75em; used on the benchmark tables so all 5 columns fit). */
+    .reveal .medium  { font-size: 0.92em; }
+    /* Shrink display math on the same opt-in `small` slides only. The align/aligned
+       blocks on a few of the Deal slides chew up a lot of vertical space; 75% reclaims
+       it without touching prose. `.MathJax_SVG` is MathJax 2's SVG-render class under
+       our `TeX-AMS_SVG-full` config. `!important` beats MathJax's inline styles. */
+    .reveal .medium .MathJax_SVG { font-size: 94% !important; }
+    .reveal .small   { font-size: 0.85em; }
+    .reveal .small .MathJax_SVG { font-size: 90% !important; }
+    .reveal .smaller { font-size: 0.75em; }
+    .reveal .smaller .MathJax_SVG { font-size: 86% !important; }
+    .reveal .smallest { font-size: 0.65em; }
+    .reveal .smallest .MathJax_SVG { font-size: 82% !important; }
+    .reveal .tiny    { font-size: 0.40em; }
+    .reveal .tiny .MathJax_SVG { font-size: 78% !important; }
+
+    /* Tighten paragraph spacing on `.tiny` slides (e.g., References) — reveal's default
+       paragraph margin stacks up into large gaps once you have 10+ items. */
+    .reveal .tiny p { margin: 0.25em 0; }
+
+    /* Per-slide opt-out of the `white` theme's ALL-CAPS headings.
+       Tag a slide with `<!-- .slide: class="no-caps" -->` to render its heading normally. */
+    .reveal .no-caps h1, .reveal .no-caps h2, .reveal .no-caps h3 { text-transform: none; }
+
+    /* In-slide citation keys, e.g. <span class="cite">[BDF+25e]</span>.
+       Purple to stand out from body text without being loud. */
+    .reveal .cite { color: #8e44ad; }
+
+    /* Hyperlinked citation keys should keep the purple color, not the theme's default blue
+       link color (reveal's theme sets `a { color: ... }` which would override the span). */
+    .reveal .cite a { color: inherit; }
+
+    /* Prose-level "good/improvement" highlight — green, no bold. Used in tl;dr bullets
+       and on the Moral of the story slide to mark where a competing scheme beats Chunky. */
+    .reveal .good { color: #2e7d32; }
+
+    /* Prose-level "bad/deterioration vs Chunky" highlight — red, no bold. Mirror of `.good`.
+       Used on the Moral slide to mark where a competing scheme loses to Chunky. */
+    .reveal .bad { color: #c62828; }
+
+    /* Table-cell "best in column" marker — green. */
+    .reveal .best { color: #2e7d32; }
+
+    /* Middle-of-pack benchmark-cell highlight: a value that is neither the fastest/smallest
+       (`.best`) nor the slowest/biggest (`.worst`) in its column. Dark yellow matches the
+       `\secret` macro's color. */
+    .reveal .mid { color: #b58900; }
+
+    /* Worst-of-pack benchmark-cell highlight: the slowest/biggest value in its column. */
+    .reveal .worst { color: #c62828; }
+
+    /* Muted speedup/slowdown ratio text, e.g., "(1.04x)" next to a benchmark value.
+       Light gray + 75% size of the surrounding cell so ratios sit visually beneath
+       the primary value without competing for attention. `display: block` puts the
+       ratio on its own line; tight `line-height` keeps the gap above minimal. */
+    .reveal .ratio { color: #9e9e9e; font-size: 0.75em; display: block; line-height: 1.1; }
+
+    /* Term/name highlight for introducing new names in prose (e.g., <strong class="term">Chunky</strong>).
+       Note: this is an HTML/text styling class; the `\term{}` MathJax macro (bbox border)
+       is independent and only applies inside math mode. */
+    .reveal .term { color: #1565c0; }
+
+    /* "Me" highlight — used to mark Alin Tomescu (this author) in multi-author citations.
+       Distinct slightly-bolder green vs. `.good` so co-authorship reads differently. */
+    .reveal .me { color: #2e7d32; font-weight: 700; }
+
+    /* Per-slide opt-out of reveal's default center-alignment — useful for definition and
+       reference slides that read better flush-left. Tag with `<!-- .slide: class="left" -->`.
+       The `h1/h2/h3` selectors are needed because reveal themes center headings independently. */
+    .reveal .left, .reveal .left h1, .reveal .left h2, .reveal .left h3 { text-align: left; }
+
+    /* Tighten the default vertical margin around every `$$ ... $$` display-math block.
+       MathJax wraps each in a centered container with ~1em top+bottom margin; stacking
+       two consecutive display blocks (e.g., the two fragments on Deal (3/3)) leaves a
+       visibly large gap. 0.25em keeps equations visually grouped while still breathable. */
+    .reveal .MathJax_SVG_Display { margin: 0.25em 0 !important; }
+</style>
+
+<!-- .slide: class="no-caps" -->
+
+### <strong class="term">Chunky</strong>: Weighted PVSS for field elements via batched range proofs
+
+<br/> 
+
+<b>Alin Tomescu</b> ([@alinush](https://x.com/alinush))   
+Head of Cryptography at **Aptos Labs**  
+_Friday, April 22nd, 2026_
+
+<br/>
+<u>with</u>: <b>Rex Fernando</b> (Aptos Labs), <b>Trisha Datta</b> (Stanford University), <b>Kamilla Nazirkhanova</b> (Stanford University) and <b>Wicher Malten</b>
+
+---
+
+<!-- .slide: class="left small" -->
+## tl;dr
+
+<ul>
+  <li>why weighted PVSS?
+    <ul>
+      <li class="fragment">
+        <span class="fragment"><strong>want:</strong> prevent front-running (MEV)</span>
+        <span class="fragment">$\Rightarrow$ need batch threshold decryption scheme <span class="cite">[<a href="https://eprint.iacr.org/2025/2032">FPTX25e</a>]</span></span>
+        <span class="fragment">$\Rightarrow$ need weighted DKG over $\F$</span>
+        <span class="fragment">$\Rightarrow$ need weighted PVSS over $\F$</span>
+      </li>
+    </ul>
+  </li>
+  <!-- <li class="fragment"><strong class="term">Chunky</strong>, weighted PVSS over $\term{\F}$</li> -->
+  <li class="fragment">why <strong class="term">Chunky</strong>? <span class="fragment">the <span class="good">fastest</span> production-grade PVSS!</span>
+    <ul>
+      <li class="fragment"><span class="good">hundreds</span> of miliseconds to deal ($n = 256$ players)</li>
+      <li class="fragment"><span class="good">~250</span> KiB transcript</li>
+      <li class="fragment"><span class="good">tens</span> of miliseconds to verify a transcript</li>
+      <li class="fragment"><span class="good">tens</span> of miliseconds to decrypt a share</li>
+      <li class="fragment">~1.5 months on Aptos devnet</li>
+    <!--
+      <li class="fragment">129 <em>threshold</em> weight <u>out of</u> 219 <b>total</b> weight, with 136 players</li>
+      <li class="fragment"><span class="good">373 ms</span> to deal a <span class="good">260 KiB</span> transcript</li>
+      <li class="fragment"><span class="good">63 ms</span> to verify transcript</li>
+      <li class="fragment"><span class="good">10 ms</span> to decrypt a share</li>
+      -->
+    </ul>
+  </li>
+  <li class="fragment"><em>key ingredients:</em>
+    <ul class="fragment">
+      <li>split each share into <em>chunks</em>, ElGamal encrypt the chunks, prove they are small</li>
+      <li class="fragment"><strong class="term">DeKART</strong>, new batched ZK range proof <span class="cite">[<a href="https://eprint.iacr.org/2025/1159">BDF<span class="me">+</span>25e</a>]</span></li>
+    </ul>
+  </li>
+</ul>
+
+---
+
+<!-- .slide: class="left" data-visibility="hidden" -->
+
+## Batched ZK range proofs definition
+
+$\mathsf{ZKRP.\underline{Commit}}\_\ck((z_i)_{i\in[N]}; \term{\rho}) \rightarrow C$
+<!-- .element: class="fragment" -->
+
+$\mathsf{ZKRP.\underline{Prove}}\_\prk(C, \term{\ell}; (z_i)_{i\in[N]}, \rho) \rightarrow \piRange$
+<!-- .element: class="fragment" -->
+
+$\mathsf{ZKRP.\underline{Verify}}\_\vk(C, \ell; \piRange) \rightarrow \lbrace 0,1 \rbrace$
+<!-- .element: class="fragment" -->
+
+For simplicity of exposition, we'll ignore the $\ck,\prk,\vk$.
+<!-- .element: class="fragment" -->
+
+---
+
+<!-- .slide: class="medium" -->
+
+## Range proof benchmarks: $\ell = 32$
+
+<!--<p><span>Prove that all $n$ values are in $[0, 2^\ell)$.</span> -->
+<br />
+
+<table>
+  <thead>
+    <tr><th>Scheme</th><th>$n$</th><th>Prove</th><th>Verify</th><th>Size</th></tr>
+  </thead>
+  <tbody>
+    <tr class="fragment">
+      <td><strong class="term">Univariate DeKART</strong></td>
+      <td>2047</td>
+      <td><span class="best">113.2 ms</span></td>
+      <td><span class="best">2.33 ms</span></td>
+      <td><span class="worst">2.88 KiB</span></td>
+    </tr>
+    <tr class="fragment">
+      <td>Bulletproofs <span class="cite">[<a href="https://eprint.iacr.org/2017/1066">BBB+18e</a>]</span></td>
+      <td>2048</td>
+      <td><span class="worst">8.91 s</span><span class="ratio">(78.77x)</span></td>
+      <td><span class="worst">664 ms</span><span class="ratio">(284.83x)</span></td>
+      <td><span class="mid">1.28 KiB</span><span class="ratio">(2.24x)</span></td>
+    </tr>
+    <tr class="fragment">
+      <td>MissileProof <span class="cite">[<a href="https://doi.org/10.1145/3658644.3670324">GWHW24</a>]</span></td>
+      <td>2047</td>
+      <td><span class="mid">1.71 s</span><span class="ratio">(15.14x)</span></td>
+      <td><span class="mid">2.48 ms</span><span class="ratio">(1.06x)</span></td>
+      <td><span class="best">688 B</span><span class="ratio">(4.28x)</span></td>
+    </tr>
+  </tbody>
+</table>
+
+$\Rightarrow$ we'll leverage our faster range proof for PVSS! 
+<!-- .element: class="fragment" -->
+
+---
+
+<!-- .slide: class="left medium" -->
+
+## PVSS definition
+
+$\mathsf{PVSS.KeyGen}(1^\lambda) \rightarrow (\ek, \dk)$
+<!-- .element: class="fragment" -->
+
+$\mathsf{PVSS.\underline{Deal}}(\s, \term{t}, \lbrace \term{w_1}, \ek_1, \ldots, \term{w_n}, \ek_n\rbrace) \rightarrow \trx$
+<!-- .element: class="fragment" -->
+
+$\mathsf{PVSS.\underline{DecryptShare}}(\trx, i, \dk_i) \rightarrow \left(\s_{i,j}\right)\_{j\in[w_i]}$
+<!-- .element: class="fragment" -->
+
+$\mathsf{PVSS.\underline{Verify}}(\trx, t, \lbrace w_1, \ek_1, \ldots, w_n, \ek_n\rbrace) \rightarrow \lbrace 0,1 \rbrace$
+<!-- .element: class="fragment" -->
+
+<!--$\mathsf{PVSS.GetPubKey(\trx)}\rightarrow \s \cdot \term{\G}$
+
+$\mathsf{PVSS.GetPubKeyShare}(\trx, i)\rightarrow \left(\s_{i,j}\cdot \G\right)\_{j\in[w_i]}$ -->
+
+_Restriction for Aptos:_ Player $i$'s EK must be a BLS12-381 point:
+<!-- .element: class="fragment" -->
+
+$$\ek_i \bydef \dk_i \cdot \term{H}$$
+<!-- .element: class="fragment" -->
+
+---
+
+<!-- .slide: class="left smaller" data-visibility="hidden" -->
+
+## PVSS benchmarks: $t=22, n = 32$
+
+<p><span class="fragment">BLS12-381 via <code>blstrs</code>.</span>
+<span class="fragment">Single-threaded</span>
+<span class="fragment">(8 threads for Golden <span class="cite">[<a href="https://eprint.iacr.org/2025/1924">BCK25e</a>]</span>)</span>.
+<span class="fragment">Lower ⬇️  is better 👍.</span></p>
+
+<p class="fragment" style="text-align: center;"><span class="best">green</span> = best in column, <span class="worst">red</span> = worst, <span class="mid">yellow</span> = in between.</p>
+
+<table>
+  <thead>
+    <tr><th>Scheme</th><th>Transcript</th><th>Deal</th><th>Verify</th><th>Decrypt</th><th>$\Sigma$</th></tr>
+  </thead>
+  <tbody>
+    <tr class="fragment"><td><strong class="term">Chunky</strong> ($\ell{=}32$)</td><td><span class="mid">39.3 KiB</span></td><td><span class="best">63 ms</span></td><td><span class="best">10.6 ms</span></td><td><span class="worst">58.89 ms</span></td><td><span class="best">133 ms</span></td></tr>
+    <tr class="fragment"><td><span class="cite">[<a href="https://eprint.iacr.org/2021/339">Groth21</a>]</span> ($\ell{=}32$)</td><td>25.4 KiB<span class="ratio">(1.55x)</span></td><td>48.2 ms<span class="ratio">(1.31x)</span></td><td>29.1 ms<span class="ratio">(2.75x)</span></td><td>2.66 s<span class="ratio">(45.17x)</span></td><td>2.74 s<span class="ratio">(20.66x)</span></td></tr>
+    <tr class="fragment"><td><span class="cite">[<a href="https://eprint.iacr.org/2021/339">Groth21</a>]</span> ($\ell{=}16$)</td><td><span class="mid">37.8 KiB</span><span class="ratio">(1.04x)</span></td><td><span class="mid">72.6 ms</span><span class="ratio">(1.15x)</span></td><td><span class="mid">48.2 ms</span><span class="ratio">(4.56x)</span></td><td><span class="mid">14.72 ms</span><span class="ratio">(4.00x)</span></td><td><span class="mid">136 ms</span><span class="ratio">(1.02x)</span></td></tr>
+    <tr class="fragment"><td>Golden+PLONK<br><span class="cite">[<a href="https://eprint.iacr.org/2025/1924">BCK25e</a>]</span></td><td><span class="mid">21.0 KiB</span><span class="ratio">(1.87x)</span></td><td><span class="worst">59.6 s</span><span class="ratio">(945.16x)</span></td><td><span class="mid">45.7 ms</span><span class="ratio">(4.32x)</span></td><td><span class="best">0.30 ms</span><span class="ratio">(196.30x)</span></td><td><span class="worst">59.66 s</span><span class="ratio">(450.18x)</span></td></tr>
+    <tr class="fragment"><td>cgVSS<br><span class="cite">[<a href="https://eprint.iacr.org/2023/451">KMM+23e</a>]</span></td><td><span class="best">18.2 KiB</span><span class="ratio">(2.16x)</span></td><td><span class="mid">76.1 ms</span><span class="ratio">(1.21x)</span></td><td><span class="mid">89.3 ms</span><span class="ratio">(8.45x)</span></td><td><span class="mid">10 ms</span><span class="ratio">(5.89x)</span></td><td><span class="mid">175 ms</span><span class="ratio">(1.32x)</span></td></tr>
+    <tr class="fragment"><td><span class="cite">[<a href="https://eprint.iacr.org/2021/1397">GHL21e</a>]</span></td><td><span class="worst">183 KiB</span><span class="ratio">(4.66x)</span></td><td><span class="mid">5.7 s</span><span class="ratio">(90.95x)</span></td><td><span class="worst">486 ms</span><span class="ratio">(45.98x)</span></td><td><span class="mid">0.50 ms</span><span class="ratio">(117.78x)</span></td><td><span class="mid">6.22 s</span><span class="ratio">(46.95x)</span></td></tr>
+  </tbody>
+</table>
+
+---
+
+<!-- .slide: class="left smaller" -->
+
+## PVSS benchmarks: $t = 171, n = 256$
+
+<p><span class="fragment">BLS12-381 via <code>blstrs</code>.</span>
+<span class="fragment">Single-threaded</span>
+<span class="fragment">(8 threads for Golden <span class="cite">[<a href="https://eprint.iacr.org/2025/1924">BCK25e</a>]</span>)</span>.
+<span class="fragment">Lower ⬇️  is better 👍.</span></p>
+
+<p class="fragment" style="text-align: center;"><span class="best">green</span> = best in column, <span class="worst">red</span> = worst, <span class="mid">yellow</span> = in between.</p>
+
+
+<table>
+  <thead>
+    <tr><th>Scheme</th><th>Transcript</th><th>Deal</th><th>Verify</th><th>Decrypt</th><th>$\Sigma$</th></tr>
+  </thead>
+  <tbody>
+    <tr class="fragment"><td><strong class="term">Chunky</strong> ($\ell{=}32$)</td><td><span class="worst">286 KiB</span></td><td><span class="mid">472 ms</span></td><td><span class="best">51.4 ms</span></td><td><span class="worst">58.89 ms</span></td><td><span class="best">582 ms</span></td></tr>
+    <tr class="fragment"><td><span class="cite">[<a href="https://eprint.iacr.org/2021/339">Groth21</a>]</span> ($\ell{=}32$)</td><td>169 KiB<span class="ratio">(1.69x)</span></td><td>333 ms<span class="ratio">(1.42x)</span></td><td>179 ms<span class="ratio">(3.49x)</span></td><td>7.54 s<span class="ratio">(128.03x)</span></td><td>8.05 s<span class="ratio">(13.83x)</span></td></tr>
+    <tr class="fragment"><td><span class="cite">[<a href="https://eprint.iacr.org/2021/339">Groth21</a>]</span> ($\ell{=}16$)</td><td><span class="mid">265 KiB</span><span class="ratio">(1.08x)</span></td><td><span class="mid">516 ms</span><span class="ratio">(1.09x)</span></td><td><span class="mid">320 ms</span><span class="ratio">(6.24x)</span></td><td><span class="mid">41.64 ms</span><span class="ratio">(1.41x)</span></td><td><span class="mid">878 ms</span><span class="ratio">(1.51x)</span></td></tr>
+    <tr class="fragment"><td>Golden+PLONK<br><span class="cite">[<a href="https://eprint.iacr.org/2025/1924">BCK25e</a>]</span></td><td><span class="mid">167 KiB</span><span class="ratio">(1.71x)</span></td><td><span class="worst">448 s</span><span class="ratio">(949.14x)</span></td><td><span class="mid">344 ms</span><span class="ratio">(6.69x)</span></td><td><span class="best">0.30 ms</span><span class="ratio">(196.30x)</span></td><td><span class="worst">448.2 s</span><span class="ratio">(769.91x)</span></td></tr>
+    <tr class="fragment"><td>cgVSS<br><span class="cite">[<a href="https://eprint.iacr.org/2023/451">KMM+23e</a>]</span></td><td><span class="best">140 KiB</span><span class="ratio">(2.04x)</span></td><td><span class="best">313 ms</span><span class="ratio">(1.51x)</span></td><td><span class="mid">390 ms</span><span class="ratio">(7.59x)</span></td><td><span class="mid">10 ms</span><span class="ratio">(5.89x)</span></td><td><span class="mid">713 ms</span><span class="ratio">(1.22x)</span></td></tr>
+    <tr class="fragment"><td><span class="cite">[<a href="https://eprint.iacr.org/2021/1397">GHL21e</a>]</span></td><td><span class="mid">202 KiB</span><span class="ratio">(1.42x)</span></td><td><span class="mid">6.57 s</span><span class="ratio">(13.92x)</span></td><td><span class="worst">512 ms</span><span class="ratio">(9.96x)</span></td><td><span class="mid">0.50 ms</span><span class="ratio">(117.78x)</span></td><td><span class="mid">7.08 s</span><span class="ratio">(12.17x)</span></td></tr>
+  </tbody>
+</table>
+
+---
+
+<!-- .slide: class="left smaller" data-visibility="hidden" -->
+## PVSS benchmarks: $t = 683, n = 1024$
+
+<table>
+  <thead>
+    <tr><th>Scheme</th><th>Transcript</th><th>Deal</th><th>Verify</th><th>Decrypt</th><th>$\Sigma$</th></tr>
+  </thead>
+  <tbody>
+    <tr class="fragment"><td><strong class="term">Chunky</strong> ($\ell{=}32$)</td><td><span class="worst">1.13 MiB</span></td><td><span class="mid">1.83 s</span></td><td><span class="best">170 ms</span></td><td><span class="mid">58.89 ms</span></td><td><span class="best">2.05 s</span></td></tr>
+    <tr class="fragment"><td><span class="cite">[<a href="https://eprint.iacr.org/2021/339">Groth21</a>]</span> ($\ell{=}32$)</td><td>661 KiB<span class="ratio">(1.71x)</span></td><td>1.29 s<span class="ratio">(1.41x)</span></td><td>680 ms<span class="ratio">(3.99x)</span></td><td>15.07 s<span class="ratio">(255.90x)</span></td><td>17.04 s<span class="ratio">(8.29x)</span></td></tr>
+    <tr class="fragment"><td><span class="cite">[<a href="https://eprint.iacr.org/2021/339">Groth21</a>]</span> ($\ell{=}16$)</td><td><span class="mid">1.05 MiB</span><span class="ratio">(1.08x)</span></td><td><span class="mid">2.04 s</span><span class="ratio">(1.12x)</span></td><td><span class="mid">1.23 s</span><span class="ratio">(7.21x)</span></td><td><span class="worst">83.28 ms</span><span class="ratio">(1.41x)</span></td><td><span class="mid">3.36 s</span><span class="ratio">(1.63x)</span></td></tr>
+    <tr class="fragment"><td>Golden+PLONK<br><span class="cite">[<a href="https://eprint.iacr.org/2025/1924">BCK25e</a>]</span></td><td><span class="mid">669 KiB</span><span class="ratio">(1.69x)</span></td><td><span class="worst">1673 s</span><span class="ratio">(916.49x)</span></td><td><span class="mid">1.35 s</span><span class="ratio">(7.91x)</span></td><td><span class="best">0.30 ms</span><span class="ratio">(196.30x)</span></td><td><span class="worst">1674.4 s</span><span class="ratio">(814.95x)</span></td></tr>
+    <tr class="fragment"><td>cgVSS<br><span class="cite">[<a href="https://eprint.iacr.org/2023/451">KMM+23e</a>]</span></td><td><span class="mid">559 KiB</span><span class="ratio">(2.02x)</span></td><td><span class="best">1.17 s</span><span class="ratio">(1.56x)</span></td><td><span class="worst">1.42 s</span><span class="ratio">(8.33x)</span></td><td><span class="mid">10 ms</span><span class="ratio">(5.89x)</span></td><td><span class="mid">2.60 s</span><span class="ratio">(1.26x)</span></td></tr>
+    <tr class="fragment"><td><span class="cite">[<a href="https://eprint.iacr.org/2021/1397">GHL21e</a>]</span></td><td><span class="best">253 KiB</span><span class="ratio">(4.46x)</span></td><td><span class="mid">7.88 s</span><span class="ratio">(4.32x)</span></td><td><span class="mid">562 ms</span><span class="ratio">(3.30x)</span></td><td><span class="mid">0.50 ms</span><span class="ratio">(117.78x)</span></td><td><span class="mid">8.44 s</span><span class="ratio">(4.11x)</span></td></tr>
+  </tbody>
+</table>
+
+---
+
+<!-- .slide: class="left" -->
+
+## Moral of the story
+
+<ul>
+  <li class="fragment">In PVSS-based DKGs, $\trx$ verification time trumps dealing time</li>
+  <li class="fragment">Previous PVSS schemes verify 6-8x slower than <span class="term">Chunky</span>.</li>
+  <li class="fragment">For DKGs, <span class="term">Chunky</span> should be your <em>fastest choice</em>.</li>
+</ul>
+
+
+<!-- When bandwidth is restricted, cgVSS will probably come out ahead due to lower communication. -->
+
+---
+
+<!-- .slide: class="left" -->
+
+## <strong class="term">Chunky</strong>.Deal (1/3): shares
+
+<p class="fragment"><strong>Step 1.</strong> Sample a random polynomial of degree $t$:</p>
+
+<div class="fragment">
+
+$$
+\term{f(X)} \bydef \underbrace{a_0}\_{\secret{s}} + a_1 X + a_2 X^2 + \cdots + a_t X^t
+$$
+
+</div>
+
+<p class="fragment">Compute the $j$-th share of player $i$:</p>
+
+<div class="fragment">
+
+$$
+\secret{s_{i,j}} \bydef f(\omega_{i,j}), \qquad i \in [n],\ j \in [w_i]
+$$
+
+</div>
+
+<p class="fragment"><strong>Step 2.</strong> Commit to the shares over $\Gr_2$ (Feldman-style):</p>
+
+<div class="fragment">
+
+$$
+\term{\V\_{i,j}} \bydef \secret{s_{i,j}} \cdot \G, \qquad \term{\V_0} \bydef \secret{s} \cdot \G
+$$
+
+</div>
+
+---
+
+<!-- .slide: class="left small" -->
+
+## <strong class="term">Chunky</strong>.Deal (2/3): chunks + ElGamal
+
+<p class="fragment"><strong>Step 3.</strong> Split each share into $\term{m}$ chunks in base $\term{B} = 2^\term{\ell}$:</p>
+
+<div class="fragment">
+
+$$
+\secret{s_{i,j}} \bydef \sum_{k \in [m]} B^{k-1} \cdot \secret{s_{i,j,k}}, \qquad \secret{s_{i,j,k}} \in [0, B)
+$$
+
+</div>
+
+<p class="fragment"><strong>Step 4.</strong> Batched ElGamal encryption (share randomness across different players $i$):</p>
+
+<div class="fragment">
+
+$$
+\term{R\_{j,k}} \gets \term{r\_{j,k}} \cdot H,\quad \text{where}\ r\_{j,k} \randget\F,\ \forall j\in[\max\_i{w\_i}], k \in[m]
+$$
+
+</div>
+
+<div class="fragment">
+
+$$
+\term{C\_{i,j,k}} \gets \secret{s\_{i,j,k}} \cdot \term{G} + r\_{j,k} \cdot \ek\_i,\quad \forall i\in[n],j,k
+$$
+
+</div>
+
+<p>
+    <span class="fragment">If $\forall j$ we <strong>correlate</strong> $\sum_{k\in[m]} B^{k-1} r_{j,k} = 0$</span>
+    <span class="fragment">, then $\sum_{k\in[m]} B^{k-1} \cdot C_{i,j,k} = \secret{s_{i,j}} \cdot G$</span> 
+    <span class="fragment">$\Rightarrow$ can check against $\V_{i,j} \bydef \s_{i,j}\cdot \G$ with pairings.</span>
+</p>
+
+
+---
+
+<!-- .slide: class="left small" -->
+
+## <strong class="term">Chunky</strong>.Deal (3/3): range proof + ZKPoK
+
+<p class="fragment"><strong>Step 5.</strong> Prove all chunks are $\ell$-bit via <strong class="term">DeKART</strong>:</p>
+
+<div class="fragment">
+
+$$
+\term{C} \bydef \dekart.\mathsf{Commit}\bigl((\secret{s_{i,j,k}})\_{i,j,k}; \term{\rho}\bigr), \quad \rho \randget \F
+$$
+
+</div>
+
+<div class="fragment">
+
+$$
+\term{\piRange} \bydef \dekart.\mathsf{Prove}\bigl(C, \ell; (\secret{s_{i,j,k}})\_{i,j,k}, \rho\bigr)
+$$
+
+</div>
+
+<!-- Note: We simplify out the SoK part, to avoid explaining the context/message being signed via the FS transform and how it is useful during a DKG -->
+<p class="fragment"><strong>Step 6.</strong> Prove ElGamal plaintexts are KZG-committed in $C$ (see <a href="https://alinush.org/chunky#the-mathcalr_mathsfe2k-elgamal-to-kzg-np-relation">relation</a>):</p>
+
+<div class="fragment">
+
+$$
+\piPoK \bydef \Sigma.\mathsf{Prove}\left(\begin{array}{l}
+    \overbrace{G, H, \\{\ek_i\\}\_i, \\{C_{i,j,k}\\}\_{i,j,k}, \\{R_{j,k}\\}\_{j,k}, C}^{\text{statement}}\textbf{;}\\\\\
+    \underbrace{\secret{s_{i,j,k}}, r_{j,k}, \rho}\_{\text{witness}}
+\end{array}\right)
+$$
+
+</div>
+
+<p class="fragment"><strong>Return the transcript:</strong></p>
+
+<div class="fragment">
+
+$$
+\trx \bydef \bigl(\V_0, \underbrace{\\{\V_{i,j}\\}\_{i,j}}\_{\text{share commitments}}, \underbrace{\\{C_{i,j,k}\\}\_{i,j,k},\ \\{R_{j,k}\\}\_{j,k}}\_{\text{ciphertexts}},\ \underbrace{C,\piRange,\piPoK}\_{\text{proof}\ \term{\pi}}\bigr)
+$$
+
+</div>
+
+---
+
+<!-- .slide: class="left medium" -->
+
+## <strong class="term">Chunky</strong>.Verify
+
+<p class="fragment">(1) SCRAPE low-degree test <span class="cite">[<a href="https://eprint.iacr.org/2017/216">CD17</a>]</span> on the $\V_{i,j}$'s $\Rightarrow$ shares lie on degree-$t$ polynomial</p>
+
+<p class="fragment">(2) Batch $e\left(\sum_k B^{k-1}\cdot C_{i,j,k}, \G\right) \overset{?}{=} e\left(G, \V_{i,j}\right)$ pairing checks:
+
+<div class="fragment">
+
+$$
+\term{\beta\_{i,j}}\randget\\{0,1\\}^\lambda,\quad \forall i\in[n],j\in[w\_i]
+$$
+
+</div>
+
+<div class="fragment">
+
+$$
+e\left(\sum\_{i,j,k} \left(\beta\_{i,j} \cdot B^{k-1}\right)\cdot C\_{i,j,k},\ \G\right) \overset{?}{=} e\left(G,\ \sum\_{i,j} \beta\_{i,j}\cdot \V\_{i,j}\right)
+$$
+
+</div>
+
+<p class="fragment">(3) Verify <strong class="term">DeKART</strong> range proof $\piRange$ and $\Sigma$-protocol proof $\piPoK$.</p>
+
+---
+
+<!-- .slide: class="left smallest" -->
+
+## <strong class="term">DeKART</strong> PIOP (non-ZK core)
+
+<div class="fragment">
+
+$$
+\mathcal{R} \bydef \left\\{
+    \bigl(\underbrace{f(X)}\_{\text{stmt.}}\ ;\ \underbrace{(\term{z\_i}, \term{z\_{i,j}})\_{i,j}}\_{\text{witness}}\bigr)\ :\ \begin{array}{l}
+        \forall i\in[n], f(\omega^i) = z\_i = \sum\_{j\in[\ell)} 2^j z\_{i,j}, \\\\
+        \forall i\in[n], j\in[\ell), z\_{i,j}\in\\{0,1\\}
+    \end{array}
+\right\\}
+$$
+
+</div>
+
+<p class="fragment"><strong>Round 1 (P$\to$V).</strong> Send <strong class="term">bit oracles</strong>, each of degree $\lt n$:
+
+$$\term{f_j(X)} \bydef \sum_{i\in[n]} z_{i,j} \cdot \term{\L_i(X)} \Rightarrow f_j(\omega^i)=z_{i,j}$$
+<!-- .element: class="fragment" -->
+
+<p class="fragment"><strong>Key observation:</strong> $\mathcal{R}$ holds $\Leftrightarrow$ Two checks on $f$ and the $f_j$'s over all $X \in \{\omega^0, \ldots,\omega^{n-1}\}\bydef \term{\H}$.</p> 
+<!-- Let $\term{V^*_\H(X)}\bydef \frac{X^{n+1} - 1}{X - \omega^0}$. -->
+
+$$f(X) - \sum_{j\in[\ell)} 2^j f_j(X) = 0,\forall X \in \H$$
+<!-- .element: class="fragment" -->
+$$f_j(X)\bigl(f_j(X)-1\bigr) = 0,\forall X \in \H,\forall j\in[\ell)$$
+<!-- .element: class="fragment" -->
+
+<!-- \equiv 0\ \ \ \left(\mathrm{mod}\ \frac{X^{n+1} - 1}{X - \omega^0}\right),\quad \forall j\in[\ell) -->
+
+<p class="fragment"><strong>Round 2 (V$\to$P).</strong> V samples $\term{\beta},\term{\beta_0},\ldots,\term{\beta_{\ell-1}}\randget\mathbb{F}$. P sends <strong class="term">quotient oracle</strong> $\term{h(X)}$ s.t.</p>
+
+<div class="fragment">
+
+$$h(X) \cdot (X^n - 1) = \beta\left(f(X) - \sum\_{j} 2^j f\_j(X)\right) + \sum\_{j} \beta\_j f\_j(X)\bigl(f\_j(X)-1\bigr)$$
+
+</div>
+
+<p class="fragment"><strong>Query.</strong> V samples $\term{\gamma}\randget \F$, queries $f(\gamma),f_j(\gamma),h(\gamma)$, checks the batched identity above at $\gamma$.</p>
+
+<p class="fragment">ZK = hiding KZG with ZK openings <span class="cite">[<a href="https://eprint.iacr.org/2023/917">KT23e</a>]</span> + blind each $f_j$ + blind $f$; see <a href="https://alinush.org/dekart">alinush.org/dekart</a>.</p>
+
+---
+
+<!-- .slide: class="left" data-visibility="hidden" -->
+<!-- WARNING: \begin{align} does not seem to render correctly on the first load; needs a refresh; annoying -->
+## Fragment test: `\htmlClass{fragment}` inside `\begin{align}`
+
+**Variant A** — existing `\class{fragment}` (works inline):
+
+$$
+\begin{aligned}
+s &= s_0 + s_1 \cdot 2^\ell \class{fragment}{{} + s_2 \cdot 2^{2\ell}} \class{fragment}{{} + \cdots}
+\end{aligned}
+$$
+
+**Variant B** — `\htmlClass{fragment}` wrapping whole lines of `\begin{align}` (unnumbered via `\nonumber`):
+
+\begin{align}
+x &\htmlClass{fragment}{{} = a + b}\nonumber\\\\\
+y &\htmlClass{fragment}{{} = c + d}\nonumber
+\end{align}
+
+**Variant C** — `\htmlClass{fragment}` inline mid-equation:
+
+$$
+z \htmlClass{fragment}{{} = 1} \htmlClass{fragment}{{} + 2} \htmlClass{fragment}{{} + 3}
+$$
+
+<p>If <strong>Variant B/C</strong> renders the <code>\htmlClass</code> literal as text (or as plain "htmlClass…"), then MathJax 2 does not support it and we should stick with <code>\class</code>. If it renders the math correctly and the lines animate one by one, <code>\htmlClass</code> is supported.</p>
+
+---
+
+<!-- .slide: class="left" -->
+
+## Conclusion
+<!-- x -->
+<ul>
+  <li class="fragment">good ol' <em>"chunk your shares and ElGamal-encrypt them"</em> works great
+    <ul>
+      <li class="fragment">...if you have fast batched range proofs!</li>
+    </ul>
+  </li>
+  <li class="fragment"><strong class="term">Chunky</strong>: fastest PVSS for $\F$ you can use <strong>today</strong></li>
+  <li class="fragment">more details, benchmarks and nuance at <a href="https://alinush.org/chunky">alinush.org/chunky</a></li>
+</ul>
+
+<p class="fragment"><strong>Future work:</strong></p>
+<ul>
+  <li class="fragment">verifiable aggregatability</li>
+  <li class="fragment">further optimize all benchmarked PVSS schemes</li>
+  <li class="fragment">multivariate DeKART from sumcheck and a multilinear PCS (e.g., Zeromorph <span class="cite">[<a href="https://eprint.iacr.org/2023/917">KT23e</a>]</span>)</li>
+  <li class="fragment">eVRF-based PVSS like Golden <span class="cite">[<a href="https://eprint.iacr.org/2025/1924">BCK25e</a>]</span>: a very exciting direction</li>
+  <ul>
+    <li class="fragment">inspires me to revisit SNARK-based PVSS <span class="cite">[<a href="https://research.protocol.ai/blog/2022/a-deep-dive-into-dkg-chain-of-snarks-and-arkworks/#benchmarks">Gai22</a>]</span></li>
+  </ul>
+  <li class="fragment">lattice-based PVSS <span class="cite">[<a href="https://eprint.iacr.org/2021/1397">GHL21e</a>]</span>: very exciting as well</li>
+</ul>
+
+
+---
+
+<!-- .slide: class="left tiny" -->
+
+## References
+
+**[<a href="https://eprint.iacr.org/2017/1066">BBB+18e</a>]** Benedikt Bünz, Jonathan Bootle, Dan Boneh, Andrew Poelstra, Pieter Wuille, Greg Maxwell. *Bulletproofs: Short Proofs for Confidential Transactions and More*.
+
+**[<a href="https://eprint.iacr.org/2025/1924">BCK25e</a>]** Benedikt Bünz, Kevin Choi, Chelsea Komlo. *Golden: Lightweight Non-Interactive Distributed Key Generation*.
+
+**[<a href="https://eprint.iacr.org/2025/1159">BDF<span class="me">+</span>25e</a>]** Dan Boneh, Trisha Datta, Rex Fernando, Kamilla Nazirkhanova, <span class="me">Alin Tomescu</span>. *DekartProof: Efficient Vector Range Proofs and Their Applications*.
+
+**[<a href="https://cr.yp.to/dlog/cuberoot-20120919.pdf">BL12</a>]** Daniel J. Bernstein, Tanja Lange. *Computing small discrete logarithms faster*. 2012.
+
+**[<a href="https://eprint.iacr.org/2017/216">CD17</a>]** Ignacio Cascudo, Bernardo David. *SCRAPE: Scalable Randomness Attested by Public Entities*. ACNS 2017.
+
+**[<a href="https://eprint.iacr.org/2015/047">CL15</a>]** Guilhem Castagnos, Fabien Laguillaumie. *Linearly Homomorphic Encryption from DDH*.
+
+**[<a href="https://eprint.iacr.org/2025/2032">FPTX25e</a>]** Rex Fernando, Guru-Vamsi Policharla, Andrei Tonkikh, Zhuolun Xiang. *TrX: Encrypted Mempools in High Performance BFT Protocols*.
+
+**[<a href="https://research.protocol.ai/blog/2022/a-deep-dive-into-dkg-chain-of-snarks-and-arkworks/#benchmarks">Gai22</a>]** Nicolas Gailly. *A deep dive into DKG, chain of SNARKs and arkworks*. 2022.
+
+**[<a href="https://eprint.iacr.org/2021/1397">GHL21e</a>]** Craig Gentry, Shai Halevi, Vadim Lyubashevsky. *Practical Non-interactive Publicly Verifiable Secret Sharing with Thousands of Parties*.
+
+**[<a href="https://eprint.iacr.org/2021/339">Groth21</a>]** Jens Groth. *Non-interactive distributed key generation and key resharing*.
+
+**[<a href="https://doi.org/10.1145/3658644.3670324">GWHW24</a>]** Rui Gao, Zhiguo Wan, Yuncong Hu, Huaqun Wang. *A Succinct Range Proof for Polynomial-based Vector Commitment*. CCS 2024.
+
+**[<a href="https://eprint.iacr.org/2023/451">KMM+23e</a>]** Aniket Kate, Easwar Vivek Mangipudi, Pratyay Mukherjee, Hamza Saleem, Sri Aravinda Krishnan Thyagarajan. *Non-interactive VSS using Class Groups and Application to DKG*.
+
+**[<a href="https://eprint.iacr.org/2023/917">KT23e</a>]** Tohru Kohrita, Patrick Towa. *Zeromorph: Zero-Knowledge Multilinear-Evaluation Proofs from Homomorphic Univariate Commitments*.
+
+---
+
+## Appendix: Summary of benchmarks
+
+ - <span class="cite">[<a href="https://eprint.iacr.org/2021/339">Groth21</a>]</span> is <span class="good">~as succint</span>, but <span class="bad">slower to deal & verify</span> (holding decryption time ~same)
+    + faster DL algorithms <span class="cite">[<a href="https://cr.yp.to/dlog/cuberoot-20120919.pdf">BL12</a>]</span> would help <span class="cite">[<a href="https://eprint.iacr.org/2021/339">Groth21</a>]</span>, but would also help Chunky
+ - Golden <span class="cite">[<a href="https://eprint.iacr.org/2025/1924">BCK25e</a>]</span> has <span class="good">smaller $\trx$</span>, but <span class="bad">much slower to deal & verify</span>
+    + with better choice of zkSNARK, Golden could become faster to verify
+    + <span class="good">Golden decryption will always be fastest</span>
+ - cgVSS <span class="cite">[<a href="https://eprint.iacr.org/2023/451">KMM+23e</a>]</span> has <span class="good">2x smaller $\trx$</span>, and <span class="good">faster dealing</span>, but <span class="bad">slower verification</span>
+    + relies on <span class="bad">class groups</span> and <span class="cite">[<a href="https://eprint.iacr.org/2015/047">CL15</a>]</span>
+    + end-to-end ($\Sigma$), Chunky is faster
+ - lattices <span class="cite">[<a href="https://eprint.iacr.org/2021/1397">GHL21e</a>]</span> for large enough $n$, has <span class="good">smaller $\trx$</span>, but always <span class="bad">much slower to deal & verify</span>
+    + <span class="good">is PQ sound</span>, unlike Chunky
+
