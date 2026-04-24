@@ -878,10 +878,11 @@ To benchmark custom $(t, n)$ pairs, comma-separate them as "t:n" via, say:
 
 #### Why is Golden dealing so slow?
 
-Golden is the only scheme in the table that relies on a SNARK: for every recipient, the dealer produces a [gnark](https://github.com/Consensys/gnark) PLONK proof attesting that an eVRF-derived pad was computed correctly. Each PLONK proof costs ~1.6 seconds on our machine at `GOMAXPROCS=8`, and a dealing contains $n$ of them, which is why Deal scales as $\approx 1{,}600\cdot n$ ms.
+Golden is the only scheme in the table that relies on a SNARK: for every recipient, the dealer produces a [gnark](https://github.com/Consensys/gnark) PLONK proof attesting that an eVRF-derived pad was computed correctly.
+Each PLONK proof costs ~1.6 seconds on our machine at `GOMAXPROCS=8`, and a dealing contains $n$ of them, which is why Deal scales as $\approx 1{,}600\cdot n$ ms.
 
-Verification is much cheaper: $\approx 1.3$ ms/proof for PLONK verify, plus an $O(n + t)$-cost batched Feldman consistency check (one randomized linear combination of all $n$ per-share equations, sound by Schwartz-Zippel), so Verify stays linear in $n$. Per-recipient share decryption is just one Diffie–Hellman operation plus a scalar subtraction.
-
+Verification is much cheaper: $\approx 1.3$ ms/proof for PLONK verify, plus an $O(n + t)$-cost batched Feldman consistency check (one randomized linear combination of all $n$ per-share equations), so stays linear in $n$.
+Per-recipient share decryption is just one Diffie–Hellman operation plus a scalar subtraction.
 
 ### Groth21 notes
 
@@ -1089,6 +1090,10 @@ Then run the benchmarks:
 RUSTFLAGS="-L /opt/homebrew/lib -L /opt/homebrew/opt/openssl@3/lib" \
     RAYON_NUM_THREADS=1 cargo bench --bench benchmarks_pvss
 ```
+
+## Resources
+
+ - Slides for [Chunky PVSS at Texas Crypto Day 2026](https://alinush.github.io/files/chunky/texas-crypto-day-2026/)
 
 ## Future work
 
