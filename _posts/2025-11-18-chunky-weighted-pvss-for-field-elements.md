@@ -114,7 +114,7 @@ We note that our [Chunky2](#chunky2) variant does not necessarily require pairin
 In the future, we believe a sumcheck-based, multivariate variant of DeKART[^BDFplus25e] could be instantiated to avoid the use of pairings.
 
 **Golden PVSS**[^BCK25e] is a novel design based on _exponent VRFs (eVRFs)_.
-It features the smallest transcript sizes by elegantly avoiding the typical pitfalls: chunking, hidden-order groups, lattices.
+Its initial implementation, [although it has much room for improvement](#why-is-golden-slow), nonetheless features the smallest transcript sizes by elegantly avoiding the typical pitfalls: chunking, hidden-order groups, lattices.
 Its verify time is roughly linear in $n$ (once the per-share Feldman consistency checks are batched into a single randomized linear combination) and sits 1.6x-7.9x slower than Chunky across the table -- on par with Groth21 and cgVSS.
 However, its reliance on general-purpose ZKPs makes **dealing roughly 900x slower than Chunky** at every $(t, n)$: each recipient requires a fresh PLONK proof, for ~1.6 s of proving per recipient.
 This should be addressable with a better combination of eVRF and zkSNARK schemes, but it is difficult to predict what speedup it would give.
@@ -760,8 +760,8 @@ This can actually matter a lot in practice too.
 
 {: .warning}
 **Parallelization:** *Chunky*, *Groth21* and *cgVSS* run single-threaded. 
-But, for *Golden*, we _generously_ run it multi-threaded with `GOMAXPROCS=8`, which speeds up MSMs and FFTs significantly.
-(Each individual PLONK proof still stays in the high-efficiency regime at 8 threads; scaling past that runs into diminishing returns as the M4 Max pulls in efficiency cores.)
+But, for *Golden*, we _generously_ run it multi-threaded with `GOMAXPROCS=8`[^golden-8threads], which speeds up MSMs and FFTs significantly.
+This is because its initial implementation is unoptimized and we believe will have much room for improvement (see [this discussion][#why-is-golden-slow]).
 
 | Scheme | Curve | Library | Assumptions | Decrypt 1 share (worst-case) time |
 |--------|-------|---------|-------------|--------------------|
@@ -877,9 +877,16 @@ To benchmark custom $(t, n)$ pairs, comma-separate them as "t:n" via, say:
 `GOMAXPROCS=8 GOLDEN_SIZES=6:8,11:16 go test ./golden/ -run TestPrintBenchmarks -v`
 
 #### Why is Golden dealing so slow?
+{: #why-is-golden-slow}
+
+{: .warning}
+Golden's initial implementation is unoptimized.
+I am confident that a better choice of zkSNARK along with better batching will bring both their proving time and verifier time down signficantly.
+It could also further reduce its transcript size.
 
 Golden is the only scheme in the table that relies on a SNARK: for every recipient, the dealer produces a [gnark](https://github.com/Consensys/gnark) PLONK proof attesting that an eVRF-derived pad was computed correctly.
 Each PLONK proof costs ~1.6 seconds on our machine at `GOMAXPROCS=8`, and a dealing contains $n$ of them, which is why Deal scales as $\approx 1{,}600\cdot n$ ms.
+Again, this is not inherent: a faster zkSNARK that batch proves all eVRFs should significantly speed this up.
 
 Verification is much cheaper: $\approx 1.3$ ms/proof for PLONK verify, plus an $O(n + t)$-cost batched Feldman consistency check (one randomized linear combination of all $n$ per-share equations), so stays linear in $n$.
 Per-recipient share decryption is just one Diffie–Hellman operation plus a scalar subtraction.
@@ -1233,5 +1240,6 @@ For cited works, see below 👇👇
 [^equivocation]: If $i'$ receives two transcripts signed by the same validator $j'$, then that constitute equivocation and would be provable misbehavior. So $i'$ should (or may?) not attest to $Q$ since it includes a malicious player $j'$.
 [^oneliner]: The 300 KiB proof size just mentioned in passing in the introduction. It is unclear whether they actually measured it correctly: is this the size of the publicly-verifiable transcript that includes **all** encryptions and proofs for **all** users?
 [^vaba]: This can be viewed through the lens of collecting $f+1$ attestations in validated Byzantine agreement (VABA).
+[^golden-8threads]: Each individual PLONK proof still stays in the high-efficiency regime at 8 threads; scaling past that runs into diminishing returns as the M4 Max pulls in efficiency cores.
 
 {% include refs.md %}
