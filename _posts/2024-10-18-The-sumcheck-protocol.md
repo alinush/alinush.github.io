@@ -263,6 +263,9 @@ The sumcheck interactive proof (IP) relation $\mathcal{R}\_\mathsf{sum}^\mathsf{
 \mathcal{R}\_\mathsf{sum}^\mathsf{IP}(f, H) = 1 \Leftrightarrow H = \sum_{b_1 \in \bin} \sum_{b_2 \in \bin} \cdots \sum_{b_\mu \in \bin} f(b_1,b_2,\ldots,b_\mu)
 \end{align}
 
+{: .todo}
+Frame this as an IOR, so that the polynomial $f$ can be formally treated both as a witness and an oracle in the relation[^BCGplus19]$^,$[^BMNW24e].
+
 {% include refs.md %}
 
 [^upper-bound]: The verifier can have either the exact degree $d_j$ of $f$ in variable $X_j$ or just an upper bound $\le d_j$.
