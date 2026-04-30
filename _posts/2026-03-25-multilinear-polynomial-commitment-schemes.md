@@ -120,12 +120,15 @@ Bolt is $\approx 1.34\times$ faster than Brakedown and $\approx 1.41\times$ fast
 ### Lattice-based (transparent, post-quantum)
 
 {: .todo}
-Build a comparison table for lattice-based MLE PCS schemes. Known schemes include:
-Wee-Wu[^WW22e] (2022; succinct vector, polynomial, and functional commitments from lattices),
-Albrecht et al.[^ACLplus22e] (2022; lattice-based SNARKs with a PCS component),
-Cini et al.[^CMNW24e] (2024; post-quantum PCS with fast verification and transparent setup),
-Greyhound[^NS24e] (2024; fast polynomial commitments from lattices),
-and Jindo[^HLSS26e] (2026; practical lattice-based PCS for ZK arguments).
+Build a comparison table for lattice-based MLE PCS schemes.
+Known schemes include:
+LaBRADOR[^BS22e],
+Wee-Wu[^WW22e],
+Albrecht et al.[^ACLplus22e],
+Cini et al.[^CMNW24e],
+Greyhound[^NS24e],
+Jindo[^HLSS26e],
+Haichi[^NOZ26e].
 
 ### Discrete-log-based (transparent)
 
@@ -206,6 +209,10 @@ Libra[^XZZplus19e] is also a SNARK framework that combines its zkVPD (listed abo
 Spartan[^Sett19e] later showed how to build SNARKs from _any_ MLE PCS + sumcheck (without GKR), driving much of the demand for efficient MLE PCS constructions.
 
 HyperPLONK[^CBBZ22e] adapts PLONK to the multilinear setting, replacing univariate polynomial IOPs with multilinear ones and using the sumcheck protocol for high-degree custom gates, achieving a linear-time prover.
+
+## Resources
+
+ - [A great resource on MLE PCSs](https://github.com/sec-bit/mle-pcs/tree/main)
 
 ## References
 

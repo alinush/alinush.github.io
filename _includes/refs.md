@@ -110,6 +110,8 @@
 
 [^AG24e]: **Verifiable Oblivious Pseudorandom Functions from Lattices: Practical-ish and Thresholdisable**, by Martin R. Albrecht and Kamil Doruk Gur, *in Cryptology {ePrint} Archive, Paper 2024/1459*, 2024, [[URL]](https://eprint.iacr.org/2024/1459)
 
+[^AG26e]: **Proximity Signatures**, by Guillermo Angeris and Kobi Gurkan, *in Cryptology {ePrint} Archive, Paper 2026/694*, 2026, [[URL]](https://eprint.iacr.org/2026/694)
+
 [^AGHO11]: **Optimal Structure-Preserving Signatures in Asymmetric Bilinear Groups**, by Abe, Masayuki and Groth, Jens and Haralambiev, Kristiyan and Ohkubo, Miyako, *in Advances in Cryptology -- CRYPTO 2011*, 2011
 
 [^AGK19e]: **Everybody's a Target: Scalability in Public-Key Encryption**, by Benedikt Auerbach and Federico Giacon and Eike Kiltz, *in Cryptology {ePrint} Archive, Paper 2019/364*, 2019, [[URL]](https://eprint.iacr.org/2019/364)
@@ -500,7 +502,7 @@
 
 [^BFRW25e]: **TensorSwitch}: Nearly Optimal Polynomial Commitments from Tensor Codes**, by Benedikt Bünz and Giacomo Fenzi and Ron D. Rothblum and William Wang, *in Cryptology {ePrint} Archive, Paper 2025/2065*, 2025, [[URL]](https://eprint.iacr.org/2025/2065)
 
-[^BFS19e]: **Transparent SNARKs from DARK Compilers**, by Benedikt Bünz and Ben Fisch and Alan Szepieniec, *in Cryptology ePrint Archive, Report 2019/1229*, 2019, [[URL]](https://eprint.iacr.org/2019/1229)
+[^BFS19e]: **Transparent {SNARKs} from {DARK} Compilers**, by Benedikt Bünz and Ben Fisch and Alan Szepieniec, *in Cryptology {ePrint} Archive, Paper 2019/1229*, 2019, [[URL]](https://eprint.iacr.org/2019/1229)
 
 [^BFS20]: **Transparent SNARKs from DARK Compilers**, by Bünz, Benedikt and Fisch, Ben and Szepieniec, Alan, *in Advances in Cryptology -- EUROCRYPT 2020*, 2020
 
@@ -603,6 +605,8 @@
 [^BHRplus20]: **Public-Coin Zero-Knowledge Arguments with (almost) Minimal Time and Space Overheads**, by Alexander R. Block and Justin Holmgren and Alon Rosen and Ron D. Rothblum and Pratik Soni, *in Cryptology ePrint Archive, Report 2020/1425*, 2020, [[URL]](https://eprint.iacr.org/2020/1425)
 
 [^BHRplus21e]: **Time- and Space-Efficient Arguments from Groups of Unknown Order**, by Alexander R. Block and Justin Holmgren and Alon Rosen and Ron D. Rothblum and Pratik Soni, *in Cryptology ePrint Archive, Report 2021/358*, 2021, [[URL]](https://ia.cr/2021/358)
+
+[^BHR12e]: **Foundations of Garbled Circuits**, by Mihir Bellare and Viet Tung Hoang and Phillip Rogaway, *in Cryptology {ePrint} Archive, Paper 2012/265*, 2012, [[URL]](https://eprint.iacr.org/2012/265)
 
 [^BHS22e]: **Weighted Secret Sharing from Wiretap Channels**, by Fabrice Benhamouda and Shai Halevi and Lev Stambler, *in Cryptology ePrint Archive, Paper 2022/1578*, 2022, [[URL]](https://eprint.iacr.org/2022/1578)
 
@@ -801,6 +805,8 @@
 [^BS20AGrad]: **A Graduate Course in Applied Cryptography**, by Dan Boneh and Victor Shoup, 2020, [[URL]](https://crypto.stanford.edu/~dabo/cryptobook/BonehShoup_0_5.pdf)
 
 [^BS21]: **Merkle Trees Optimized for Stateless Clients in Bitcoin**, by Bolton Bailey and Suryanarayana Sankagiri, *in Cryptology ePrint Archive, Report 2021/340*, 2021, [[URL]](https://ia.cr/2021/340)
+
+[^BS22e]: **LaBRADOR}: Compact Proofs for {R1CS} from Module-{SIS**, by Ward Beullens and Gregor Seiler, *in Cryptology {ePrint} Archive, Paper 2022/1341*, 2022, [[URL]](https://eprint.iacr.org/2022/1341)
 
 [^BS23]: **A Graduate Course in Applied Cryptography**, by Dan Boneh and Victor Shoup, 2023, [[URL]](https://crypto.stanford.edu/~dabo/cryptobook/BonehShoup_0_6.pdf)
 
@@ -1337,6 +1343,8 @@
 [^Cach11]: **Yet Another Visit to Paxos**, by Christian Cachin, 2011, [[URL]](https://cachin.com/cc/papers/pax.pdf)
 
 [^Camacho09]: **On the Impossibility of Batch Update for Cryptographic Accumulators**, by Philippe Camacho, *in Cryptology ePrint Archive, Report 2009/612*, 2009, [[URL]](https://eprint.iacr.org/2009/612)
+
+[^Camp26e]: **Practical Subvector Commitments with Optimal Opening Complexity**, by Matteo Campanelli, *in Cryptology {ePrint} Archive, Paper 2026/118*, 2026, [[URL]](https://eprint.iacr.org/2026/118)
 
 [^Canetti00]: **Universally Composable Security: A New Paradigm for Cryptographic Protocols**, by Ran Canetti, *in Cryptology ePrint Archive, Report 2000/067*, 2000, [[URL]](https://eprint.iacr.org/2000/067)
 
@@ -2360,6 +2368,8 @@
 
 [^JN19]: **Enabling Untraceable Anonymous Payments in the Lelantus Protocol**, by Aram Jivanyan and Sarang Noether, 2019, [[URL]](https://lelantus.io/enabling-untraceable-anonymous-payments.pdf)
 
+[^JNR25e]: **Partial Fraction Techniques for Cryptography**, by Charanjit S. Jutla and Rohit Nema and Arnab Roy, *in Cryptology {ePrint} Archive, Paper 2025/2081*, 2025, [[URL]](https://eprint.iacr.org/2025/2081)
+
 [^JS08]: **On the Equivalence of Generic Group Models**, by Jager, Tibor and Schwenk, Jörg, *in Provable Security*, 2008
 
 [^JS14]: **Compact Accumulator using Lattices**, by Mahabir Prasad Jhanwar and Reihaneh Safavi-Naini, *in Cryptology ePrint Archive, Report 2014/1015*, 2014, [[URL]](https://eprint.iacr.org/2014/1015)
@@ -2770,7 +2780,7 @@
 
 [^Lei05]: **LDPC Codes -- a brief Tutorial**, by Bernhard M.J. Leiner, 2005, [[URL]](http://www.bernh.net/media/download/papers/ldpc.pdf)
 
-[^Levy26]: **Quantum-Safe Bitcoin Transactions Without Softforks**, by Avihu Levy, 2026
+[^Levy26]: **Quantum-Safe Bitcoin Transactions Without Softforks**, by Avihu Levy, 2026, [[URL]](\url{https://github.com/avihu28/Quantum-Safe-Bitcoin-Transactions/blob/main/paper/QSB.pdf})
 
 [^Libe15]: **Applications of Structure-Preserving Cryptography and Pairing-Based NIZK Proofs**, by Libert, Benoît, 2015, [[URL]](https://hal.inria.fr/tel-02151157)
 
@@ -2991,6 +3001,8 @@
 [^NN98]: **Certificate Revocation and Certificate Update**, by Moni Naor and Kobbi Nissim, *in 7th USENIX Security Symposium (USENIX Security 98)*, 1998, [[URL]](https://www.usenix.org/conference/7th-usenix-security-symposium/certificate-revocation-and-certificate-update)
 
 [^NNT21e]: **Information Dispersal with Provable Retrievability for Rollups**, by Kamilla Nazirkhanova and Joachim Neu and David Tse, *in Cryptology ePrint Archive, Paper 2021/1544*, 2021, [[URL]](https://eprint.iacr.org/2021/1544)
+
+[^NOZ26e]: **Hachi: Efficient Lattice-Based Multilinear Polynomial Commitments over Extension Fields**, by Ngoc Khanh Nguyen and George O'Rourke and Jiapeng Zhang, *in Cryptology {ePrint} Archive, Paper 2026/156*, 2026, [[URL]](https://eprint.iacr.org/2026/156)
 
 [^NPR24e]: **FLIP}-and-prove {R1CS**, by Anca Nitulescu and Nikitas Paslis and Carla Ràfols, *in Cryptology {ePrint} Archive, Paper 2024/1364*, 2024, [[URL]](https://eprint.iacr.org/2024/1364)
 

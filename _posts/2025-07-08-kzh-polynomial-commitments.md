@@ -581,6 +581,10 @@ This takes:
  - a size-$\ell$ multipairing
  - a $\msmOne{2}$ MSM (as before: to verify the $(t_1,t_0)$ polynomial)
 
+## Resources
+
+ - _IronDict_[^HSBB25e] adds ZK to KZH with logarithmic randomness via techniques from [BMM+19][^BMMplus19]. 
+
 ## References
 
 For cited works, see below 👇👇

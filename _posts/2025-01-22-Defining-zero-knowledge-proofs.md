@@ -190,6 +190,10 @@ There are many ways of defining the zero-knowledge property of a ZKP scheme.
 Rex's definition where the simulator generates the non-trapdoored CRS.
 -->
 
+## Resources
+
+ - [GKK+21][^GKKplus21e] gives sufficient conditions for building simulation-extractable zkSNARKs from updatable SRS SNARKs.
+
 ---
 
 [^aux]: The auxiliary information helps model adversarial relation generators and circumvent impossibility results[^BCPR14]$^,$[^BP15] around them.
