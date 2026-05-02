@@ -1462,6 +1462,8 @@
 
 [^DHSplus21e]: **Mutual Accountability Layer: Accountable Anonymity within Accountable Trust**, by Vanesa Daza and Abida Haque and Alessandra Scafuro and Alexandros Zacharakis and Arantxa Zapico, *in Cryptology ePrint Archive, Paper 2021/596*, 2021, [[URL]](https://eprint.iacr.org/2021/596)
 
+[^DIM25]: **NEAR One MPC Chain Signatures**, by Fredrik Dahlgren, Marc Ilunga, and Jim Miller, 2025, [[URL]](https://github.com/trailofbits/publications/blob/master/reviews/2025-03-near-one-mpc-chain-signatures-securityreview.pdf)
+
 [^DIO20]: **Line-Point Zero Knowledge and Its Applications**, by Samuel Dittmer and Yuval Ishai and Rafail Ostrovsky, *in Cryptology ePrint Archive, Report 2020/1446*, 2020, [[URL]](https://eprint.iacr.org/2020/1446)
 
 [^DIO98]: **Non-Interactive and Non-Malleable Commitment**, by Di Crescenzo, Giovanni and Ishai, Yuval and Ostrovsky, Rafail, *in Proceedings of the Thirtieth Annual ACM Symposium on Theory of Computing*, 1998, [[URL]](https://doi.org/10.1145/276698.276722)
@@ -1473,6 +1475,8 @@
 [^DJMP11]: **Publicly Verifiable Secret Sharing for Cloud-Based Key Management**, by D'Souza, Roy and Jao, David and Mironov, Ilya and Pandey, Omkant, *in Progress in Cryptology -- INDOCRYPT 2011*, 2011
 
 [^DJNplus20]: **Fast Threshold ECDSA with Honest Majority**, by Ivan Damgård and Thomas Pelle Jakobsen and Jesper Buus Nielsen and Jakob Illeborg Pagter and Michael Bæksvang Østergård, *in Cryptology ePrint Archive, Report 2020/501*, 2020, [[URL]](https://eprint.iacr.org/2020/501)
+
+[^DJNplus20e]: **Fast Threshold {ECDSA} with Honest Majority**, by Ivan Damgård and Thomas Pelle Jakobsen and Jesper Buus Nielsen and Jakob Illeborg Pagter and Michael Bæksvang Østergård, *in Cryptology {ePrint} Archive, Paper 2020/501*, 2020, [[URL]](https://eprint.iacr.org/2020/501)
 
 [^DK02]: **Generic Lower Bounds for Root Extraction and Signature Schemes in General Groups**, by Damgård, Ivan and Koprowski, Maciej, *in Advances in Cryptology --- EUROCRYPT 2002*, 2002
 
@@ -1943,6 +1947,8 @@
 [^GLHplus24e]: **DeepFold}: Efficient Multilinear Polynomial Commitment from Reed-Solomon Code and Its Application to Zero-knowledge Proofs**, by Yanpei Guo and Xuanming Liu and Kexi Huang and Wenjie Qu and Tianyang Tao and Jiaheng Zhang, *in Cryptology {ePrint} Archive, Paper 2024/1595*, 2024, [[URL]](https://eprint.iacr.org/2024/1595)
 
 [^GLLplus21]: **Efficient Asynchronous Byzantine Agreement without Private Setups**, by Yingzi Gao and Yuan Lu and Zhenliang Lu and Qiang Tang and Jing Xu and Zhenfeng Zhang, *in Cryptology ePrint Archive, Report 2021/810*, 2021, [[URL]](https://eprint.iacr.org/2021/810)
+
+[^GLLO26e]: **Cyclo: Lightweight Lattice-based Folding via Partial Range Checks**, by Albert Garreta and Helger Lipmaa and Urmas Luhaäär and Michał Osadnik, *in Cryptology {ePrint} Archive, Paper 2026/359*, 2026, [[URL]](https://eprint.iacr.org/2026/359)
 
 [^GLOW20]: **Fully Distributed Verifiable Random Functions and their Application to Decentralised Random Beacons**, by David Galindo and Jia Liu and Mihai Ordean and Jin-Mann Wong, *in Cryptology ePrint Archive, Report 2020/096*, 2020, [[URL]](https://eprint.iacr.org/2020/096)
 
@@ -2461,6 +2467,14 @@
 [^KLM17]: **Stick a fork in it**, by Lucianna Kiffer and Dave Levin and Alan Mislove, *in Proceedings of the 16th {ACM} Workshop on Hot Topics in Networks*, 2017, [[URL]](https://doi.org/10.1145%2F3152434.3152449)
 
 [^KLN25e]: **Lattice-Based Accumulator and Application to Anonymous Credential Revocation**, by Victor Youdom Kemmoe and Anna Lysyanskaya and Ngoc Khanh Nguyen, *in Cryptology {ePrint} Archive, Paper 2025/1099*, 2025, [[URL]](https://eprint.iacr.org/2025/1099)
+
+[^KLNO24e]: **RoK}, Paper, {SISsors} – Toolkit for Lattice-based Succinct Arguments**, by Michael Klooß and Russell W. F. Lai and Ngoc Khanh Nguyen and Michał Osadnik, *in Cryptology {ePrint} Archive, Paper 2024/1972*, 2024, [[URL]](https://eprint.iacr.org/2024/1972)
+
+[^KLNO25]: **RoK, Paper, SISsors Toolkit for Lattice-Based Succinct Arguments**, by Klooß, Michael and Lai, Russell W. F. and Nguyen, Ngoc Khanh and Osadnik, Michał, *in Advances in Cryptology -- ASIACRYPT 2024*, 2025
+
+[^KLNO25e]: **RoK} and Roll – Verifier-Efficient Random Projection for $\tilde{O}(\lambda)$-size Lattice Arguments**, by Michael Klooß and Russell W. F. Lai and Ngoc Khanh Nguyen and Michał Osadnik, *in Cryptology {ePrint} Archive, Paper 2025/1220*, 2025, [[URL]](https://eprint.iacr.org/2025/1220)
+
+[^KLNO26]: **RoK and Roll -- Verifier-Efficient Random Projection for {\$}{\$}{\backslash}tilde{\{}O{\}}({\backslash}lambda ){\$}{\$}-Size Lattice Arguments**, by Klooß, Michael and Lai, Russell W. F. and Nguyen, Ngoc Khanh and Osadnik, Michał, *in Advances in Cryptology -- ASIACRYPT 2025*, 2026
 
 [^KLOR20]: **Efficient Anonymous Tokens with Private Metadata Bit**, by Ben Kreuter and Tancrede Lepoint and Michele Orru and Mariana Raykova, *in Cryptology ePrint Archive, Report 2020/072*, 2020, [[URL]](https://eprint.iacr.org/2020/072)
 
@@ -3031,6 +3045,8 @@
 [^NS98]: **A new public key cryptosystem based on higher residues**, by David Naccache and Jacques Stern, *in Proceedings of the 5th {ACM} conference on Computer and communications security  - {CCS} {\textquotesingle}98*, 1998, [[URL]](https://doi.org/10.1145%2F288090.288106)
 
 [^NSS03]: **Projective Coordinates Leak**, by David Naccache and Nigel Smart and Jacques Stern, *in Cryptology ePrint Archive, Paper 2003/191*, 2003, [[URL]](https://eprint.iacr.org/2003/191)
+
+[^NST24e]: **BrakingBase} - a linear prover, poly-logarithmic verifier, field agnostic polynomial commitment scheme**, by Vineet Nair and Ashish Sharma and Bhargav Thankey, *in Cryptology {ePrint} Archive, Paper 2024/1825*, 2024, [[URL]](https://eprint.iacr.org/2024/1825)
 
 [^NVV18]: **zkLedger: Privacy-Preserving Auditing for Distributed Ledgers**, by Neha Narula and Willy Vasquez and Madars Virza, *in Cryptology ePrint Archive, Report 2018/241*, 2018, [[URL]](https://eprint.iacr.org/2018/241)
 
