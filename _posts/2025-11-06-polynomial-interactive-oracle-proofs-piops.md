@@ -24,6 +24,32 @@ sidebar:
 <div style="display: none;">$
 $</div> <!-- $ -->
 
+<!--
+## PIOP structure
+
+## Protocol structure (fully general)
+
+For rounds $ i = 1, \dots, k $:
+
+1. **Verifier message (challenge):**
+	\begin{align}
+		\rho_i \leftarrow \mathsf{V}(\text{state})
+	\end{align}
+   The verifier sends randomness/challenges to the prover.
+2. **Prover oracle message:**
+   The prover responds with $m_i$ polynomials:
+   \begin{align}
+		\mathcal{F}\_i = \\{ f\_{i,1}, \dots, f\_{i,m\_i} \\} \subseteq \mathbb{F}[X]
+   \end{align}
+3. **Adaptive oracle queries (interleaved):**
+   After receiving $ \mathcal{F}_i $, the verifier may:
+   * adaptively choose query points $ \alpha \in \mathbb{F} $
+   * query any polynomial sent so far
+   * base future queries on previous answers
+
+This continues across rounds; **queries are not restricted to the end**.
+-->
+
 ## References
 
 For cited works, see below 👇👇
