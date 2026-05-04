@@ -580,16 +580,20 @@ graph TB;
 ```
 
 **Our task:**
-Ensure that, regardless of the account's state (1-factor or 2-factor) or which factors the owner has (OIDC, backup key), the owner can _always_ recover the account's DK.
+Ensure that, regardless of the account's state (1-factor or 2-factor) or which factors the owner has (OIDC, backup key), the owner can _always_ recover the account's DK: i.e., the account stays either **OIDC-recoverable** via their OIDC factor or **Ed25519-recoverable** via the Ed25519 SK
 
 **Our approach:**
 First, we always deterministically derive the DK from the `pepper_base`, from which the pepper is derived. 
 Second, if the account reaches the 2-factor state, we maintain an encryption of the DK under the backup key on-chain.
 
+**One complication:**
+If the account is in the 2-factor state, without confidentiality enabled, and the user recovered this account via their Ed25519 factor, **we will never** allow them to enable confidentiality because we cannot access the `pepper_base`.
+Instead, we will ask the user to sign in via their OIDC factor if they want to enable confidentiality[^justification-for-keyless-recovery].
+
 {: .todo}
 Update the [keyless blog](/keyless) with the pepper derivation scheme.)
 
-The state machine below depicts all the states we need to handle.
+The <u>state machine</u> below depicts all the states we need to handle 👇
 ```mermaid
 graph TB;
     classDef noConf fill:#d4edda,stroke:#28a745;
@@ -600,12 +604,11 @@ graph TB;
     B["<u>2-factor</u>: OIDC or Ed25519<br/>(_no_ confidentiality)"]:::noConf
     C["<u>1-factor</u>: OIDC<br/>(confidential **with** _pepper_ DK)"]:::withConfNoDK
     D["<u>2-factor</u>: OIDC or Ed25519<br/>(confidential **with** _pepper_ DK encrypted on-chain)"]:::withConfDK
-    E["<u>Traditional</u> Ed25519<br/>(with signing key reused as DK)"]
     A-- install Ed25519 backup key -->B;
     A-- enable confidentiality (<code>register_ek</code>)-->C
     B-- rotate Ed25519 backup key -->B;
-    B-- enable confidentiality<br/>(via OIDC factor **and** Ed25519 factor: <code>register_ek_and_encrypt</code>) -->D
-    B-- enable confidentiality and rotate to Ed25519<br/>(via Ed25519 factor after account recovery: <code>rotate_and_register_ek</code>) -->E
+    B-- enable confidentiality<br/>(via OIDC factor **and** Ed25519 PK from indexer: <code>register_ek_and_encrypt</code>) -->D
+    B-- enable confidentiality<br/>(via Ed25519 factor) is **forbidden** -->B;
     C-- install Ed25519 backup key (<code>upsert_ed25519_and_encrypt</code>) -->D
     D-- rotate Ed25519 backup key (<code>upsert_ed25519_and_encrypt</code>) -->D;
     linkStyle 0,5 stroke:#2196F3,stroke-width:2px
@@ -613,9 +616,7 @@ graph TB;
     linkStyle 1,3,4 stroke:#FF9800,stroke-width:2px
 ```
 
-Note that there is a bit of nuance:
-1. If the keyless account has an Ed25519 backup key and wants to enable confidentiality, the user needs to enter their backup key so as to encrypt their pepper-derived DK on-chain. This will make that DK recoverable in case the user ever loses their OIDC factor. 
-2. Similarly, if the keyless account has an Ed25519 backup, has just been recovered in Petra via that backup key **and** wants to enable confidentiality, we must rotate away from the inaccessible OIDC factor. Otherwise, the account would be left in a weird state where the encrypted DK must be picked randomly rather than pepper-derived, which would lock the user out of their confidential assets if they log in later via their OIDC factor.
+Note that if the keyless account has an Ed25519 backup key, the user signed in via OIDC **and** the user wants to enable confidentiality, then the wallet will fetch the Ed25519 pubkey from the Aptos indexer in order to encrypt the pepper-derived DK on-chain. This will make that DK Ed25519-recoverable in case the user ever loses their OIDC factor.
 
 ## Appendix: Links
 
@@ -1075,5 +1076,7 @@ For cited works, see below 👇👇
 [^pepper-privacy]: This convenience does come at the price of reducing confidentiality to the privacy of the keyless pepper service: if the service is compromised, then the pepper is revealed and thus confidentiality is lost.
 (In terms of availability, this does not impose extra assumptions: the pepper service is already trusted for availability.)
 As a result, decentralizing the pepper service becomes very important if users are to rely on it in this way.
+
+[^justification-for-keyless-recovery]: There are **two alternatives** we could adopt, but neither are great. The **first** alternative would ask the user to rotate their 2-factor keyless account to a traditional Ed25519 account. This is not great as we are asking the user to give up their OIDC factor so we can more easily manage their DK in the wallet (by deriving it directly from the Ed25519 SK). Yet the user may later recover access to their OIDC factor and may even be surprised when he cannot access the account anymore because he may not have understood the "gravity" of the key rotation. The **second alternative**, thanks to Philip Vu for pointing it out, is to once again derive the DK from the Ed25519 SK, but leave the OIDC factor in. If the user ever signs in with the OIDC factor, we can ask them for their Ed25519 mnemonic to obtain the old DK and do a DK rotation to a new pepper-based DK (and also encrypt this new DK on-chain). The problem with this approach is we could inadvertently lock users out of their confidential assets: i.e., users who forgot their mnemonic and are now logging in with their OIDC.
 
 {% include refs.md %}
