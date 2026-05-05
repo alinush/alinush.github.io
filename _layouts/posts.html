@@ -26,10 +26,11 @@ titles:
   # @end locale config
 ---
 
+{%- assign _full_posts = site.posts | where_exp: "p", "p.type != 'note'" -%}
 <div class="layout--archive js-all">
-  {%- include tags.html -%}
+  {%- include tags.html posts=_full_posts -%}
   <div class="js-result layout--archive__result d-none">
-    {%- include article-list.html articles=site.posts type='brief' show_info=true reverse=true group_by='year' emoji_prefix=true -%}
+    {%- include article-list.html articles=_full_posts type='brief' show_info=true reverse=true group_by='year' emoji_prefix=true -%}
   </div>
 </div>
 

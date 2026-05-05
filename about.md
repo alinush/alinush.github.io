@@ -46,7 +46,7 @@ I moved to the US in 2008 to attend college.
 I was always fascinated with computers: playing games on them, fixing them & programming them.
 
 I like to read and write.
-In fact, you can see some of my writing on [this website](/archive.html) and on [Decentralized Thoughts](https://decentralizedthoughts.github.io/about-alin).
+In fact, you can see some of my writing on this website and on [Decentralized Thoughts](https://decentralizedthoughts.github.io/about-alin).
 
 I am currently the _Head of Cryptography_ at [Aptos Labs](https://aptoslabs.com).
 
@@ -58,7 +58,7 @@ Before MIT, I was building tamper-proof clouds and end-to-end encrypted outsourc
 
 ### ...and some of my research
 
-My [papers](/papers.html), [posts](/archive.html), [talks](/talks), [the "cryptomat"](/cryptomat) and this [call for research](/please-solve) best reflect my research interest.
+My [papers](/papers.html), [posts](/posts.html), [notes](/notes.html), [talks](/talks), [the "cryptomat"](/cryptomat) and this [call for research](/please-solve) best reflect my research interest.
 
 But, if you're looking for a list, I've led (and thoroughly enjoyed) research on:
  1. [keyless blockchain accounts](/2024/06/13/Keyless-blockchain-accounts-on-Aptos.html)

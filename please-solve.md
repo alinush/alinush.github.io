@@ -13,6 +13,8 @@ permalink: /please-solve
 
 These are great research problems to solve that I wish I had time to work more on.
 
+# Open problems
+
 ## Efficient Homomorphic Merkle (Herkle) trees 
 
 A homomorphic Merkle tree, or a **Herkle tree** has an extremely useful property: given a change $\Delta$ to one of its leaves $\ell$, every node in the tree can be updated homomorphically, knowing only the change $\Delta$ and the leaf $\ell$. In particular, the tree's root can be updated homorphically too, which can be very useful!
@@ -65,10 +67,6 @@ In contrast, KZG proofs were efficiently aggregatable[^TABplus20]$^,$[^GRWZ20] b
 [^allproofs]: At the time, we devised AMTs for another reason: we wanted to compute proofs faster than $O(n^2)$ time and the FK technique[^FK20] for computing $n$ KZG proofs in $n\log{n}$ time was not known yet.
 
 
-## PVSS for field elements
-
-**Open problem:** Can we achieve more efficient constructions than Groth'21[^Grot21e] and class group ones[^CD23e]$^,$[^KMMplus23e]? In order of importance: faster verification, faster dealing and smaller transcript size.
-
 ## Append-only authenticated dictionaries (AADs)
 
 AADs are a key primitive for building transparency logs, which are very useful for public-key distribution in secure messaging and trustworthy software updates.
@@ -80,6 +78,14 @@ For the other proof, they usually rely on an external, trusted party to audit th
 See our previous bilinear-based construction[^TBPplus19] or previous SNARK-based constructions[^TFBT21]$^,$[^TKPS22].
 
 **Open problem:** AADs with faster append times, smaller proof sizes and faster proof verification times. 
+
+# Solved
+
+## PVSS for field elements
+
+**Open problem:** Can we achieve more efficient constructions than Groth'21[^Grot21e] and class group ones[^CD23e]$^,$[^KMMplus23e]? In order of importance: faster verification, faster dealing and smaller transcript size.
+
+**My answer:** [Chunky PVSS](/chunky).
 
 ---
 
