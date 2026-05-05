@@ -58,7 +58,7 @@ The [`p256k1`](https://github.com/Trust-Machines/p256k1) crate does.
 
 Below I benchmark its MSM.
 
-`libsecp256k1` exposes `secp256k1_ecmult` for individual signature verication (and for pubkey recovery) and exposes `secp256k1_ecmult_multi_var` for $n$-element MSM, dispatched to either Strauss-WNAF (small $n$) or Pippenger-WNAF (larger $n$).
+`libsecp256k1` exposes `secp256k1_ecmult` for individual signature verication (and for pubkey recovery) and exposes `secp256k1_ecmult_multi_var` for $n$-element MSM, dispatched to either Strauss-WNAF (small $n$) or Pippenger-WNAF (larger $n$). The cutoff is `ECMULT_PIPPENGER_THRESHOLD = 88` ([line 55 of `ecmult_impl.h`](https://github.com/bitcoin-core/secp256k1/blob/master/src/ecmult_impl.h#L55)): for $n < 88$ the library calls `secp256k1_ecmult_strauss_wnaf`, and for $n \ge 88$ it calls `secp256k1_ecmult_pippenger_wnaf`. So in the table below, the rows for $n \in \\{2, 4, 8, 16, 32, 64\\}$ measure Strauss-WNAF + GLV, and the rows for $n \in \\{128, 256, 512, 1024\\}$ measure Pippenger-WNAF + GLV.
 
 ### Run the benchmark
 
@@ -78,20 +78,59 @@ Benchmarks shoud take ~1-2 minutes to run.
 
 ### Results
 
-Run on an Apple silicon laptop, release build:
+Run on an Apple M4 Max, release build:
 
 | $n$  | MSM (µs)   | Naive (µs) | Speedup | µs per scalar mul (MSM) | µs per scalar mul (Naive) |
 |-----:|-----------:|-----------:|--------:|------------------------:|--------------------------:|
-|    2 |     25.791 |     23.204 |   0.89x |      12.895 |       11.602 |
-|    4 |     52.419 |     47.268 |   0.90x |      13.104 |       11.817 |
-|    8 |    105.016 |     95.874 |   0.91x |      13.127 |       11.984 |
-|   16 |    143.552 |    192.396 |   1.34x |       8.972 |       12.024 |
-|   32 |    239.018 |    386.595 |   1.61x |       7.469 |       12.081 |
-|   64 |    445.368 |    769.745 |   1.72x |       6.958 |       12.027 |
-|  128 |    792.755 |   1541.565 |   1.94x |       6.193 |       12.043 |
-|  256 |   1436.310 |   3089.462 |   2.15x |       5.610 |       12.068 |
-|  512 |   2524.207 |   6194.500 |   2.45x |       4.930 |       12.098 |
-| 1024 |   4734.291 |  12516.530 |   2.64x |       4.623 |       12.223 |
+|    2 |     13.130 |     19.994 |   1.52x |       6.565 |        9.997 |
+|    4 |     48.409 |     47.073 |   0.97x |      12.102 |       11.768 |
+|    8 |     69.829 |     94.050 |   1.34x |       8.728 |       11.756 |
+|   16 |    111.468 |    189.588 |   1.70x |       6.966 |       11.849 |
+|   32 |    201.065 |    379.832 |   1.88x |       6.283 |       11.869 |
+|   64 |    377.774 |    763.196 |   2.02x |       5.902 |       11.924 |
+|  128 |    641.421 |   1521.647 |   2.37x |       5.011 |       11.887 |
+|  256 |   1133.065 |   3059.156 |   2.69x |       4.426 |       11.949 |
+|  512 |   1966.887 |   6151.611 |   3.12x |       3.841 |       12.014 |
+| 1024 |   3626.145 |  12418.983 |   3.42x |       3.541 |       12.127 |
+
+{: .info}
+**Note (size-2 row uses the dedicated path):** The $n=2$ row measures the **specialized size-2 multiexp** that ECDSA verify and pubkey recovery actually call (`secp256k1_ecmult` in libsecp256k1, exposed in my fork as `Point::ecmult`).
+This leverages precomputed odd-multiples table for the fixed generator $G$. 
+For reference, passing $n=2$ to the *generic* `secp256k1_ecmult_multi_var` instead, which treats $G$ as a random base, would give ≈24.6 µs, about **2× slower**.
+
+{: .info}
+**Note (batch-normalize patch in my fork):** The numbers above are from a [small patch](https://github.com/alinush/p256k1/tree/msm-benchmark) to `Point::multimult`: a batch-inversion replacement of $n$ inversions that gives a clean **~30% speedup at $n=1024$** (from 4734 µs down to 3644 µs).
+
+### Future optimizations
+{: #future-optimizations}
+
+For large $n$, `blst` and `halo2curves` use Pippenger with **batched affine addition**: they keep Pippenger's bucket sums in *affine* coordinates and amortize many independent slope-inversions via Montgomery's simultaneous-inversion trick. 
+To understand the potential speed-ups, I vibe-coded a small Rust [proof-of-concept](https://github.com/alinush/p256k1/tree/msm-benchmark) timing $K$ independent affine additions with (1) $K$ independent inversions vs. (2) one shared inversion.
+(There's a unit test that verifies both paths agree element-wise.)
+Run from the same fork via:
+
+```bash
+git clone --branch msm-benchmark https://github.com/alinush/p256k1.git
+cd p256k1
+cargo bench --bench affine_add_bench
+```
+
+| $K$ | Naive (µs) | Batched (µs) | Speedup | Naive µs / add | Batched µs / add |
+|----:|-----------:|-------------:|--------:|---------------:|-----------------:|
+|   2 |       4.99 |         3.79 |   1.32x |          2.50 |             1.90 |
+|   4 |       7.35 |         4.23 |   1.74x |          1.84 |             1.06 |
+|   8 |      12.52 |         5.20 |   2.41x |          1.57 |             0.65 |
+|  16 |      22.65 |         6.74 |   3.36x |          1.42 |             0.42 |
+|  32 |      42.81 |        10.07 |   4.25x |          1.34 |             0.32 |
+|  64 |      83.45 |        16.69 |   5.00x |          1.30 |             0.26 |
+|  128 |     163.94 |        30.41 |   5.39x |          1.28 |             0.24 |
+|  256 |     328.90 |        57.49 |   5.72x |          1.29 |             0.23 |
+
+{: .info}
+**What this means for Pippenger MSMs:** The relevant comparison is batched-affine (≈0.23 µs/add) vs. `libsecp256k1`'s current mixed Jacobian+affine add (`secp256k1_gej_add_ge_var`, no inversion, ≈0.5-0.6 µs/add) $\Rightarrow$ a **~2-2.5× per-add speedup**. 
+Since bucket-fill is roughly half of Pippenger's work, plumbing this into `secp256k1_ecmult_pippenger_wnaf` should give ~25-30% more on top of the batch-normalize patch.
+**Caveat:** This only helps the Pippenger path ($n \ge 88$).
+For $n < 88$ (i.e., ECDSA verify, recovery, and most small instances of batch-verify), `libsecp256k1` uses Strauss-WNAF, whose serial-accumulator inner loop has no parallel adds to batch.
 
 ## ark-secp256k1
 
@@ -118,7 +157,7 @@ Benchmarks should take ~1-2 minutes to run.
 
 ### Results
 
-Run on the same Apple silicon laptop, release build:
+Run on the same Apple M4 Max, release build:
 
 | $n$   | MSM (µs)   | Naive (µs) | Speedup | µs per scalar mul (MSM) | µs per scalar mul (Naive) |
 |-----:|-----------:|-----------:|--------:|------------------------:|--------------------------:|
@@ -158,7 +197,7 @@ Benchmarks should take ~1-2 minutes to run.
 
 ### Results
 
-Run on the same Apple silicon laptop:
+Run on the same Apple M4 Max, release build (Go's default; optimizations + inlining are on unless you explicitly pass `-gcflags='all=-N -l'`):
 
 | $n$  | MSM (µs)   | Naive (µs) | Speedup | µs per scalar mul (MSM) | µs per scalar mul (Naive) |
 |-----:|-----------:|-----------:|--------:|------------------------:|--------------------------:|
@@ -172,6 +211,9 @@ Run on the same Apple silicon laptop:
 |  256 |   2877.386 |  12113.487 |   4.21x |      11.240 |       47.318 |
 |  512 |   4718.920 |  24435.621 |   5.18x |       9.217 |       47.726 |
 | 1024 |   8077.244 |  50120.264 |   6.21x |       7.888 |       48.946 |
+
+{: .note}
+From speaking with [Youssef El Housni](https://yelhousni.github.io/), it seems like their secp256k1 implementation is unoptimized; it's just there for some witness generation when proving ECDSA signatures.
 
 ## halo2curves
 
@@ -209,7 +251,7 @@ Benchmarks should take ~1-2 minutes to run.
 
 ### Results
 
-Run on the same Apple silicon laptop, release build:
+Run on the same Apple M4 Max, release build:
 
 | $n$  | MSM (µs)   | Naive (µs) | Speedup | µs per scalar mul (MSM) | µs per scalar mul (Naive) |
 |-----:|-----------:|-----------:|--------:|------------------------:|--------------------------:|
