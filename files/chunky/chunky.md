@@ -149,7 +149,8 @@ $$
 
 <b>Alin Tomescu</b> ([@alinush](https://x.com/alinush))   
 Head of Cryptography at **Aptos Labs**  
-_Friday, April 22nd, 2026_
+_Friday, April 22nd, 2026_  
+[7th Texas Crypto Day](https://texascryptoday.github.io/index.html)
 
 <br/>
 <u>with</u>: <b>Rex Fernando</b> (Aptos Labs), <b>Trisha Datta</b> (Stanford University), <b>Kamilla Nazirkhanova</b> (Stanford University) and <b>Wicher Malten</b>
