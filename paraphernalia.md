@@ -25,6 +25,7 @@ This is some of the stuff I (plan to) read and think others could find useful.
  - [Michael Nielsen](https://michaelnielsen.org/)
  - [Filippo Valsorda](https://words.filippo.io/)
  - [Craig Gidney](https://algassert.com)
+ - [Jeremy Kun](https://www.jeremykun.com/)
 
 ## Cryptography and (zero-knowledge) proof systems
 
