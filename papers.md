@@ -7,6 +7,9 @@ titles:
 key: page-papers
 ---
 
+{: .todo}
+Vibe-code a "Posts"-like page but with clean separation between authors, venue, year, extra links, etc. Maybe have a large picture preview too.
+
 **DekartProof: Efficient Vector Range Proofs and Their Applications**, Dan Boneh, Trisha Datta, Rex Fernando, Kamilla Nazirkhanova, Alin Tomescu, _in Cryptology ePrint Archive_, <a class="button button--success button--rounded button--sm" href="https://eprint.iacr.org/2025/1159.pdf"><i class="fas fa-download"></i>PDF</a>, [SBC'25 talk](https://youtu.be/Gf8YdXh3uZ0?list=PLS01nW3RtgorIUziK9tBT9ybvuUw38kD0&t=1893)
 
 **Distributed Randomness using Weighted VRFs**, by Sourav Das and Benny Pinkas and Alin Tomescu and Zhuolun Xiang, _EUROCRYPT'25_, <a class="button button--success button--rounded button--sm" href="https://eprint.iacr.org/2024/198"><i class="fas fa-download"></i>PDF</a>
