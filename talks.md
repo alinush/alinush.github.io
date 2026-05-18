@@ -8,6 +8,9 @@ key: page-talks
 permalink: talks
 ---
 
+{: .todo}
+Vibe-code a "Posts"-like page but with bigger thumbnails for the video preview.
+
 #### How I Learned to Stop Hashing and  Love the Accumulator (from Roberto) 
 
 This was a talk that celebrated [Roberto Tamassia](https://cs.brown.edu/people/rtamassa/)'s work on authenticated data structures over the last 40 years, at [RobertoFest](https://cs.gmu.edu/~evgenios/robertofest/).
