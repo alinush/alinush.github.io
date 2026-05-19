@@ -738,14 +738,14 @@ Apps:
  - **Merged:** v1.1 Move contract in [aptos-core](https://github.com/aptos-labs/aptos-core/pull/18973): new $\Sigma$ protocol homomorphism framework, domain-separated Fiat-Shamir transform, global and asset-specific auditors, upgradability via `enum`'s
  - **Merged:** v1.1.1 Move contract in [aptos-core](https://github.com/aptos-labs/aptos-core/pull/19197): enforce allow-listing on testnet too
  - **Merged:** v1.1.2 Move contract in [aptos-core](https://github.com/aptos-labs/aptos-core/pull/19370): auditor EK fix and other minor fixes
- - v1.1.3 Move contract in [aptos-core](https://github.com/aptos-labs/aptos-core/pull/19433): emergency pause
+ - **Merged:** v1.1.3 Move contract in [aptos-core](https://github.com/aptos-labs/aptos-core/pull/19433): emergency pause
+ - **Merged:** Fiat-Shamir bugfix in [aptos-core](https://github.com/aptos-labs/aptos-core/pull/19711): add $\sigma$'s to the transcript before deriving $\beta$ challenges 🤦
  - v1.1.4 Move contract in [aptos-core](https://github.com/aptos-labs/aptos-core/pull/19458): keyless integration
  - **Merged:** DL algorithms in [ristretto255-dlog](https://github.com/aptos-labs/ristretto255-dlog/pull/2)
    + **Merged:** WASM bindings for DL algorithms and Bulletproofs in [confidential-asset-wasm-bindings](https://github.com/aptos-labs/confidential-asset-wasm-bindings/pull/3)
  - **Merged:** v1.1 SDK in [aptos-ts-sdk](https://github.com/aptos-labs/aptos-ts-sdk/pull/822)
  - **Merged:** v1.1.2 and v1.1.3 SDK in [aptos-ts-sdk](https://github.com/aptos-labs/aptos-ts-sdk/pull/882)
  - aptos.dev docs in [aptos-docs](https://github.com/aptos-labs/aptos-docs/pull/389)
- - Confidential payments demo webapp in [confidential-payments-example](https://github.com/aptos-labs/confidential-payments-example/pull/53)
 
 ## Appendix: Benchmarks
 
