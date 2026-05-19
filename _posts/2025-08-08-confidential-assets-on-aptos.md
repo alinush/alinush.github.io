@@ -607,10 +607,10 @@ graph TB;
     A-- install Ed25519 backup key -->B;
     A-- enable confidentiality (<code>register_ek</code>)-->C
     B-- rotate Ed25519 backup key -->B;
-    B-- enable confidentiality<br/>(via OIDC factor **and** Ed25519 PK from indexer: <code>register_ek_and_encrypt</code>) -->D
+    B-- enable confidentiality<br/>(via OIDC factor **and** Ed25519 PK from indexer: <code>register_ek_and_encrypt_dk</code>) -->D
     B-- enable confidentiality<br/>(via Ed25519 factor) is **forbidden** -->B;
-    C-- install Ed25519 backup key (<code>upsert_ed25519_and_encrypt</code>) -->D
-    D-- rotate Ed25519 backup key (<code>upsert_ed25519_and_encrypt</code>) -->D;
+    C-- install Ed25519 backup key (<code>upsert_ed25519_backup_key_and_encrypt_dk</code>) -->D
+    D-- rotate Ed25519 backup key (<code>upsert_ed25519_backup_key_and_encrypt_dk</code>) -->D;
     linkStyle 0,5 stroke:#2196F3,stroke-width:2px
     linkStyle 2,6 stroke:#9C27B0,stroke-width:2px
     linkStyle 1,3,4 stroke:#FF9800,stroke-width:2px
