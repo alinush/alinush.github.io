@@ -618,6 +618,95 @@ graph TB;
 
 Note that if the keyless account has an Ed25519 backup key, the user signed in via OIDC **and** the user wants to enable confidentiality, then the wallet will fetch the Ed25519 pubkey from the Aptos indexer in order to encrypt the pepper-derived DK on-chain. This will make that DK Ed25519-recoverable in case the user ever loses their OIDC factor.
 
+### IND-CCA symmetric encryption scheme
+
+To encrypt the DK under the user's Ed25519 backup key, we need an IND-CCA-secure (i.e., AEAD) symmetric encryption scheme.
+We need to:
+1. derive its symmetric key deterministically from the Ed25519 secret key (SK) 
+2. work across Petra browser extension, mobile (React Native / Expo) and web.
+3. avoid additional dependencies beyond what comes transitively from `@aptos-labs/ts-sdk`.
+
+**Our proposal**: HKDF-SHA-512 for key derivation, composed with XChaCha20-Poly1305 as the AEAD.
+Both are available via `@noble/hashes` and `@noble/ciphers` and are existing dependencies of the Aptos TypeScript SDK.
+
+The scheme:
+
+```rust
+K = HKDF-SHA512(
+    IKM   = ed25519_sk,                                                // 32 raw bytes (the seed \vec{k})
+    salt  = utf8("petra-wallet-aead-v1"),                              // constant, public
+    info  = utf8("confidential assets DK encryption under Ed25519"),   // domain separator
+    32
+)
+
+// Encrypt
+aad        = ""                                                  // empty AAD
+nonce      = randomBytes(24)                                     // XChaCha = 192-bit nonce
+ct         = XChaCha20Poly1305(K, nonce).encrypt(msg, aad)       // includes 16-byte tag
+ciphertext = nonce[0..24) || ct
+
+// Note: when appending the nonce, all 24 bytes should be appended, even if 0.
+```
+
+Sample TypeScript code that should run unmodified on Petra extension, web and mobile:
+
+```typescript
+import { hkdf } from '@noble/hashes/hkdf';
+import { sha512 } from '@noble/hashes/sha512';
+import { xchacha20poly1305 } from '@noble/ciphers/chacha';
+import { randomBytes } from '@noble/ciphers/utils';
+
+// Note: low entropy salt is okay because IKM (i.e., Ed25519 SK) is high-entropy 
+//       (see https://crypto.stackexchange.com/a/97987)
+const SALT = new TextEncoder().encode('petra-wallet-aead-v1');
+const INFO = new TextEncoder().encode('confidential assets DK encryption under Ed25519');
+
+function deriveKey(ed25519_sk: Uint8Array) {
+  // defense in depth
+  if (ed25519_sk.length !== 32) throw new Error('expected 32-byte seed, not expanded form');
+
+  return hkdf(sha512, ed25519_sk, SALT, INFO, 32);
+}
+
+// Note: `ed25519_sk` is the 32-byte Ed25519 seed \vec{k} from EdDSA.KeyGen: i.e., the random b=2λ-bit
+//        value sampled at keygen, *not* the 64-byte expanded \vec{h} = H_1(\vec{k}). 
+//        Recall that the signing scalar `a` is *derived from* the lower half
+//        of \vec{h} via bit clamping, and the upper half of \vec{h} is the
+//        Schnorr nonce derivation prefix.
+//
+//        `ed25519_sk` is what Petra actually derives via 
+//        `Ed25519PrivateKey.fromDerivationPath(path, mnemonic)` and stores as an
+//        `Ed25519PrivateKey` in @aptos-labs/ts-sdk, whose `.toUint8Array()`
+//        returns the 32-byte seed (see `packages/core/src/utils/privateKey.ts`: 
+//        `PRIVATE_KEY_HEX_LENGTH = 64` hex chars = 32 bytes).
+export function encrypt(ed25519_sk: Uint8Array, msg: Uint8Array) {
+  const key = deriveKey(ed25519_sk);
+  const nonce = randomBytes(24);
+  if (nonce.length !== 24) throw new Error('nonce must be 24 bytes'); // defense in depth
+
+  const aad = new Uint8Array();
+  const ctxt_inner = xchacha20poly1305(key, nonce, aad).encrypt(msg);
+
+  const ctxt = new Uint8Array(24 + ctxt_inner.length);
+  ctxt.set(nonce, 0);
+  ctxt.set(ctxt_inner, 24);
+
+  return ctxt;
+}
+
+export function decrypt(ed25519_sk: Uint8Array, ctxt: Uint8Array) {
+  const nonce = ctxt.subarray(0, 24);
+  const ctxt_inner = ctxt.subarray(24);
+  const key = deriveKey(ed25519_sk);
+  const aad = new Uint8Array();
+
+  return xchacha20poly1305(key, nonce, aad).decrypt(ctxt_inner);
+}
+```
+
+{: .info}
+**192-bit random nonces** give us virtually no birthday-bound concerns: the probability of a nonce collision after encrypting $q$ messages with XChaCha is $\approx \frac{q^2}{2\cdot 2^{192}}$. So even if $q \approx 2^{32}$ this remains $2^{-129}$, which is negligible.
+
 ## Appendix: Links
 
 Audit:
