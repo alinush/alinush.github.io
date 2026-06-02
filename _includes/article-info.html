@@ -34,6 +34,10 @@
   {%- endif -%}
 
   {%- assign _paths_archive = site.paths.archive | default: site.data.variables.default.paths.archive -%}
+  {%- comment -%} Notes and posts live on separate listing pages, so tags must link to the matching one. {%- endcomment -%}
+  {%- if include.article.type == 'note' -%}
+    {%- assign _paths_archive = '/notes.html' -%}
+  {%- endif -%}
 
   {%- if _show_tags or _show_author or _show_date or _pageview -%}
     <div class="article__info clearfix">
