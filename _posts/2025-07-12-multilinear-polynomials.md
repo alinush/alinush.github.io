@@ -106,7 +106,7 @@ Therefore, the product is zero when $\X\ne \b$.
 
 In many MLE-based protocols (e.g., [sumchecks](/sumcheck) or PCSs like [Hyrax](/hyrax) or [KZH](/kzh)), it is often necessary to **efficiently** compute all $n=2^\ell$ evaluations $(\eq(\x, \i))_{\i\in\\{0,1\\}^\ell}$ of the Lagrange polynomials for an arbitrary point $\x\in\F^\ell$!
 
-This can be done in $n$ $\F$ multiplications using a tree-based algorithm, best illustrated with an example (for $\ell = 3$):
+This can be done in $n$ $\F$ multiplications using a tree-based algorithm[^VSBW13], best illustrated with an example (for $\ell = 3$):
 ```
                                1                                 <-- level 0 / root
                          /           \                               (no muls)
