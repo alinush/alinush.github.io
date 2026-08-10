@@ -34,6 +34,33 @@ $</div> <!-- $ -->
 ## Learning resources
 
  - [Transformer Explainer](https://poloclub.github.io/transformer-explainer/), by Polo Club of Data Science, Georgia Tech
+ - [colah's blog](http://colah.github.io/)
+ - [Distill](https://distill.pub/)
+
+## Concepts
+
+ - Feed-forward neural net (FFNN)
+ - Recurrent neural net (RNN)
+ - Convolutional neural net (CNN)
+ - Deep neural net (DNN)
+ - Softmax
+ - Activation
+ - Attention
+    + Multi-head attention
+ - Transformers
+
+## Journey
+
+I've (partially-)looked at these resources, (somewhat) in this (approximate) order:
+
+ - [My own lecture notes from 2013](https://people.csail.mit.edu/alinush/6.867-fall-2013/machine-learning.html)
+ - ["Probabilistic Machine Learning: An Introduction", by Kevin Murphy](https://probml.github.io/pml-book/book1.html)
+ - [Sebastian Raschka's STAT453/L15](https://sebastianraschka.com/pdf/lecture-notes/stat453ss21/L15_intro-rnn__slides.pdf)
+ - [Sebastian Raschka's STAT453/L19](https://sebastianraschka.com/pdf/lecture-notes/stat453ss21/L19_seq2seq_rnn-transformers__slides.pdf)
+ - [100-page ML book](https://themlbook.com/)
+ - [100-page LM book](https://www.thelmbook.com/)
+ - [Illustrated transformer](https://jalammar.github.io/illustrated-transformer/)
+ - [3blue1brown's playlist](https://www.youtube.com/watch?v=aircAruvnKk&list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi)
 
 ## References
 
