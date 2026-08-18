@@ -56,7 +56,9 @@
         {%- endif -%}
         {%- assign _emoji = '' -%}
         {%- if include.emoji_prefix -%}
-          {%- if _article.type == 'note' -%}
+          {%- if _article.icon -%}
+            {%- assign _emoji = _article.icon | append: ' ' -%}
+          {%- elsif _article.type == 'note' -%}
             {%- assign _emoji = '🌱 ' -%}
           {%- else -%}
             {%- assign _emoji = '🌲 ' -%}
@@ -109,7 +111,9 @@
       {%- include snippets/get-locale-string.html key='ARTICLE_LIST_DATE_FORMAT' -%}
       {%- assign _emoji = '' -%}
       {%- if include.emoji_prefix -%}
-        {%- if _article.type == 'note' -%}
+        {%- if _article.icon -%}
+          {%- assign _emoji = _article.icon | append: ' ' -%}
+        {%- elsif _article.type == 'note' -%}
           {%- assign _emoji = '🌱 ' -%}
         {%- else -%}
           {%- assign _emoji = '🌲 ' -%}
