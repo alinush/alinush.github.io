@@ -17,14 +17,14 @@ A **polynomial** $\phi$ of **degree** $d$ is a vector of $d+1$ **coefficients**:
 
 For example, $\phi = [1, 10, 9]$ is a degree 2 polynomial.
 Also, $\phi' = [1, 10, 9, 0, 0, 0]$ is also a degree 2 polynomial, since the zero coefficients at the end do not count.
-But $\phi'' = [1, 10, 9, 0, 0, 0, 1]$ is a degree 6 polynomial, since the last non-zero coefficient is $\phi_6 = 3$.
+But $\phi'' = [1, 10, 9, 0, 0, 0, 1]$ is a degree 6 polynomial, since the last non-zero coefficient is $\phi_6 = 1$.
 
 _"A list of numbers? That makes no sense!"_
 Don't panic!
 You are probably more familiar to polynomials expressed as function of a variable $X$:
 \begin{align}
     \phi(X) &= \phi_0 + \phi_1\cdot X + \phi_2\cdot X^2 + \cdots + \phi_d\cdot X^d\\\\\
-            &= \sum_{i=0}^{d+1} \phi_i X^i
+            &= \sum_{i=0}^{d} \phi_i X^i
 \end{align}
 
 For example, $\phi = [1, 10, 9]$ and $\phi(X) = 9X^2 + 10X + 1$ are one and the same thing.
