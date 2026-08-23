@@ -4,19 +4,47 @@
  - front page with highlights
  - add more cross-links between articles
 
-# Jekyll with TeXt Theme
+# Theme
 
-See original [README here](https://github.com/kitian616/jekyll-TeXt-theme)
+The site runs on a Jekyll port of [Apollo](https://www.getzola.org/themes/apollo/)
+([source](https://github.com/not-matthias/apollo)), a minimal Zola theme: mono/`ZedText`
+typography, `#`-prefixed headings, a red accent, and a light/dark toggle.
 
-[![license](https://img.shields.io/github/license/kitian616/jekyll-TeXt-theme.svg)](https://github.com/kitian616/jekyll-TeXt-theme/blob/master/LICENSE)
-[![Gem Version](https://img.shields.io/gem/v/jekyll-text-theme.svg)](https://github.com/kitian616/jekyll-TeXt-theme/releases)
-[![Travis](https://img.shields.io/travis/kitian616/jekyll-TeXt-theme.svg)](https://travis-ci.org/kitian616/jekyll-TeXt-theme)
-[![Tip Me via PayPal](https://img.shields.io/badge/PayPal-tip%20me-1462ab.svg?logo=paypal)](https://www.paypal.me/kitian616)
-[![Tip Me via Bitcoin](https://img.shields.io/badge/Bitcoin-tip%20me-f7931a.svg?logo=bitcoin)](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/docs/assets/images/3Fkufxcw2xd8HnaRJBNK4ccdtkUDyyNu4V.jpg)
+Apollo is written for Zola, so its Tera templates could not be reused; the markup, CSS and
+JS were reimplemented here:
 
-![TeXt Theme Details](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/TeXt-layouts.png)
+| Piece | Where |
+| --- | --- |
+| Styles | `_sass/apollo/*.scss`, imported by `assets/css/main.scss` |
+| Site-specific overrides | `_sass/apollo/_custom.scss` |
+| Callout boxes (`{: .info}`, `{: .note}`, ...) | `_sass/apollo/_alerts.scss` |
+| Layouts | `_layouts/{base,article,page,home,posts,notes,404}.html` |
+| Partials | `_includes/apollo/*.html` |
+| Scripts | `assets/js/{themetoggle,toc,codeblock,search,tagfilter,swiper}.js` |
+| Fonts and icons | `assets/fonts/`, `assets/icons/` (vendored from Apollo) |
 
-TeXt is a super customizable Jekyll theme for personal site, team site, blog, project, documentation, etc. Similar to iOS 11 style, it has large and prominent titles, round buttons and cards.
+Things worth knowing:
+
+- **Posts vs. notes.** A post with `type: note` in its front matter is a *note*: it is listed on
+  `/notes.html` and gets a 🌱; everything else is listed on `/posts.html` and gets a 🌲. Both
+  listings group by year and are filterable by tag (`?tag=...` still works).
+- **The Cryptomat.** A page with `sidebar: {nav: cryptomat}` gets the book navigation from
+  `_data/navigation.yml` in the left column, plus previous/next links at the foot. On narrow
+  screens that navigation moves below the article.
+- **Table of contents.** `aside: {toc: true}` (the default for posts) renders a scroll-spying TOC
+  in the right column, built client-side from the heading ids.
+- **Cover images.** `article_header: {type: cover, image: {src: ...}}` still works, but Apollo has
+  no hero: the image is rendered inline at the top of the article.
+- **Light/dark.** Both palettes live in one stylesheet as `:root.light` / `:root.dark`;
+  `assets/js/themetoggle.js` swaps the class on `<html>`. `theme_toggle` in `_config.yml` chooses
+  between the 2- and 3-state button.
+- **Search** is a small JSON index (`assets/search-index.json`) over titles, tags and excerpts.
+  Press `/` or ctrl/cmd-K.
+
+The previous theme was [TeXt](https://github.com/kitian616/jekyll-TeXt-theme). Its stylesheets
+(`_sass/common`, `_sass/components`, `_sass/layout`, `_sass/skins`, ...) and its includes are still
+in the tree but are no longer imported or rendered by anything; they can be deleted once the port
+has settled.
 
 ## Running the dev server (sandboxed)
 
@@ -77,4 +105,6 @@ Then, access the page at [http://localhost:4000](http://localhost:4000).
 
 ## License
 
-TeXt Theme is [MIT licensed](https://github.com/kitian616/jekyll-TeXt-theme/blob/master/LICENSE).
+The [Apollo](https://github.com/not-matthias/apollo) theme this port is based on is
+[MIT licensed](https://github.com/not-matthias/apollo/blob/main/LICENSE), as is the
+[TeXt](https://github.com/kitian616/jekyll-TeXt-theme/blob/master/LICENSE) theme it replaced.

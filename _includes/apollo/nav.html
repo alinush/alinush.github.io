@@ -1,0 +1,62 @@
+{%- assign _root = site.paths.root | default: site.data.variables.default.paths.root -%}
+{%- include snippets/get-nav-url.html path=_root -%}
+{%- assign _root_url = __return -%}
+
+<nav>
+  <div class="left-nav">
+    <a class="site-title" href="{{ _root_url }}"
+       {%- if site.description %} title="{{ site.description }}"{%- endif -%}>{{ site.title }}</a>
+
+    <div class="socials">
+      {%- include apollo/socials.html -%}
+    </div>
+  </div>
+
+  <div class="right-nav">
+    {%- include snippets/get-nav-url.html path=page.url -%}
+    {%- assign _page_url = __return -%}
+
+    {%- for _item in site.data.navigation.header -%}
+      {%- include snippets/get-nav-url.html path=_item.url -%}
+      {%- assign _nav_url = __return -%}
+
+      {%- if _item.title -%}
+        {%- assign _label = _item.title -%}
+      {%- else -%}
+        {%- include snippets/get-string-from-locale-config.html locale=_item.titles -%}
+        {%- assign _label = __return -%}
+      {%- endif -%}
+
+      {%- comment -%}
+        Apollo renders menu entries as path-like labels ("/posts"), so turn
+        "To solve" into "/to-solve" rather than showing the prose title.
+      {%- endcomment -%}
+      {%- assign _label = _label | downcase | replace: ' ', '-' | prepend: '/' -%}
+
+      {%- assign _class = 'nav-link' -%}
+      {%- if _nav_url == _page_url or page.nav_key and _item.key and page.nav_key == _item.key -%}
+        {%- assign _class = 'nav-link nav-link--active' -%}
+      {%- endif -%}
+
+      <a class="{{ _class }}" href="{{ _nav_url }}">{{ _label }}</a>
+    {%- endfor -%}
+
+    {%- if site.search.provider -%}
+      <button id="search-button" class="search-button" title="Search (press / )">
+        <img src="{{ '/assets/icons/search.svg' | relative_url }}" alt="Search" class="search-icon">
+      </button>
+    {%- endif -%}
+
+    <a id="dark-mode-toggle" href="#" title="Toggle theme"
+       onclick="toggleTheme(); event.preventDefault();">
+      <img src="{{ '/assets/icons/sun.svg' | relative_url }}" id="sun-icon" alt="Light">
+      <img src="{{ '/assets/icons/moon.svg' | relative_url }}" id="moon-icon" style="filter: invert(1)" alt="Dark">
+      <img src="{{ '/assets/icons/auto.svg' | relative_url }}" id="auto-icon" style="filter: invert(1)" alt="Auto">
+    </a>
+    <script>updateItemToggleTheme();</script>
+  </div>
+</nav>
+
+{%- if site.search.provider -%}
+  {%- include apollo/search-modal.html -%}
+{%- endif -%}

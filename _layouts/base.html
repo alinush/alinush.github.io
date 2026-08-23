@@ -3,23 +3,44 @@ layout: none
 ---
 <!DOCTYPE html>
 {%- include snippets/get-lang.html -%}
-<html lang="{{ __return }}">
+<html lang="{{ __return }}" class="light">
   <head>
     {%- include analytics.html -%}
-    {%- include head.html -%}
-    <script>
-      {%- include scripts/utils/utils.js -%}
-      {%- include scripts/lib/throttle.js -%}
-      {%- include scripts/lib/lazyload.js -%}
-    </script>
-    {%- include scripts/variables.html -%}
+    {%- include apollo/head.html -%}
+    {%- comment -%}
+      The mermaid and chart includes below load their libraries through this
+      tiny loader, which the previous theme also used.
+    {%- endcomment -%}
+    <script>{%- include scripts/lib/lazyload.js -%}</script>
   </head>
   <body>
-    <div class="root" data-is-touch="false">
-      {{ content }}
+    <div class="page">
+      <div class="left-content">
+        {%- if page.sidebar.nav -%}
+          {%- include apollo/sidebar-nav.html -%}
+        {%- endif -%}
+      </div>
+
+      <div class="content">
+        {%- include apollo/nav.html -%}
+        {{ content }}
+      </div>
+
+      <div class="right-content">
+        {%- if page.aside.toc -%}
+          {%- include apollo/toc.html -%}
+        {%- endif -%}
+      </div>
     </div>
-    <script>
-      {%- include scripts/common.js -%}
-    </script>
+
+    {%- include apollo/footer.html -%}
+
+    <script defer src="{{ '/assets/js/codeblock.js' | relative_url }}"></script>
+    <script defer src="{{ '/assets/js/swiper.js' | relative_url }}"></script>
+    {%- if page.aside.toc -%}
+      <script defer src="{{ '/assets/js/toc.js' | relative_url }}"></script>
+    {%- endif -%}
+
+    {%- include markdown-enhancements.html -%}
   </body>
 </html>

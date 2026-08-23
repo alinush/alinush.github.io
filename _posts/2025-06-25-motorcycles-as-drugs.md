@@ -93,13 +93,7 @@ Some fond memories below:
  <div class="swiper__button swiper__button--next fas fa-chevron-right"></div>
 </div>
 
-<script>
-  {%- include scripts/lib/swiper.js -%}
-  var SOURCES = window.TEXT_VARIABLES.sources;
-  window.Lazyload.js(SOURCES.jquery, function() {
-  $('.swiper-demo').swiper();
-  });
-</script>
+<!-- The carousel is initialised automatically by /assets/js/swiper.js. -->
 <!--more-->
 
 <!-- Here you can define LaTeX macros -->

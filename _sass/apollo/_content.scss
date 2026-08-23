@@ -1,0 +1,247 @@
+/* -------------------------------------------------- article title block -- */
+
+.title .page-header {
+  margin-bottom: 0.4rem;
+}
+
+.tldr {
+  border-left: 3px solid var(--primary-color);
+  background: var(--bg-1);
+  padding: 0.6rem 1rem;
+  margin: 1.2rem 0;
+}
+
+/* ------------------------------------------------------------- the body -- */
+
+.body {
+  ul,
+  ol {
+    padding-left: 1.6rem;
+  }
+
+  li {
+    margin-bottom: 0.25rem;
+  }
+
+  li > ul,
+  li > ol {
+    margin-top: 0.25rem;
+  }
+
+  /* Apollo pushes headings well clear of the preceding paragraph; the first
+     one in an article should not inherit that gap. */
+  > :is(h1, h2, h3, h4, h5, h6):first-child {
+    margin-top: 0;
+  }
+
+  dt {
+    font-weight: bold;
+    margin-top: 0.6rem;
+  }
+
+  dd {
+    margin-left: 1.6rem;
+  }
+
+  kbd {
+    background: var(--bg-1);
+    border: 1px solid var(--border-color);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 0.1em 0.4em;
+    font-family: var(--code-font);
+    font-size: 0.85em;
+  }
+
+  details {
+    border-left: 3px solid var(--primary-color);
+    background: var(--bg-1);
+    border-radius: 4px;
+    padding: 0.4rem 0.8rem;
+    margin: 1rem 0;
+  }
+}
+
+summary {
+  cursor: pointer;
+  padding-left: 0.5em;
+
+  &:hover {
+    background-color: var(--primary-color);
+    color: var(--hover-color);
+  }
+}
+
+/* ------------------------------------------------------------- buttons -- */
+/* A handful of posts link to downloads with the previous theme's button
+   classes; keep them rendering sensibly. */
+
+.button,
+a.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 4px 10px;
+  background: var(--bg-1);
+  border: 1px solid var(--border-color) !important;
+  border-radius: 6px;
+  color: var(--text-0);
+  font-family: var(--mono-text-font);
+  font-size: 0.8rem;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--primary-color);
+    color: var(--hover-color);
+  }
+}
+
+.button--success:hover {
+  background: var(--alert-green);
+}
+
+/* Reusable icon button, from Apollo. */
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  gap: 3px;
+  background: var(--bg-2);
+  font-size: 0.75rem;
+  color: var(--text-0);
+  border: 1px solid var(--border-color) !important;
+  border-radius: 6px;
+
+  svg,
+  img {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 0;
+  }
+
+  img {
+    filter: var(--icon-filter);
+  }
+
+  &:hover {
+    cursor: pointer;
+    background: var(--bg-1);
+    color: var(--text-0);
+    border: 1px solid var(--border-color);
+  }
+}
+
+/* ------------------------------------------------------------- mermaid -- */
+
+/* Mermaid renders into the <code> element kramdown emits for a ```mermaid
+   fence, so the surrounding <pre> must stop looking like a code block. */
+pre:has(> code.language-mermaid) {
+  background: none !important;
+  border: none;
+  padding: 0;
+  text-align: center;
+  overflow-x: auto;
+}
+
+code.language-mermaid {
+  display: block;
+  background: none !important;
+  border: none;
+  padding: 0;
+
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+.mermaid {
+  overflow-x: auto;
+  text-align: center;
+  margin: 1.2rem 0;
+
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* -------------------------------------------------------------- swiper -- */
+/* Image carousel markup carried over from the previous theme (see /moto);
+   driven by assets/js/swiper.js. */
+
+.swiper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  background: var(--bg-1);
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    will-change: transform;
+
+    &--animation {
+      transition: transform 0.35s ease;
+    }
+  }
+
+  &__slide {
+    flex: 0 0 100%;
+    max-width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    a {
+      border-bottom: none !important;
+      display: block;
+      height: 100%;
+    }
+
+    img {
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+      border-radius: 0;
+    }
+  }
+
+  &__button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    width: 2.2rem;
+    height: 2.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.45);
+    color: #fff;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      background: var(--primary-color);
+    }
+
+    &--prev {
+      left: 0.6rem;
+    }
+
+    &--next {
+      right: 0.6rem;
+    }
+
+    &.disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+  }
+}

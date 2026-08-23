@@ -1,0 +1,43 @@
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+{%- include snippets/get-article-title.html article=page -%}
+{%- assign _title = __return -%}
+<title>{%- if _title -%}{{ _title }} - {{ site.title }}{%- else -%}{{ site.title }}{%- endif -%}</title>
+
+{%- if page.excerpt -%}
+  {%- assign _description = page.excerpt | strip_html | normalize_whitespace | strip | truncate: 160 -%}
+{%- else -%}
+  {%- assign _description = site.description -%}
+{%- endif -%}
+<meta name="description" content="{{ _description }}">
+
+<meta property="og:site_name" content="{{ site.title }}">
+<meta property="og:title" content="{%- if _title -%}{{ _title }}{%- else -%}{{ site.title }}{%- endif -%}">
+<meta property="og:description" content="{{ _description }}">
+<meta property="og:type" content="{%- if page.layout == 'article' and page.date -%}article{%- else -%}website{%- endif -%}">
+
+<link rel="canonical" href="{%- include snippets/page-url.html -%}">
+
+{%- assign _paths_rss = site.paths.rss | default: site.data.variables.default.paths.rss -%}
+{%- include snippets/get-nav-url.html path=_paths_rss -%}
+<link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ __return }}">
+
+{%- include head/favicon.html -%}
+
+<link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+
+{%- comment -%}
+  Font Awesome is still needed: a number of posts embed <i class="fas fa-..."> icons.
+{%- endcomment -%}
+{%- include snippets/get-sources.html -%}
+{%- assign _sources = __return -%}
+<link rel="stylesheet" href="{{ _sources.font_awesome }}">
+
+<script>
+  window.themeToggleMode = "{{ site.theme_toggle | default: 'toggle-auto' }}";
+</script>
+<script src="{{ '/assets/js/themetoggle.js' | relative_url }}"></script>
+
+{%- include head/custom.html -%}

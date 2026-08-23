@@ -1,0 +1,123 @@
+// Language colours for the little label in the top-right of a code block.
+$language-colors: (
+  "js": (#f7df1e, "JavaScript"),
+  "javascript": (#f7df1e, "JavaScript"),
+  "yaml": (#f71e6a, "YAML"),
+  "shell": (#4eaa25, "Shell"),
+  "json": (dodgerblue, "JSON"),
+  "python": (#3572a5, "Python"),
+  "css": (#264de4, "CSS"),
+  "go": (#00add8, "Go"),
+  "markdown": (#0000ff, "Markdown"),
+  "rust": (#ff4647, "Rust"),
+  "java": (#f89820, "Java"),
+  "c": (#555555, "C"),
+  "cpp": (#f34b7d, "C++"),
+  "csharp": (#178600, "C#"),
+  "ruby": (#701516, "Ruby"),
+  "swift": (#f05138, "Swift"),
+  "php": (#777bb4, "PHP"),
+  "typescript": (#3178c6, "TypeScript"),
+  "scala": (#c22d40, "Scala"),
+  "kotlin": (#f18e33, "Kotlin"),
+  "lua": (#000080, "Lua"),
+  "perl": (#0298c3, "Perl"),
+  "haskell": (#5e5086, "Haskell"),
+  "r": (#198ce7, "R"),
+  "dart": (#00d2b8, "Dart"),
+  "elixir": (#6e4a7e, "Elixir"),
+  "clojure": (#5881d8, "Clojure"),
+  "bash": (#4eaa25, "Bash"),
+  "diff": (#88807c, "Diff"),
+  "tex": (#3d6117, "TeX"),
+  "latex": (#3d6117, "LaTeX"),
+  "sol": (#aa6746, "Solidity"),
+  "solidity": (#aa6746, "Solidity"),
+  "move": (#4a90d9, "Move"),
+  "default": (#333, "Code"),
+);
+
+@mixin base-label-style($bg-color, $text-color: #f0f0f0) {
+  background: $bg-color;
+  color: $text-color;
+  border-radius: 0 0 0.25rem 0.25rem;
+  font-size: 12px;
+  letter-spacing: 0.025rem;
+  padding: 0.1rem 0.5rem;
+  text-align: right;
+  text-transform: uppercase;
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin-top: 0.1rem;
+  font-family: var(--mono-text-font);
+}
+
+.code-label {
+  @include base-label-style(#333);
+}
+
+@each $lang, $color-info in $language-colors {
+  .label-#{$lang} {
+    @include base-label-style(nth($color-info, 1));
+  }
+}
+
+// A plaintext block is usually output, not source: the label just adds noise.
+.label-plaintext {
+  display: none;
+}
+
+code {
+  background-color: var(--bg-1);
+  padding: 0.1em 0.2em;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  font-family: var(--code-font);
+  font-size: 0.9em;
+}
+
+pre {
+  background-color: var(--hl-bg) !important;
+  color: var(--hl-fg);
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  line-height: 1.4;
+  overflow-x: auto;
+  padding: 1em;
+  position: relative;
+
+  code {
+    background-color: transparent !important;
+    color: inherit;
+    font-size: 100%;
+    padding: 0;
+    border: none;
+    font-family: var(--code-font);
+  }
+}
+
+// Rouge wraps every block in `.highlighter-rouge > .highlight > pre.highlight`;
+// the outer wrapper must not paint its own background over `pre`'s.
+.highlighter-rouge,
+div.highlight {
+  background: none;
+}
+
+.clipboard-button,
+.clipboard-button svg {
+  all: unset;
+  cursor: pointer;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  z-index: 10;
+  background-color: transparent;
+  border: none;
+  fill: var(--hl-fg);
+  opacity: 0.6;
+}
+
+.clipboard-button:hover {
+  opacity: 1;
+}

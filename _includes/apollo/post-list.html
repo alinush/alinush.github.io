@@ -1,0 +1,35 @@
+{%- comment -%}
+  Renders a list of articles in Apollo's date + title style.
+
+  Parameters:
+    articles      the list to render
+    group_by_year group entries under a year heading
+    reverse       render newest-first within each group
+    show_excerpt  show the excerpt under the title
+{%- endcomment -%}
+
+{%- assign _articles = include.articles -%}
+
+{%- if include.group_by_year -%}
+  {%- assign _groups = _articles | group_by_exp: '_a', '_a.date | date: "%Y"' -%}
+  {%- if include.reverse -%}
+    {%- assign _groups = _groups | sort: 'name' | reverse -%}
+  {%- endif -%}
+
+  {%- for _group in _groups -%}
+    <div class="year-group">
+      <h2 class="year-heading no-hash">{{ _group.name }}</h2>
+      <ul>
+        {%- for _article in _group.items -%}
+          {%- include apollo/post-list-item.html article=_article show_excerpt=include.show_excerpt -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endfor -%}
+{%- else -%}
+  <ul>
+    {%- for _article in _articles -%}
+      {%- include apollo/post-list-item.html article=_article show_excerpt=include.show_excerpt -%}
+    {%- endfor -%}
+  </ul>
+{%- endif -%}

@@ -1,0 +1,29 @@
+{%- comment -%}
+  A tag cloud that filters the list below it, client-side (assets/js/tagfilter.js).
+  `posts` scopes the counts to the listing being filtered, so /notes doesn't
+  offer tags that only appear on /posts.
+{%- endcomment -%}
+{%- assign _posts = include.posts -%}
+
+{%- assign _tag_names = '' | split: '' -%}
+{%- for _post in _posts -%}
+  {%- for _tag_name in _post.tags -%}
+    {%- assign _tag_name = _tag_name | strip -%}
+    {%- unless _tag_names contains _tag_name -%}
+      {%- assign _tag_names = _tag_names | push: _tag_name -%}
+    {%- endunless -%}
+  {%- endfor -%}
+{%- endfor -%}
+{%- assign _tag_names = _tag_names | sort -%}
+
+<div class="tag-filter js-tag-filter">
+  <button type="button" class="tag-button tag-button--all" data-encode="">
+    all<span class="tag-count">{{ _posts | size }}</span>
+  </button>
+  {%- for _tag_name in _tag_names -%}
+    {%- assign _tag_posts = _posts | where_exp: '_p', '_p.tags contains _tag_name' -%}
+    <button type="button" class="tag-button" data-encode="{{ _tag_name | url_encode }}">
+      <span>{{ _tag_name }}</span><span class="tag-count">{{ _tag_posts | size }}</span>
+    </button>
+  {%- endfor -%}
+</div>

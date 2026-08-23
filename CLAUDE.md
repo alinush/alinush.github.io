@@ -52,3 +52,17 @@ When writing blog posts, do NOT redefine LaTeX macros that are already defined g
 ## Citing papers
 
 When citing papers whose citation key contains `+` (e.g., `GLS+21e`), replace `+` with `plus` in the footnote reference (e.g., `[^GLSplus21e]`). This is because Jekyll/kramdown does not support `+` in footnote IDs.
+
+## Theme
+
+The site uses a Jekyll port of the [Apollo](https://github.com/not-matthias/apollo) Zola theme.
+Styles live in `_sass/apollo/`, layouts in `_layouts/`, partials in `_includes/apollo/`, and
+scripts in `assets/js/`. Put site-specific CSS in `_sass/apollo/_custom.scss`; put callout-box
+tweaks (`{: .info}`, `{: .note}`, `{: .todo}`, ...) in `_sass/apollo/_alerts.scss`.
+
+The `_sass` subtrees from the previous TeXt theme (`common/`, `components/`, `layout/`, `skins/`,
+`additional/`, `animate/`) and most of the non-`apollo/` includes are dead code: nothing imports or
+renders them. Do not edit them expecting a change on the site.
+
+See the "Theme" section of `README.md` for how posts vs. notes, the Cryptomat sidebar, the TOC,
+cover images and search are wired up.

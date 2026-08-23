@@ -1,0 +1,108 @@
+// Callout boxes used throughout the posts, e.g.
+//
+//   {: .info}
+//   **tl;dr:** ...
+//
+// Ported from the previous theme's `_sass/additional/_alert.scss`, but driven
+// by the --alert-* custom properties so they follow the light/dark toggle.
+
+@mixin alert($color, $label: null) {
+  padding: 0.5rem 1rem;
+  background-color: color-mix(in srgb, #{$color} calc(var(--alert-tint) * 100%), transparent);
+  border: 1px solid #{$color};
+  border-radius: 4px;
+
+  @if $label {
+    &::before {
+      content: "#{$label}";
+      font-weight: bold;
+      color: #{$color};
+      margin-right: 0.25rem;
+    }
+  }
+}
+
+main {
+  p.success {
+    @include alert(var(--alert-green));
+  }
+
+  p.info {
+    @include alert(var(--alert-blue));
+  }
+
+  p.warning {
+    @include alert(var(--alert-yellow));
+  }
+
+  p.error {
+    @include alert(var(--alert-red));
+  }
+
+  /* The todo box has a lighter red */
+  p.todo {
+    padding: 0.5rem 1rem;
+    background-color: color-mix(in srgb, var(--alert-red) 4%, transparent);
+    border: 1px solid color-mix(in srgb, var(--alert-red) 25%, transparent);
+    border-radius: 4px;
+
+    &::before {
+      content: "TODO: ";
+      font-weight: bold;
+      color: color-mix(in srgb, var(--alert-red) 70%, transparent);
+      margin-right: 0.25rem;
+    }
+  }
+
+  p.note {
+    @include alert(var(--alert-blue), "Note: ");
+  }
+
+  p.smallnote {
+    padding: 0.5rem 1rem;
+    background-color: color-mix(in srgb, var(--alert-gray) 5%, transparent);
+    border: 1px solid color-mix(in srgb, var(--alert-gray) 25%, transparent);
+    border-radius: 4px;
+    font-size: 0.9rem;
+
+    &::before {
+      content: "Note: ";
+      font-weight: bold;
+      color: var(--alert-gray);
+      margin-right: 0.25rem;
+    }
+  }
+
+  p.theorem {
+    @include alert(var(--alert-yellow), "Theorem: ");
+  }
+
+  p.definition {
+    @include alert(var(--alert-green), "Definition");
+  }
+
+  /* Inline `code` tags coloured by severity. */
+  code.success {
+    color: #fff;
+    background-color: var(--alert-green);
+    border-color: var(--alert-green);
+  }
+
+  code.info {
+    color: #fff;
+    background-color: var(--alert-blue);
+    border-color: var(--alert-blue);
+  }
+
+  code.warning {
+    color: #fff;
+    background-color: var(--alert-yellow);
+    border-color: var(--alert-yellow);
+  }
+
+  code.error {
+    color: #fff;
+    background-color: var(--alert-red);
+    border-color: var(--alert-red);
+  }
+}

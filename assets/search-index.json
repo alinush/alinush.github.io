@@ -1,0 +1,28 @@
+---
+layout: none
+sitemap: false
+---
+[
+{%- for _post in site.posts -%}
+  {%- unless forloop.first -%},{%- endunless -%}
+  {%- include snippets/get-article-title.html article=_post -%}
+  {"title":{{ __return | default: _post.name | jsonify }},
+   "url":{{ _post.url | relative_url | jsonify }},
+   "kind":{% if _post.type == 'note' %}"note"{% else %}"post"{% endif %},
+   "date":{{ _post.date | date: "%Y-%m-%d" | jsonify }},
+   "tags":{{ _post.tags | join: ", " | jsonify }},
+   "preview":{{ _post.excerpt | strip_html | normalize_whitespace | truncate: 160 | jsonify }}}
+{%- endfor -%}
+{%- for _page in site.pages -%}
+  {%- include snippets/get-article-title.html article=_page -%}
+  {%- assign _page_title = __return -%}
+  {%- if _page_title and _page.search != false -%},
+  {"title":{{ _page_title | jsonify }},
+   "url":{{ _page.url | relative_url | jsonify }},
+   "kind":"page",
+   "date":"",
+   "tags":"",
+   "preview":""}
+  {%- endif -%}
+{%- endfor -%}
+]

@@ -1,0 +1,294 @@
+.primary-color {
+  color: var(--primary-color);
+}
+
+.draft-label {
+  color: var(--hover-color);
+  text-decoration: none;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin-left: 6px;
+  background-color: var(--primary-color);
+  font-size: 0.7rem;
+  vertical-align: middle;
+}
+
+::-moz-selection {
+  background: var(--primary-color);
+  color: var(--hover-color);
+  text-shadow: none;
+}
+
+::selection {
+  background: var(--primary-color);
+  color: var(--hover-color);
+}
+
+hr {
+  color: var(--border-color);
+  border: 0;
+  border-top: 1px solid var(--border-color);
+  background: none;
+  margin: 1.2rem auto;
+}
+
+blockquote {
+  border-left: 3px solid var(--primary-color);
+  color: var(--text-1);
+  margin: 0;
+  padding-left: 1em;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+
+  /* use colored hovering */
+  &:hover {
+    background-color: var(--primary-color);
+    color: var(--hover-color);
+  }
+
+  /* hover link with child elements (e.g. code) */
+  &:hover > code {
+    background-color: var(--primary-color);
+    color: var(--hover-color);
+
+    /* disable the border + vertical padding */
+    border: none;
+    padding: 0 0.2em;
+  }
+}
+
+/* Only have colored links inside the text */
+main {
+  a {
+    border-bottom: 2px solid var(--primary-color);
+
+    // Make sure the underline is at the top
+    position: relative; // needed for z-index
+    z-index: 1;
+  }
+
+  // Disable colored links in chrome-like places.
+  .meta a,
+  .cards a,
+  .post-header a,
+  .article-footer a,
+  .section-navigator a,
+  .tag-filter a,
+  .pagination a {
+    border-bottom: none;
+  }
+
+  // An underline under a picture or a MathJax formula is just noise.
+  a:has(> img),
+  a:has(> mjx-container),
+  a:has(> svg) {
+    border-bottom: none;
+  }
+
+  // Heading anchors added by kramdown / the TOC script.
+  .header-anchor {
+    border-bottom: none;
+    color: var(--text-2);
+    opacity: 0;
+    padding-left: 0.3em;
+    font-weight: normal;
+  }
+
+  :is(h1, h2, h3, h4, h5, h6):hover .header-anchor {
+    opacity: 1;
+  }
+}
+
+time {
+  color: var(--text-1);
+}
+
+.post-list,
+.tag-list {
+  ul {
+    margin: 0;
+    padding: 1rem 0 0 0;
+  }
+
+  .list-item {
+    margin-bottom: 0.5rem;
+    list-style-type: none;
+  }
+
+  .post-header {
+    display: grid;
+    align-items: baseline;
+
+    @media all and (max-width: 640px) {
+      grid-template-rows: auto 1fr;
+    }
+    @media all and (min-width: 640px) {
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
+    }
+
+    @media only screen and (max-width: 640px) {
+      margin: 1.6rem 0px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: normal;
+      font-family: var(--header-font);
+
+      a {
+        border-bottom: none;
+      }
+    }
+
+    time {
+      font-family: var(--mono-text-font);
+      font-size: 0.9rem;
+      text-align: left;
+      margin: 0;
+      white-space: nowrap;
+    }
+  }
+
+  /* Year separators on the /posts and /notes listings. */
+  .year-group {
+    margin-top: 2.5rem;
+
+    &:first-of-type {
+      margin-top: 1rem;
+    }
+  }
+
+  .year-heading {
+    font-family: var(--mono-text-font);
+    font-size: 1rem;
+    color: var(--text-1);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.3rem;
+    margin: 0 0 0.6rem 0;
+
+    &::before {
+      content: "";
+    }
+  }
+}
+
+/* change the line-through color */
+del {
+  text-decoration-color: var(--primary-color);
+  text-decoration-thickness: 3px;
+}
+
+strike {
+  text-decoration-color: var(--primary-color);
+  text-decoration-thickness: 3px;
+}
+
+/* MathJax display equations can be wider than the column. */
+mjx-container[display="true"],
+.MathJax_Display,
+.MJXc-display,
+.MathJax_SVG_Display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+}
+
+/* An excerpt is prose; it should not inherit the meta line's mono font. */
+.post-list .meta .description {
+  font-family: var(--text-font);
+  font-size: 0.95rem;
+}
+
+/* Post/page metadata line under the title. */
+.meta {
+  color: var(--text-1);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0 0.3em;
+  font-family: var(--mono-text-font);
+  font-size: 0.85rem;
+}
+
+/* Footnotes / bibliography produced by kramdown. */
+.footnotes {
+  border-top: 1px solid var(--border-color);
+  margin-top: 3rem;
+  padding-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--text-1);
+
+  ol {
+    padding-left: 1.5rem;
+  }
+
+  li {
+    margin-bottom: 0.4rem;
+  }
+}
+
+sup[role="doc-noteref"] a,
+a.footnote {
+  border-bottom: none !important;
+  color: var(--primary-color);
+}
+
+/* Previous/next navigator at the foot of an article. */
+.section-navigator {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid var(--border-color);
+  margin-top: 2rem;
+  padding-top: 1rem;
+  font-family: var(--mono-text-font);
+  font-size: 0.9rem;
+
+  .previous,
+  .next {
+    max-width: 48%;
+
+    @media (max-width: 640px) {
+      max-width: 100%;
+    }
+
+    span {
+      display: block;
+      color: var(--text-1);
+      font-size: 0.8rem;
+    }
+  }
+
+  .next {
+    text-align: right;
+    margin-left: auto;
+  }
+}
+
+/* License / last-updated block at the foot of an article. */
+.article-footer {
+  color: var(--text-1);
+  font-family: var(--mono-text-font);
+  font-size: 0.85rem;
+  margin-top: 2rem;
+}
+
+/* Pagination on the home page. */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0;
+  margin: 2.5rem 0 0 0;
+  font-family: var(--mono-text-font);
+
+  .page-next {
+    margin-left: auto;
+  }
+}

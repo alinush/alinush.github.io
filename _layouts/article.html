@@ -1,29 +1,87 @@
 ---
-layout: page
-type: article
+layout: base
 ---
+<main>
+  <article itemscope itemtype="http://schema.org/Article">
+    {%- comment -%}
+      A cover image declared in front matter used to be a full-bleed hero in the
+      previous theme; Apollo has no hero, so render it inline at the top.
+    {%- endcomment -%}
+    {%- if page.article_header.image.src -%}
+      {%- include snippets/get-nav-url.html path=page.article_header.image.src -%}
+      <div class="article-cover"><img src="{{ __return }}" alt=""></div>
+    {%- endif -%}
 
-{%- include snippets/assign.html
-  target = site.data.variables.default.page.sharing
-  source0=layout.sharing source1=page.sharing -%}
-{%- assign _sharing = __return -%}
+    <div class="title">
+      {%- include snippets/get-article-title.html article=page -%}
+      {%- assign _title = __return -%}
+      {%- if page.show_title == false -%}
+        <h1 style="display:none;" itemprop="headline">{{ _title }}</h1>
+      {%- else -%}
+        <div class="page-header" itemprop="headline">{{ _title }}</div>
+      {%- endif -%}
 
-<div class="layout--article">
-  {%- include article/top/custom.html -%}
+      <div class="meta">
+        {%- comment -%}
+          Apollo joins the metadata with " :: ", so each part has to know
+          whether anything was emitted before it.
+        {%- endcomment -%}
+        {%- assign _sep = '' -%}
 
-  <div class="article__content" itemprop="articleBody">{{ content }}</div>
+        {%- if page.date -%}
+          Posted on <time itemprop="datePublished"
+            datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%Y-%m-%d' }}</time>
+          {%- assign _sep = ':: ' -%}
+        {%- endif -%}
 
-  {%- if _sharing -%}
-    <section class="article__sharing d-print-none">{%- include sharing.html -%}</section>
-  {%- endif -%}
+        {%- if page.modify_date -%}
+          {{ _sep }}Updated on <time itemprop="dateModified"
+            datetime="{{ page.modify_date | date_to_xmlschema }}">{{ page.modify_date | date: '%Y-%m-%d' }}</time>
+          {%- assign _sep = ':: ' -%}
+        {%- endif -%}
+
+        {%- if page.tags[0] -%}
+          {%- comment -%}
+            Notes and posts have separate listing pages, so a tag has to link to
+            whichever one the article lives on.
+          {%- endcomment -%}
+          {%- if page.type == 'note' -%}
+            {%- assign _archive = '/notes.html' -%}
+          {%- else -%}
+            {%- assign _archive = site.paths.archive | default: site.data.variables.default.paths.archive -%}
+          {%- endif -%}
+          {%- include snippets/prepend-baseurl.html path=_archive -%}
+          {%- assign _archive_url = __return -%}
+
+          {{ _sep }}<span class="tags">
+            {%- for _tag in page.tags -%}
+              <a href="{{ _archive_url }}?tag={{ _tag | strip | url_encode }}">{{ _tag | strip }}</a>
+            {%- endfor -%}
+          </span>
+          {%- assign _sep = ':: ' -%}
+        {%- endif -%}
+
+        {%- if site.repository and site.repository_tree and page.show_edit_on_github != false -%}
+          {%- include snippets/is_collection.html page=page -%}
+          {%- if __return -%}
+            {%- include snippets/prepend-path.html path=page.path prepend_path=site.collections_dir -%}
+            {%- assign _article_path = __return -%}
+          {%- else -%}
+            {%- assign _article_path = page.path -%}
+          {%- endif -%}
+          {%- assign _github_path = site.repository | append: '/tree/' | append: site.repository_tree | append: '/' | append: _article_path | replace: '//', '/' -%}
+          {{ _sep }}<a href="https://github.com/{{ _github_path }}" title="Edit this page on GitHub">source</a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <section class="body js-article-body" itemprop="articleBody">
+      {{ content }}
+    </section>
+  </article>
 
   <div class="d-print-none">
-    {%- include article-footer.html -%}
-    {%- include article-section-navigator.html -%}
+    {%- include apollo/article-footer.html -%}
+    {%- include apollo/section-navigator.html -%}
   </div>
-
-</div>
-
-<script>
-  {%- include scripts/article.js -%}
-</script>
+</main>

@@ -2,14 +2,49 @@
 {%- assign _sources = __return -%}
 <script>
   window.Lazyload.js('{{ _sources.mermaid }}', function() {
-    mermaid.initialize({
-      startOnLoad: false,
-      themeVariables: {
-        fontSize: '13px'
+    var blocks = document.querySelectorAll('.language-mermaid');
+    if (blocks.length === 0) { return; }
+
+    // Mermaid replaces the element's contents with an SVG, so keep the source
+    // around: the diagram has to be redrawn when the light/dark toggle flips.
+    blocks.forEach(function(block) {
+      if (!block.dataset.mermaidSource) {
+        block.dataset.mermaidSource = block.textContent;
       }
     });
-    mermaid.run({
-      nodes: document.querySelectorAll('.language-mermaid')
+
+    function currentTheme() {
+      return document.documentElement.classList.contains('dark') ? 'dark' : 'default';
+    }
+
+    var renderedTheme = null;
+
+    function render() {
+      var theme = currentTheme();
+      if (theme === renderedTheme) { return; }
+      renderedTheme = theme;
+
+      blocks.forEach(function(block) {
+        block.textContent = block.dataset.mermaidSource;
+        block.removeAttribute('data-processed');
+      });
+
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: theme,
+        themeVariables: {
+          fontSize: '13px'
+        }
+      });
+      mermaid.run({ nodes: blocks });
+    }
+
+    render();
+
+    // Redraw when the theme class on <html> changes.
+    new MutationObserver(render).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
     });
   });
 </script>

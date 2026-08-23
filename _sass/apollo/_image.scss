@@ -1,0 +1,115 @@
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+figure {
+  box-sizing: border-box;
+  display: inline-block;
+  margin: 0;
+  max-width: 100%;
+}
+
+figure img {
+  max-height: 500px;
+}
+
+@media screen and (min-width: 600px) {
+  figure {
+    padding: 0 40px;
+  }
+}
+
+figure h4 {
+  font-size: 1rem;
+  margin: 0;
+  margin-bottom: 1em;
+}
+
+figure h4::before {
+  content: "↳ ";
+}
+
+figcaption {
+  color: var(--text-1);
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 0.4rem;
+}
+
+/* Image placement helpers used throughout the posts. */
+img.align-center,
+.align-center > img,
+p.align-center img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+p.align-center {
+  text-align: center;
+}
+
+img.align-right,
+.align-right > img {
+  float: right;
+  margin: 0 0 1rem 1.5rem;
+  max-width: 45%;
+
+  @media (max-width: 640px) {
+    float: none;
+    margin: 1rem auto;
+    max-width: 100%;
+    display: block;
+  }
+}
+
+img.align-left,
+.align-left > img {
+  float: left;
+  margin: 0 1.5rem 1rem 0;
+  max-width: 45%;
+
+  @media (max-width: 640px) {
+    float: none;
+    margin: 1rem auto;
+    max-width: 100%;
+    display: block;
+  }
+}
+
+/* Photo-frame helpers carried over from the previous theme. */
+img.shadow,
+.shadow > img {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+}
+
+img.border,
+.border > img {
+  border: 1px solid var(--border-color);
+}
+
+img.rounded,
+.rounded > img {
+  border-radius: 0.5rem;
+}
+
+img.circle,
+.circle > img {
+  border-radius: 50%;
+}
+
+/* A cover image declared in front matter, rendered inline at the top. */
+.article-cover {
+  /* Apollo puts 4rem above the page header; a cover takes that slot instead. */
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+
+  img {
+    width: 100%;
+    max-height: 420px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+  }
+}

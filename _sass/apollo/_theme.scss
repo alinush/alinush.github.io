@@ -1,0 +1,97 @@
+// Apollo's colour scheme, expressed as CSS custom properties so that a single
+// stylesheet can serve both themes. `assets/js/themetoggle.js` flips the
+// `light`/`dark` class on <html>.
+//
+// The values below are Apollo's `darken()`/`lighten()` results, pre-computed so
+// that dart-sass doesn't warn about the deprecated colour functions.
+
+:root {
+  /* Fonts */
+  --font-size-base: 16px;
+  --mono-text-font: "Jetbrains Mono", ui-monospace, monospace;
+  --text-font: "ZedTextFtl", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --header-font: "ZedDisplayFtl", "Space Grotesk", "Helvetica", sans-serif;
+  --code-font: "Jetbrains Mono", ui-monospace, monospace;
+
+  --line-height: 1.5;
+  --page-width: 920px;
+  --toc-width: 320px;
+}
+
+:root.light {
+  --text-0: #212121;
+  --text-1: #666666;
+  --text-2: #b3b3b3;
+
+  --bg-0: #ffffff;
+  --bg-1: #fafafa;
+  --bg-2: #ededed;
+
+  --border-color: var(--bg-2);
+
+  --primary-color: #ef5350;
+  --hover-color: white;
+
+  --icon-filter: none;
+
+  /* Alert / callout boxes (Tomorrow-ish, tuned for a light background) */
+  --alert-green: #52c41a;
+  --alert-blue: #1890ff;
+  --alert-yellow: #fa8c16;
+  --alert-red: #f5222d;
+  --alert-gray: #6c757d;
+  --alert-tint: 0.08;
+
+  /* Rouge syntax highlighting: Tomorrow */
+  --hl-bg: var(--bg-1);
+  --hl-fg: #4d4d4c;
+  --hl-comment: #8e908c;
+  --hl-red: #c82829;
+  --hl-orange: #f5871f;
+  --hl-yellow: #eab700;
+  --hl-green: #718c00;
+  --hl-aqua: #3e999f;
+  --hl-blue: #4271ae;
+  --hl-purple: #8959a8;
+}
+
+:root.dark {
+  --text-0: #f0f0f0;
+  --text-1: #ababab;
+  --text-2: #787878;
+
+  --bg-0: #121212;
+  --bg-1: #1f1f1f;
+  --bg-2: #383838;
+
+  --border-color: var(--bg-2);
+
+  --primary-color: #ef5350;
+  --hover-color: white;
+
+  --icon-filter: invert(1);
+
+  --alert-green: #73d13d;
+  --alert-blue: #40a9ff;
+  --alert-yellow: #ffa940;
+  --alert-red: #ff4d4f;
+  --alert-gray: #9aa0a6;
+  --alert-tint: 0.14;
+
+  /* Rouge syntax highlighting: Tomorrow Night */
+  --hl-bg: var(--bg-1);
+  --hl-fg: #c5c8c6;
+  --hl-comment: #969896;
+  --hl-red: #cc6666;
+  --hl-orange: #de935f;
+  --hl-yellow: #f0c674;
+  --hl-green: #b5bd68;
+  --hl-aqua: #8abeb7;
+  --hl-blue: #81a2be;
+  --hl-purple: #b294bb;
+
+  .social > img,
+  .search-button > img {
+    filter: invert(1);
+  }
+}

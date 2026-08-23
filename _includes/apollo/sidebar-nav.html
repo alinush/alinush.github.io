@@ -1,0 +1,30 @@
+{%- assign _sidebar_nav = site.data.navigation[page.sidebar.nav] -%}
+{%- if _sidebar_nav -%}
+  {%- include snippets/get-nav-url.html path=page.url -%}
+  {%- assign _page_url = __return -%}
+
+  <div class="sidebar-nav">
+    <div class="heading">{{ page.sidebar.title | default: 'The Cryptomat' }}</div>
+    <ul>
+      {%- for _item in _sidebar_nav -%}
+        {%- if _item.url -%}
+          {%- include snippets/get-nav-url.html path=_item.url -%}
+          {%- assign _nav_url = __return -%}
+          <li class="nav-section{% if _nav_url == _page_url %} active{% endif %}">
+            <a href="{{ _nav_url }}">{{ _item.title }}</a>
+          </li>
+        {%- else -%}
+          <li class="nav-section">{{ _item.title }}</li>
+        {%- endif -%}
+
+        {%- for _child in _item.children -%}
+          {%- include snippets/get-nav-url.html path=_child.url -%}
+          {%- assign _nav_url = __return -%}
+          <li class="nav-item{% if _nav_url == _page_url %} active{% endif %}">
+            <a href="{{ _nav_url }}">{{ _child.title }}</a>
+          </li>
+        {%- endfor -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+{%- endif -%}

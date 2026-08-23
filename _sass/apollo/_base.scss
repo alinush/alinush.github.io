@@ -1,0 +1,147 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: var(--bg-0);
+  color: var(--text-0);
+  font-family: var(--text-font);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height);
+  -webkit-text-size-adjust: 100%;
+
+  @media (max-width: 992px) {
+    font-size: calc(var(--font-size-base) * 0.97);
+  }
+  @media (max-width: 768px) {
+    font-size: calc(var(--font-size-base) * 0.95);
+  }
+  @media (max-width: 576px) {
+    font-size: calc(var(--font-size-base) * 0.92);
+  }
+}
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page {
+  display: flex;
+  flex-grow: 1;
+  padding: 0.9rem;
+  padding-bottom: 1.5rem;
+
+  @media (min-width: 992px) {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .content {
+    width: 100%;
+    max-width: var(--page-width);
+    flex-shrink: 0;
+    padding-bottom: 1.5rem;
+    word-wrap: break-word;
+    min-width: 0;
+  }
+
+  .left-content,
+  .right-content {
+    width: 100%;
+
+    @media (min-width: 992px) {
+      flex: 1 1 0;
+      min-width: 0;
+      position: sticky;
+      top: 1rem;
+      padding: 1em;
+      overflow-y: auto;
+      max-height: calc(100vh - 2rem);
+    }
+  }
+
+  // The side columns only exist to balance the centre column on wide screens.
+  // On narrow ones they stack, so anything in them has to move below the
+  // article rather than pushing it off the first screen.
+  @media (max-width: 991px) {
+    flex-direction: column;
+
+    .content {
+      order: 1;
+    }
+
+    .right-content {
+      order: 2;
+    }
+
+    .left-content {
+      order: 3;
+    }
+
+    .left-content:empty,
+    .right-content:empty {
+      display: none;
+    }
+  }
+}
+
+main {
+  display: block;
+}
+
+/* ---------------------------------------------------------------- footer -- */
+
+.site-footer {
+  border-top: 1px solid var(--border-color);
+  color: var(--text-1);
+  font-size: 0.85rem;
+  padding: 1.2rem 0.9rem 2rem;
+  text-align: center;
+
+  .footer-socials {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0.6rem;
+
+    img {
+      width: 18px;
+      height: 18px;
+      border-radius: 0;
+      filter: var(--icon-filter);
+      opacity: 0.75;
+    }
+
+    a {
+      border-bottom: none;
+      padding: 2px;
+
+      &:hover {
+        background-color: transparent;
+
+        img {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  a {
+    border-bottom: none;
+    color: var(--text-0);
+
+    &:hover {
+      background-color: var(--primary-color);
+      color: var(--hover-color);
+    }
+  }
+}

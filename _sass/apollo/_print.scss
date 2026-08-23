@@ -1,0 +1,35 @@
+@media print {
+  .d-print-none,
+  nav,
+  .site-footer,
+  .toc,
+  .sidebar-nav,
+  .search-modal,
+  .section-navigator,
+  .clipboard-button {
+    display: none !important;
+  }
+
+  html {
+    background: #fff;
+    color: #000;
+  }
+
+  .page {
+    display: block;
+    padding: 0;
+  }
+
+  .page .content {
+    max-width: none;
+  }
+
+  a {
+    border-bottom: none !important;
+  }
+
+  pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+}

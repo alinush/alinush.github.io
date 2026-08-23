@@ -127,13 +127,7 @@ Matthieu Rambaud suggested:
 </div>
 -->
 
-<script>
-  {%- include scripts/lib/swiper.js -%}
-  var SOURCES = window.TEXT_VARIABLES.sources;
-  window.Lazyload.js(SOURCES.jquery, function() {
-  $('.swiper-demo').swiper();
-  });
-</script>
+<!-- The carousel is initialised automatically by /assets/js/swiper.js. -->
 
 ---
 

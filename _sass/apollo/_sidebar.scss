@@ -1,0 +1,58 @@
+/* The book-style navigation used by /cryptomat and the pages it links to. */
+.sidebar-nav {
+  font-size: 0.9rem;
+
+  /* Stacked below the article on narrow screens (see _base.scss). */
+  @media only screen and (max-width: 991px) {
+    border-top: 1px solid var(--border-color);
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+  }
+
+  .heading {
+    font-weight: 700;
+    font-family: var(--header-font);
+    color: var(--text-1);
+    margin-bottom: 0.5rem;
+    border-bottom: none;
+  }
+
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+  }
+
+  .nav-section {
+    margin-top: 0.8rem;
+    color: var(--text-1);
+    font-family: var(--header-font);
+
+    &::before {
+      color: var(--primary-color);
+      content: "# ";
+    }
+  }
+
+  .nav-item {
+    padding-left: 1em;
+
+    a {
+      /* One step brighter than Apollo's TOC links: this is the primary way to
+         move around the Cryptomat, not a secondary index. */
+      color: var(--text-1);
+      border-bottom: none;
+    }
+
+    a:hover {
+      background-color: var(--primary-color);
+      color: var(--hover-color);
+    }
+  }
+
+  .active > a,
+  .nav-section.active {
+    color: var(--text-0);
+    font-weight: 700;
+  }
+}

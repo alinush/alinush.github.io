@@ -1,0 +1,59 @@
+{%- comment -%}
+  Inside a book-style section (e.g. /cryptomat) walk that section's nav;
+  otherwise fall back to the chronologically adjacent posts.
+{%- endcomment -%}
+{%- if page.sidebar.nav -%}
+  {%- assign _sidebar_nav = site.data.navigation[page.sidebar.nav] -%}
+  {%- if _sidebar_nav -%}
+    {%- include snippets/get-nav-url.html path=page.url -%}
+    {%- assign _page_url = __return -%}
+    {%- assign _find_cur = false -%}
+    {%- assign _find_next = false -%}
+
+    {%- for _item in _sidebar_nav -%}
+      {%- if _find_next -%}{%- break -%}{%- endif -%}
+      {%- for _child in _item.children -%}
+        {%- include snippets/get-nav-url.html path=_child.url -%}
+        {%- assign _nav_url = __return -%}
+        {%- if _nav_url == _page_url -%}
+          {%- assign _find_cur = true -%}
+        {%- elsif _find_cur -%}
+          {%- assign _find_next = true -%}
+          {%- assign _next = _child -%}
+          {%- break -%}
+        {%- else -%}
+          {%- assign _previous = _child -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endfor -%}
+
+    {%- comment -%}
+      A page can carry a section's nav without appearing in it (e.g. /cryptomat
+      itself); it has no neighbours to offer.
+    {%- endcomment -%}
+    {%- unless _find_cur -%}
+      {%- assign _previous = nil -%}
+      {%- assign _next = nil -%}
+    {%- endunless -%}
+  {%- endif -%}
+{%- elsif page.date -%}
+  {%- assign _previous = page.previous -%}
+  {%- assign _next = page.next -%}
+{%- endif -%}
+
+{%- if _next or _previous -%}
+  <div class="section-navigator">
+    {%- if _previous -%}
+      {%- include snippets/prepend-baseurl.html path=_previous.url -%}
+      {%- assign _href = __return -%}
+      {%- include snippets/get-locale-string.html key='PREVIOUS' -%}
+      <div class="previous"><span>&larr; {{ __return }}</span><a href="{{ _href }}">{{ _previous.title }}</a></div>
+    {%- endif -%}
+    {%- if _next -%}
+      {%- include snippets/prepend-baseurl.html path=_next.url -%}
+      {%- assign _href = __return -%}
+      {%- include snippets/get-locale-string.html key='NEXT' -%}
+      <div class="next"><span>{{ __return }} &rarr;</span><a href="{{ _href }}">{{ _next.title }}</a></div>
+    {%- endif -%}
+  </div>
+{%- endif -%}

@@ -1,0 +1,88 @@
+/* Taxonomies shown inline in an article's meta line. */
+.tags {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0 0.6em;
+
+  a::before {
+    content: "#";
+    display: inline;
+    white-space: nowrap !important;
+  }
+}
+
+.authors {
+  a::before {
+    content: "@";
+    display: inline;
+    white-space: nowrap !important;
+  }
+}
+
+/* The tag filter at the top of /posts and /notes. */
+.tag-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0;
+  margin: 1rem 0 0 0;
+  list-style: none;
+
+  .tag-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    background: var(--bg-1);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-1);
+    font-family: var(--mono-text-font);
+    font-size: 0.8rem;
+    cursor: pointer;
+    line-height: 1.6;
+
+    &::before {
+      content: "#";
+      color: var(--primary-color);
+    }
+
+    &:hover {
+      background: var(--bg-2);
+      color: var(--text-0);
+    }
+
+    .tag-count {
+      color: var(--text-2);
+      font-size: 0.75rem;
+    }
+
+    &.focus {
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+      color: var(--hover-color);
+
+      &::before,
+      .tag-count {
+        color: var(--hover-color);
+      }
+    }
+  }
+
+  .tag-button--all::before {
+    content: "*";
+  }
+
+  /* On a phone the full cloud would fill the whole first screen. */
+  @media (max-width: 640px) {
+    max-height: 11rem;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 6px;
+  }
+}
+
+.d-none {
+  display: none !important;
+}

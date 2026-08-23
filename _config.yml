@@ -16,8 +16,10 @@
 
 ## => Site Settings
 ##############################
-text_skin: default # "default" (default), "dark", "forest", "ocean", "chocolate", "orange"
-highlight_theme: tomorrow # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
+## Light/dark switching, as in the Apollo theme:
+##   "toggle-auto" - the button cycles light -> dark -> follow the OS (default)
+##   "toggle"      - the button cycles light -> dark
+theme_toggle: toggle-auto
 url     : https://alinush.github.io/ # the base hostname & protocol for your site e.g. https://www.someone.com
 baseurl : # does not include hostname
 title   : Alin Tomescu
@@ -107,6 +109,8 @@ sources: unpkg # bootcdn (default), unpkg
 
 ## => Sharing
 ##############################
+## NOTE: not wired into the Apollo layouts. Turning this on has no effect until
+## a sharing partial is added under _includes/apollo/.
 sharing:
   provider: false # false (default), "addtoany", "addthis", "custom"
 
@@ -117,6 +121,8 @@ sharing:
 
 ## => Comments
 ##############################
+## NOTE: not wired into the Apollo layouts. Turning this on has no effect until
+## a comments partial is added under _includes/apollo/.
 comments:
   provider: false # false (default), "disqus", "gitalk", "valine", "custom"
 
@@ -146,6 +152,8 @@ comments:
 
 ## => Pageview
 ##############################
+## NOTE: not wired into the Apollo layouts. Turning this on has no effect until
+## a pageview partial is added under _includes/apollo/.
 pageview:
   provider: false # false (default), "leancloud", "custom"
 
@@ -217,13 +225,10 @@ defaults:
       type: posts
     values:
       layout: article
-      sharing: true
       license: true
       aside:
         toc: true
       show_edit_on_github: true
-      show_subscribe: true
-      pageview: true
 
 
 ## => Plugins

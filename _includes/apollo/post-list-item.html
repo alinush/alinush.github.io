@@ -1,0 +1,42 @@
+{%- assign _article = include.article -%}
+{%- include snippets/prepend-baseurl.html path=_article.url -%}
+{%- assign _url = __return -%}
+{%- include snippets/get-article-title.html article=_article -%}
+{%- assign _title = __return -%}
+
+{%- comment -%}
+  Posts and notes are distinguished by a leading emoji, as in the previous
+  theme; a post can override it with `icon:` in its front matter.
+{%- endcomment -%}
+{%- if _article.icon -%}
+  {%- assign _emoji = _article.icon | append: ' ' -%}
+{%- elsif _article.type == 'note' -%}
+  {%- assign _emoji = '🌱 ' -%}
+{%- else -%}
+  {%- assign _emoji = '🌲 ' -%}
+{%- endif -%}
+
+{%- assign _tags = '' -%}
+{%- for _tag in _article.tags -%}
+  {%- if forloop.first -%}
+    {%- assign _tags = _tag | strip -%}
+  {%- else -%}
+    {%- assign _tags = _tags | append: ',' | append: _tag | strip -%}
+  {%- endif -%}
+{%- endfor -%}
+
+<li class="list-item" itemscope itemtype="http://schema.org/BlogPosting" data-tags="{{ _tags }}">
+  <section>
+    <div class="post-header">
+      <time datetime="{{ _article.date | date_to_xmlschema }}">{{ _article.date | date: '%Y-%m-%d' }}</time>
+      <div>
+        <h1 class="title"><a href="{{ _url }}" itemprop="headline">{{ _emoji }}{{ _title }}</a></h1>
+        {%- if include.show_excerpt and _article.excerpt -%}
+          <div class="meta">
+            <div class="description">{{ _article.excerpt | strip_html | normalize_whitespace | truncate: 200 }}</div>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+</li>

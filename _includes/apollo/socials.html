@@ -1,0 +1,34 @@
+{%- comment -%}
+  Social links, driven by the `author:` block in _config.yml. Icons come from
+  Apollo's set in /assets/icons/social.
+{%- endcomment -%}
+{%- assign _author = site.author -%}
+
+{%- if _author.github -%}
+  <a class="social" rel="me" href="https://github.com/{{ _author.github }}" title="GitHub">
+    <img alt="GitHub" src="{{ '/assets/icons/social/github.svg' | relative_url }}"></a>
+{%- endif -%}
+{%- if _author.twitter -%}
+  <a class="social" rel="me" href="https://twitter.com/{{ _author.twitter }}" title="Twitter">
+    <img alt="Twitter" src="{{ '/assets/icons/social/x-twitter.svg' | relative_url }}"></a>
+{%- endif -%}
+{%- if _author.linkedin -%}
+  <a class="social" rel="me" href="https://www.linkedin.com/in/{{ _author.linkedin }}" title="LinkedIn">
+    <img alt="LinkedIn" src="{{ '/assets/icons/social/linkedin.svg' | relative_url }}"></a>
+{%- endif -%}
+{%- if _author.stackoverflow -%}
+  <a class="social" rel="me" href="https://stackoverflow.com/{{ _author.stackoverflow }}" title="Stack Overflow">
+    <img alt="Stack Overflow" src="{{ '/assets/icons/social/stack-overflow.svg' | relative_url }}"></a>
+{%- endif -%}
+{%- if _author.youtube -%}
+  <a class="social" rel="me" href="https://www.youtube.com/{{ _author.youtube }}" title="YouTube">
+    <img alt="YouTube" src="{{ '/assets/icons/social/youtube.svg' | relative_url }}"></a>
+{%- endif -%}
+{%- if _author.email -%}
+  <a class="social" rel="me" href="mailto:{{ _author.email }}" title="Email">
+    <img alt="Email" src="{{ '/assets/icons/social/email.svg' | relative_url }}"></a>
+{%- endif -%}
+{%- assign _paths_rss = site.paths.rss | default: site.data.variables.default.paths.rss -%}
+{%- include snippets/get-nav-url.html path=_paths_rss -%}
+<a class="social" href="{{ __return }}" title="RSS">
+  <img alt="RSS" src="{{ '/assets/icons/social/rss.svg' | relative_url }}"></a>

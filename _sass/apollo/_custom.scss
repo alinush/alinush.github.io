@@ -1,0 +1,17 @@
+/* Site-specific overrides on top of the Apollo port.
+   This file is imported last, so anything here wins. */
+
+:root {
+  /* Wider than Apollo's 920px default: the posts here carry a lot of display
+     math, which needs the room. */
+  --page-width: 960px;
+
+  /* Apollo's own fonts are the default (Zed Text for prose, Zed Display for
+     headings, JetBrains Mono for code and metadata). To use something else,
+     uncomment and edit — nothing else needs to change.
+
+  --text-font: Georgia, "Times New Roman", serif;
+  --header-font: "Space Grotesk", "Helvetica", sans-serif;
+  --font-size-base: 17px;
+  */
+}

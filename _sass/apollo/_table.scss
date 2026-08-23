@@ -1,0 +1,29 @@
+/* Wide tables scroll inside their own container rather than the page. */
+.table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 1rem 0;
+}
+
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+table th {
+  padding: 6px 13px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-1);
+  font-family: var(--header-font);
+  text-align: left;
+}
+
+table td {
+  padding: 6px 13px;
+  border: 1px solid var(--border-color);
+}
+
+table tr:nth-child(even) td {
+  background-color: var(--bg-1);
+}
