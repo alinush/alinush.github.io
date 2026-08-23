@@ -1,10 +1,8 @@
 # TODOs
 
  - fix `\nmid` issue in Linear diophantine article (`amssymb`) probably due to new jsdelivr URL for MathJax
- - re-tag everything
  - front page with highlights
  - add more cross-links between articles
-
 
 # Jekyll with TeXt Theme
 
@@ -20,21 +18,35 @@ See original [README here](https://github.com/kitian616/jekyll-TeXt-theme)
 
 TeXt is a super customizable Jekyll theme for personal site, team site, blog, project, documentation, etc. Similar to iOS 11 style, it has large and prominent titles, round buttons and cards.
 
-## Local build
+## Running the dev server (sandboxed)
 
-First, install prerequisites:
+`./run-server.sh [port]` no longer runs Jekyll on your machine directly. I`t launches it inside an
+`sbx` sandbox named `alinush-github-io-jekyll`, built from the stock `ruby:3.2` image (which already
+ships Ruby, bundler, git and a compiler, so nothing has to be installed at startup). 
 
-    bundle install --path vendor/bundle
+The first run does a `bundle install`; later runs re-attach to the same sandbox, so the gems persist and startup
+is fast. Requires the `sbx` CLI on your `PATH`.
 
-Second, run website locally using:
+Gems are installed inside the container (under `$HOME/.bundle`), not into this repo, so your
+working tree stays clean.
 
-    bundle exec jekyll serve
+Then, access it at [http://localhost:4000](http://localhost:4000) (or whatever port you passed).
 
-Then, access it at [http://localhost:4000](http://localhost:4000).
+The image and the published port are both fixed when the sandbox is created. To change the port,
+switch the Ruby version, or just get a clean environment, delete the sandbox first:
 
-## For Apple M1
+    sbx rm alinush-github-io-jekyll
 
-Had some issue getting this to run the server on Apple M1. The instructions from [here](https://www.earthinversion.com/blogging/how-to-install-jekyll-on-appple-m1-macbook/) ended up being helpful:
+`./trace-server.sh [port]` works the same way, but runs `jekyll serve --trace`.
+
+`sandbox-serve.sh` is the part that runs *inside* the sandbox (`bundle install` + `jekyll serve`); it is
+invoked by `run-server.sh` and is not meant to be run on the host directly.
+
+## Running locally on Apple M1
+
+If you'd rather run Jekyll directly on your machine, install prerequisites.
+
+_Note:_ Had some issue getting this to run the server on Apple M1. The instructions from [here](https://www.earthinversion.com/blogging/how-to-install-jekyll-on-appple-m1-macbook/) ended up being helpful:
 
 ```
 xcode-select --install
@@ -52,13 +64,16 @@ gem install --user-install bundler jekyll
 rm -f Gemfile.lock  # Remove old lock file with incompatible gem versions
 bundle install
 bundle update --bundler
+#bundle install --path vendor/bundle  # I don't know if this is needed
 bundle install --redownload
 ```
 
-You should now be ready to run the web-server:
+Once prerequisites are installed, run the local web server:
 ```
-./run-server.sh
+bundle exec jekyll serve
 ```
+
+Then, access the page at [http://localhost:4000](http://localhost:4000).
 
 ## License
 
