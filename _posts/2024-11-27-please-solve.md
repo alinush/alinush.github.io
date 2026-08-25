@@ -1,19 +1,14 @@
 ---
-layout: article
-title: Solve?
-key: page-please-solve
-aside:
-  toc: true
-permalink: /please-solve
-#article_header:
-#  type: cover
-#  image:
-#    src: /pictures/pitesti.jpg
+tags:
+ - Merkle
+ - KZG
+ - authenticated dictionaries
+title: Please solve these open problems in cryptography
+date: 2020-11-27 00:00:00
+permalink: please-solve
 ---
 
-These are great research problems to solve that I wish I had time to work more on.
-
-# Open problems
+A few research problems that I wish I had time to work more on...
 
 ## Efficient Homomorphic Merkle (Herkle) trees 
 

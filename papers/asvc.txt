@@ -1,0 +1,13 @@
+@inproceedings{TAB+20,
+ address = {Cham},
+ author = {Tomescu, Alin and Abraham, Ittai and Buterin, Vitalik and Drake, Justin and Feist, Dankrad and Khovratovich, Dmitry},
+ booktitle = {Security and Cryptography for Networks},
+ ckdateadded = {2020-09-12 10:54:15},
+ editor = {Galdi, Clemente
+and Kolesnikov, Vladimir},
+ isbn = {978-3-030-57990-6},
+ pages = {45--64},
+ publisher = {Springer International Publishing},
+ title = {{Aggregatable Subvector Commitments for Stateless Cryptocurrencies}},
+ year = {2020}
+}

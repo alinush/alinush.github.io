@@ -1,0 +1,11 @@
+@phdthesis{Tome20,
+ address = {Cambridge, MA, USA},
+ advisor = {Srinivas Devadas},
+ author = {Tomescu, Alin},
+ ckdateadded = {2020-02-21 09:20:00},
+ publisher = {Massachusetts Institute of Technology},
+ school = {Massachusetts Institute of Technology},
+ title = {{How to Keep a Secret and Share a Public Key (Using Polynomial Commitments)}},
+ url = {https://github.com/alinush/phd-thesis/raw/master/main.pdf},
+ year = {2020}
+}

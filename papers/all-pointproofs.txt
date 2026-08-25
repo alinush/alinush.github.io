@@ -1,0 +1,8 @@
+@misc{Tome20How,
+ author = {Alin Tomescu},
+ ckdateadded = {2021-03-12 14:39:32},
+ howpublished = {Cryptology ePrint Archive, Report 2020/1516},
+ note = {\url{https://eprint.iacr.org/2020/1516}},
+ title = {{How to compute all Pointproofs}},
+ year = {2020}
+}

@@ -1,0 +1,8 @@
+@misc{BDF+25e,
+ author = {Dan Boneh and Trisha Datta and Rex Fernando and Kamilla Nazirkhanova and Alin Tomescu},
+ ckdateadded = {2025-07-03 12:15:22},
+ howpublished = {Cryptology {ePrint} Archive, Paper 2025/1159},
+ title = {{DekartProof: Efficient Vector Range Proofs and Their Applications}},
+ url = {https://eprint.iacr.org/2025/1159},
+ year = {2025}
+}

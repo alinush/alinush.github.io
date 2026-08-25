@@ -1,0 +1,8 @@
+@misc{TXN20e,
+ author = {Alin Tomescu and Yu Xia and Zachary Newman},
+ ckdateadded = {2020-10-15 21:40:43},
+ howpublished = {Cryptology ePrint Archive, Report 2020/1239},
+ note = {\url{https://eprint.iacr.org/2020/1239}},
+ title = {{Authenticated Dictionaries with Cross-Incremental Proof (Dis)aggregation}},
+ year = {2020}
+}

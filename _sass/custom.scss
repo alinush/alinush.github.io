@@ -1,3 +1,115 @@
 /* start custom scss snippet */
 
+// Highlights "Alin Tomescu" in the papers grid's author lists (papers.md),
+// using the theme's secondary accent color ($main-color-2 — amber/orange in
+// the default skin). Defined in every skin file, like $main-color-1, so
+// this stays safe if _config.yml's text_skin ever changes. Distinct from
+// both the site's red link/accent color (avoids implying the name is
+// clickable) and the blue "talk" badge color.
+.my-name {
+  color: $main-color-1;
+  font-weight: 530; // semibold: the theme only defines 400 (normal) and 700 (font-weight-bold), 700 read too heavy here
+}
+
+// Papers grid (papers.md): each paper is a single paragraph — title, authors
+// and links on their own lines via kramdown's default hard_wrap (a bare
+// newline becomes <br>, no blank lines involved) — with a leading {: .card}
+// IAL, exactly like {: .info}/{: .note} elsewhere on this site. Being one
+// paragraph rather than a heading + multiple paragraphs, there's no
+// first/last-child margin-vs-padding doubling to work around: the padding
+// and this element's own margin are the only two box-model values in play.
+.papers-columns {
+  // Drives both the row-gap and column-gap of the CSS grid below, so they
+  // can't drift apart from each other — 2x the base spacers.3 unit.
+  $papers-gap: map-get($spacers, 3) * 2;
+
+  // A real 2-column CSS grid: papers read left-to-right, top-to-bottom, in
+  // source order. This was previously CSS multi-column (column-count: 2),
+  // which packs each card into the next free spot in its column — a tight
+  // masonry flow with no gaps, but *column-major* order (the whole left
+  // column fills before the right column starts), not the row-major
+  // reading order requested here. Trade-off going back to grid: a card
+  // noticeably shorter than its row-mate leaves empty space below it,
+  // which multi-column didn't have.
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $papers-gap;
+  @include media-breakpoint-up(md) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  p.card {
+    max-width: unset; // the generic .card rule (_card.scss) caps width at 18rem otherwise
+    padding: map-get($spacers, 2) map-get($spacers, 3);
+    border-radius: map-get($base, border-radius);
+    @include box-shadow();
+    margin: 0; // spacing between cards comes from the grid's own `gap` now
+  }
+}
+
+// Paper link badges (papers.md): a rounded box with an icon, modeled on
+// Apollo's (a Zola theme) GitHub/Demo buttons — see the reference
+// screenshot in the conversation that requested this. Each category gets
+// its own color + Font Awesome icon (fas/fab, both available via the
+// font_awesome 5.15.1 "all.css" bundle loaded in _includes/head.html) so the
+// link's purpose is recognizable at a glance without reading the text.
+.link-badge {
+  display: inline-flex;
+  align-items: center;
+  // .75rem (12px): one point up from font-size-xs (.7rem = 11.2px). No theme
+  // token sits between font-size-xs and font-size-sm (.85rem = 13.6px), so
+  // this is a custom value rather than a scale step. Padding/gap/margin
+  // scaled up to match (~1.07x) so the box grows with the text.
+  gap: .22rem;
+  padding: .22rem .45rem;
+  margin: 0 .22rem .22rem 0;
+  border-radius: map-get($base, border-radius);
+  font-size: .75rem;
+  font-weight: map-get($base, font-weight-bold);
+  text-decoration: none !important;
+  @include transition(background-color map-get($animation, duration) map-get($animation, timing-function));
+
+  i {
+    font-size: .75rem;
+  }
+}
+
+// A light, semi-transparent tint of the category color as the background
+// (same recipe as this site's own .info/.note boxes in _alert.scss:
+// rgba($color, .1)), with the full-strength color used for the text/icon
+// instead of a solid fill — reads as "light"/"muted" rather than "dark".
+// The color itself also becomes the `!important`-forced text/icon color
+// (overriding the theme's global `a { color: ... }` link rule), so there's
+// no separate per-badge text-color override needed, unlike the solid-fill
+// version this replaced (which needed one just for the yellow badge).
+@mixin link-badge-tint($color) {
+  background-color: rgba($color, .12);
+  color: $color !important;
+  @include hover() {
+    background-color: rgba($color, .22);
+  }
+}
+
+.link-badge--pdf {
+  @include link-badge-tint(#dc2626); // red: Adobe/PDF red
+}
+.link-badge--slides {
+  @include link-badge-tint(#ae7900); // a darker gold than Google's literal Slides yellow, which is unreadable as text on white
+}
+.link-badge--code {
+  @include link-badge-tint(#24292f); // GitHub's own dark gray
+}
+.link-badge--talk {
+  @include link-badge-tint(#2563eb); // blue: a recorded talk/video
+}
+.link-badge--bibtex {
+  @include link-badge-tint(#0d9488); // teal: citation file
+}
+.link-badge--blogpost {
+  @include link-badge-tint(#ea580c); // orange: informal write-up
+}
+.link-badge--publisher {
+  @include link-badge-tint(#475569); // slate: the publisher's/journal's own page
+}
+
 /* end custom scss snippet */

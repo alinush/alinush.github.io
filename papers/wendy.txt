@@ -1,0 +1,8 @@
+@misc{GHA+21e,
+ author = {Neil Giridharan and Heidi Howard and Ittai Abraham and Natacha Crooks and Alin Tomescu},
+ ckdateadded = {2026-08-25 10:52:08},
+ howpublished = {Cryptology {ePrint} Archive, Paper 2021/1308},
+ title = {No-Commit Proofs: Defeating Livelock in {BFT}},
+ url = {https://eprint.iacr.org/2021/1308},
+ year = {2021}
+}

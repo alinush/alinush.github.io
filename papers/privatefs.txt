@@ -1,0 +1,14 @@
+@inproceedings{WST12,
+ author = {Williams, Peter and Sion, Radu and Tomescu, Alin},
+ booktitle = {Proceedings of the 2012 ACM conference on Computer and communications security},
+ ckdateadded = {2026-08-25 11:06:04},
+ collection = {CCS′12},
+ doi = {10.1145/2382196.2382299},
+ month = {October},
+ pages = {977--988},
+ publisher = {ACM},
+ series = {CCS′12},
+ title = {{PrivateFS: a parallel oblivious file system}},
+ url = {http://dx.doi.org/10.1145/2382196.2382299},
+ year = {2012}
+}

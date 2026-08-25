@@ -10,6 +10,7 @@ permalink: talks
 
 {: .todo}
 Vibe-code a "Posts"-like page but with bigger thumbnails for the video preview.
+For other talks that were not recorded, see my [CV](/files/cv.pdf).
 
 #### How I Learned to Stop Hashing and  Love the Accumulator (from Roberto) 
 

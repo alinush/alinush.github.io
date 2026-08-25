@@ -1,14 +1,6 @@
 ---
-layout: article
-aside:
-  toc: true
 title: Paraphernalia
-key: page-paraphernalia
-permalink: /paraphernalia
-#article_header:
-#  type: cover
-#  image:
-#    src: /pictures/pitesti.jpg
+permalink: paraphernalia
 ---
 
 This is some of the stuff I (plan to) read and think others could find useful.

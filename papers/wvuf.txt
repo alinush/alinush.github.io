@@ -1,0 +1,13 @@
+@inbook{DPTX25,
+ author = {Das, Sourav and Pinkas, Benny and Tomescu, Alin and Xiang, Zhuolun},
+ booktitle = {Advances in Cryptology – EUROCRYPT 2025},
+ ckdateadded = {2026-08-25 10:47:31},
+ doi = {10.1007/978-3-031-91098-2_12},
+ isbn = {9783031910982},
+ issn = {1611-3349},
+ pages = {314--344},
+ publisher = {Springer Nature Switzerland},
+ title = {{Distributed Randomness Using Weighted VUFs}},
+ url = {http://dx.doi.org/10.1007/978-3-031-91098-2_12},
+ year = {2025}
+}

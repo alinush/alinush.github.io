@@ -44,4 +44,13 @@ rm -f _site/drafts/refs.md
 # only. Either one leaves half of the published port dead, which breaks
 # http://localhost (macOS resolves it to ::1 first). '*' binds both families,
 # plus eth0, which is what the port forwarder actually connects to.
-exec bundle exec jekyll serve $trace -P "$port" --host '*'
+#
+# --force_polling: the repo is mounted into this sandbox over virtiofs, and
+# Jekyll's file watcher (the `listen` gem) relies on inotify. A write made
+# from a *different* VM/sandbox sharing the same virtiofs-mounted host path
+# (e.g. an agent editing files from another sandbox) doesn't reliably
+# generate an inotify event here, even though the file content is already
+# synced — so saves from elsewhere can silently fail to trigger a rebuild.
+# Polling re-stats the tree instead of waiting on kernel events, so it picks
+# those up too, at the cost of a bit of CPU.
+exec bundle exec jekyll serve $trace -P "$port" --host '*' --force_polling

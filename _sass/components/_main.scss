@@ -1,22 +1,22 @@
+// max-width was previously content-max-width (narrower) here and
+// content-max-width + aside-width (wider) under .has-aside, so a page's
+// width depended on whether it happened to set `aside: {toc: true}` in its
+// frontmatter (e.g. paraphernalia.md) rather than being a deliberate choice
+// — the home page (layout: home, no aside) ended up narrower than most
+// other pages for no real reason. Using the wider value unconditionally
+// makes every page's content column the same width regardless of whether
+// it has a TOC aside.
 .main {
   width: 100%;
-  max-width: map-get($layout, content-max-width);
+  max-width: map-get($layout, content-max-width) + map-get($layout, aside-width);
   padding: 0 map-get($spacers, 5);
   margin: 0 auto;
   @include media-breakpoint-down(lg) {
+    max-width: map-get($layout, content-max-width);
     padding: 0 map-get($spacers, 4);
   }
   @include media-breakpoint-down(md) {
     padding: 0 map-get($spacers, 3);
-  }
-}
-
-.has-aside {
-  .main {
-    max-width: map-get($layout, content-max-width) + map-get($layout, aside-width);
-    @include media-breakpoint-down(lg) {
-      max-width: map-get($layout, content-max-width);
-    }
   }
 }
 

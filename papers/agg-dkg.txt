@@ -1,0 +1,13 @@
+@inproceedings{GJM+21,
+ address = {Cham},
+ author = {Gurkan, Kobi and Jovanovic, Philipp and Maller, Mary and Meiklejohn, Sarah and Stern, Gilad and Tomescu, Alin},
+ booktitle = {Advances in Cryptology -- EUROCRYPT 2021},
+ ckdateadded = {2023-11-03 23:57:08},
+ editor = {Canteaut, Anne
+and Standaert, Fran{\c{c}}ois-Xavier},
+ isbn = {978-3-030-77870-5},
+ pages = {147--176},
+ publisher = {Springer International Publishing},
+ title = {{Aggregatable Distributed Key Generation}},
+ year = {2021}
+}

@@ -1,0 +1,18 @@
+@inproceedings{BTA+19,
+ acmid = {3354207},
+ address = {New York, NY, USA},
+ author = {Basu, Soumya and Tomescu, Alin and Abraham, Ittai and Malkhi, Dahlia and Reiter, Michael K. and Sirer, Emin G\"{u}n},
+ booktitle = {Proceedings of the 2019 ACM SIGSAC Conference on Computer and Communications Security},
+ ckdateadded = {2019-12-23 19:16:48},
+ doi = {10.1145/3319535.3354207},
+ isbn = {978-1-4503-6747-9},
+ keywords = {byzantine fault tolerance, privacy, secret sharing},
+ location = {London, United Kingdom},
+ numpages = {16},
+ pages = {2387--2402},
+ publisher = {ACM},
+ series = {CCS '19},
+ title = {{Efficient Verifiable Secret Sharing with Share Recovery in BFT Protocols}},
+ url = {http://doi.acm.org/10.1145/3319535.3354207},
+ year = {2019}
+}

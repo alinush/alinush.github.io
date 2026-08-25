@@ -1,0 +1,13 @@
+@inproceedings{SCP+22,
+ address = {Boston, MA},
+ author = {Shravan Srinivasan and Alexander Chepurnoy and Charalampos Papamanthou and Alin Tomescu and Yupeng Zhang},
+ booktitle = {31st USENIX Security Symposium (USENIX Security 22)},
+ ckdateadded = {2022-11-18 19:00:24},
+ isbn = {978-1-939133-31-1},
+ month = {August},
+ pages = {3001--3018},
+ publisher = {USENIX Association},
+ title = {{Hyperproofs: Aggregating and Maintaining Proofs in Vector Commitments}},
+ url = {https://www.usenix.org/conference/usenixsecurity22/presentation/srinivasan},
+ year = {2022}
+}

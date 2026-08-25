@@ -1,0 +1,9 @@
+@misc{TBA+22e,
+ author = {Alin Tomescu and Adithya Bhat and Benny Applebaum and Ittai Abraham and Guy Gueta and Benny Pinkas and Avishay Yanai},
+ ckdateadded = {2022-11-07 10:09:40},
+ howpublished = {Cryptology ePrint Archive, Paper 2022/452},
+ note = {\url{https://eprint.iacr.org/2022/452}},
+ title = {{UTT: Decentralized Ecash with Accountable Privacy}},
+ url = {https://eprint.iacr.org/2022/452},
+ year = {2022}
+}

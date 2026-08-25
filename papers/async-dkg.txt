@@ -1,0 +1,17 @@
+@inproceedings{async-dkg,
+author = {Abraham, Ittai and Jovanovic, Philipp and Maller, Mary and Meiklejohn, Sarah and Stern, Gilad and Tomescu, Alin},
+title = {Reaching Consensus for Asynchronous Distributed Key Generation},
+year = {2021},
+isbn = {9781450385480},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3465084.3467914},
+doi = {10.1145/3465084.3467914},
+abstract = {We give a protocol for Asynchronous Distributed Key Generation (A-DKG) that is optimally resilient (can withstand f < n over 3 faulty parties), has a constant expected number of rounds, has {\~O} (n3) expected communication complexity, and assumes only the existence of a PKI. Prior to our work, the best A-DKG protocols required Ω(n) expected number of rounds, and Ω(n4) expected communication.Our A-DKG protocol relies on several building blocks that are of independent interest. We define and design a Proposal Election (PE) protocol that allows parties to retrospectively agree on a validproposal after enough proposals have been sent from different parties. With constant probability the elected proposal was proposed by a nonfaulty party. In building our PE protocol, we design a Verifiable Gather protocol which allows parties to communicate which proposals they have and have not seen in a verifiable manner. The final building block to our A-DKG is a Validated Asynchronous Byzantine Agreement (VABA) protocol. We use our PE protocol to construct a VABA protocol that does not require leaders or an asynchronous DKG setup. Our VABA protocol can be used more generally when it is not possible to use threshold signatures.},
+booktitle = {Proceedings of the 2021 ACM Symposium on Principles of Distributed Computing},
+pages = {363–373},
+numpages = {11},
+keywords = {leader election, distributed key generation, distributed algorithms, cryptographic protocols, consensus, byzantine fault tolerance},
+location = {Virtual Event, Italy},
+series = {PODC'21}
+}

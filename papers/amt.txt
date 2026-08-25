@@ -1,0 +1,8 @@
+@inproceedings{TCZ+20,
+ author = {Alin Tomescu and Robert Chen and Yiming Zheng and Ittai Abraham and Benny Pinkas and Guy Golan Gueta and Srinivas Devadas},
+ booktitle = {IEEE S\&P'20},
+ ckdateadded = {2020-01-25 20:30:38},
+ month = {May},
+ title = {{Towards Scalable Threshold Cryptosystems}},
+ year = {2020}
+}
