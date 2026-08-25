@@ -1,39 +1,35 @@
 ---
 layout: article
-aside:
-  toc: true
-titles:
-  # @start locale config
-  en      : &EN       About
-  en-GB   : *EN
-  en-US   : *EN
-  en-CA   : *EN
-  en-AU   : *EN
-  zh-Hans : &ZH_HANS  关于
-  zh      : *ZH_HANS
-  zh-CN   : *ZH_HANS
-  zh-SG   : *ZH_HANS
-  zh-Hant : &ZH_HANT  關於
-  zh-TW   : *ZH_HANT
-  zh-HK   : *ZH_HANT
-  ko      : &KO       소개
-  ko-KR   : *KO
-  fr      : &FR       À propos
-  fr-BE   : *FR
-  fr-CA   : *FR
-  fr-CH   : *FR
-  fr-FR   : *FR
-  fr-LU   : *FR
-  # @end locale config
+#aside:
+  #toc: true
+#titles:
+#  # @start locale config
+#  en      : &EN       About
+#  en-GB   : *EN
+#  en-US   : *EN
+#  en-CA   : *EN
+#  en-AU   : *EN
+#  zh-Hans : &ZH_HANS  关于
+#  zh      : *ZH_HANS
+#  zh-CN   : *ZH_HANS
+#  zh-SG   : *ZH_HANS
+#  zh-Hant : &ZH_HANT  關於
+#  zh-TW   : *ZH_HANT
+#  zh-HK   : *ZH_HANT
+#  ko      : &KO       소개
+#  ko-KR   : *KO
+#  fr      : &FR       À propos
+#  fr-BE   : *FR
+#  fr-CA   : *FR
+#  fr-CH   : *FR
+#  fr-FR   : *FR
+#  fr-LU   : *FR
+#  # @end locale config
 key: page-about
 #article_header:
 #  type: cover
 #  image:
-#    src: /pictures/pitesti.jpg
-article_header:
-  type: cover
-  image:
-    src: /pictures/tbow-header.jpg
+#    src: /pictures/tbow-header.jpg
 ---
 
 ## The "official" statement...
@@ -41,9 +37,9 @@ article_header:
 <!-- ![](/pictures/tbow-th.jpg){: .align-right} -->
 
 I was born and raised in [Pitești](https://en.wikipedia.org/wiki/Pitesti), a small city in Romania.
-I moved to the US in 2008 to attend college.
+I moved to the US in 2008 to go to college at Stony Brook University.
 
-I was always fascinated with computers: playing games on them, fixing them & programming them.
+I was always fascinated with computers. First, I was playing games. Soon, I was fixin'em. And, eventually, programming them.
 
 I like to read and write.
 In fact, you can see some of my writing on this website and on [Decentralized Thoughts](https://decentralizedthoughts.github.io/about-alin).

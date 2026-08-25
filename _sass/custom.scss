@@ -11,19 +11,20 @@
   font-weight: 530; // semibold: the theme only defines 400 (normal) and 700 (font-weight-bold), 700 read too heavy here
 }
 
-// Papers grid (papers.md): each paper is a single paragraph — title, authors
-// and links on their own lines via kramdown's default hard_wrap (a bare
-// newline becomes <br>, no blank lines involved) — with a leading {: .card}
-// IAL, exactly like {: .info}/{: .note} elsewhere on this site. Being one
-// paragraph rather than a heading + multiple paragraphs, there's no
-// first/last-child margin-vs-padding doubling to work around: the padding
-// and this element's own margin are the only two box-model values in play.
-.papers-columns {
+// Card grid (papers.md, talks.md): each entry is a single paragraph — e.g.
+// for papers, title/authors/links on their own lines via kramdown's default
+// hard_wrap (a bare newline becomes <br>, no blank lines involved) — with a
+// leading {: .card} IAL, exactly like {: .info}/{: .note} elsewhere on this
+// site. Being one paragraph rather than a heading + multiple paragraphs,
+// there's no first/last-child margin-vs-padding doubling to work around:
+// the padding and this element's own margin are the only two box-model
+// values in play.
+@mixin cards-grid() {
   // Drives both the row-gap and column-gap of the CSS grid below, so they
   // can't drift apart from each other — 2x the base spacers.3 unit.
-  $papers-gap: map-get($spacers, 3) * 2;
+  $cards-gap: map-get($spacers, 3) * 2;
 
-  // A real 2-column CSS grid: papers read left-to-right, top-to-bottom, in
+  // A real 2-column CSS grid: entries read left-to-right, top-to-bottom, in
   // source order. This was previously CSS multi-column (column-count: 2),
   // which packs each card into the next free spot in its column — a tight
   // masonry flow with no gaps, but *column-major* order (the whole left
@@ -33,7 +34,7 @@
   // which multi-column didn't have.
   display: grid;
   grid-template-columns: 1fr;
-  gap: $papers-gap;
+  gap: $cards-gap;
   @include media-breakpoint-up(md) {
     grid-template-columns: 1fr 1fr;
   }
@@ -44,7 +45,69 @@
     border-radius: map-get($base, border-radius);
     @include box-shadow();
     margin: 0; // spacing between cards comes from the grid's own `gap` now
+    overflow: hidden; // keeps .talk-thumb's negative-margin edge-to-edge image from
+                       // ever visually overshooting the card's own rounded corners
   }
+}
+
+.papers-columns {
+  @include cards-grid();
+}
+
+.talks-columns {
+  @include cards-grid();
+}
+
+// Video-thumbnail image at the top of talk cards (talks.md). Plain image,
+// not a link: the card already has an explicit "Talk"/venue-name badge for
+// the video URL, so a second click-target on the thumbnail itself (with a
+// play-button overlay implying "click to watch") was redundant.
+//
+// Sits flush with the card's own top/left/right edges ("snug"), rather than
+// inset within the card's padding like the rest of the card's content. Since
+// this is still one flat kramdown paragraph (image, then title, description,
+// badges, all <br>-separated) there's no separate unpadded wrapper element to
+// put the image in — so this pulls the image out to the edges with negative
+// margins sized to exactly cancel p.card's own padding, and widens it by the
+// same amount so it still spans edge-to-edge rather than shrinking. Only the
+// top corners are rounded, matching the card's own rounding there; the
+// bottom stays square so it meets the padded text below flush, and p.card's
+// own `overflow: hidden` (above) clips the top corners cleanly.
+.talk-thumb {
+  display: block;
+  width: calc(100% + #{map-get($spacers, 3) * 2});
+  // !important: .article__content img:not(.emoji) { max-width: 100% } (specificity
+  // 0,2,1, beats .talk-thumb's 0,1,0) otherwise clamps this back down to the
+  // narrower content-box width, since max-width wins over a wider explicit width
+  max-width: none !important;
+  height: auto;
+  // Being display:block is enough on its own to force the title onto its
+  // own line below the image, without needing a <br> in the markdown after
+  // it (unlike every other line in the card, which does use <br> — those
+  // are inline text that would otherwise just run together). That lets this
+  // bottom margin be the *only* source of the image-to-title gap, instead
+  // of stacking on top of a <br>'s own line-break spacing.
+  margin: (map-get($spacers, 2) * -1) (map-get($spacers, 3) * -1) (map-get($spacers, 2) * 1.5) (map-get($spacers, 3) * -1);
+  border-radius: map-get($base, border-radius) map-get($base, border-radius) 0 0;
+}
+
+// Venue tag(s) following a talk's title (talks.md), e.g. "@SBC'24" or, for a
+// talk given at multiple venues, "@SCN'20 @zkStudyClub". font-family-code is
+// the theme's own monospace stack (already used for e.g. article-list.html's
+// date), and $text-color-l is the same muted grey the theme uses for h6.
+.talk-venue {
+  // inline-block, not the default inline: a <span>'s vertical margins are
+  // otherwise ignored in normal flow, and the two below are the whole point
+  // — tighter above (closer to the title), looser below (before the badges).
+  display: inline-block;
+  margin-top: map-get($spacers, 1) * -1;
+  margin-bottom: map-get($spacers, 2);
+  font-family: map-get($base, font-family-code);
+  // 400 (font-weight, normal) bumped 30% — still well short of the title's
+  // bold (700), just a bit more present than plain body text.
+  font-weight: map-get($base, font-weight) * 1.25;
+  font-size: map-get($base, font-size-sm);
+  color: $text-color-l;
 }
 
 // Paper link badges (papers.md): a rounded box with an icon, modeled on
