@@ -1,5 +1,6 @@
 ---
 title: Paraphernalia
+type: note
 permalink: paraphernalia
 ---
 
