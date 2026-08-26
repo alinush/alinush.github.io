@@ -82,7 +82,7 @@ Thus, operator visibility is viewed not as a bug but a feature for compliance.
 
 ### But $\exists$ secure trusted hardware!
 
-One reasonable objection to _"trusted hardware keeps being broken into"_ is that such Intel SGX attacks will not transfer to other trusted hardware platforms. 
+One reasonable objection to _"trusted hardware keeps being broken into"_ is that such Intel SGX attacks[^signal-sgx] will not transfer to other trusted hardware platforms. 
 
 I doubt it[^ZGWplus24]$^,$[^DWOplus25]$^,$[^MHHW18]$^,$[^TSS17].
 
@@ -109,5 +109,6 @@ If I had to pick between Canton and Arc, I'd pick Arc due to its simpler design,
 For cited works, see below 👇👇
 
 [^available-balances]: Specifically, only the available balance, not the pending. See [documentation](https://aptos.dev/build/smart-contracts/confidential-asset#confidential-balance).
+[^signal-sgx]: [Signal's SGX-based contact discovery gets broken](https://x.com/v12sec/status/2092664320547254388)
 
 {% include refs.md %}
