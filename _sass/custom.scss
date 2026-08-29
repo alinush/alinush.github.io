@@ -57,14 +57,70 @@
     grid-template-columns: 1fr 1fr;
   }
 
+  // A darker, more saturated red than $main-color-1 itself (the theme's
+  // red button/link color, e.g. #fc4d50 in the default skin) — used only
+  // for the fragment-highlight below, so it reads as distinctly more
+  // emphatic than e.g. .my-name or a hovered link elsewhere on the site.
+  $highlight-color: darken($main-color-1, 12%);
+  // Same thickness as the red underline under the active nav-bar item
+  // (.navigation__item--active, _header.scss) — @include split-line(bottom,
+  // 4px, $main-color-1) — reused here as a ring width instead of a
+  // single-side border, so a click on any edge of the card reads the same.
+  $highlight-ring-width: 4px;
+
   p.card {
     max-width: unset; // the generic .card rule (_card.scss) caps width at 18rem otherwise
     padding: map-get($spacers, 2) map-get($spacers, 3);
     border-radius: map-get($base, border-radius);
     @include box-shadow();
+    @include transition(box-shadow map-get($animation, duration) map-get($animation, timing-function));
     margin: 0; // spacing between cards comes from the grid's own `gap` now
     overflow: hidden; // keeps .talk-thumb's negative-margin edge-to-edge image from
                        // ever visually overshooting the card's own rounded corners
+
+    // Leaves a bit of breathing room above the card when the hash-highlight
+    // script (main/bottom/custom.html) scrolls it into view with
+    // block: 'start' — without this, the card's own top edge lands flush
+    // against the viewport's top edge.
+    scroll-margin-top: map-get($spacers, 4);
+
+    // The whole card is a click target (main/bottom/custom.html: a click
+    // anywhere on it that isn't on one of its own <a> badges/links jumps
+    // to its own #id, i.e. its shareable URL) — hint that with a pointer
+    // cursor and, on hover, the same red tint used for the fragment
+    // highlight below (minus its ring, which would otherwise fight with
+    // the hover feedback on every card, not just the linked-to one).
+    cursor: pointer;
+    @include hover() {
+      box-shadow: 0 8px 20px rgba($main-color-1, .35), 0 2px 8px rgba($main-color-1, .18);
+    }
+
+    // Applied by the hash-highlight script in main/bottom/custom.html when
+    // a URL fragment like /talks#utt or /papers#dekart points at this
+    // card (also re-applied on every same-page click-through, since that
+    // updates location.hash too) — a solid ring plus a strong tinted glow,
+    // both in $highlight-color, so it reads as "here's what you were sent
+    // to" against the plain grey shadow every other card has. Left in
+    // place rather than fading back out on a timer: since a click
+    // anywhere on a card now navigates too, an auto-fade would make it
+    // ambiguous whether a card is still "the one you were sent to" right
+    // as you're deciding whether to click elsewhere.
+    &.card--highlight {
+      $highlight-shadow: 0 0 0 $highlight-ring-width $highlight-color, 0 8px 24px rgba($highlight-color, .55), 0 3px 10px rgba($highlight-color, .3);
+      box-shadow: $highlight-shadow;
+
+      // Re-asserted at the same declaration under :hover, because the
+      // plain-card hover rule above is otherwise more specific (an extra
+      // .root[data-is-touch] ancestor + :hover, with nothing to do with
+      // .card--highlight) and would win the cascade on its own, replacing
+      // this ring+glow with the weaker plain-hover tint — making the ring
+      // flicker off for as long as the pointer sits over the highlighted
+      // card. The ring is the whole point of "this is the card you were
+      // sent to", so it must survive hovering it, not just being on it.
+      @include hover() {
+        box-shadow: $highlight-shadow;
+      }
+    }
   }
 }
 
@@ -150,8 +206,58 @@
   text-decoration: none !important;
   @include transition(background-color map-get($animation, duration) map-get($animation, timing-function));
 
+  // Font Awesome's own CSS (all.css) hard-codes `line-height: 1` on every
+  // .fa*/.fas/.fab icon, tightly hugging the glyph. That's invisible on
+  // every other badge here, since its icon always sits next to a text
+  // node that instead uses the ambient (taller) inherited line-height, so
+  // *that* text node is what was setting the flex item — and thus the
+  // whole badge's — height. An icon-only badge (see .link-badge--icon-only
+  // below) has no such text node, so without this override its lone
+  // flex item reverts to Font Awesome's tight line-height and the badge
+  // comes out visibly shorter than its siblings. Restoring the inherited
+  // line-height here keeps every badge's height in sync with the text
+  // ones regardless of whether it happens to carry a text label.
   i {
     font-size: .75rem;
+    line-height: inherit;
+  }
+
+  // An icon-only badge (e.g. linking a paper's own "Talk" badge straight to
+  // that talk's own card via /talks#id, with no venue-name label to repeat
+  // — see papers.md's wvuf entry) keeps the horizontal padding above
+  // designed for icon+text, so it comes out as a squat, oddly narrow
+  // rectangle instead of matching the other badges' height. Dropping the
+  // horizontal padding down to match the vertical padding turns it back
+  // into a proper (roughly square) button sized like its siblings, since
+  // Font Awesome glyphs are themselves close to square.
+  //
+  // This has to be an explicit modifier class, added by hand alongside
+  // e.g. .link-badge--talk, rather than detected from the DOM: a
+  // :has(> i:only-child) selector looks like the obvious shortcut, but
+  // :only-child (like :first-child/:last-child) only counts *element*
+  // children — the icon <i> is still "the only child element" even when
+  // followed by a text node like "SBC'24", so that selector actually
+  // matched every badge, icon+text ones included.
+  &.link-badge--icon-only {
+    // Matching the vertical padding (.22rem) exactly made the box read as
+    // too tight/cramped around the icon compared to the breathing room
+    // every text+icon badge gets — splitting the difference between that
+    // and the icon+text badges' .45rem horizontal padding instead.
+    padding: .22rem .40rem;
+    justify-content: center;
+
+    i {
+      // Font Awesome glyphs aren't necessarily drawn centered within their
+      // own advance width (fa-video's camera-body-plus-lens shape leaves
+      // more blank bearing on one side than the other) — invisible next
+      // to a text label, but reads as "icon nudged off to one side" once
+      // the icon is the badge's only content. This is exactly what Font
+      // Awesome's own .fa-fw ("fixed width") class is for: fix every
+      // glyph to the same width and center it there, instead of trusting
+      // each glyph's own (uneven) advance width.
+      width: 1.25em;
+      text-align: center;
+    }
   }
 }
 
@@ -191,6 +297,16 @@
 }
 .link-badge--publisher {
   @include link-badge-tint(#475569); // slate: the publisher's/journal's own page
+}
+// A generic external reference that doesn't fit any other category above —
+// e.g. a third party's own writeup/report that cites or uses the paper,
+// as opposed to .link-badge--publisher's "the paper's own official home".
+// Uses fa-globe (a globe icon) rather than fa-external-link-alt: the
+// latter reads as "leaves this site", which every badge here already
+// does, whereas the globe reads as "the web at large" — a better match
+// for "goes to some other, otherwise-uncategorized place out there".
+.link-badge--url {
+  @include link-badge-tint(#7c3aed); // violet: distinct from every other badge color above
 }
 
 /* end custom scss snippet */

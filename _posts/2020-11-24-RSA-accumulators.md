@@ -131,4 +131,4 @@ Hopefully, we will update this post over time with:
 [^LLX07]: **Universal Accumulators with Efficient Nonmembership Proofs**, by Li, Jiangtao and Li, Ninghui and Xue, Rui, *in Applied Cryptography and Network Security*, 2007
 [^SSY01]: **Blind, Auditable Membership Proofs**, by Sander, Tomas and Ta-Shma, Amnon and Yung, Moti, *in Financial Cryptography*, 2001
 [^TXN20e]: **Authenticated Dictionaries with Cross-Incremental Proof (Dis)aggregation**, by Alin Tomescu and Yu Xia and Zachary Newman, *in Cryptology ePrint Archive, Report 2020/1239*, 2020, [[URL]](https://eprint.iacr.org/2020/1239)
-[^Tome20]: **How to Keep a Secret and Share a Public Key (Using Polynomial Commitments)**, by Tomescu, Alin, 2020, [[URL]](https://alinush.github.io/papers/phd-thesis-mit2020.pdf)
+[^Tome20]: **How to Keep a Secret and Share a Public Key (Using Polynomial Commitments)**, by Tomescu, Alin, 2020, [[URL]](https://alinush.github.io/pubs/phd-thesis-mit2020.pdf)

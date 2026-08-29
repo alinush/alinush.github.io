@@ -1,3 +1,86 @@
 <!-- start custom main bottom snippet -->
 
+{%- if page.key == 'page-talks' or page.key == 'page-papers' -%}
+<script>
+  // Supports linking straight to one card on talks.md/papers.md, e.g.
+  // /talks#utt or /papers#dekart (ids are set via kramdown IALs on each
+  // card, like `{: .card #utt}`), and lets every card be clicked (not
+  // just its own <a> badges) to jump to that same URL.
+  (function () {
+    var containerSelector = '.talks-columns .card, .papers-columns .card';
+
+    // The browser's native fragment navigation already jumps/scrolls to
+    // the element on load (and again on a same-page hash change below);
+    // this re-does that scroll under our own control (smooth, and with
+    // the card's own scroll-margin-top — custom.scss — for breathing room
+    // above it, rather than flush against the viewport's top edge) and
+    // applies .card--highlight (custom.scss) so the reader can spot which
+    // card they were sent to. block: 'start' rather than 'center': for a
+    // card near the top of a long list, there isn't enough room above it
+    // on the page to actually center it, so the browser falls back to
+    // scrolling as close to that as it can get — which, for those cards,
+    // is flush against the top anyway; 'start' at least gives every card
+    // the same, predictable placement. Left applied — no auto-fade-out
+    // timer — since a click anywhere on a card now navigates too (see
+    // below), so the highlight needs to keep meaning "this is the card
+    // that URL points at" for as long as that's true, not just briefly
+    // after load.
+    function highlightFromHash() {
+      var previous = document.querySelector('.card--highlight');
+      if (previous) {
+        previous.classList.remove('card--highlight');
+      }
+
+      var id = window.location.hash.slice(1);
+      if (!id) {
+        return;
+      }
+      var card = document.getElementById(id);
+      if (!card || !card.classList.contains('card')) {
+        return;
+      }
+
+      card.classList.add('card--highlight');
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    highlightFromHash();
+    window.addEventListener('hashchange', highlightFromHash);
+    // A card click below updates the URL via history.pushState instead of
+    // location.hash, which fires popstate (not hashchange) when later
+    // undone with the browser's back/forward buttons.
+    window.addEventListener('popstate', highlightFromHash);
+
+    // Whole-card click-through to each card's own #id, i.e. its shareable
+    // URL — except when the click lands on one of the card's own <a>
+    // badges (let those navigate to their own href instead) or is the
+    // tail end of a text selection drag (a mouseup inside the card after
+    // dragging to select text, which would otherwise also count as a
+    // "click").
+    var cards = document.querySelectorAll(containerSelector);
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].addEventListener('click', function (event) {
+        if (event.target.closest('a')) {
+          return;
+        }
+        if (window.getSelection().toString().length > 0) {
+          return;
+        }
+        // Not window.location.hash = this.id: assigning location.hash
+        // triggers the browser's own instant "scroll to fragment" jump
+        // (aligning the card to the top of the viewport) on top of
+        // highlightFromHash()'s own smooth, centered scroll a moment
+        // later — two competing scrolls to two different endpoints, which
+        // is what read as the page "glitching up and down" on every
+        // click. history.pushState updates the URL/hash without
+        // triggering any scroll (or a hashchange event) on its own, so
+        // highlightFromHash()'s scroll ends up being the only one.
+        history.pushState(null, '', '#' + this.id);
+        highlightFromHash();
+      });
+    }
+  })();
+</script>
+{%- endif -%}
+
 <!-- end custom main bottom snippet -->

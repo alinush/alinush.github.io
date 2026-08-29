@@ -34,7 +34,7 @@ header:
     url: /talks
   - titles:
       en      : &EN       Papers
-    url: /papers.html
+    url: /papers
   - titles:
       en      : &EN       Cryptomat
     url: /cryptomat
