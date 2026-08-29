@@ -1,5 +1,23 @@
 /* start custom scss snippet */
 
+// Heading anchor links (the little link icon next to h1-h6, e.g. in blog
+// posts) are hidden by default and only revealed via _article-content.scss's
+// `& > .anchor { visibility: hidden; opacity: 0; }` + a :hover rule. That
+// :hover rule (@include hover(), _pseudo.scss) is gated on
+// `.root[data-is-touch="false"]` specifically — it's a deliberate no-op on
+// touch devices (avoids a hover state that never clears after a tap), but
+// with no fallback, the anchors are simply never visible on mobile at all.
+// This makes them permanently visible there instead, since there's no hover
+// to reveal them on tap in the first place.
+.root[data-is-touch="true"] .article__content {
+  h1, h2, h3, h4, h5, h6 {
+    & > .anchor {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}
+
 // Highlights "Alin Tomescu" in the papers grid's author lists (papers.md),
 // using the theme's secondary accent color ($main-color-2 — amber/orange in
 // the default skin). Defined in every skin file, like $main-color-1, so
