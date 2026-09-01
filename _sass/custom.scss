@@ -37,7 +37,12 @@
 // there's no first/last-child margin-vs-padding doubling to work around:
 // the padding and this element's own margin are the only two box-model
 // values in play.
-@mixin cards-grid() {
+// $accent-color drives both the hover tint and the (darkened, for extra
+// emphasis) fragment-highlight ring+glow below — defaults to the theme's
+// own red ($main-color-1) for .papers-columns, but .talks-columns passes
+// the same blue used by .link-badge--talk (custom.scss below) instead, so
+// a talk's highlighted card doesn't clash with its own "Talk" badge color.
+@mixin cards-grid($accent-color: $main-color-1) {
   // Drives both the row-gap and column-gap of the CSS grid below, so they
   // can't drift apart from each other — 2x the base spacers.3 unit.
   $cards-gap: map-get($spacers, 3) * 2;
@@ -57,11 +62,10 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  // A darker, more saturated red than $main-color-1 itself (the theme's
-  // red button/link color, e.g. #fc4d50 in the default skin) — used only
-  // for the fragment-highlight below, so it reads as distinctly more
-  // emphatic than e.g. .my-name or a hovered link elsewhere on the site.
-  $highlight-color: darken($main-color-1, 12%);
+  // A darker, more saturated version of $accent-color — used only for the
+  // fragment-highlight below, so it reads as distinctly more emphatic than
+  // the plain hover tint just below it (also in $accent-color, undarkened).
+  $highlight-color: darken($accent-color, 12%);
   // Same thickness as the red underline under the active nav-bar item
   // (.navigation__item--active, _header.scss) — @include split-line(bottom,
   // 4px, $main-color-1) — reused here as a ring width instead of a
@@ -87,12 +91,13 @@
     // The whole card is a click target (main/bottom/custom.html: a click
     // anywhere on it that isn't on one of its own <a> badges/links jumps
     // to its own #id, i.e. its shareable URL) — hint that with a pointer
-    // cursor and, on hover, the same red tint used for the fragment
-    // highlight below (minus its ring, which would otherwise fight with
-    // the hover feedback on every card, not just the linked-to one).
+    // cursor and, on hover, the same $accent-color tint used for the
+    // fragment highlight below (minus its ring, which would otherwise
+    // fight with the hover feedback on every card, not just the
+    // linked-to one).
     cursor: pointer;
     @include hover() {
-      box-shadow: 0 8px 20px rgba($main-color-1, .35), 0 2px 8px rgba($main-color-1, .18);
+      box-shadow: 0 8px 20px rgba($accent-color, .35), 0 2px 8px rgba($accent-color, .18);
     }
 
     // Applied by the hash-highlight script in main/bottom/custom.html when
@@ -129,7 +134,7 @@
 }
 
 .talks-columns {
-  @include cards-grid();
+  @include cards-grid($accent-color: #2563eb); // same blue as .link-badge--talk below
 }
 
 // Video-thumbnail image at the top of talk cards (talks.md). Plain image,

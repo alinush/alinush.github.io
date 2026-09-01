@@ -23,6 +23,7 @@ A celebration of [Roberto Tamassia](https://cs.brown.edu/people/rtamassa/)'s wor
 <span class="talk-venue">@SBC'24</span><br>
 <a class="link-badge link-badge--talk" href="https://www.youtube.com/watch?v=47TRNUTMAyo"><i class="fas fa-video"></i>Talk</a>
 <a class="link-badge link-badge--slides" href="https://docs.google.com/presentation/d/1PktTUXC41CeYNRRgmwmIvqCBHPbXf7E_Ne9ZaDQK6hc"><i class="fas fa-file-powerpoint"></i>Slides</a>
+<a class="link-badge link-badge--pdf link-badge--icon-only" href="/papers#wvuf"><i class="fas fa-file-pdf"></i></a>
 
 {: .card #keyless-noircon}
 <img class="talk-thumb" src="/pictures/talks/noircon.png" />
@@ -44,6 +45,7 @@ A celebration of [Roberto Tamassia](https://cs.brown.edu/people/rtamassa/)'s wor
 <span class="talk-venue">@SBC'23</span><br>
 <a class="link-badge link-badge--talk" href="https://www.youtube.com/watch?v=ktKzDz5dZ1I"><i class="fas fa-video"></i>Talk</a>
 <a class="link-badge link-badge--slides" href="https://docs.google.com/presentation/d/1gROYWWXabwqbxFVGLV4KKOMuQbmvoGjqo502I0W6W7Q/edit#slide=id.g18c47f696bd_0_90"><i class="fas fa-file-powerpoint"></i>Slides</a>
+<a class="link-badge link-badge--pdf link-badge--icon-only" href="/papers#utt"><i class="fas fa-file-pdf"></i></a>
 
 {: .card #fantastic-trees}
 <img class="talk-thumb" src="/pictures/talks/fantastic-trees.png" />
@@ -58,6 +60,7 @@ A celebration of [Roberto Tamassia](https://cs.brown.edu/people/rtamassa/)'s wor
 <span class="talk-venue">@Axelar</span><br>
 <a class="link-badge link-badge--talk" href="https://www.youtube.com/watch?v=XyxWH008tzM"><i class="fas fa-video"></i>Talk</a>
 <a class="link-badge link-badge--slides" href="https://docs.google.com/presentation/d/1vJltIEpm1xvttr41OerZss08qI5_SLr1tFo9BXN1wMc/edit?usp=sharing"><i class="fas fa-file-powerpoint"></i>Slides</a>
+<a class="link-badge link-badge--pdf link-badge--icon-only" href="/papers#hyperproofs"><i class="fas fa-file-pdf"></i></a>
 
 {: .card #ads-ucl}
 <img class="talk-thumb" src="/pictures/talks/ucl.png" />
@@ -72,6 +75,7 @@ A celebration of [Roberto Tamassia](https://cs.brown.edu/people/rtamassa/)'s wor
 <span class="talk-venue">@zkStudyClub'20</span><br>
 <a class="link-badge link-badge--talk" href="https://www.youtube.com/watch?v=PrgeQJioCI8"><i class="fas fa-video"></i>Talk</a>
 <a class="link-badge link-badge--slides" href="https://github.com/alinush/authdict-talk/blob/zkstudyclub/talk.pdf"><i class="fas fa-file-powerpoint"></i>Slides</a>
+<a class="link-badge link-badge--pdf link-badge--icon-only" href="/papers#rsa-ad"><i class="fas fa-file-pdf"></i></a>
 
 {: .card #asvc}
 <img class="talk-thumb" src="/pictures/talks/asvc.png" />
@@ -81,6 +85,7 @@ A celebration of [Roberto Tamassia](https://cs.brown.edu/people/rtamassa/)'s wor
 <a class="link-badge link-badge--talk" href="https://www.youtube.com/watch?v=KGRnpjPjduI"><i class="fas fa-video"></i>zkStudyClub'20</a>
 <a class="link-badge link-badge--slides" href="https://github.com/alinush/asvc-talk/blob/scn2020/talk.pdf"><i class="fas fa-file-powerpoint"></i>SCN'20</a>
 <a class="link-badge link-badge--slides" href="https://github.com/alinush/asvc-talk/blob/zkstudyclub/talk.pdf"><i class="fas fa-file-powerpoint"></i>zkStudyClub'20</a>
+<a class="link-badge link-badge--pdf link-badge--icon-only" href="/papers#asvc"><i class="fas fa-file-pdf"></i></a>
 
 {: .card #amt}
 <img class="talk-thumb" src="/pictures/talks/threshold-crypto.png" />
@@ -90,6 +95,7 @@ A celebration of [Roberto Tamassia](https://cs.brown.edu/people/rtamassa/)'s wor
 <a class="link-badge link-badge--talk" href="https://www.youtube.com/watch?v=XGulOcDo2OE"><i class="fas fa-video"></i>RWDC'21</a>
 <a class="link-badge link-badge--slides" href="https://docs.google.com/presentation/d/1szSvKLMjgk66Utea9okhlAAkKEGls21i15XMi5BvdXY/edit?usp=sharing"><i class="fas fa-file-powerpoint"></i>S&P'20</a>
 <a class="link-badge link-badge--slides" href="https://docs.google.com/presentation/d/1HstPtok_C39LulqTsWVCtSdSBxfFNHv4JsylHNKTrEc/edit?usp=sharing"><i class="fas fa-file-powerpoint"></i>RWDC'21</a>
+<a class="link-badge link-badge--pdf link-badge--icon-only" href="/papers#amt"><i class="fas fa-file-pdf"></i></a>
 
 {: .card #catena}
 <img class="talk-thumb" src="/pictures/talks/catena.png" />
@@ -99,4 +105,5 @@ A celebration of [Roberto Tamassia](https://cs.brown.edu/people/rtamassa/)'s wor
 <a class="link-badge link-badge--talk" href="https://www.youtube.com/watch?v=Xz12PbLSeVc"><i class="fas fa-video"></i>S&P'17</a>
 <a class="link-badge link-badge--slides" href="https://docs.google.com/presentation/d/1rnME2st1mapEjxayApmsaIK56t9P80kij5VXAZMDvcM/edit?usp=sharing"><i class="fas fa-file-powerpoint"></i>MIT MAS.S62</a>
 <a class="link-badge link-badge--slides" href="/pubs/catena-sp2017-slides.pdf"><i class="fas fa-file-powerpoint"></i>S&P'17</a>
+<a class="link-badge link-badge--pdf link-badge--icon-only" href="/papers#catena"><i class="fas fa-file-pdf"></i></a>
 </div>
