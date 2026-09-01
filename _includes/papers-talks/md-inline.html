@@ -1,0 +1,8 @@
+{%- comment -%}
+  Renders a one-line front-matter string field (title/authors/venue) through
+  kramdown so _italics_/**bold**/[links](url)/embedded <span> keep working,
+  without the stray wrapping <p> that markdownify leaves on a single line.
+  Param: text
+{%- endcomment -%}
+{%- capture _rendered -%}{{ include.text | markdownify }}{%- endcapture -%}
+{{- _rendered | strip_newlines | replace: '<p>', '' | replace: '</p>', '' -}}

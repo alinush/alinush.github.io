@@ -211,6 +211,12 @@ exclude:
   - files/chunky/compile.sh
   - files/chunky/run.sh
 
+collections:
+  papers:
+    output: false
+  talks:
+    output: false
+
 defaults:
   - scope:
       path: ""

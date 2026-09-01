@@ -29,11 +29,15 @@
   font-weight: 530; // semibold: the theme only defines 400 (normal) and 700 (font-weight-bold), 700 read too heavy here
 }
 
-// Card grid (papers.md, talks.md): each entry is a single paragraph — e.g.
-// for papers, title/authors/links on their own lines via kramdown's default
-// hard_wrap (a bare newline becomes <br>, no blank lines involved) — with a
-// leading {: .card} IAL, exactly like {: .info}/{: .note} elsewhere on this
-// site. Being one paragraph rather than a heading + multiple paragraphs,
+// Card grid (papers.md, talks.md): each entry comes from a YAML file in
+// _papers/ or _talks/ (one work per file, `type: paper-only|talk-only|
+// paper-and-talk` deciding which page(s) it appears on) and is rendered as
+// a <div class="card" id="..."> by _includes/papers-talks/card-paper.html /
+// card-talk.html — title/authors-or-venue/badges on their own lines via
+// explicit <br>s, matching kramdown's old hard_wrap look without kramdown
+// actually running over the page (see md-inline.html for how individual
+// fields like title/authors still get _italics_/**bold**/links). Being one
+// flat block of inline content rather than a heading + multiple paragraphs,
 // there's no first/last-child margin-vs-padding doubling to work around:
 // the padding and this element's own margin are the only two box-model
 // values in play.
@@ -72,7 +76,7 @@
   // single-side border, so a click on any edge of the card reads the same.
   $highlight-ring-width: 4px;
 
-  p.card {
+  .card {
     max-width: unset; // the generic .card rule (_card.scss) caps width at 18rem otherwise
     padding: map-get($spacers, 2) map-get($spacers, 3);
     border-radius: map-get($base, border-radius);
@@ -143,15 +147,16 @@
 // play-button overlay implying "click to watch") was redundant.
 //
 // Sits flush with the card's own top/left/right edges ("snug"), rather than
-// inset within the card's padding like the rest of the card's content. Since
-// this is still one flat kramdown paragraph (image, then title, description,
-// badges, all <br>-separated) there's no separate unpadded wrapper element to
-// put the image in — so this pulls the image out to the edges with negative
-// margins sized to exactly cancel p.card's own padding, and widens it by the
-// same amount so it still spans edge-to-edge rather than shrinking. Only the
-// top corners are rounded, matching the card's own rounding there; the
-// bottom stays square so it meets the padded text below flush, and p.card's
-// own `overflow: hidden` (above) clips the top corners cleanly.
+// inset within the card's padding like the rest of the card's content. The
+// card (card-talk.html) is one flat block of inline content (image, then
+// title, venue, description, badges, all <br>-separated) with no separate
+// unpadded wrapper element to put the image in — so this pulls the image out
+// to the edges with negative margins sized to exactly cancel .card's own
+// padding, and widens it by the same amount so it still spans edge-to-edge
+// rather than shrinking. Only the top corners are rounded, matching the
+// card's own rounding there; the bottom stays square so it meets the padded
+// text below flush, and .card's own `overflow: hidden` (above) clips the
+// top corners cleanly.
 .talk-thumb {
   display: block;
   width: calc(100% + #{map-get($spacers, 3) * 2});

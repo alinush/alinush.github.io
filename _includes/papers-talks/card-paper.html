@@ -1,0 +1,46 @@
+{%- comment -%}
+  Renders one /papers card. Param: entry (a site.papers document)
+{%- endcomment -%}
+{%- capture _title -%}{% include papers-talks/md-inline.html text=entry.title %}{%- endcapture -%}
+{%- capture _authors -%}{% include papers-talks/md-inline.html text=entry.authors %}{%- endcapture -%}
+{%- capture _paper_venue -%}{% include papers-talks/md-inline.html text=entry.paper_venue %}{%- endcapture -%}
+<div class="card" id="{{ entry.card_id }}">
+<strong>{{ _title | strip }}</strong><br>
+{{ _authors | strip }}, {{ _paper_venue | strip }}<br>
+{%- for item in entry.pdf %}
+{%- include papers-talks/link-badge.html kind="pdf" url=item.url title=item.title -%}
+{% endfor -%}
+{%- for item in entry.bibtex %}
+{%- include papers-talks/link-badge.html kind="bibtex" url=item.url title=item.title -%}
+{% endfor -%}
+{%- if entry.type == "paper-and-talk" -%}
+{%- assign _talks_url = "/talks#" | append: entry.card_id -%}
+{%- include papers-talks/link-badge.html kind="video" url=_talks_url -%}
+{% endif -%}
+{%- for item in entry.video -%}
+  {%- assign _skip = false -%}
+  {%- if entry.type == "paper-and-talk" and item.show_on contains "talks" -%}{%- assign _skip = true -%}{%- endif -%}
+  {%- unless _skip -%}
+{%- include papers-talks/link-badge.html kind="video" url=item.url title=item.title -%}
+{% endunless -%}
+{%- endfor -%}
+{%- for item in entry.slides -%}
+  {%- assign _skip = false -%}
+  {%- if entry.type == "paper-and-talk" and item.show_on contains "talks" -%}{%- assign _skip = true -%}{%- endif -%}
+  {%- unless _skip -%}
+{%- include papers-talks/link-badge.html kind="slides" url=item.url title=item.title -%}
+{% endunless -%}
+{%- endfor -%}
+{%- for item in entry.code %}
+{%- include papers-talks/link-badge.html kind="code" url=item.url title=item.title -%}
+{% endfor -%}
+{%- for item in entry.blogpost %}
+{%- include papers-talks/link-badge.html kind="blogpost" url=item.url title=item.title -%}
+{% endfor -%}
+{%- for item in entry.publisher %}
+{%- include papers-talks/link-badge.html kind="publisher" url=item.url title=item.title -%}
+{% endfor -%}
+{%- for item in entry.link %}
+{%- include papers-talks/link-badge.html kind="url" url=item.url title=item.title -%}
+{% endfor -%}
+</div>

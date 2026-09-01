@@ -1,0 +1,40 @@
+{%- comment -%}
+  Renders one /talks card. Param: entry (a site.talks or site.papers document — paper-and-talk works live in _papers/)
+{%- endcomment -%}
+{%- assign _display_title = entry.talk_title | default: entry.title -%}
+{%- capture _title -%}{% include papers-talks/md-inline.html text=_display_title %}{%- endcapture -%}
+{%- capture _venue -%}{% include papers-talks/md-inline.html text=entry.talk_venue %}{%- endcapture -%}
+<div class="card" id="{{ entry.card_id }}">
+<img class="talk-thumb" src="{{ entry.thumbnail }}" />
+<strong>{{ _title | strip }}</strong><br>
+<span class="talk-venue">{{ _venue | strip }}</span><br>
+{%- assign _content_stripped = entry.content | strip -%}
+{%- if _content_stripped != "" %}
+{%- capture _description -%}{{ _content_stripped | markdownify }}{%- endcapture -%}
+{{- _description | strip_newlines | replace: '<p>', '' | replace: '</p>', '' | strip -}}<br>
+{%- endif %}
+{%- for item in entry.video -%}
+  {%- assign _show = true -%}
+  {%- if entry.type == "paper-and-talk" -%}
+    {%- assign _show = false -%}
+    {%- if item.show_on contains "talks" -%}{%- assign _show = true -%}{%- endif -%}
+  {%- endif -%}
+  {%- if _show -%}
+{%- include papers-talks/link-badge.html kind="video" url=item.url title=item.title -%}
+{% endif -%}
+{%- endfor -%}
+{%- for item in entry.slides -%}
+  {%- assign _show = true -%}
+  {%- if entry.type == "paper-and-talk" -%}
+    {%- assign _show = false -%}
+    {%- if item.show_on contains "talks" -%}{%- assign _show = true -%}{%- endif -%}
+  {%- endif -%}
+  {%- if _show -%}
+{%- include papers-talks/link-badge.html kind="slides" url=item.url title=item.title -%}
+{% endif -%}
+{%- endfor -%}
+{%- if entry.type == "paper-and-talk" -%}
+{%- assign _papers_url = "/papers#" | append: entry.card_id -%}
+{%- include papers-talks/link-badge.html kind="pdf" url=_papers_url -%}
+{% endif -%}
+</div>

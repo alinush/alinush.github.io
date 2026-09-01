@@ -1,0 +1,24 @@
+{%- comment -%}
+  Renders one .link-badge <a> tag. Params:
+    kind  - one of: pdf, bibtex, video, slides, code, blogpost, publisher, url
+    url   - the href
+    title - optional; when omitted, renders icon-only (link-badge--icon-only)
+
+  "video" maps to the .link-badge--talk CSS class (not --video): that class
+  already exists and is styled (blue, fa-video) from before this entry was
+  ever data-driven, and the YAML key is named "video" only because that's
+  the more natural word for a repeatable video-link attribute.
+{%- endcomment -%}
+{%- case include.kind -%}
+  {%- when "pdf" -%}       {%- assign _css = "pdf" -%}       {%- assign _icon = "fas fa-file-pdf" -%}
+  {%- when "bibtex" -%}    {%- assign _css = "bibtex" -%}    {%- assign _icon = "fas fa-quote-right" -%}
+  {%- when "video" -%}     {%- assign _css = "talk" -%}      {%- assign _icon = "fas fa-video" -%}
+  {%- when "slides" -%}    {%- assign _css = "slides" -%}    {%- assign _icon = "fas fa-file-powerpoint" -%}
+  {%- when "code" -%}      {%- assign _css = "code" -%}      {%- assign _icon = "fab fa-github" -%}
+  {%- when "blogpost" -%}  {%- assign _css = "blogpost" -%}  {%- assign _icon = "fas fa-blog" -%}
+  {%- when "publisher" -%} {%- assign _css = "publisher" -%} {%- assign _icon = "fas fa-book" -%}
+  {%- when "url" -%}       {%- assign _css = "url" -%}       {%- assign _icon = "fas fa-globe" -%}
+{%- endcase -%}
+{%- assign _class = "link-badge link-badge--" | append: _css -%}
+{%- unless include.title -%}{%- assign _class = _class | append: " link-badge--icon-only" -%}{%- endunless -%}
+<a class="{{ _class }}" href="{{ include.url }}"><i class="{{ _icon }}"></i>{{ include.title }}</a>
