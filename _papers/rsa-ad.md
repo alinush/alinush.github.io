@@ -9,7 +9,7 @@ title: >-
 authors: >-
   <span class="my-name">Alin Tomescu</span>, Yu Xia, Zachary Newman
 paper_venue: >-
-  _Cryptology ePrint Archive_
+  _Cryptology ePrint Archive'20_
 talk_venue: "@zkStudyClub'20"
 thumbnail: /pictures/talks/authdict.png
 

@@ -8,7 +8,7 @@ title: >-
 authors: >-
   <span class="my-name">Alin Tomescu</span>
 paper_venue: >-
-  short note in _Cryptology ePrint Archive_
+  short note in _Cryptology ePrint Archive'20_
 
 pdf:
   - url: https://eprint.iacr.org/2020/1516.pdf

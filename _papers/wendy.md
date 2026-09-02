@@ -8,7 +8,7 @@ title: >-
 authors: >-
   Neil Giridharan, Heidi Howard, Ittai Abraham, Natacha Crooks, and <span class="my-name">Alin Tomescu</span>
 paper_venue: >-
-  _Cryptology ePrint Archive_
+  _Cryptology ePrint Archive'21_
 
 pdf:
   - url: https://eprint.iacr.org/2021/1308.pdf

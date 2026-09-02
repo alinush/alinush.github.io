@@ -8,7 +8,7 @@ title: >-
 authors: >-
   Dan Boneh, Trisha Datta, Rex Fernando, Kamilla Nazirkhanova, <span class="my-name">Alin Tomescu</span>
 paper_venue: >-
-  _Cryptology ePrint Archive_
+  _Cryptology ePrint Archive'25_
 
 pdf:
   - url: https://eprint.iacr.org/2025/1159.pdf

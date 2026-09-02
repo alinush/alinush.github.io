@@ -11,7 +11,7 @@ talk_title: >-
 authors: >-
   <span class="my-name">Alin Tomescu</span>, Adithya Bhat, Benny Applebaum, Ittai Abraham, Guy Gueta, Benny Pinkas, Avishay Yanai
 paper_venue: >-
-  _Cryptology ePrint Archive_
+  _Cryptology ePrint Archive'22_
 talk_venue: "@SBC'23"
 thumbnail: /pictures/talks/utt.png
 
