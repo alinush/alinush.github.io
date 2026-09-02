@@ -1,7 +1,8 @@
 ---
 type: paper-and-talk
 card_id: catena
-order: 220
+date: 2017-05-01
+talk_date: 2017-05-01
 
 title: >-
   Catena: Efficient Non-equivocation via Bitcoin

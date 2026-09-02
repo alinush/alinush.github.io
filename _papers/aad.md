@@ -1,7 +1,7 @@
 ---
 type: paper-only
 card_id: aad
-order: 200
+date: 2019-11-01
 
 title: >-
   Transparency Logs via Append-only Authenticated Dictionaries

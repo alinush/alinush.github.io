@@ -1,7 +1,7 @@
 ---
 type: paper-only
 card_id: phd-thesis
-order: 180
+date: 2020-06-01
 
 title: >-
   How to Keep a Secret and Share a Public Key (Using Polynomial Commitments)

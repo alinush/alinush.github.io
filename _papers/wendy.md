@@ -1,7 +1,7 @@
 ---
 type: paper-only
 card_id: wendy
-order: 110
+date: 2021-09-01
 
 title: >-
   No-Commit Proofs: Defeating Livelock in BFT

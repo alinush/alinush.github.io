@@ -1,7 +1,7 @@
 ---
 type: paper-only
 card_id: share-recovery
-order: 190
+date: 2019-11-15
 
 title: >-
   Efficient Verifiable Secret Sharing with Share Recovery in BFT Protocols

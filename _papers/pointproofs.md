@@ -1,7 +1,7 @@
 ---
 type: paper-only
 card_id: pointproofs
-order: 140
+date: 2020-11-01
 
 title: >-
   How to compute all Pointproofs

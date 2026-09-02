@@ -1,7 +1,8 @@
 ---
 type: paper-and-talk
 card_id: rsa-ad
-order: 150
+date: 2020-08-01
+talk_date: 2020-11-01
 
 title: >-
   Authenticated Dictionaries with Cross-Incremental Proof (Dis)aggregation

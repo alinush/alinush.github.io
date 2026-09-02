@@ -9,7 +9,7 @@ permalink: papers
 ---
 
 <div class="papers-columns">
-{%- assign entries = site.papers | sort: "order" -%}
+{%- assign entries = site.papers | sort: "date" | reverse -%}
 {%- for entry in entries -%}
 {%- include papers-talks/card-paper.html entry=entry -%}
 {% endfor -%}

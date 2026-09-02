@@ -1,7 +1,8 @@
 ---
 type: paper-and-talk
 card_id: asvc
-order: 160
+date: 2020-09-01
+talk_date: 2020-09-01
 
 title: >-
   Aggregatable Subvector Commitments for Stateless Cryptocurrencies

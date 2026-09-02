@@ -1,7 +1,7 @@
 ---
 type: paper-only
 card_id: privatefs
-order: 230
+date: 2012-10-01
 
 title: >-
   PrivateFS: A Parallel Oblivious File System

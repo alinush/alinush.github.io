@@ -1,7 +1,8 @@
 ---
 type: paper-and-talk
 card_id: hyperproofs
-order: 90
+date: 2022-08-01
+talk_date: 2022-10-01
 
 title: >-
   Hyperproofs: Aggregating and Maintaining Proofs in Vector Commitments

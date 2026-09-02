@@ -1,7 +1,7 @@
 ---
 type: talk-only
 card_id: keyless-zksummit
-order: 50
+talk_date: 2024-04-01
 
 title: >-
   Aptos keyless accounts

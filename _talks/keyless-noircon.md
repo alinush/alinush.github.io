@@ -1,7 +1,7 @@
 ---
 type: talk-only
 card_id: keyless-noircon
-order: 40
+talk_date: 2024-09-01
 
 title: >-
   Zero-Knowledge proofs for keyless blockchain accounts

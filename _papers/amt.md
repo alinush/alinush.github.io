@@ -1,7 +1,8 @@
 ---
 type: paper-and-talk
 card_id: amt
-order: 170
+date: 2020-05-01
+talk_date: 2020-05-01
 
 title: >-
   Towards Scalable Threshold Cryptosystems

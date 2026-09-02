@@ -1,7 +1,7 @@
 ---
 type: talk-only
 card_id: ads-ucl
-order: 100
+talk_date: 2021-06-01
 
 title: >-
   Authenticated data structures for stateless validation and transparency Logs

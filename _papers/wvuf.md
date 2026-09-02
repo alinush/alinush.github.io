@@ -1,7 +1,8 @@
 ---
 type: paper-and-talk
 card_id: wvuf
-order: 30
+date: 2025-05-15
+talk_date: 2024-02-01
 
 title: >-
   Distributed Randomness using Weighted VRFs

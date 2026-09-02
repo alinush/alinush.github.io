@@ -1,7 +1,7 @@
 ---
 type: paper-only
 card_id: sbft
-order: 210
+date: 2019-06-01
 
 title: >-
   SBFT: A Scalable and Decentralized Trust Infrastructure

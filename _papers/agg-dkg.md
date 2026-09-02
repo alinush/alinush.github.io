@@ -1,7 +1,7 @@
 ---
 type: paper-only
 card_id: agg-dkg
-order: 130
+date: 2021-05-01
 
 title: >-
   Aggregatable Distributed Key Generation

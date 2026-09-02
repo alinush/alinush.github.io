@@ -1,7 +1,7 @@
 ---
 type: paper-only
 card_id: simplified-vss
-order: 60
+date: 2025-05-01
 
 title: >-
   Verifiable Secret Sharing Simplified

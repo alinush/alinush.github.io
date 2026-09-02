@@ -1,7 +1,7 @@
 ---
 type: paper-only
 card_id: async-dkg
-order: 120
+date: 2021-07-01
 
 title: >-
   Reaching Consensus for Asynchronous Distributed Key Generation

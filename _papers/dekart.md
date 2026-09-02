@@ -1,7 +1,7 @@
 ---
 type: paper-only
 card_id: dekart
-order: 20
+date: 2025-07-01
 
 title: >-
   DekartProof: Efficient Vector Range Proofs and Their Applications
