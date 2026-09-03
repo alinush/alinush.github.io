@@ -1,6 +1,6 @@
 {%- comment -%}
   Renders one .link-badge <a> tag. Params:
-    kind  - one of: pdf, bibtex, video, slides, code, blogpost, publisher, url
+    kind  - one of: pdf, bibtex, video, slides, code, blogpost, publisher, url, twitter
     url   - the href
     title - optional; when omitted, renders icon-only (link-badge--icon-only)
 
@@ -18,6 +18,7 @@
   {%- when "blogpost" -%}  {%- assign _css = "blogpost" -%}  {%- assign _icon = "fas fa-blog" -%}
   {%- when "publisher" -%} {%- assign _css = "publisher" -%} {%- assign _icon = "fas fa-book" -%}
   {%- when "url" -%}       {%- assign _css = "url" -%}       {%- assign _icon = "fas fa-globe" -%}
+  {%- when "twitter" -%}   {%- assign _css = "twitter" -%}   {%- assign _icon = "fab fa-twitter" -%}
 {%- endcase -%}
 {%- assign _class = "link-badge link-badge--" | append: _css -%}
 {%- unless include.title -%}{%- assign _class = _class | append: " link-badge--icon-only" -%}{%- endunless -%}

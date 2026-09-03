@@ -2,7 +2,7 @@
 layout: article
 titles:
   # @start locale config
-  en      : &EN       Recorded talks
+  en      : &EN       Talks
   # @end locale config
 key: page-talks
 permalink: talks

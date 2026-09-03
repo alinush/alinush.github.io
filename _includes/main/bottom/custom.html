@@ -1,13 +1,14 @@
 <!-- start custom main bottom snippet -->
 
-{%- if page.key == 'page-talks' or page.key == 'page-papers' -%}
+{%- if page.key == 'page-talks' or page.key == 'page-papers' or page.key == 'page-projects' -%}
 <script>
-  // Supports linking straight to one card on talks.md/papers.md, e.g.
-  // /talks#utt or /papers#dekart (ids are set via kramdown IALs on each
-  // card, like `{: .card #utt}`), and lets every card be clicked (not
-  // just its own <a> badges) to jump to that same URL.
+  // Supports linking straight to one card on talks.md/papers.md/
+  // projects.md, e.g. /talks#utt, /papers#dekart or /projects#ck
+  // (each card's id comes from its _talks//_papers//_projects/ YAML file's
+  // own card_id field), and lets every card be clicked (not just its own
+  // <a> badges) to jump to that same URL.
   (function () {
-    var containerSelector = '.talks-columns .card, .papers-columns .card';
+    var containerSelector = '.talks-columns .card, .papers-columns .card, .projects-columns .card';
 
     // The browser's native fragment navigation already jumps/scrolls to
     // the element on load (and again on a same-page hash change below);

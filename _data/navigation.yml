@@ -32,6 +32,9 @@ header:
       en      : &EN       Papers
     url: /papers
   - titles:
+      en      : &EN       Projects
+    url: /projects
+  - titles:
       en      : &EN       Cryptomat
     url: /cryptomat
 

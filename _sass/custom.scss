@@ -18,14 +18,16 @@
   }
 }
 
-// Highlights "Alin Tomescu" in the papers grid's author lists (papers.md),
-// using the theme's secondary accent color ($main-color-2 — amber/orange in
-// the default skin). Defined in every skin file, like $main-color-1, so
-// this stays safe if _config.yml's text_skin ever changes. Distinct from
-// both the site's red link/accent color (avoids implying the name is
-// clickable) and the blue "talk" badge color.
+// Highlights "Alin Tomescu" in the papers grid's author lists (papers.md).
+// Stays in the same red family as .card-title just above it — both use
+// mix($main-color-1, $text-color, ...) — but at a much lower accent ratio
+// (mostly dark text, a little red) rather than the title's mostly-accent
+// 75%, landing on a genuinely darker, desaturated wine tone instead of
+// just a slightly-darker version of the same bright red (darken() alone
+// wasn't enough of a jump — lightness moved but saturation didn't, so it
+// read as barely different).
 .my-name {
-  color: $main-color-1;
+  color: mix($main-color-1, $text-color, 30%);
   font-weight: 530; // semibold: the theme only defines 400 (normal) and 700 (font-weight-bold), 700 read too heavy here
 }
 
@@ -46,7 +48,16 @@
 // own red ($main-color-1) for .papers-columns, but .talks-columns passes
 // the same blue used by .link-badge--talk (custom.scss below) instead, so
 // a talk's highlighted card doesn't clash with its own "Talk" badge color.
-@mixin cards-grid($accent-color: $main-color-1) {
+// $title-color is the .card-title tint below — defaults to a mix() of
+// $accent-color itself, but .talks-columns overrides it to a lighter blue:
+// the mix() default reads as "dark text with a color tint" (deliberately,
+// for legibility — see .card-title's own comment), but plain $accent-color
+// blue mixed 45/55 with dark text comes out darker than desired for talks
+// specifically, so it gets its own, lighter, explicit shade instead.
+@mixin cards-grid($accent-color: $main-color-1, $title-color: default) {
+  @if $title-color == default {
+    $title-color: mix($accent-color, $text-color, 45%);
+  }
   // Drives both the row-gap and column-gap of the CSS grid below, so they
   // can't drift apart from each other — 2x the base spacers.3 unit.
   $cards-gap: map-get($spacers, 3) * 2;
@@ -85,6 +96,22 @@
     margin: 0; // spacing between cards comes from the grid's own `gap` now
     overflow: hidden; // keeps .talk-thumb's negative-margin edge-to-edge image from
                        // ever visually overshooting the card's own rounded corners
+
+    // Tints each card's own title (the .card-title class used by
+    // card-paper.html/card-talk.html/card-project.html) in $title-color —
+    // by default a mix() of the page's own $accent-color (the same one
+    // driving the highlight ring above) with $text-color rather than
+    // lighten(): lightening pushes toward white, which is exactly the
+    // wrong direction for legibility on this white-background card,
+    // whereas mixing in the normal (dark) text color keeps the same
+    // ballpark contrast as plain text while still reading as "tinted",
+    // i.e. a *less intense* version of the ring color rather than a paler
+    // one. font-size bumped modestly (not a full jump to a named
+    // font-size-* step) since "slightly bigger" was the ask.
+    .card-title {
+      color: $title-color;
+      font-size: 1.1em;
+    }
 
     // Leaves a bit of breathing room above the card when the hash-highlight
     // script (main/bottom/custom.html) scrolls it into view with
@@ -134,29 +161,45 @@
 }
 
 .papers-columns {
-  @include cards-grid();
+  // $title-color explicit, at the same lighter-than-default 75% mix ratio
+  // as .talks-columns below, rather than the mixin's own 45% default —
+  // see that block's comment for why.
+  @include cards-grid($title-color: mix($main-color-1, $text-color, 75%));
 }
 
 .talks-columns {
-  @include cards-grid($accent-color: #2563eb); // same blue as .link-badge--talk below
+  // $title-color explicit, at a lighter mix ratio than the 45% default:
+  // 45% (mostly dark text) read too dark for the title; a hardcoded pure
+  // accent blue (0% text) read too bright/saturated; 65% (mostly accent)
+  // still read a bit dark. 75% is a bit lighter/brighter still.
+  @include cards-grid($accent-color: #2563eb, $title-color: mix(#2563eb, $text-color, 75%)); // same ring blue as .link-badge--talk below
 }
 
-// Video-thumbnail image at the top of talk cards (talks.md). Plain image,
-// not a link: the card already has an explicit "Talk"/venue-name badge for
-// the video URL, so a second click-target on the thumbnail itself (with a
-// play-button overlay implying "click to watch") was redundant.
+.projects-columns {
+  // $title-color explicit, at the same lighter-than-default 75% mix ratio
+  // as .papers-columns/.talks-columns above, rather than the mixin's own
+  // 45% default.
+  @include cards-grid($accent-color: $green, $title-color: mix($green, $text-color, 75%)); // green, distinct from papers' red and talks' blue
+}
+
+// Video-thumbnail image inside talk/project cards (card-talk.html,
+// card-project.html — title comes first, then this). Plain image, not a
+// link: the card already has an explicit "Talk"/venue-name badge for the
+// video URL (or is itself the whole card's own click target), so a second
+// click-target on the thumbnail (with a play-button overlay implying
+// "click to watch") was redundant.
 //
-// Sits flush with the card's own top/left/right edges ("snug"), rather than
-// inset within the card's padding like the rest of the card's content. The
-// card (card-talk.html) is one flat block of inline content (image, then
-// title, venue, description, badges, all <br>-separated) with no separate
-// unpadded wrapper element to put the image in — so this pulls the image out
-// to the edges with negative margins sized to exactly cancel .card's own
-// padding, and widens it by the same amount so it still spans edge-to-edge
-// rather than shrinking. Only the top corners are rounded, matching the
-// card's own rounding there; the bottom stays square so it meets the padded
-// text below flush, and .card's own `overflow: hidden` (above) clips the
-// top corners cleanly.
+// Full-bleed left/right against the card's own edges, rather than inset
+// within the card's padding like the rest of the card's content — pulled
+// out with negative left/right margins sized to exactly cancel .card's own
+// horizontal padding, and widened by the same amount so it still spans
+// edge-to-edge rather than shrinking. Only left/right, not top: with the
+// title now above it and badges below, the image is sandwiched between two
+// other pieces of content rather than sitting flush against the card's own
+// top edge, so top/bottom just get normal (positive) spacing instead of a
+// negative margin bleeding past the card, and no corner of the image is
+// rounded (nothing about its position touches the card's own rounded
+// corners anymore).
 .talk-thumb {
   display: block;
   width: calc(100% + #{map-get($spacers, 3) * 2});
@@ -165,14 +208,7 @@
   // narrower content-box width, since max-width wins over a wider explicit width
   max-width: none !important;
   height: auto;
-  // Being display:block is enough on its own to force the title onto its
-  // own line below the image, without needing a <br> in the markdown after
-  // it (unlike every other line in the card, which does use <br> — those
-  // are inline text that would otherwise just run together). That lets this
-  // bottom margin be the *only* source of the image-to-title gap, instead
-  // of stacking on top of a <br>'s own line-break spacing.
-  margin: (map-get($spacers, 2) * -1) (map-get($spacers, 3) * -1) (map-get($spacers, 2) * 1.5) (map-get($spacers, 3) * -1);
-  border-radius: map-get($base, border-radius) map-get($base, border-radius) 0 0;
+  margin: (map-get($spacers, 2) * 1.5) (map-get($spacers, 3) * -1) (map-get($spacers, 2) * 1.5) (map-get($spacers, 3) * -1);
 }
 
 // Venue tag(s) following a talk's title (talks.md), e.g. "@SBC'24" or, for a
@@ -330,6 +366,9 @@
 // for "goes to some other, otherwise-uncategorized place out there".
 .link-badge--url {
   @include link-badge-tint(#7c3aed); // violet: distinct from every other badge color above
+}
+.link-badge--twitter {
+  @include link-badge-tint($twitter-color); // the classic Twitter-bird blue, already defined by the skin (used elsewhere for share buttons)
 }
 
 /* end custom scss snippet */

@@ -1,36 +1,34 @@
 {%- comment -%}
-  Renders one /papers card. Param: entry (a site.papers document)
+  Renders one /projects card. Param: entry (a site.projects document).
+  Simpler than card-paper.html/card-talk.html: no dual-type logic, no
+  show_on scoping, just a title, then an optional thumbnail (.talk-thumb,
+  same as card-talk.html's - not every project has one), an optional
+  description (the document body, like card-talk.html's), and a flat run
+  of badges in a fixed order.
 {%- endcomment -%}
 {%- capture _title -%}{% include papers-talks/md-inline.html text=entry.title %}{%- endcapture -%}
-{%- capture _authors -%}{% include papers-talks/md-inline.html text=entry.authors %}{%- endcapture -%}
-{%- capture _paper_venue -%}{% include papers-talks/md-inline.html text=entry.paper_venue %}{%- endcapture -%}
 <div class="card" id="{{ entry.card_id }}">
 <strong class="card-title">{{ _title | strip }}</strong><br>
-{{ _authors | strip }}, {{ _paper_venue | strip }}<br>
+{%- if entry.thumbnail %}
+<img class="talk-thumb" src="{{ entry.thumbnail }}" />
+{%- endif %}
+{%- assign _content_stripped = entry.content | strip -%}
+{%- if _content_stripped != "" %}
+{%- capture _description -%}{{ _content_stripped | markdownify }}{%- endcapture -%}
+{{- _description | strip_newlines | replace: '<p>', '' | replace: '</p>', '' | strip -}}<br>
+{%- endif %}
 {%- for item in entry.pdf %}
 {%- include papers-talks/link-badge.html kind="pdf" url=item.url title=item.title -%}
 {% endfor -%}
 {%- for item in entry.bibtex %}
 {%- include papers-talks/link-badge.html kind="bibtex" url=item.url title=item.title -%}
 {% endfor -%}
-{%- if entry.type == "paper-and-talk" -%}
-{%- assign _talks_url = "/talks#" | append: entry.card_id -%}
-{%- include papers-talks/link-badge.html kind="video" url=_talks_url -%}
-{% endif -%}
-{%- for item in entry.video -%}
-  {%- assign _skip = false -%}
-  {%- if entry.type == "paper-and-talk" and item.show_on contains "talks" -%}{%- assign _skip = true -%}{%- endif -%}
-  {%- unless _skip -%}
+{%- for item in entry.video %}
 {%- include papers-talks/link-badge.html kind="video" url=item.url title=item.title -%}
-{% endunless -%}
-{%- endfor -%}
-{%- for item in entry.slides -%}
-  {%- assign _skip = false -%}
-  {%- if entry.type == "paper-and-talk" and item.show_on contains "talks" -%}{%- assign _skip = true -%}{%- endif -%}
-  {%- unless _skip -%}
+{% endfor -%}
+{%- for item in entry.slides %}
 {%- include papers-talks/link-badge.html kind="slides" url=item.url title=item.title -%}
-{% endunless -%}
-{%- endfor -%}
+{% endfor -%}
 {%- for item in entry.code %}
 {%- include papers-talks/link-badge.html kind="code" url=item.url title=item.title -%}
 {% endfor -%}
@@ -42,5 +40,8 @@
 {% endfor -%}
 {%- for item in entry.link %}
 {%- include papers-talks/link-badge.html kind="url" url=item.url title=item.title -%}
+{% endfor -%}
+{%- for item in entry.twitter %}
+{%- include papers-talks/link-badge.html kind="twitter" url=item.url title=item.title -%}
 {% endfor -%}
 </div>

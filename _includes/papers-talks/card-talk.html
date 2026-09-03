@@ -6,8 +6,10 @@
 {%- capture _venue -%}{% include papers-talks/md-inline.html text=entry.talk_venue %}{%- endcapture -%}
 {%- capture _date -%}{% include papers-talks/ordinal-date.html date=entry.talk_date %}{%- endcapture -%}
 <div class="card" id="{{ entry.card_id }}">
+<strong class="card-title">{{ _title | strip }}</strong><br>
+{%- if entry.thumbnail %}
 <img class="talk-thumb" src="{{ entry.thumbnail }}" />
-<strong>{{ _title | strip }}</strong><br>
+{%- endif %}
 <span class="talk-venue">{{ _venue | strip }}</span> <span class="talk-date">&middot; {{ _date | strip }}</span><br>
 {%- assign _content_stripped = entry.content | strip -%}
 {%- if _content_stripped != "" %}
