@@ -293,7 +293,7 @@ Depicts what the blockchain validators need to do to verify a keyless TXN submit
 
 <div align="center"><img style="width:65%" src="/pictures/keyless-zk-relation.png" /></div>
 
-For a 100-feet view of it, see [this AIP-61 sub-section](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-61.md#the-keyless-zk-relation-mathcalr).
+For a 100-feet view of it, see [this AIP-61 sub-section](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-061-keyless-accounts.md#the-keyless-zk-relation-mathcalr).
 
 ### Flow: End-to-end keyless transacting 
 
@@ -329,7 +329,7 @@ We depict the flow for a dapp to fetch its user's pepper _obliviously_ from the 
 ## Write-ups
 
 1. I wrote a [high-level overview](https://aptos.dev/en/build/guides/aptos-keyless/how-keyless-works) of how keyless accounts work on the [Aptos](https://twitter.com/aptos) blockchain 
-2. I wrote an [in-depth explanation](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-61.md) of how keyless accounts work (and their many caveats) in the 61st Aptos Improvement Proposal. 
+2. I wrote an [in-depth explanation](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-061-keyless-accounts.md) of how keyless accounts work (and their many caveats) in the 61st Aptos Improvement Proposal. 
 3. _Osikhena Oshomah_ wrote a keyless tutorial for devs called [Aptos Keyless Auth](https://jamiescript.hashnode.dev/aptos-keyless-auth)
 4. Michael Straka wrote [an explanation](https://www.michaelstraka.com/polyprotocols) about some of our string matching circuit code
 
@@ -369,20 +369,20 @@ We depict the flow for a dapp to fetch its user's pepper _obliviously_ from the 
 
 AIP for the whole keyless design:
 
- - [AIP-61: Keyless accounts](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-61.md)
+ - [AIP-61: Keyless accounts](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-061-keyless-accounts.md)
 
 AIPs for auxiliary keyless services:
 
- - [AIP-75: Prover service](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-75.md)
- - [AIP-81: Pepper service](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-81.md)
- - [AIP-67: Native JWK consensus](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-67.md)
+ - [AIP-75: Prover service](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-075-prover-service-for-keyless-accounts.md)
+ - [AIP-81: Pepper service](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-081-pepper-service-for-keyless-accounts.md)
+ - [AIP-67: Native JWK consensus](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-067-native-consensus-for-json-web-key-jwk.md)
 
 AIPs for recent extensions to keyless:
 
- - [AIP-90: Add Apple as a supported OIDC provider](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-90.md)
- - [AIP-96: Federated Keyless](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-96.md)
-    + Adds decentralized support for "federated" OIDC providers like Auth0, which have tenant-specific `iss`'s and JWKs and could not be scalably integrated into our [JWK consensus](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-67.md) mechanism
- - [AIP-108: "Audless" Federated Keyless](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-108.md)
+ - [AIP-90: Add Apple as a supported OIDC provider](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-090-add-apple-as-a-supported-oidc-provider.md)
+ - [AIP-96: Federated Keyless](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-096-federated-keyless-accounts.md)
+    + Adds decentralized support for "federated" OIDC providers like Auth0, which have tenant-specific `iss`'s and JWKs and could not be scalably integrated into our [JWK consensus](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-067-native-consensus-for-json-web-key-jwk.md) mechanism
+ - [AIP-108: "Audless" Federated Keyless](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-108-enable-interoperability-for-federated-keyless.md)
  - Draft [AIP: Oblivious pepper service][oblivious-pepper]
 
 ## Tweets
