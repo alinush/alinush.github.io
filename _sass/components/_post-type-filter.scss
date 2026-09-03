@@ -1,0 +1,51 @@
+// Post-type filter (posts.html: "Filter by post type", above tags.html's
+// own "Filter by tags"). Modeled on _tags.scss's .tag-button pills — same
+// @include clickable() shape, same "selected" mechanism (a persistent
+// .focus class toggled by JS in scripts/post-type-filter.js, not the
+// native :focus pseudo-class — see _pseudo.scss's focus() mixin, which
+// targets .focus for exactly this reason) — but in $blue rather than tags'
+// $main-color-1/$main-color-2 (red/orange), so the two filter groups read
+// as clearly separate systems at a glance despite the shared pill shape.
+.post-type-filter {
+  margin-bottom: map-get($spacers, 3);
+
+  .type-button {
+    @include clickable($blue, rgba($blue, .1), default, default, $text-color-1, $blue, $text-color-1, $blue);
+  }
+
+  // The persistent "this is currently active" state — set directly here
+  // rather than left to the focus() mixin's own darken()/lighten() of the
+  // hover color, so it's the same flat $blue fill regardless of skin,
+  // matching the tint above exactly (just solid instead of 10%-alpha).
+  .type-button.focus {
+    color: $text-color-1;
+    background-color: $blue;
+  }
+}
+
+// Filter-section headings ("Filter by post type" / "Filter by tags"):
+// small and muted like .talk-venue/.article-list__group-header elsewhere,
+// not a full heading style — these are section labels for a control
+// group, not real page content.
+.filter-heading {
+  margin: 0 0 map-get($spacers, 2) 0;
+  font-size: map-get($base, font-size-sm);
+  font-weight: map-get($base, font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: $text-color-l;
+}
+
+// Hides an .item or a .tag-button by post type (scripts/post-type-filter.js:
+// an .item whose type isn't the one currently selected, or a tag whose
+// count for that type is zero). Deliberately its own class rather than
+// reusing .d-none: archieve.js (scripts/archieve.js) independently adds/
+// removes .d-none on the very same .item elements based on the tag filter
+// alone, and would clobber a shared class's state on every tag click. Two
+// separate hiding classes compose for free in CSS — an .item is visible
+// only when neither is present — with no coordination needed between the
+// two scripts beyond post-type-filter.js re-running after every tag click
+// (see its own comment for why).
+.type-hidden {
+  display: none;
+}

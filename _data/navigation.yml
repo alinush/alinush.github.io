@@ -26,10 +26,6 @@ header:
     url: /posts.html
 
   - titles:
-      en      : &EN       Notes
-    url: /notes.html
-
-  - titles:
       en      : &EN       Talks
     url: /talks
   - titles:

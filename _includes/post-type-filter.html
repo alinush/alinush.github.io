@@ -1,0 +1,28 @@
+{%- comment -%}
+  Buttons for filtering /posts by post type (article vs note), styled like
+  tags.html's tag-button pills but in a different color family (blue, not
+  tags' red/orange) so the two filter groups stay visually distinct at a
+  glance. Single-select, exactly like the tag buttons (Show All or exactly
+  one tag): exactly one of Show all posts/Articles/Notes is active at a
+  time. See scripts/post-type-filter.js for the click handling, persistence,
+  and how this composes with the tag filter.
+{%- endcomment -%}
+<div class="post-type-filter js-post-type-filter">
+  <ul class="menu">
+    <li>
+      <button type="button" class="button button--pill type-button type-button--all" data-type="all">
+        Show All
+      </button>
+    </li>
+    <li>
+      <button type="button" class="button button--pill type-button" data-type="article">
+        Article
+      </button>
+    </li>
+    <li>
+      <button type="button" class="button button--pill type-button" data-type="note">
+        Note
+      </button>
+    </li>
+  </ul>
+</div>

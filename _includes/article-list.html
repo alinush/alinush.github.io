@@ -119,7 +119,12 @@
           {%- assign _emoji = '🌲 ' -%}
         {%- endif -%}
       {%- endif -%}
-      <li class="item" itemscope itemtype="http://schema.org/BlogPosting" data-tags="{{ _tags }}">
+      {%- if _article.type == 'note' -%}
+        {%- assign _article_type = 'note' -%}
+      {%- else -%}
+        {%- assign _article_type = 'article' -%}
+      {%- endif -%}
+      <li class="item" itemscope itemtype="http://schema.org/BlogPosting" data-tags="{{ _tags }}" data-type="{{ _article_type }}">
         <div class="item__content">
           {%- if include.show_info -%}
             <span class="item__meta">{{ _article.date | date: __return }}</span>
