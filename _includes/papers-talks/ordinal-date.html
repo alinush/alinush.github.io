@@ -1,0 +1,40 @@
+{%- comment -%}
+  Formats include.date as "Monday, Sept. 3rd, 2026": full weekday name,
+  Chicago-style month abbreviation (Sept. not Sep.; May/June/July never
+  abbreviated), ordinal day, full year. Liquid's date filter has no built-in
+  ordinal-suffix or Chicago-abbreviation support, so both are built by hand
+  here rather than e.g. "%b" (which gives "Sep", not "Sept.").
+  Param: date
+{%- endcomment -%}
+{%- assign _weekday = include.date | date: "%A" -%}
+{%- assign _year = include.date | date: "%Y" -%}
+{%- assign _day = include.date | date: "%-d" | plus: 0 -%}
+{%- assign _month_num = include.date | date: "%-m" | plus: 0 -%}
+{%- case _month_num -%}
+  {%- when 1 -%}{%- assign _month = "Jan." -%}
+  {%- when 2 -%}{%- assign _month = "Feb." -%}
+  {%- when 3 -%}{%- assign _month = "Mar." -%}
+  {%- when 4 -%}{%- assign _month = "Apr." -%}
+  {%- when 5 -%}{%- assign _month = "May" -%}
+  {%- when 6 -%}{%- assign _month = "June" -%}
+  {%- when 7 -%}{%- assign _month = "July" -%}
+  {%- when 8 -%}{%- assign _month = "Aug." -%}
+  {%- when 9 -%}{%- assign _month = "Sept." -%}
+  {%- when 10 -%}{%- assign _month = "Oct." -%}
+  {%- when 11 -%}{%- assign _month = "Nov." -%}
+  {%- when 12 -%}{%- assign _month = "Dec." -%}
+{%- endcase -%}
+{%- assign _day_mod_100 = _day | modulo: 100 -%}
+{%- assign _day_mod_10 = _day | modulo: 10 -%}
+{%- if _day_mod_100 >= 11 and _day_mod_100 <= 13 -%}
+  {%- assign _suffix = "th" -%}
+{%- elsif _day_mod_10 == 1 -%}
+  {%- assign _suffix = "st" -%}
+{%- elsif _day_mod_10 == 2 -%}
+  {%- assign _suffix = "nd" -%}
+{%- elsif _day_mod_10 == 3 -%}
+  {%- assign _suffix = "rd" -%}
+{%- else -%}
+  {%- assign _suffix = "th" -%}
+{%- endif -%}
+{{- _weekday -}}, {{ _month }} {{ _day }}{{ _suffix }}, {{ _year -}}

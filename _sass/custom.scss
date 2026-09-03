@@ -194,6 +194,19 @@
   color: $text-color-l;
 }
 
+// The talk's date (card-talk.html: "Monday, Sept. 3rd, 2026", right next to
+// .talk-venue on the same line). Deliberately NOT font-family-code like the
+// venue tag: the venue is a short, code-like token ("@SBC'24") that reads
+// well as a monospace "chip", but a full date phrase in monospace looks
+// heavy and draws more attention than a secondary detail should. Plain
+// body font at normal weight (vs. the venue's bumped 500) keeps it visually
+// second to the venue rather than competing with it, while matching color
+// and size keeps them reading as one metadata line.
+.talk-date {
+  font-size: map-get($base, font-size-sm);
+  color: $text-color-l;
+}
+
 // Paper link badges (papers.md): a rounded box with an icon, modeled on
 // Apollo's (a Zola theme) GitHub/Demo buttons — see the reference
 // screenshot in the conversation that requested this. Each category gets

@@ -1,7 +1,7 @@
 ---
 type: talk-only
 card_id: fantastic-trees
-talk_date: 2022-11-01
+talk_date: 2022-03-24
 
 title: >-
   Fantastic trees and how to hash them

@@ -1,7 +1,7 @@
 ---
 type: talk-only
 card_id: robertofest
-talk_date: 2025-09-01
+talk_date: 2025-10-24
 
 title: >-
   How I Learned to Stop Hashing and Love the Accumulator (from Roberto)
