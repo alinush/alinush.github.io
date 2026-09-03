@@ -8,6 +8,8 @@ key: page-projects
 permalink: projects
 ---
 
+Projects throughout the years that are either: not academic in nature, not published, or go beyond a single [paper](/papers).
+
 <div class="projects-columns">
 {%- assign entries = site.projects | sort: "date" | reverse -%}
 {%- for entry in entries -%}

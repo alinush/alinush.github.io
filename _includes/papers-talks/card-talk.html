@@ -10,7 +10,7 @@
 {%- if entry.thumbnail %}
 <img class="talk-thumb" src="{{ entry.thumbnail }}" />
 {%- endif %}
-<span class="talk-venue">{{ _venue | strip }}</span> <span class="talk-date">&middot; {{ _date | strip }}</span><br>
+<span class="talk-meta"><span class="talk-venue">{{ _venue | strip }}</span> <span class="talk-date">&middot; {{ _date | strip }}</span></span><br>
 {%- assign _content_stripped = entry.content | strip -%}
 {%- if _content_stripped != "" %}
 {%- capture _description -%}{{ _content_stripped | markdownify }}{%- endcapture -%}
@@ -34,6 +34,16 @@
   {%- endif -%}
   {%- if _show -%}
 {%- include papers-talks/link-badge.html kind="slides" url=item.url title=item.title -%}
+{% endif -%}
+{%- endfor -%}
+{%- for item in entry.blogpost -%}
+  {%- assign _show = true -%}
+  {%- if entry.type == "paper-and-talk" -%}
+    {%- assign _show = false -%}
+    {%- if item.show_on contains "talks" -%}{%- assign _show = true -%}{%- endif -%}
+  {%- endif -%}
+  {%- if _show -%}
+{%- include papers-talks/link-badge.html kind="blogpost" url=item.url title=item.title -%}
 {% endif -%}
 {%- endfor -%}
 {%- if entry.type == "paper-and-talk" -%}

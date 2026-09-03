@@ -6,7 +6,7 @@ talk_date: 2024-04-11
 title: >-
   Aptos keyless accounts
 talk_venue: "@zkSummit11"
-thumbnail: https://i.ytimg.com/vi/sKqeGR4BoI0/hqdefault.jpg
+thumbnail: /pictures/talks/zksummit11.png
 
 video:
   - url: https://www.youtube.com/watch?v=sKqeGR4BoI0

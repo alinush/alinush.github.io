@@ -211,17 +211,30 @@
   margin: (map-get($spacers, 2) * 1.5) (map-get($spacers, 3) * -1) (map-get($spacers, 2) * 1.5) (map-get($spacers, 3) * -1);
 }
 
+// Wraps .talk-venue + .talk-date (card-talk.html) as one unit, following a
+// talk's title. inline-block, not the default inline: a <span>'s vertical
+// margins are otherwise ignored in normal flow, and the two below are the
+// whole point — tighter above (closer to the title), looser below (before
+// the badges/description). This margin used to live directly on
+// .talk-venue, but a long venue name that itself wraps to 2+ lines made
+// that break: an inline-block is one atomic box for line-wrapping, so
+// .talk-date (right after it in the markup) got pushed to start a whole
+// new line below the *entire* venue box instead of continuing on the
+// venue's own last wrapped line — reading as an orphaned line starting
+// with "· ". Wrapping both in one inline-block, with each of them back to
+// plain (default) inline display, lets them wrap together as ordinary
+// text flow while still getting the margin as a single unit.
+.talk-meta {
+  display: inline-block;
+  margin-top: map-get($spacers, 1) * -1;
+  margin-bottom: map-get($spacers, 2);
+}
+
 // Venue tag(s) following a talk's title (talks.md), e.g. "@SBC'24" or, for a
 // talk given at multiple venues, "@SCN'20 @zkStudyClub". font-family-code is
 // the theme's own monospace stack (already used for e.g. article-list.html's
 // date), and $text-color-l is the same muted grey the theme uses for h6.
 .talk-venue {
-  // inline-block, not the default inline: a <span>'s vertical margins are
-  // otherwise ignored in normal flow, and the two below are the whole point
-  // — tighter above (closer to the title), looser below (before the badges).
-  display: inline-block;
-  margin-top: map-get($spacers, 1) * -1;
-  margin-bottom: map-get($spacers, 2);
   font-family: map-get($base, font-family-code);
   // 400 (font-weight, normal) bumped 30% — still well short of the title's
   // bold (700), just a bit more present than plain body text.
