@@ -425,16 +425,18 @@
 }
 
 .home-highlights__col {
-  // Same box language as the papers/talks/projects .card (border-radius +
-  // box-shadow, no explicit background), for visual consistency with the
-  // rest of the site rather than inventing a new "boxed section" style.
   // Vertical padding a step smaller than horizontal: headings carry their
   // own line-height "leading" above the glyphs on top of the padding, so
   // equal padding values on all sides still read as visibly more space
   // above/below than left/right.
   padding: map-get($spacers, 2) map-get($spacers, 3);
   border-radius: map-get($base, border-radius);
-  @include box-shadow();
+  // Plain neutral default for Quick overview/Updates — they're meta/
+  // overview sections, not their own content type, so they don't get one
+  // of the accent colors below. The .home-highlights__col--* rules further
+  // down override this for Posts/Papers/Talks/Projects; same specificity,
+  // but they're later in the source, so they win.
+  border: 2px solid $border-color;
 
   // Grid's default align-items: stretch (kept deliberately — Quick
   // overview and Updates are meant to read as a matched pair) makes both
@@ -483,6 +485,54 @@
 .home-highlights__anchor-bottom {
   margin-top: auto;
   margin-bottom: 0;
+}
+
+// Ties each highlight column back to the accent color its own full page
+// already uses (.papers-columns/.talks-columns/.projects-columns above) —
+// a thin top border rather than a tinted background/heading, to keep it
+// subtle next to the plain white box treatment everywhere else on this
+// page. Posts has no established site-wide accent color of its own, so it
+// borrows $main-color-2 — the skin's actual second brand color (orange),
+// not an invented one — keeping it distinct from papers/talks/projects.
+// Full border, not just a top stripe — a nod at the bordered-callout boxes
+// used in posts ({: .info}/.success/etc in _includes/markdown-enhancements)
+// without borrowing their tinted background fill, which carries a semantic
+// "important note" meaning that would be a mismatch for plain link cards.
+.home-highlights__col--overview {
+  border: none;
+}
+// Titles are tinted at the same mix($accent, $text-color, 75%) ratio as
+// card-paper.html/card-talk.html/card-project.html's .card-title elsewhere
+// on the site — the full accent color reads as too bright/saturated for
+// text at this size, mixing in the normal text color keeps it legible
+// while still clearly tying the title to its box's own border color.
+.home-highlights__col--updates {
+  $c: #d33682; // Solarized pink
+  border: 2px solid $c;
+  // Unlike Posts/Papers/Talks/Projects, "Updates" isn't a link (it has no
+  // single "all updates" page to point to) — no <a> inside its <h2> for
+  // an "h2 a" selector to match, so the color goes on the h2 text itself.
+  h2 { color: mix($c, $text-color, 75%); }
+}
+.home-highlights__col--posts {
+  $c: $main-color-2;
+  border: 2px solid $c;
+  h2 a { @include link-colors(mix($c, $text-color, 75%), $text-color-d); }
+}
+.home-highlights__col--papers {
+  $c: $main-color-1;
+  border: 2px solid $c;
+  h2 a { @include link-colors(mix($c, $text-color, 75%), $text-color-d); }
+}
+.home-highlights__col--talks {
+  $c: #2563eb; // same blue as .talks-columns/.link-badge--talk
+  border: 2px solid $c;
+  h2 a { @include link-colors(mix($c, $text-color, 75%), $text-color-d); }
+}
+.home-highlights__col--projects {
+  $c: $green;
+  border: 2px solid $c;
+  h2 a { @include link-colors(mix($c, $text-color, 75%), $text-color-d); }
 }
 
 // All of $base's font-size-* tokens are rem (root-relative), so a plain

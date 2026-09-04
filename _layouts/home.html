@@ -8,14 +8,14 @@ show_title: false
 
   <div class="home-highlights__row home-highlights__row--top">
 
-    <section class="home-highlights__col">
-      <p>Hi 👋👋, I'm a cryptography researcher who enjoys thinking out loud on this website.</p> 
+    <section class="home-highlights__col home-highlights__col--overview">
+      <p>Hi 👋👋, I'm a cryptography researcher who enjoys thinking out loud on this website.</p>
       <p>Some quick resources, if you're looking
       for something specific:</p>
       <ul>
         <li><a href="/cryptomat">The cryptomat</a>: a perpetual effort
         summarizing concepts in cryptography</li>
-        <li><a href="/history">All my posts</a>, with <em>tl;dr</em>'s, ordered chronologically</li>
+        <li><a href="/history">All my blog posts</a>, with <em>tl;dr.</em>'s, ordered chronologically</li>
         <li><a href="/files/cv.pdf">My curriculum vitae</a></li>
       </ul>
       <!--<p class="home-highlights__anchor-bottom">-->
@@ -23,8 +23,8 @@ show_title: false
       <!--</p>-->
     </section>
 
-    <section class="home-highlights__col">
-      <h2>🆕 Updates</h2>
+    <section class="home-highlights__col home-highlights__col--updates">
+      <h2>What's new? 🆕</h2>
       {%- assign _updates = site.posts | concat: site.papers | concat: site.projects | concat: site.talks | sort: "date" | reverse | slice: 0, 5 -%}
       {%- for entry in _updates -%}
         {%- case entry.collection -%}
@@ -48,8 +48,8 @@ show_title: false
 
   <div class="home-highlights__row home-highlights__row--bottom">
 
-    <section class="home-highlights__col">
-      <h2>📝 <a href="/history">Posts</a></h2>
+    <section class="home-highlights__col home-highlights__col--posts">
+      <h2><a href="/history">Posts</a> 📝</h2>
       {%- assign _items = site.posts | where_exp: "e", "e.highlighted == true" | sort: "date" | reverse | slice: 0, 5 -%}
       {%- for entry in _items -%}
         {%- include papers-talks/teaser.html title=entry.title url=entry.url date=entry.date -%}
@@ -57,8 +57,8 @@ show_title: false
       <a class="home-highlights__see-all" href="/history">All posts &rarr;</a>
     </section>
 
-    <section class="home-highlights__col">
-      <h2>🎓 <a href="/papers">Papers</a></h2>
+    <section class="home-highlights__col home-highlights__col--papers">
+      <h2><a href="/papers">Papers</a> 🎓</h2>
       {%- comment -%}
         A _papers/ entry with type: paper-and-talk feeds both this column
         and the Talks one below, so a plain `highlighted: true` highlights
@@ -75,8 +75,8 @@ show_title: false
       <a class="home-highlights__see-all" href="/papers">All papers &rarr;</a>
     </section>
 
-    <section class="home-highlights__col">
-      <h2>👨🏻‍🏫 <a href="/talks">Talks</a></h2>
+    <section class="home-highlights__col home-highlights__col--talks">
+      <h2><a href="/talks">Talks</a> 👨🏻‍🏫</h2>
       {%- assign _shared = site.papers | where_exp: "e", "e.type == 'paper-and-talk'" -%}
       {%- assign _all_talks = site.talks | concat: _shared -%}
       {%- assign _items = _all_talks | where_exp: "e", "e.highlighted == true or e.highlighted contains 'talk'" | sort: "talk_date" | reverse | slice: 0, 5 -%}
@@ -88,8 +88,8 @@ show_title: false
       <a class="home-highlights__see-all" href="/talks">All talks &rarr;</a>
     </section>
 
-    <section class="home-highlights__col">
-      <h2>🛠️ <a href="/projects">Projects</a></h2>
+    <section class="home-highlights__col home-highlights__col--projects">
+      <h2><a href="/projects">Projects</a> 🛠️</h2>
       {%- assign _items = site.projects | where_exp: "e", "e.highlighted == true" | sort: "date" | reverse | slice: 0, 5 -%}
       {%- for entry in _items -%}
         {%- assign _url = "/projects#" | append: entry.card_id -%}
