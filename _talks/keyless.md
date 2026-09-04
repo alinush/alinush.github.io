@@ -24,4 +24,7 @@ slides:
   - url: https://docs.google.com/presentation/d/1XpkB0t-Ns4SuCosyin83ED4RLoSvFMGjH5746DCshow/edit?slide=id.gc98149ca20_0_437
     title: "Expander Bootcamp"
 
+project:
+  - url: /projects#keyless
+
 ---

@@ -41,4 +41,7 @@ blogpost:
   - url: https://medium.com/aptoslabs/roll-with-move-secure-instant-randomness-on-aptos-c0e219df3fb1
     title: "Blog"
 
+project:
+  - url: /projects#aptos-randomness
+
 ---

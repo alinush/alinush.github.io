@@ -383,6 +383,9 @@
 .link-badge--twitter {
   @include link-badge-tint($twitter-color); // the classic Twitter-bird blue, already defined by the skin (used elsewhere for share buttons)
 }
+.link-badge--project {
+  @include link-badge-tint($green); // same green as .projects-columns/its cards' accent color
+}
 
 // Home page (_layouts/home.html): two rows — a 2-column top row ("Quick
 // overview" / "Updates") and a 4-column bottom row (one highlight column
@@ -498,7 +501,8 @@
 // used in posts ({: .info}/.success/etc in _includes/markdown-enhancements)
 // without borrowing their tinted background fill, which carries a semantic
 // "important note" meaning that would be a mismatch for plain link cards.
-.home-highlights__col--overview {
+.home-highlights__col--overview,
+.home-highlights__col--updates {
   border: none;
 }
 // Titles are tinted at the same mix($accent, $text-color, 75%) ratio as
@@ -506,33 +510,37 @@
 // on the site — the full accent color reads as too bright/saturated for
 // text at this size, mixing in the normal text color keeps it legible
 // while still clearly tying the title to its box's own border color.
-.home-highlights__col--updates {
-  $c: #d33682; // Solarized pink
-  border: 2px solid $c;
-  // Unlike Posts/Papers/Talks/Projects, "Updates" isn't a link (it has no
-  // single "all updates" page to point to) — no <a> inside its <h2> for
-  // an "h2 a" selector to match, so the color goes on the h2 text itself.
-  h2 { color: mix($c, $text-color, 75%); }
-}
 .home-highlights__col--posts {
   $c: $main-color-2;
   border: 2px solid $c;
-  h2 a { @include link-colors(mix($c, $text-color, 75%), $text-color-d); }
+  // Hover color explicitly equal to the base color — link-colors would
+  // otherwise darken it to $text-color-d (black) on hover, undoing the
+  // whole point of tinting each title to its box's own accent.
+  h2 a { @include link-colors(mix($c, $text-color, 75%), mix($c, $text-color, 75%)); }
 }
 .home-highlights__col--papers {
   $c: $main-color-1;
   border: 2px solid $c;
-  h2 a { @include link-colors(mix($c, $text-color, 75%), $text-color-d); }
+  // Hover color explicitly equal to the base color — link-colors would
+  // otherwise darken it to $text-color-d (black) on hover, undoing the
+  // whole point of tinting each title to its box's own accent.
+  h2 a { @include link-colors(mix($c, $text-color, 75%), mix($c, $text-color, 75%)); }
 }
 .home-highlights__col--talks {
   $c: #2563eb; // same blue as .talks-columns/.link-badge--talk
   border: 2px solid $c;
-  h2 a { @include link-colors(mix($c, $text-color, 75%), $text-color-d); }
+  // Hover color explicitly equal to the base color — link-colors would
+  // otherwise darken it to $text-color-d (black) on hover, undoing the
+  // whole point of tinting each title to its box's own accent.
+  h2 a { @include link-colors(mix($c, $text-color, 75%), mix($c, $text-color, 75%)); }
 }
 .home-highlights__col--projects {
   $c: $green;
   border: 2px solid $c;
-  h2 a { @include link-colors(mix($c, $text-color, 75%), $text-color-d); }
+  // Hover color explicitly equal to the base color — link-colors would
+  // otherwise darken it to $text-color-d (black) on hover, undoing the
+  // whole point of tinting each title to its box's own accent.
+  h2 a { @include link-colors(mix($c, $text-color, 75%), mix($c, $text-color, 75%)); }
 }
 
 // All of $base's font-size-* tokens are rem (root-relative), so a plain
@@ -540,9 +548,7 @@
 // be scaled explicitly here instead. Scoped to both rows' .home-highlights__col
 // (Updates gets the same treatment as the 4 bottom-row boxes), but not Quick
 // overview specifically — it has no h2/.teaser elements of its own, so these
-// selectors simply don't match anything inside it. .home-highlights__see-all
-// is a sibling of .teaser inside .home-highlights__col, not a descendant of
-// it, so it's untouched without needing an explicit override.
+// selectors simply don't match anything inside it.
 //
 // .teaser's margin-bottom (spacing between items) is an absolute spacer
 // value, unrelated to font-size — left alone, shrinking the text but not
@@ -565,7 +571,7 @@ $bottom-row-scale: .85;
     // Setting them here first, then letting .teaser-title/.teaser-meta/
     // .teaser-kind's own explicit font-sizes below override per-element,
     // is what actually shrinks the gap between wrapped title lines.
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.4;
   }
   .teaser-meta {
@@ -587,19 +593,6 @@ $bottom-row-scale: .85;
 .home-highlights__row--top .teaser-title,
 .home-highlights__row--bottom .teaser-title {
   @include link-colors(mix($text-color-l, $text-color, 50%), $text-color);
-}
-
-.home-highlights__see-all {
-  display: inline-block;
-  // Pins it to the bottom of its box (.home-highlights__col is a flex
-  // column) rather than following immediately after the last teaser, so
-  // it lines up across the 4 bottom-row boxes even when one has fewer
-  // items than its neighbors — the leftover space goes between the
-  // content and this link instead of below the link.
-  margin-top: auto;
-  padding-top: map-get($spacers, 2);
-  font-size: map-get($base, font-size-sm);
-  @include link-colors($text-color-l, $text-color);
 }
 
 // Compact list entry (teaser.html) for the home page's highlight columns
@@ -626,6 +619,28 @@ $bottom-row-scale: .85;
   font-weight: map-get($base, font-weight-bold);
   text-transform: uppercase;
   letter-spacing: .04em;
+}
+
+// Tint each "Updates" entry's kind badge to match its own highlight
+// column's border color (.home-highlights__col--posts/papers/talks/
+// projects above) — a light background + a text color mixed with
+// $text-color rather than the raw accent, same reasoning as the box
+// titles: full-strength accent is too bright/low-contrast at this size.
+@mixin teaser-kind-tint($color) {
+  background-color: rgba($color, .15);
+  color: mix($color, $text-color, 65%);
+}
+.teaser-kind--post {
+  @include teaser-kind-tint($main-color-2);
+}
+.teaser-kind--paper {
+  @include teaser-kind-tint($main-color-1);
+}
+.teaser-kind--talk {
+  @include teaser-kind-tint(#2563eb); // same blue as .talks-columns/.link-badge--talk
+}
+.teaser-kind--project {
+  @include teaser-kind-tint($green);
 }
 
 .teaser-title {

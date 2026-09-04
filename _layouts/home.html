@@ -19,7 +19,7 @@ show_title: false
         <li><a href="/files/cv.pdf">My curriculum vitae</a></li>
       </ul>
       <!--<p class="home-highlights__anchor-bottom">-->
-      <p>See below for highlighted <a href="/posts.html">posts</a>, <a href="/papers">papers</a>, <a href="/talks">talks</a> and <a href="/projects">projects</a> 👇</p>
+      <p>See below for some highlighted work 👇</p>
       <!--</p>-->
     </section>
 
@@ -54,7 +54,6 @@ show_title: false
       {%- for entry in _items -%}
         {%- include papers-talks/teaser.html title=entry.title url=entry.url date=entry.date -%}
       {%- endfor -%}
-      <a class="home-highlights__see-all" href="/history">All posts &rarr;</a>
     </section>
 
     <section class="home-highlights__col home-highlights__col--papers">
@@ -72,7 +71,6 @@ show_title: false
         {%- assign _url = "/papers#" | append: entry.card_id -%}
         {%- include papers-talks/teaser.html title=entry.title url=_url date=entry.date subtitle=entry.paper_venue -%}
       {%- endfor -%}
-      <a class="home-highlights__see-all" href="/papers">All papers &rarr;</a>
     </section>
 
     <section class="home-highlights__col home-highlights__col--talks">
@@ -85,7 +83,6 @@ show_title: false
         {%- assign _title = entry.talk_title | default: entry.title -%}
         {%- include papers-talks/teaser.html title=_title url=_url date=entry.talk_date subtitle=entry.talk_venue -%}
       {%- endfor -%}
-      <a class="home-highlights__see-all" href="/talks">All talks &rarr;</a>
     </section>
 
     <section class="home-highlights__col home-highlights__col--projects">
@@ -95,7 +92,6 @@ show_title: false
         {%- assign _url = "/projects#" | append: entry.card_id -%}
         {%- include papers-talks/teaser.html title=entry.title url=_url date=entry.date -%}
       {%- endfor -%}
-      <a class="home-highlights__see-all" href="/projects">All projects &rarr;</a>
     </section>
 
   </div>

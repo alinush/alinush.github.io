@@ -7,7 +7,9 @@ title: >-
 thumbnail: /pictures/projects/aptos-confidential-assets.png
 
 video:
+  - url: /talks#confidential-assets
   - url: https://www.youtube.com/watch?v=Oqdqj2wnmv4
+    title: "Talk"
 
 slides:
   - url: https://docs.google.com/presentation/d/14WMFACzA17sMnC0kAk_05_ORHEBz2DKQbZf-Fnwd-IU

@@ -17,4 +17,7 @@ slides:
   - url: https://docs.google.com/presentation/d/14WMFACzA17sMnC0kAk_05_ORHEBz2DKQbZf-Fnwd-IU/edit?usp=sharing
     title: "Slides"
 
+project:
+  - url: /projects#confidential-assets
+
 ---

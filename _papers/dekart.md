@@ -28,4 +28,7 @@ blogpost:
   - url: /dekart
     title: "Blog"
 
+project:
+  - url: /projects#chunky-pvss
+
 ---

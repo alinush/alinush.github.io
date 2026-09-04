@@ -43,4 +43,7 @@
 {%- for item in entry.link %}
 {%- include papers-talks/link-badge.html kind="url" url=item.url title=item.title -%}
 {% endfor -%}
+{%- for item in entry.project %}
+{%- include papers-talks/link-badge.html kind="project" url=item.url title=item.title -%}
+{% endfor -%}
 </div>

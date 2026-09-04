@@ -16,7 +16,7 @@
 {%- capture _title -%}{% include papers-talks/md-inline.html text=include.title %}{%- endcapture -%}
 <div class="teaser">
   {%- if include.kind %}
-  <span class="teaser-kind">{{ include.kind }}</span>
+  <span class="teaser-kind teaser-kind--{{ include.kind | downcase }}">{{ include.kind }}</span>
   {%- endif %}
   <a class="teaser-title" href="{{ include.url }}">{{ _title | strip }}</a><br>
   {%- assign _meta = include.date | date: "%b %-d, %Y" -%}

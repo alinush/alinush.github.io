@@ -50,4 +50,7 @@
 {%- assign _papers_url = "/papers#" | append: entry.card_id -%}
 {%- include papers-talks/link-badge.html kind="pdf" url=_papers_url -%}
 {% endif -%}
+{%- for item in entry.project %}
+{%- include papers-talks/link-badge.html kind="project" url=item.url title=item.title -%}
+{% endfor -%}
 </div>
