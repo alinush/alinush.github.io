@@ -384,4 +384,208 @@
   @include link-badge-tint($twitter-color); // the classic Twitter-bird blue, already defined by the skin (used elsewhere for share buttons)
 }
 
+// Home page (_layouts/home.html): two rows — a 2-column top row ("Quick
+// overview" / "Updates") and a 4-column bottom row (one highlight column
+// each for posts/papers/talks/projects). Same breakpoint scale as
+// cards-grid() ($responsive: sm 0 / md 500px / lg 1024px,
+// _sass/common/_variables.scss) and the same gap convention, but a
+// separate mixin rather than reusing cards-grid() itself: these rows hold
+// teaser lists and static content, not .card elements, so none of
+// cards-grid()'s card-specific rules (highlight ring, hover glow,
+// scroll-margin, .card-title tinting) apply here.
+@mixin home-highlights-row($columns-at-lg) {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: map-get($spacers, 3) * 2 * .7 * .9 * .9;
+  @include media-breakpoint-up(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @include media-breakpoint-up(lg) {
+    grid-template-columns: repeat($columns-at-lg, 1fr);
+  }
+}
+
+.home-highlights {
+  // show_title: false (home.html) means there's no page title heading
+  // above this to naturally separate it from the nav bar the way every
+  // other page gets for free — add that breathing room back here instead.
+  margin-top: map-get($spacers, 4);
+
+  & > .home-highlights__row + .home-highlights__row {
+    margin-top: map-get($spacers, 3) * 2 * .7 * .9 * .9;
+  }
+}
+
+.home-highlights__row--top {
+  @include home-highlights-row(2);
+}
+
+.home-highlights__row--bottom {
+  @include home-highlights-row(4);
+}
+
+.home-highlights__col {
+  // Same box language as the papers/talks/projects .card (border-radius +
+  // box-shadow, no explicit background), for visual consistency with the
+  // rest of the site rather than inventing a new "boxed section" style.
+  // Vertical padding a step smaller than horizontal: headings carry their
+  // own line-height "leading" above the glyphs on top of the padding, so
+  // equal padding values on all sides still read as visibly more space
+  // above/below than left/right.
+  padding: map-get($spacers, 2) map-get($spacers, 3);
+  border-radius: map-get($base, border-radius);
+  @include box-shadow();
+
+  // Grid's default align-items: stretch (kept deliberately — Quick
+  // overview and Updates are meant to read as a matched pair) makes both
+  // top-row boxes the height of the taller one (Updates, with up to 8
+  // items). flex-direction: column here + margin-top: auto on
+  // .home-highlights__anchor-bottom (the "Highlighted ... below" line in
+  // Quick overview) pins that line to the box's own bottom edge, so the
+  // leftover height reads as a deliberate top/bottom split instead of a
+  // dead gap in the middle.
+  display: flex;
+  flex-direction: column;
+
+  h2 {
+    margin-top: 0;
+    font-size: map-get($base, font-size-lg);
+
+    // Black, like a normal heading — not the site's default red link color.
+    a {
+      @include link-colors($text-color-d);
+    }
+  }
+
+  // Quick overview has no <h2> (redundant next to the page's own title),
+  // so its first child is a <p> instead. A heading's larger font-size
+  // carries enough of its own line-height "leading" above the glyphs to
+  // read as evenly-spaced even with the reduced padding-top above — body
+  // text doesn't have nearly as much, so without this the paragraph reads
+  // as flush against the top of its box. Restore roughly what padding-top
+  // lost (spacer-3 minus spacer-2) as margin instead, so it looks the
+  // same as a heading-first box.
+  & > p:first-child {
+    margin-top: map-get($spacers, 2);
+  }
+
+  // _reset.scss zeroes out ul/ol margin+padding globally; the theme only
+  // restores it scoped to .article__content ul/ol (_article-content.scss),
+  // which this hand-written home-page markup isn't inside — without this,
+  // the bullet marker sits flush against the box's left edge and wrapped
+  // lines snap back to it too, instead of hanging-indenting under the
+  // first line's text like Quick overview's list needs.
+  ul, ol {
+    margin-left: map-get($spacers, 4);
+  }
+}
+
+.home-highlights__anchor-bottom {
+  margin-top: auto;
+  margin-bottom: 0;
+}
+
+// All of $base's font-size-* tokens are rem (root-relative), so a plain
+// font-size: 85% on the container wouldn't touch any of them — each has to
+// be scaled explicitly here instead. Scoped to both rows' .home-highlights__col
+// (Updates gets the same treatment as the 4 bottom-row boxes), but not Quick
+// overview specifically — it has no h2/.teaser elements of its own, so these
+// selectors simply don't match anything inside it. .home-highlights__see-all
+// is a sibling of .teaser inside .home-highlights__col, not a descendant of
+// it, so it's untouched without needing an explicit override.
+//
+// .teaser's margin-bottom (spacing between items) is an absolute spacer
+// value, unrelated to font-size — left alone, shrinking the text but not
+// this made the gaps between items look oversized/disproportionate
+// relative to the now-smaller text. Scaling it down by the same .85
+// factor keeps the vertical rhythm matched to the new text size.
+$bottom-row-scale: .85;
+.home-highlights__row--top .home-highlights__col,
+.home-highlights__row--bottom .home-highlights__col {
+  h2 {
+    font-size: map-get($base, font-size-lg) * $bottom-row-scale;
+  }
+  .teaser {
+    margin-bottom: map-get($spacers, 1) * 1.25 * 1.25 * 1.15 * 1.15;
+    // The font-size/line-height that actually governs a wrapped line's
+    // height is whatever's set on the BLOCK container (the "strut"), not
+    // just on the inline content inside it — setting these only on
+    // .teaser-title below did nothing, because this div's own unscaled
+    // 1rem/1.6 was still what every line box measured itself against.
+    // Setting them here first, then letting .teaser-title/.teaser-meta/
+    // .teaser-kind's own explicit font-sizes below override per-element,
+    // is what actually shrinks the gap between wrapped title lines.
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  .teaser-meta {
+    font-size: map-get($base, font-size-sm) * $bottom-row-scale;
+  }
+  .teaser-kind {
+    font-size: map-get($base, font-size-xs) * $bottom-row-scale;
+  }
+}
+
+// Grey (matching the darker-than-"see all" treatment used for the section
+// titles above) instead of the site's default red link color — scoped to
+// just the 4 bottom-row boxes, Updates keeps its red teaser titles.
+// $text-color-d (#000) and even $text-color (#222, bold) both read as
+// straight black at a glance — splitting the difference between
+// $text-color-l (#888) and $text-color is the actual "slightly darker
+// grey" that was wanted, with $text-color itself saved for hover. Now
+// shared by Updates too, matching the 4 bottom-row boxes.
+.home-highlights__row--top .teaser-title,
+.home-highlights__row--bottom .teaser-title {
+  @include link-colors(mix($text-color-l, $text-color, 50%), $text-color);
+}
+
+.home-highlights__see-all {
+  display: inline-block;
+  // Pins it to the bottom of its box (.home-highlights__col is a flex
+  // column) rather than following immediately after the last teaser, so
+  // it lines up across the 4 bottom-row boxes even when one has fewer
+  // items than its neighbors — the leftover space goes between the
+  // content and this link instead of below the link.
+  margin-top: auto;
+  padding-top: map-get($spacers, 2);
+  font-size: map-get($base, font-size-sm);
+  @include link-colors($text-color-l, $text-color);
+}
+
+// Compact list entry (teaser.html) for the home page's highlight columns
+// and Updates feed — deliberately much lighter than a full
+// card-paper.html/card-talk.html/card-project.html card (no thumbnail, no
+// badges): 4 columns of those side by side would make the home page very
+// heavy, and a home page is a poor place for that much per-item detail
+// anyway.
+.teaser {
+  margin-bottom: map-get($spacers, 3);
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.teaser-kind {
+  display: inline-block;
+  margin-right: map-get($spacers, 1);
+  padding: 0 map-get($spacers, 1);
+  border-radius: map-get($base, border-radius-sm);
+  background-color: $main-color-3;
+  color: $text-color-3;
+  font-size: map-get($base, font-size-xs);
+  font-weight: map-get($base, font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.teaser-title {
+  font-weight: map-get($base, font-weight-bold);
+}
+
+.teaser-meta {
+  display: block;
+  font-size: map-get($base, font-size-sm);
+  color: $text-color-l;
+}
+
 /* end custom scss snippet */

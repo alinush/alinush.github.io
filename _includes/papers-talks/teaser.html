@@ -1,0 +1,29 @@
+{%- comment -%}
+  Compact teaser for the home page's highlight columns + Updates feed —
+  deliberately NOT the full card-paper.html/card-talk.html/card-project.html
+  treatment (those are dense: thumbnails, several badges each), since 4
+  columns of those side by side would make the home page very heavy.
+  Params:
+    title    - required
+    url      - required
+    date     - a Date/Time value (e.g. entry.date/entry.talk_date)
+    subtitle - optional secondary text (e.g. paper_venue/talk_venue)
+    kind     - optional small label (e.g. "Paper") — only needed where
+               item types are interleaved and otherwise ambiguous, i.e.
+               the Updates feed; the 4 single-type highlight columns don't
+               need it.
+{%- endcomment -%}
+{%- capture _title -%}{% include papers-talks/md-inline.html text=include.title %}{%- endcapture -%}
+<div class="teaser">
+  {%- if include.kind %}
+  <span class="teaser-kind">{{ include.kind }}</span>
+  {%- endif %}
+  <a class="teaser-title" href="{{ include.url }}">{{ _title | strip }}</a><br>
+  {%- assign _meta = include.date | date: "%b %-d, %Y" -%}
+  {%- if include.subtitle -%}
+    {%- capture _subtitle -%}{% include papers-talks/md-inline.html text=include.subtitle %}{%- endcapture -%}
+    {%- assign _subtitle = _subtitle | strip -%}
+    {%- assign _meta = _meta | append: " &middot; " | append: _subtitle -%}
+  {%- endif -%}
+  <span class="teaser-meta">{{ _meta }}</span>
+</div>

@@ -8,6 +8,8 @@ article_header:
   type: cover
   image:
     src: /pictures/feynman.jpeg
+icon: ⭐️
+highlighted: true
 #date: 2020-11-05 20:45:59
 #published: false
 #sidebar:

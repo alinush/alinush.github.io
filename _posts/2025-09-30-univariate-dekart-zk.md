@@ -6,6 +6,7 @@ tags:
  - zero-knowledge proofs (ZKPs)
  - KZG
 title: "DeKART: ZK range proofs from univariate polynomials"
+icon: ⭐️
 #date: 2020-11-05 20:45:59
 permalink: dekart
 #published: false

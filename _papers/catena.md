@@ -2,6 +2,7 @@
 type: paper-and-talk
 card_id: catena
 date: 2017-05-01
+highlighted: [talk]
 talk_date: 2018-02-28
 
 title: >-

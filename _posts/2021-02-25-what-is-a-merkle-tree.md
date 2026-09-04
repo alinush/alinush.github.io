@@ -9,6 +9,7 @@ permalink: merkle
 sidebar:
     nav: cryptomat
 author: Alin Tomescu
+icon: ⭐️
 ---
 
 {: .info}

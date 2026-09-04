@@ -10,6 +10,7 @@ title: The Spartan zkSNARK framework
 permalink: spartan
 sidebar:
     nav: cryptomat
+icon: ⭐️
 #article_header:
 #  type: cover
 #  image:

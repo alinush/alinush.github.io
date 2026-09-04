@@ -1,5 +1,5 @@
 ---
-card_id: aptos-confidential-assets
+card_id: confidential-assets
 date: 2026-03-24
 
 title: >-

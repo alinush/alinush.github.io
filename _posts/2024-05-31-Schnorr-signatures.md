@@ -9,6 +9,7 @@ title: "Schnorr signatures: everything you wanted to know, but were afraid to as
 permalink: schnorr
 sidebar:
     nav: cryptomat
+icon: ⭐️
 ---
 
 {: .info}

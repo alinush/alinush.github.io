@@ -6,6 +6,7 @@ title: Why you should probably never sort your Merkle tree's leaves
 published: true 
 #sidebar:
 #    nav: cryptomat
+icon: ⭐️
 ---
 
 {: .info}

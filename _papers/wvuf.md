@@ -2,12 +2,13 @@
 type: paper-and-talk
 card_id: wvuf
 date: 2025-05-15
+highlighted: [paper]
 talk_date: 2024-08-07
 
 title: >-
   Distributed Randomness using Weighted VRFs
 talk_title: >-
-  Aptos randomness using weighted VRFs
+  Distributed Randomness from Weighted VRFs
 authors: >-
   Sourav Das and Benny Pinkas and <span class="my-name">Alin Tomescu</span> and Zhuolun Xiang
 paper_venue: >-

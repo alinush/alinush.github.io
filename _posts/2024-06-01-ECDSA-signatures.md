@@ -8,6 +8,7 @@ title: ECDSA signatures (and why you should avoid them)
 permalink: ecdsa
 sidebar:
     nav: cryptomat
+icon: ⭐️
 ---
 
 {: .info}

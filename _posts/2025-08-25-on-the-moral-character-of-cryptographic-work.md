@@ -5,6 +5,8 @@ title: "Reflecting on the moral character of cryptographic work"
 #date: 2020-11-05 20:45:59
 #published: false
 permalink: moral-character
+icon: ⭐️
+highlighted: true
 #sidebar:
 #    nav: cryptomat
 #article_header:

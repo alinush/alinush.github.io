@@ -1,6 +1,7 @@
 ---
 card_id: verkle-trees
 date: 2018-06-01
+highlighted: true
 
 title: >-
   Verkle trees

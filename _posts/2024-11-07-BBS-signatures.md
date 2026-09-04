@@ -9,6 +9,7 @@ title: BBS+ signatures
 sidebar:
     nav: cryptomat
 permalink: bbs+
+icon: ⭐️
 #article_header:
 #  type: cover
 #  image:

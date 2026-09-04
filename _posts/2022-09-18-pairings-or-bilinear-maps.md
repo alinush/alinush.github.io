@@ -10,6 +10,7 @@ permalink: pairings
 #published: false
 sidebar:
     nav: cryptomat
+icon: ⭐️
 ---
 
 <!-- TODO: Add example of pairing (insecure). -->

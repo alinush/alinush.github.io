@@ -1,43 +1,105 @@
 ---
 layout: page
 titles:
-  # @start locale config
   en      : &EN       Home
-  en-GB   : *EN
-  en-US   : *EN
-  en-CA   : *EN
-  en-AU   : *EN
-  zh-Hans : &ZH_HANS  主页
-  zh      : *ZH_HANS
-  zh-CN   : *ZH_HANS
-  zh-SG   : *ZH_HANS
-  zh-Hant : &ZH_HANT  主頁
-  zh-TW   : *ZH_HANT
-  zh-HK   : *ZH_HANT
-  ko      : &KO       홈
-  ko-KR   : *KO
-  fr      : &FR       Accueil
-  fr-BE   : *FR
-  fr-CA   : *FR
-  fr-CH   : *FR
-  fr-FR   : *FR
-  fr-LU   : *FR
-  tr      : &TR       Ana Sayfa
-  # @end locale config
 show_title: false
 ---
-<div class="layout--articles layout--home">
-  {%- include article-list.html articles=paginator.posts type='item'
-      article_type='BlogPosting'
-      show_cover=false
-      show_excerpt=true
-      show_readmore=true
-      show_info=true
-      emoji_prefix=true -%}
-  {%- include paginator.html -%}
+<div class="home-highlights">
+
+  <div class="home-highlights__row home-highlights__row--top">
+
+    <section class="home-highlights__col">
+      <p>Hi 👋👋, I'm a cryptography researcher who enjoys thinking out loud on this website.</p> 
+      <p>Some quick resources, if you're looking
+      for something specific:</p>
+      <ul>
+        <li><a href="/cryptomat">The cryptomat</a>: a perpetual effort
+        summarizing concepts in cryptography</li>
+        <li><a href="/history">All my posts</a>, with <em>tl;dr</em>'s, ordered chronologically</li>
+        <li><a href="/files/cv.pdf">My curriculum vitae</a></li>
+      </ul>
+      <!--<p class="home-highlights__anchor-bottom">-->
+      <p>See below for highlighted <a href="/posts.html">posts</a>, <a href="/papers">papers</a>, <a href="/talks">talks</a> and <a href="/projects">projects</a> 👇</p>
+      <!--</p>-->
+    </section>
+
+    <section class="home-highlights__col">
+      <h2>🆕 Updates</h2>
+      {%- assign _updates = site.posts | concat: site.papers | concat: site.projects | concat: site.talks | sort: "date" | reverse | slice: 0, 5 -%}
+      {%- for entry in _updates -%}
+        {%- case entry.collection -%}
+        {%- when "posts" -%}
+          {%- include papers-talks/teaser.html title=entry.title url=entry.url date=entry.date kind="Post" -%}
+        {%- when "papers" -%}
+          {%- assign _url = "/papers#" | append: entry.card_id -%}
+          {%- include papers-talks/teaser.html title=entry.title url=_url date=entry.date subtitle=entry.paper_venue kind="Paper" -%}
+        {%- when "talks" -%}
+          {%- assign _url = "/talks#" | append: entry.card_id -%}
+          {%- assign _title = entry.talk_title | default: entry.title -%}
+          {%- include papers-talks/teaser.html title=_title url=_url date=entry.talk_date subtitle=entry.talk_venue kind="Talk" -%}
+        {%- when "projects" -%}
+          {%- assign _url = "/projects#" | append: entry.card_id -%}
+          {%- include papers-talks/teaser.html title=entry.title url=_url date=entry.date kind="Project" -%}
+        {%- endcase -%}
+      {%- endfor -%}
+    </section>
+
+  </div>
+
+  <div class="home-highlights__row home-highlights__row--bottom">
+
+    <section class="home-highlights__col">
+      <h2>📝 <a href="/history">Posts</a></h2>
+      {%- assign _items = site.posts | where_exp: "e", "e.highlighted == true" | sort: "date" | reverse | slice: 0, 5 -%}
+      {%- for entry in _items -%}
+        {%- include papers-talks/teaser.html title=entry.title url=entry.url date=entry.date -%}
+      {%- endfor -%}
+      <a class="home-highlights__see-all" href="/history">All posts &rarr;</a>
+    </section>
+
+    <section class="home-highlights__col">
+      <h2>🎓 <a href="/papers">Papers</a></h2>
+      {%- comment -%}
+        A _papers/ entry with type: paper-and-talk feeds both this column
+        and the Talks one below, so a plain `highlighted: true` highlights
+        it in both at once. For just one of the two, set `highlighted:
+        [paper]` or `highlighted: [talk]` instead (or `[paper, talk]`,
+        same as `true`) — unambiguous paper-only/talk-only/project entries
+        can keep the plain boolean, there's nothing to disambiguate there.
+      {%- endcomment -%}
+      {%- assign _items = site.papers | where_exp: "e", "e.highlighted == true or e.highlighted contains 'paper'" | sort: "date" | reverse | slice: 0, 5 -%}
+      {%- for entry in _items -%}
+        {%- assign _url = "/papers#" | append: entry.card_id -%}
+        {%- include papers-talks/teaser.html title=entry.title url=_url date=entry.date subtitle=entry.paper_venue -%}
+      {%- endfor -%}
+      <a class="home-highlights__see-all" href="/papers">All papers &rarr;</a>
+    </section>
+
+    <section class="home-highlights__col">
+      <h2>👨🏻‍🏫 <a href="/talks">Talks</a></h2>
+      {%- assign _shared = site.papers | where_exp: "e", "e.type == 'paper-and-talk'" -%}
+      {%- assign _all_talks = site.talks | concat: _shared -%}
+      {%- assign _items = _all_talks | where_exp: "e", "e.highlighted == true or e.highlighted contains 'talk'" | sort: "talk_date" | reverse | slice: 0, 5 -%}
+      {%- for entry in _items -%}
+        {%- assign _url = "/talks#" | append: entry.card_id -%}
+        {%- assign _title = entry.talk_title | default: entry.title -%}
+        {%- include papers-talks/teaser.html title=_title url=_url date=entry.talk_date subtitle=entry.talk_venue -%}
+      {%- endfor -%}
+      <a class="home-highlights__see-all" href="/talks">All talks &rarr;</a>
+    </section>
+
+    <section class="home-highlights__col">
+      <h2>🛠️ <a href="/projects">Projects</a></h2>
+      {%- assign _items = site.projects | where_exp: "e", "e.highlighted == true" | sort: "date" | reverse | slice: 0, 5 -%}
+      {%- for entry in _items -%}
+        {%- assign _url = "/projects#" | append: entry.card_id -%}
+        {%- include papers-talks/teaser.html title=entry.title url=_url date=entry.date -%}
+      {%- endfor -%}
+      <a class="home-highlights__see-all" href="/projects">All projects &rarr;</a>
+    </section>
+
+  </div>
+
 </div>
-<script>
-  {%- include scripts/home.js -%}
-</script>
 
 {{ content }}

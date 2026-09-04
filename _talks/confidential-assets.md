@@ -2,6 +2,7 @@
 type: talk-only
 card_id: confidential-assets
 talk_date: 2026-03-24
+highlighted: true
 
 title: >-
   Aptos confidential assets

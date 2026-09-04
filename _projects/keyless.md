@@ -1,6 +1,7 @@
 ---
 card_id: keyless
 date: 2024-06-13
+highlighted: true
 
 title: >-
   Aptos Keyless accounts

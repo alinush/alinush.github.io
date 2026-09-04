@@ -1,0 +1,18 @@
+---
+layout: page
+titles:
+  en      : &EN       History
+show_title: false
+---
+<div class="layout--articles layout--home">
+  {%- include article-list.html articles=paginator.posts type='item'
+      article_type='BlogPosting'
+      show_cover=false
+      show_excerpt=true
+      show_readmore=true
+      show_info=true
+      emoji_prefix=true -%}
+  {%- include paginator.html -%}
+</div>
+
+{{ content }}

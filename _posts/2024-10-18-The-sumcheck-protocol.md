@@ -6,6 +6,7 @@ title: The multivariate sumcheck protocol
 date: 2025-06-20 20:45:59
 #published: false
 permalink: sumcheck
+icon: ⭐️
 #sidebar:
 #    nav: cryptomat
 #article_header:

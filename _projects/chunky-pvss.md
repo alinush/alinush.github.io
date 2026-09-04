@@ -1,6 +1,7 @@
 ---
 card_id: chunky-pvss
 date: 2026-02-01
+highlighted: true
 
 title: >-
   Chunky PVSS
@@ -17,7 +18,7 @@ blogpost:
   - url: /chunky
     title: "Chunky"
   - url: /dekart
-    title: "Dekart"
+    title: "DeKART"
 
 code:
   - url: https://github.com/aptos-labs/aptos-core/tree/49ef6adc32d01f29f62edb2b5441b4df06a8d6ae/crates/aptos-dkg/src/pvss/chunky

@@ -3,6 +3,7 @@ type: paper-and-talk
 card_id: amt
 date: 2020-05-01
 talk_date: 2020-05-02
+highlighted: [paper] 
 
 title: >-
   Towards Scalable Threshold Cryptosystems
@@ -45,7 +46,7 @@ code:
 
 blogpost:
   - url: /threshold-bls
-    title: "TSS blog"
+    title: "BLS blog"
   - url: /amt
     title: "AMT blog"
 

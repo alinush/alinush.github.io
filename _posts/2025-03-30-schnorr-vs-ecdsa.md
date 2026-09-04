@@ -6,6 +6,7 @@ tags:
 title: Schnorr vs. ECDSA
 #date: 2020-11-05 20:45:59
 permalink: schnorr-vs-ecdsa
+icon: ⭐️
 #sidebar:
 #    nav: cryptomat
 #article_header:

@@ -37,12 +37,12 @@ key: page-about
 <!-- ![](/pictures/tbow-th.jpg){: .align-right} -->
 
 I was born and raised in [Pitești](https://en.wikipedia.org/wiki/Pitesti), a small city in Romania.
-I moved to the US in 2008 to go to college at Stony Brook University.
+I moved to the US in 2008 to attend college at Stony Brook University.
 
 I was always fascinated with computers. First, I was playing games. Soon, I was fixin'em. And, eventually, programming them.
 
 I like to read and write.
-In fact, you can see some of my writing on this website and on [Decentralized Thoughts](https://decentralizedthoughts.github.io/about-alin).
+In fact, you can see some of [my writing](/posts.html) on this website and on [Decentralized Thoughts](https://decentralizedthoughts.github.io/about-alin).
 
 I am currently the _Head of Cryptography_ at [Aptos Labs](https://aptoslabs.com).
 
@@ -52,26 +52,25 @@ Before VMware, I was a cryptography PhD student at MIT, advised by [Srini Devada
 
 Before MIT, I was building tamper-proof clouds and end-to-end encrypted outsourced file storage at [Private Machines](https://privatemachines.com/).
 
-### ...and some of my research
+### Research
 
-My [papers](/papers.html), [posts](/posts.html), [talks](/talks), [the "cryptomat"](/cryptomat) and this [call for research](/please-solve) best reflect my research interest.
+I've led, and thoroughly enjoyed, research on:
+ 1. [keyless blockchain accounts](/projects#keyless)
+ 1. [anonymous cryptocurrencies](/papers#utt)
+ 1. **Herkle trees**, or _homomorphic_ Merkle trees: [AMTs](/papers#amt) and [Hyperproofs](/papers#hyperproofs)
+ 1. [constant-sized vector commitments](/papers#asvc)
+ 1. [fast threshold BLS signatures](/papers#amt)
+ 1. [Verkle trees](/projects#verkle-trees)
+ 1. [transparency logs](/papers#aad)
+ 1. [append-only logs on top of Bitcoin](/papers#catena)
 
-But, if you're looking for a list, I've led (and thoroughly enjoyed) research on:
- 1. [keyless blockchain accounts](/2024/06/13/Keyless-blockchain-accounts-on-Aptos.html)
- 1. [anonymous cryptocurrencies](https://eprint.iacr.org/2022/452)
- 1. **Herkle trees**, or _homomorphic_ Merkle trees: [AMTs](https://www.computer.org/csdl/proceedings-article/sp/2020/349700b367/1j2LgjE3Q6Q) and [Hyperproofs](https://www.usenix.org/system/files/sec22fall_srinivasan.pdf)
- 1. [constant-sized vector commitments](https://link.springer.com/chapter/10.1007/978-3-030-57990-6_3)
- 1. [fast threshold BLS signatures](https://www.computer.org/csdl/proceedings-article/sp/2020/349700b367/1j2LgjE3Q6Q)
- 1. [Verkle trees](https://math.mit.edu/research/highschool/primes/materials/2019/conf/12-5-Kuszmaul.pdf)
- 1. [transparency logs](https://dl.acm.org/doi/10.1145/3319535.3345652)
- 1. [append-only logs on top of Bitcoin](https://dl.acm.org/doi/10.1145/3319535.3345652)
+I've also helped with, although not led, research on: 
+ - [aggregatable distributed key generation](/papers#agg-dkg)
+ - [share recovery for verifiable secret sharing](/papers#share-recovery)
+ - [scalable Byzantine Fault Tolerance (BFT) protocols](/papers#sbft)
+ - [oblivious file systems](/papers#privatefs)
 
-I've also helped with, although not led, research on 
- - [aggregatable distributed key generation](https://link.springer.com/chapter/10.1007/978-3-030-77870-5_6)
- - [share recovery for verifiable secret sharing](https://dl.acm.org/doi/10.1145/3319535.3354207)
- - [scalable Byzantine Fault Tolerance (BFT) protocols](https://ieeexplore.ieee.org/document/8809541)
- - [oblivious file systems](https://dl.acm.org/doi/10.1145/2382196.2382299)
-
+In general, my research interests are best reflected in my [papers](/papers.html), [posts](/posts.html), [talks](/talks), [the "cryptomat"](/cryptomat) and this [call for research](/please-solve).
 
 ## The _truth_
 

@@ -6,7 +6,7 @@ tags:
  - BLS
  - interpolation
  - fast fourier transform (FFT)
-title: How to do threshold BLS the right way
+title: "Threshold BLS: How to do it right"
 article_header:
   type: cover
   image:
@@ -14,6 +14,8 @@ article_header:
 permalink: threshold-bls
 sidebar:
     nav: cryptomat
+icon: ⭐️
+highlighted: true
 ---
 {: .info}
 **tl;dr:** 

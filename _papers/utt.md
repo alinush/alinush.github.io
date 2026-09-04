@@ -3,6 +3,7 @@ type: paper-and-talk
 card_id: utt
 date: 2022-03-01
 talk_date: 2023-08-29
+highlighted: [talk]
 
 title: >-
   UTT: Decentralized Ecash with Accountable Privacy

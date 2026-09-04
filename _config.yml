@@ -96,8 +96,25 @@ chart: true # false (default), true
 
 ## => Paginate
 ##############################
-paginate: 8
-paginate_path: /page:num # don't change this unless for special need
+# jekyll-paginate-v2, not the classic jekyll-paginate: the classic plugin
+# only paginates the literal index.html, which can't support /history.html
+# having its own paginated feed. Opt in per-page via that page's own
+# `pagination: enabled: true` front matter (see history.html) rather than
+# v1's "index.html always paginates".
+pagination:
+  enabled: true
+  per_page: 8
+  permalink: /page:num/
+  collection: posts
+  sort_field: date
+  sort_reverse: true
+
+# Not read by jekyll-paginate-v2 itself (that's `pagination.permalink`
+# above) — kept as plain config data because the theme's own
+# _includes/paginator.html (page-number links) still reads
+# site.paginate_path directly, unaware of which pagination plugin (if any)
+# populated it. Keep this in sync with pagination.permalink above.
+paginate_path: /page:num/
 
 
 ## => Sources
@@ -238,7 +255,7 @@ defaults:
 ##############################
 plugins:
   - jekyll-feed
-  - jekyll-paginate
+  - jekyll-paginate-v2
   - jekyll-sitemap
   - jekyll-redirect-from
   - jemoji
