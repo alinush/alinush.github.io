@@ -46,7 +46,12 @@ fi
 # The repo is mounted into the sandbox, so the server is driven by
 # sandbox-serve.sh in this same directory rather than by an inlined script.
 #
+# The link check runs first (internal-only: fast, no network dependency) as
+# a warning, not a gate — its exit code is deliberately ignored (plain ";",
+# not "&&") so a broken anchor somewhere never blocks starting the dev
+# server, it just prints ahead of it.
+#
 # NOTE: args after "--" are arguments to the agent itself, and the "shell" agent
 # already is bash, so this runs "bash -c <cmd>". Do NOT prepend another "bash".
 exec sbx run "$@" -- \
-    -c "exec bash ./sandbox-serve.sh '$port' '$JEKYLL_TRACE' '$sandbox_name'"
+    -c "bash ./sandbox-check-links.sh --internal-only; exec bash ./sandbox-serve.sh '$port' '$JEKYLL_TRACE' '$sandbox_name'"
