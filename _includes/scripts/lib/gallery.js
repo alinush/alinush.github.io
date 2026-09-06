@@ -8,7 +8,8 @@
         '</div>' +
         '<div class="swiper__button swiper__button--prev fas fa-chevron-left"></div>' +
         '<div class="swiper__button swiper__button--next fas fa-chevron-right"></div>' +
-      '</div>';
+      '</div>' +
+      '<div class="gallery__caption"></div>';
     function setState($item, zoom, translate) {
       $item.css('transform', 'scale(' + zoom + ') translate(' + translate.x +  'px,' + translate.y + 'px)');
     }
@@ -16,6 +17,7 @@
       this.$root = $(root);
       this.$swiper = null;
       this.$swiperWrapper = null;
+      this.$caption = null;
       this.$activeItem = null;
       this.$items = [];
       this.contentWidth = 0;
@@ -39,6 +41,8 @@
       this.$root.append(template);
       this.$swiper = this.$root.find('.gallery__swiper');
       this.$swiperWrapper = this.$root.find('.swiper__wrapper');
+      this.$caption = this.$root.find('.gallery__caption');
+      this._updateCaption(0);
       this.contentWidth = this.$swiperWrapper && this.$swiperWrapper.width();
       this.contentHeight = this.$swiperWrapper && this.$swiperWrapper.height();
       for (i = 0; i < items.length; i++) {
@@ -177,6 +181,15 @@
       this.lastZoom = this.preZoom = this.zoom = 1;
       this.$activeItem = $dom.find('.gallery-item__content');
       setState($preDom.find('.gallery-item__content'), this.zoom, this.translate);
+      this._updateCaption(index);
+    };
+
+    // Caption text comes from each image's own alt attribute (set by
+    // lightbox.js when it builds the items array) — a plain text node,
+    // not HTML, so nothing in the alt text needs escaping.
+    Gallery.prototype._updateCaption = function(index) {
+      var item = this.items[index];
+      this.$caption && this.$caption.text((item && item.caption) || '');
     };
 
     Gallery.prototype.refresh = function() {

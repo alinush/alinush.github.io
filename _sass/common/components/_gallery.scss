@@ -19,3 +19,14 @@
 .gallery-item__main {
   display: block;
 }
+
+.gallery__caption {
+  // No explicit color: inherits whatever .modal set (light text on the
+  // near-opaque dark mask background), so this stays legible under any
+  // skin without hardcoding a color here.
+  flex-shrink: 0;
+  padding: map-get($spacers, 2) map-get($spacers, 3);
+  text-align: center;
+  font-size: map-get($base, font-size-sm);
+  min-height: 1.5em; // reserves space even when the current image has no caption, so the swiper above doesn't resize as you navigate between captioned and uncaptioned photos
+}

@@ -14,7 +14,7 @@
         for (i = 0; i < $images.length; i++) {
           image = $images.eq(i);
           if (image.get(0).naturalWidth > 800) {
-            items.push({ src: image.attr('src'), w: image.get(0).naturalWidth, h: image.get(0).naturalHeight, $el: image});
+            items.push({ src: image.attr('src'), w: image.get(0).naturalWidth, h: image.get(0).naturalHeight, caption: image.attr('alt') || '', $el: image});
           }
         }
       }

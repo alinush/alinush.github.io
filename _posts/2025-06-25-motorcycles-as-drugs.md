@@ -11,18 +11,27 @@ article_header:
   type: cover
   image:
     src: /pictures/inyokern-178-looking-back.jpg
+# Turns on the theme's own built-in lightbox (_includes/scripts/components/lightbox.html,
+# gallery.js, modal.js): any <img> in the post body wide enough to qualify
+# becomes clickable, opening a shared fullscreen viewer with prev/next
+# (and pinch-zoom) across every such image on the page — exactly what the
+# grid below needs, with no extra JS of our own.
+lightbox: true
 ---
 
 <style>
-  .swiper-demo {
-    height: 600px;
+  .moto-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+    margin: 24px 0;
   }
-  .swiper-demo .swiper__slide {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    color: #fff;
+  .moto-gallery img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
   }
 </style>
 
@@ -74,32 +83,21 @@ To deal with his predisposition towards death, Alin has been doing several thing
 
 Some fond memories below:
 
-<div class="swiper swiper-demo">
- <div class="swiper__wrapper">
-  <div class="swiper__slide"><a href="/pictures/moto/panigale-v4s.jpg"><img height="640" src="/pictures/moto/panigale-v4s-small.jpg" /></a></div>
-  <div class="swiper__slide"><a href="/pictures/moto/cfmoto-700clx.jpg"><img height="640" src="/pictures/moto/cfmoto-700clx.jpg" /></a></div>
-  <div class="swiper__slide"><a href="/pictures/moto/rebel-1100-aptos.jpg"><img src="/pictures/moto/rebel-1100-aptos.jpg" /></a></div>
-  <div class="swiper__slide"><a href="/pictures/moto/rebel-1100-jjlake.jpg"><img src="/pictures/moto/rebel-1100-jjlake.jpg" /></a></div>
-  <div class="swiper__slide"><a href="/pictures/moto/r1250gs.jpg"><img src="/pictures/moto/r1250gs.jpg" /></a></div>
-  <div class="swiper__slide"><a href="/pictures/moto/r1250gs-gary.jpg"><img height="640" src="/pictures/moto/r1250gs-gary.jpg" /></a></div>
-  <div class="swiper__slide"><a href="/pictures/moto/r1250gs-just-bought.jpg"><img src="/pictures/moto/r1250gs-just-bought.jpg" /></a></div>
-  <div class="swiper__slide"><a href="/pictures/moto/rebel-500-vista-point.jpg"><img src="/pictures/moto/rebel-500-vista-point.jpg" /></a></div>
-  <div class="swiper__slide"><a href="/pictures/moto/rebel-500-wet.jpg"><img src="/pictures/moto/rebel-500-wet.jpg" /></a></div>
-  <div class="swiper__slide"><a href="/pictures/moto/rebel-500-ari.jpg"><img src="/pictures/moto/rebel-500-ari.jpg" /></a></div>
-  <div class="swiper__slide"><a href="/pictures/moto/rebel-500.jpg"><img src="/pictures/moto/rebel-500.jpg" /></a></div>
-  <div class="swiper__slide"><a href="/pictures/moto/grandpa.jpg"><img height="640" src="/pictures/moto/grandpa.jpg" /></a></div>
- </div>
- <div class="swiper__button swiper__button--prev fas fa-chevron-left"></div>
- <div class="swiper__button swiper__button--next fas fa-chevron-right"></div>
+<div class="moto-gallery">
+  <img loading="lazy" src="/pictures/moto/panigale-v4s-track.jpg" alt="My first (and last?) track day at CoTA (August 1st, 2026)" />
+  <img loading="lazy" src="/pictures/moto/panigale-v4s.jpg" alt="Hours after just buying this beauty (Summer 2024)" />
+  <img loading="lazy" src="/pictures/moto/cfmoto-700clx.jpg" alt="I impulsively bought a motorcycle in Romania. I needed it! (April 2024)" />
+  <img loading="lazy" src="/pictures/moto/rebel-1100-aptos.jpg" alt="Me, messing around during the 1st Aptos hackathon at 745 Emerson St. (2022)" />
+  <img loading="lazy" src="/pictures/moto/rebel-1100-jjlake.jpg" alt="The new Rebel 1100, in the JJ Lake parking lot (March 2022)" />
+  <img loading="lazy" src="/pictures/moto/r1250gs.jpg" alt="Just washed, thanks to my neighbour James!" />
+  <img loading="lazy" src="/pictures/moto/r1250gs-gary.jpg" alt="Hanging out with Gary and Jean at Red Rock Coffee, in Mountain View, CA" />
+  <img loading="lazy" src="/pictures/moto/r1250gs-just-bought.jpg" alt="This is what mid-life crisis looks like, or so they say." />
+  <img loading="lazy" src="/pictures/moto/rebel-500-vista-point.jpg" alt="Looking upon the Bay Area, somewhere from Skyline Blvd." />
+  <img loading="lazy" src="/pictures/moto/rebel-500-wet.jpg" alt="I just escaped from a rather dangerous storm that caught me unprepared late at night. In Sunol, CA. (2020)" />
+  <img loading="lazy" src="/pictures/moto/rebel-500-ari.jpg" alt="I had only been riding for a few days or weeks at that point. (2020)"/>
+  <img loading="lazy" src="/pictures/moto/rebel-500.jpg" alt="My first motorcycle: A 2017 Honda Rebel 500. (2020)" />
+  <img loading="lazy" src="/pictures/moto/grandpa.jpg" alt="My grandpa, who passed before I was born, was a great motorcycle enthusiast." />
 </div>
-
-<script>
-  {%- include scripts/lib/swiper.js -%}
-  var SOURCES = window.TEXT_VARIABLES.sources;
-  window.Lazyload.js(SOURCES.jquery, function() {
-  $('.swiper-demo').swiper();
-  });
-</script>
 <!--more-->
 
 <!-- Here you can define LaTeX macros -->
