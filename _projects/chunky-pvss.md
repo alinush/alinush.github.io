@@ -11,7 +11,7 @@ pdf:
   - url: /papers#dekart
 
 slides:
-  - url: /files/chunky/texas-crypto-day-2026/#/
+  - url: /files/chunky/texas-crypto-day-2026
     title: "Texas Crypto Day"
 
 blogpost:

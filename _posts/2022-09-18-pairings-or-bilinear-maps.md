@@ -243,7 +243,7 @@ Second, she can use the pairing to compute $e(g^{ab}, g^c) = e(g, g)^{abc} = k$.
 By symmetry, all other players can do the same and agree on the same $k$.
 
 {: .info}
-The protocol can be generalized to [**a**symmetric pairings](#asymmetric-pairings) too, where $\Gr_1 \neq \Gr_2$.
+The protocol can be generalized to [**a**symmetric pairings](#use-asymmetric-pairings) too, where $\Gr_1 \neq \Gr_2$.
 
 ### BLS signatures
 
@@ -663,7 +663,7 @@ This blog post was supposed to be just a short summary of the [three properties 
 Unfortunately, I felt compelled to discuss their [fascinating history](#history).
 And I couldn't let you walk away without seeing a few powerful [cryptographic applications of pairings](#applications-of-pairings).
 
-After that, I realized practitioners who implement pairing-based cryptosystems might benefit from knowing a little about their [internal workings](#how-do-pairings-actually-work), since some of these details can be leveraged to speed up [implementations](#implementation-details).
+After that, I realized practitioners who implement pairing-based cryptosystems might benefit from knowing a little about their [internal workings](#how-do-pairings-actually-work), since some of these details can be leveraged to speed up [implementations](#implementing-pairing-based-crypto).
 
 ## Acknowledgements
 

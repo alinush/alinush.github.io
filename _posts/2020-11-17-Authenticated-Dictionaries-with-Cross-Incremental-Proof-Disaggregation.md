@@ -76,7 +76,7 @@ This post assumes knowledge of:
 
  - Greatest common divisor (GCD) of two integers $x, y$ denoted by $\gcd(x,y)$
  - The Extended Euclidean Algorithm (EEA) for computing Bezout coefficients $x,y\in \Z$ such that $ax + by = \gcd(a,b)$
- - [RSA accumulators](rsa-accumulators)
+ - [RSA accumulators](/rsa-accumulators)
     - An RSA accumulator for a set $$T = \{b_1, \dots, b_n\}$$ of elements where each $b_i$ can be hashed to a _prime representative_ $e_i$ is $$a = g^{\prod_{i \in [n]} e_i}$$.
     - An RSA _membership witness_ for $b_i$ is just $$w_i = a^{1/e_i} = g^{\prod_{j\in[n], j\ne i} e_j}$$.
     - To verify it, just check $w_i^{e_i} = a$.
@@ -225,7 +225,7 @@ Fortunately, Boneh et al.[^BBF18] give an $O(\ell n\log{n})$ time algorithm to c
 $$\multirootexp((\alpha_i, x_i)_{i\in [n]}) = \prod_{i\in [n]} \alpha_i^{x^*/x_i}$$
 
 We refer you to Figure 1 in our paper[^TXN20e] for the $\multirootexp$ algorithm, which simply leverages the recursive nature of the problem.
-In fact, the algorithm recurses in a manner very similar to [$\rootfactor$](rsa-accumulators#precomputing-all-membership-witnesses-fast).
+In fact, the algorithm recurses in a manner very similar to [$\rootfactor$](/rsa-accumulators#precomputing-all-membership-witnesses-fast).
 
 Importantly, Boneh et al. give an _extractor_ that the PoKCR verifier can use to actually recover the $w_i$'s from the $x_i$'s, $\alpha_i$'s and $W$.
 This is what makes the protocol a proof of _knowledge_.

@@ -3,6 +3,7 @@ tags:
  - tutorials
 date: 2013-07-21 13:30:00
 title: How to compile and install Eucalyptus 3.3.0 on Ubuntu 13.04 from Github sources (cloud-in-a-box)
+permalink: eucalyptus-3.3
 ---
 
 

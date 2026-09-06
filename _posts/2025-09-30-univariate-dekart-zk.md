@@ -155,7 +155,7 @@ This **hiding** [KZG](/kzg) variant was (first?) introduced in the Zeromorph pap
 ### $\mathsf{HKZG.Setup}(m; \mathcal{G}, \xi, \tau) \rightarrow (\mathsf{vk},\mathsf{ck})$
 
 The algorithm is given:
-1. a bilinear group $\term{\mathcal{G}}$ with generators $\one{1},\two{1},\three{1}$ and associated field $\F$, as explained in the [preliminaries](#preliminaries) 
+1. a bilinear group $\term{\mathcal{G}}$ with generators $\one{1},\two{1},\three{1}$ and associated field $\F$, as explained in the [preliminaries](#notation) 
 2. random trapdoors $\term{\xi,\tau}\in \F$
 
 Pick an $m$th root of unity $\term{\theta}$ and let:
@@ -264,7 +264,7 @@ For efficiency, we restrict ourselves to $(n+1)$ and $b$ that are powers of two,
 Ideally though, since the highest-degree polynomial involved in our scheme is $(b-1)n$, we could have used a smaller $L = (b-1)n + 1$ $= bn - (n - 1)$.
 But this $L$ may not be a power of two, which means FFTs would be trickier.
 
-Pick random trapdoors for the [hiding KZG](#hiding-kzg) scheme:
+Pick random trapdoors for the [hiding KZG](#preliminary-hiding-kzg) scheme:
 \begin{align}
     \term{\xi,\tau}\randget\F
 \end{align}
@@ -313,7 +313,7 @@ Represent the $n$ values and a prepended $0$ value as a degree-$n$ polynomial:
 \term{f(X)} \bydef 0\cdot \lagrS_0(X) + \sum_{i\in[n]} z_i \cdot \lagrS_i(X)
 \end{align}
 
-Commit to the polynomial via [hiding KZG](#hiding-kzg):
+Commit to the polynomial via [hiding KZG](#preliminary-hiding-kzg):
 \begin{align}
 C &\gets \hkzgCommit(\ck_\S, f; \emph{\rho}) \bydef \rho \cdot \xiOne + \one{f(\tau)} = \rho\cdot \xiOne + \sum_{i\in[n]} z_i \cdot \sOne{i}
 \end{align}
@@ -477,7 +477,7 @@ $\Rightarrow$ in **total**, $\emph{\|\pi\|=(\ell+5)\Gr_1 + (\ell+4)\F}$,
     - each interpolation will then involve:
         - do $\Fmul{2n}$ and $\Fadd{n}$ (i.e., two $\F$ multiplication for each $y_i \cdot \omega^i \cdot \frac{1}{\gamma-\omega^i}$)
         - do $\Fmul{1}$ to accumulate $\frac{\gamma^n - 1}{n}$
- - 1 $\fmsmOne{L+1}$ MSM for computing $\pi_\gamma$ via [$\hkzgOpen(\cdot)$](#hkzgopenck-f-rho-x-s-rightarrow-pi)
+ - 1 $\fmsmOne{L+1}$ MSM for computing $\pi_\gamma$ via [$\hkzgOpen(\cdot)$](#mathsfhkzgopenmathsfck-f-rho-x-s-rightarrow-pi)
 
 ### $\mathsf{Dekart}\_b^\mathsf{FFT}.\mathsf{Verify}(\mathsf{vk}, C, \ell; \pi)\rightarrow \\{0,1\\}$
 
@@ -774,7 +774,7 @@ Once $b$ is an input to the setup, prove and verification algorithm, it should b
 Recall that, when $b=2$, the degree of $h(X)$ is $n \Rightarrow$ we no longer need two different FFT domains: i.e., $\S = \L$ and $L = n + 1$.
 This is why the algorithm below can stay rather simple.
 
-We borrow [differentiation tricks](/differentiation-tricks) from [Groth16](/groth16#computing-hx-for-b2) to avoid doing FFT-based polynomial multiplication.
+We borrow [differentiation tricks](/differentiation-tricks) from [Groth16](/groth16#computing-hx) to avoid doing FFT-based polynomial multiplication.
 This keeps our FFTs of size $(n+1)$, as opposed to size $2(n+1)$.
 
 Our goal will be to obtain all $(h(\omega^i))_{i\in[n+1)}$ evaluations and then do a $\fmsmOne{n+2}$ MSM to commit to it and obtain $\emph{D}$ from Eq. \ref{eq:D}.

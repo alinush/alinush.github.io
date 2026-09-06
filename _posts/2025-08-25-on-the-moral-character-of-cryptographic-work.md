@@ -68,7 +68,7 @@ After all, wouldn't it be arrogant (even dangerous?) to adopt responsibility for
 
 Is this a free pass to completely neglect our broader responsibilities?
 Not all.
-Rogaway urges us not to and offers us [several paths forward](#what-should-cryptographers-do).
+Rogaway urges us not to and offers us [several paths forward](#what-should-we-do).
 For some of us, all these paths may be inaccessible.
 Nonetheless, all of us can at least recognize and wrestle with the political and social implications of our work.
 

@@ -78,7 +78,7 @@ A_I(X) &=\prod_{i\in I} (X - e_i)\\\\\
 R_I(e_i) &= y_i,\forall i\in I\\\\\
 \end{align}
 
-$R_I(X)$ can be interpolated via [Lagrange interpolation](polynomials#lagrange-interpolation) in $O(\vert I\vert\log^2{\vert I\vert})$ time[^vG13ModernCh10] as:
+$R_I(X)$ can be interpolated via [Lagrange interpolation](/lagrange-interpolation) in $O(\vert I\vert\log^2{\vert I\vert})$ time[^vG13ModernCh10] as:
 
 \begin{align}
 R_I(X)=\sum_{i\in I} y_i \prod_{j\in I,j\ne i}\frac{X - e_j}{e_i - e_j}

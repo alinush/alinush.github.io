@@ -94,7 +94,7 @@ $</div> <!-- $ -->
 ## Related work
 
 A recent **lattice-based PVSS**[^GHL21e] scheme reduces the overhead of elliptic curve scalar multiplications during dealing and verification by replacing the encryption scheme with a lattice scheme.
-Unfortunately, it introduces too much lattice field work, resulting in [a slower scheme than Chunky](#ghl21e-benchmarks): 441x slower dealing and 125x slower verification at $n=4$, narrowing to 4.3x and 3.3x at $n=1024$.
+Unfortunately, it introduces too much lattice field work, resulting in [a slower scheme than Chunky](#full-benchmarks): 441x slower dealing and 125x slower verification at $n=4$, narrowing to 4.3x and 3.3x at $n=1024$.
 On the other hand, it claims a much smaller 300 KiB transcript for $n=1024$ players[^oneliner].
 Because the GHL21e transcript grows much more slowly than $n$ (~177 KiB at $n=4$ to ~253 KiB at $n=1024$), it crosses over around $n=256$: at $n=8$ it is ~13.8x _larger_ than Chunky, but at $n=1024$ it is ~4.5x _smaller_.
 One genuine advantage of \[GHL21\][^GHL21e] is **post-quantum privacy** for the shared secret: a future quantum adversary observing the transcript cannot recover the secret (though it could forge proofs, since Bulletproofs are not PQ-sound).
@@ -111,7 +111,7 @@ When the goal is merely to PVSS a secret over _any_ field $\F$, our comparison a
 But if the goal is to PVSS a secret over a pairing-friendly curve (e.g., the BLS12-381 curve), this comparison is fair and evidences what Groth21 loses in staying away from pairings.
 
 Groth21's advantage is its _versatility_: it does not require pairings, which means it can be used in more settings.
-We note that our [Chunky2](#chunky2) variant does not necessarily require pairings either, except for its use of the [univariate DeKART](/dekart) range proof.
+We note that our [Chunky2](#appendix-chunky-2) variant does not necessarily require pairings either, except for its use of the [univariate DeKART](/dekart) range proof.
 In the future, we believe a sumcheck-based, multivariate variant of DeKART[^BDFplus25e] could be instantiated to avoid the use of pairings.
 
 **Golden PVSS**[^BCK25e] is a novel design based on _exponent VRFs (eVRFs)_.

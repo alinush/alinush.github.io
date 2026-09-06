@@ -21,7 +21,7 @@ highlighted: true
 
 <!--more-->
 
-I once ran into a [video](https://www.youtube.com/watch?v=yRxx8pen6JY) where Neil deGrasse Tyson, in relation to a debate with folks who didn't "believe"[^believe] in global warming nor in evolution, said the following:
+Upon hearing from Bill Maher that some folks don't "believe"[^believe] in global warming nor in evolution, the famous science popularizer, Neil deGrasse Tyson, bombastically retorted:
 
 _"The good thing about science is that it's true whether or not you believe in it"_ -- **Neil deGrasse Tyson** 
 {: .error}
@@ -30,7 +30,10 @@ You can see the short video below:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/yRxx8pen6JY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-## The misconception: Science is not intrinsically "true"
+Coming from someone of his stature, this was very disappointing to hear.
+In this blog post, I will explain why.
+
+## The scientific process $\neq$ Science™
 
 The way to conceptualize, and popularize[^neil], science is **not** as being "true" or "false."
 
@@ -240,7 +243,7 @@ This blog post comes with a tweet storm [here](https://x.com/alinush/status/1665
 [^aether]: Another falsified theory was the _"Aether Theory."_ Aether was believed to be a medium that filled space and enabled the propagation of light. The famous Michelson-Morley experiment in 1887 failed to detect aether, leading to the eventual acceptance of Einstein's theory of relativity, which does not require the existence of aether.
 
 
-[^believe]: I write "believe" in quotes because I find the usage of the term "believe" to be over-simplifying when it comes to how one should engage with complex scientific theories like the theory of anthropogenic climate change. In other words, to simply have to pick between _"Do you or do you not believe in global warming?"_ is an unproductive way of getting any clarity on the causes of global warming. A better way might be to ask someone _"What evidence is there for anthropogenic climate change and have you taken a close look at it?"_. (PS: This blog post is not about the climate change issue.)
+[^believe]: I write "believe" in quotes because I do not want to leave the impression that belief is a legitimate way to engage with complex scientific theories like anthropogenic climate change. In other words, to simply have to pick between _"Do you or do you not believe in global warming?"_ is an unproductive way of getting any clarity on the causes of global warming. A better way might be to ask someone _"What evidence is there for anthropogenic climate change and have you taken a close look at it?"_. (PS: This blog post is not about the climate change issue.)
 
 [^books]: Several books can be (and probably have been) written on the perverse incentives in academia, in scientific peer-review, science funding, etc.
 

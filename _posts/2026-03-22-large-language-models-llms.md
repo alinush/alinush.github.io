@@ -33,7 +33,7 @@ $</div> <!-- $ -->
 
 ## Learning resources
 
- - [Transformer Explainer](htt/s://poloclub.github.io/transformer-explainer/), by Polo Club of Data Science, Georgia Tech
+ - [Transformer Explainer](https://poloclub.github.io/transformer-explainer/), by Polo Club of Data Science, Georgia Tech
  - [colah's blog](http://colah.github.io/)
  - [Distill](https://distill.pub/)
 

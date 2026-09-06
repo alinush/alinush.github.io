@@ -624,7 +624,7 @@ This means that the DL algorithms are dominated by point-compression necessary t
 ### WASM size
 
 Currently, **WASM size** is 774 KiB.
-Most of this is just the 512 KiB precomputed table for [TBSGS-$k$](/bsgs#truncated-bsgs-k-tbsgs-k-discrete-log-algorithm).
+Most of this is just the 512 KiB precomputed table for [TBSGS-$k$](/bsgs#truncation).
 
 ```
 git clone https://github.com/aptos-labs/confidential-asset-wasm-bindings

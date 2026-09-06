@@ -244,7 +244,7 @@ Then, an attacker can extract $\sk$ as follows:
 
 {: .info}
 For this attack to work, the denominator above must be not zero, which happens with overwhelming probability when $m_1\ne m_2$ and $H$ is collision-resistant. 
-This attack works even when using the alternative $(e, s)$ formulation of Schnorr singatures, [described later](#alternative-s-e-formulation).
+This attack works even when using the alternative $(e, s)$ formulation of Schnorr singatures, [described later](#alternative-e-s-formulation).
 
 ### Pitfall #2: Biased nonces $r$
 
@@ -287,7 +287,7 @@ Instead, it uses composite order groups where the order is $h\cdot q$ where $q$ 
 This actually creates subtle issues when batch-verifying Schnorr signatures, for example, where signatures that verify individually will not verify as part of a batch[^devalence].
 
 {: .success}
-**Recommendation:** If you have the freedom in your application, you should avoid implementing Schnorr over non-prime order groups (i.e., avoid [Ed25519](#Ed25519)) and adopt Schnorr variants like Schnorrkel[^schnorrkel] which use prime-order groups.
+**Recommendation:** If you have the freedom in your application, you should avoid implementing Schnorr over non-prime order groups (i.e., avoid [Ed25519](#ed25519)) and adopt Schnorr variants like Schnorrkel[^schnorrkel] which use prime-order groups.
 
 ## Conclusion
 

@@ -380,7 +380,7 @@ An R1CS instance $\inst$ (see Eq. \ref{eq:r1cs-instance}) is satisfied by a witn
 
 ### (3) Zerocheck on $F(\boldsymbol{X})$ $\Leftarrow$ degree-3 0-sumcheck on $F(\boldsymbol{X})\eq_\btau(\boldsymbol{X})$
 
-[We know from above](#zero-check) that a zerocheck on $F$ can be reduced to a 0-sumcheck on another related polynomial: <!-- $\term{G}$: -->
+[We know from above](#multivariate-zerocheck) that a zerocheck on $F$ can be reduced to a 0-sumcheck on another related polynomial: <!-- $\term{G}$: -->
 \begin{align}
 \label{eq:G}
 F(\X)\cdot \eq_\term{\btau}(\X)

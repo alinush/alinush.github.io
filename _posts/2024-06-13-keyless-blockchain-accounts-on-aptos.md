@@ -398,7 +398,7 @@ A tweetstorm summarizing Aptos Keyless can be found below:
 
 In April 2024, I gave a **20-minute presentation** at zkSummit11.
 
-[Go back up](#tldr-talk) to see it!
+[Go back up](#tldr) to see it!
 
 ### GKR bootcamp (2025)
 
@@ -724,7 +724,7 @@ For cited works, see below 👇👇
 [^jwt-rfc]: The JWT RFC merely defers to the [JW**S** RFC](https://datatracker.ietf.org/doc/html/rfc7515#section-2) as to what "base64url encoding" means
 [^not-just-google]: I use "Google" as a canonical example of an OIDC provider. I stress that keyless accounts are **not** restricted with Google and are designed to work with any OIDC provider (e.g., Apple, GitHub, Facebook, etc.)
 [^omit-padding]: First, observe that there is no possible last input chunk size that has a 1-character output chunk: the smallest input chunk size is 1 byte, which requires 2 base64 characters (after padding this input chunk to 12 bits). The other cases are when the last output chunk is either 2 or 3 characters. But those correspond to exactly the edge cases when $\ell \bmod 3 = 1$ and $\ell \bmod 3 = 2$.
-[^optionality]: Plus, you can anyway later give optionality to your users and allow them to rotate their account to self-custody. Or, to have a backup secret key. Or, to only rely on Google as a recovery method with a timeout, as per the "highly-secure mode" [here](#can-google-steal-my-account). It's just like in the Web 2 world, users can add a 2nd authentication factor to their accounts.
+[^optionality]: Plus, you can anyway later give optionality to your users and allow them to rotate their account to self-custody. Or, to have a backup secret key. Or, to only rely on Google as a recovery method with a timeout, as per the "highly-secure mode" [here](#can-google-steal-my-keyless-account). It's just like in the Web 2 world, users can add a 2nd authentication factor to their accounts.
 [^triviality]: We are not interested in trivially checking that the empty string is a sub-string, nor that $b$ is a substring of itself. In fact, we may even get into trouble if we accidentally check that in the keyless relation.
 [^actually]: In practice, what is more likely to happen is that the zkVM is not fast enough, even for our small keyless relation. As a result, we will try to "express" the NP relation more efficiently: e.g., it is much easier to take as input $(n,p,q)$ and output `true` if $p$ and $q$ are prime and if $n = pq$ rather than take $n$ as input, factor it into primes $p$ and $q$ and output $(p,q)$ if you succeed. Many such optimizations may be possible for the keyless relation. But they may be much more complicated than the example above, which means they could be misimplmented (even if we write Rust) and lead to a soundness bug.
 [^unreasonable-confidence]: I am pretty confident the constraint count can be reduced to 1 million.

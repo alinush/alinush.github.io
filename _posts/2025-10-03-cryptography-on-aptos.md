@@ -45,7 +45,7 @@ In Aptos, the **authentication factor** that secures your blockchain address can
 Typically, this is a secret key (e.g., Ed25519), but it can also be more wild, untamed things like:
  - any $t$-out-of-$n$ Ed25519 secret keys,
  - or, [your Google account](/keyless)
- - or, a [Web2 passkey](#passkey accounts),
+ - or, a [Web2 passkey](#passkey-accounts),
  - or, [other Aptos accounts](#multisig-accounts)
 
 Importantly, key rotation works by default, for any Aptos account (or any EOA account, if you "speak Ethereum"): it does not require relying on complicated smart contract wallets or account abstraction.

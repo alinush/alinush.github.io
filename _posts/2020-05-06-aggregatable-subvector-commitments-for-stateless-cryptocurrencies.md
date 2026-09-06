@@ -120,7 +120,7 @@ To prove that $v_i$ is the $i$th element in $\vect{v}$, we have to prove that $\
 For this, we need to:
 
  1. Interpolate $\phi(X)$ in $O(n\log^2{n})$ field operations and get its coefficients.
- 2. Divide $\phi(X)$ by $X-i$ in $O(n)$ field operations and get a quotient $q_i(X)$ such that $\phi(X)=q_i(X)(X-i) + v_i$ (see the [polynomial remainder theorem](2020/03/16/polynomials-for-crypto.html#the-polynomial-remainder-theorem)).
+ 2. Divide $\phi(X)$ by $X-i$ in $O(n)$ field operations and get a quotient $q_i(X)$ such that $\phi(X)=q_i(X)(X-i) + v_i$ (see the [polynomial remainder theorem](/polynomials#the-polynomial-remainder-theorem)).
  3. Compute a KZG commitment $\pi_i=g^{q_i(\tau)}$ to $q_i(X)$ using an $O(n)$ time multi-exponentiation
 
 The proof will be: 

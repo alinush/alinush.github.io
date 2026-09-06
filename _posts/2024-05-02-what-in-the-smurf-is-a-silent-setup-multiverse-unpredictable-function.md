@@ -63,7 +63,7 @@ First, validate each signature share using the multilinear map (or via a DLEQ $\
 \end{align}
 Second, **re**-aggregate the signature shares and check they yield the same signature $\sigma$ from Equation \ref{eq:example-agg}.
 
-We fully describe this strawman scheme [below](#non-succinct-smurf) and improve it with succinctness [later](#succinct-smurfs) via an **argument of knowledge** (AoK) of signature shares that satisfy Equation \ref{eq:example-ver} and, when aggregated via Equation \ref{eq:example-agg}, yield the threshold VUF.
+We fully describe this strawman scheme [below](#non-succinct-smurf) and improve it with succinctness [later](#succinct-smurf) via an **argument of knowledge** (AoK) of signature shares that satisfy Equation \ref{eq:example-ver} and, when aggregated via Equation \ref{eq:example-agg}, yield the threshold VUF.
 
 {: .warning}
 **Note:** We assume symmetric multilinear maps. 
@@ -74,7 +74,7 @@ Generalizing this to **a**symmetric ones would be interesting.
 
 Recently, there has been increased interest in **silent-setup threshold signatures**: i.e., threshold signatures that avoid DKGs[^DCXplus23e]$^,$[^BGJplus23]$^,$[^GJMplus23e]$^,$[^Lee23e].
 However, _silent-setup_ **unique** _threshold signatures_ have not received much attention.
-(Recall that: unique threshold signature = [threshold VUFs](#unique-signature-schemes-or-verifiable-unpredictable-functions-vufs).)
+(Recall that: unique threshold signature = [threshold VUFs](#verifiable-unpredictable-functions-vufs).)
 
 Part of the reason may be that a silent-setup threshold VUF is actually a **strong primitive**: it implies $n$-party non-interactive key exchange (NIKE).
 Specifically, a $1$-out-of-$n$ silent-setup threshold VUF $=$ an $n$-party NIKE[^guru].
@@ -158,7 +158,7 @@ Aggregates them into:
 {: .info}
 The necessity of an aggregation key AK $\ak$ in the definition is _artificial_.
 An ideal definition would not require this.
-However, because our [succinct SMURF construction](#succinct-smurfs) requires the VKs of all players during aggregation, we rely on an AK to pass in this information.
+However, because our [succinct SMURF construction](#succinct-smurf) requires the VKs of all players during aggregation, we rely on an AK to pass in this information.
 
 $\mathsf{SMURF.ShareSign}(\sk_i, m) \rightarrow \sigma_i$. 
 Computes a **signature share** $\sigma_i$ over $m$ under $\sk_i$.
@@ -185,7 +185,7 @@ Lastly, even though $\mathsf{SMURF.Eval}$ is not a polynomial-time algorithm, th
 
 ## Non-succinct SMURF 
 
-We construct a non-succinct SMURF from multilinear maps, as [intuited above](#idea-bls-with-multilinear-maps).
+We construct a non-succinct SMURF from multilinear maps, as [intuited above](#quick-idea-bls-with-multilinear-maps).
 
 Let $g$ be the generator for $\Gr$, which admits an $n$-multilinear map[^higher-than-n] $e$, as defined [above](#preliminaries).
 We construct a **non-succinct** SMURF as follows:
@@ -208,7 +208,7 @@ $\mathsf{SMURF\_1.AggSig}(\ak, m, (\sigma\_i)\_{i\in T}) \rightarrow \sigma$:
  - $\pi \gets (\sigma_i)_{i\in T}$
 
 {: .warning}
-Just a naive aggregation here. Will fix this in the [succinct construction below](#succinct-smurfs).
+Just a naive aggregation here. Will fix this in the [succinct construction below](#succinct-smurf).
 
 $\mathsf{SMURF\_1.Verify}(\pk, m, \sigma) \rightarrow \\{0,1\\}$:
  - Parse $(\sigma_i)_{i \in T} \gets \pi$
@@ -217,7 +217,7 @@ $\mathsf{SMURF\_1.Verify}(\pk, m, \sigma) \rightarrow \\{0,1\\}$:
  - $\forall i\in T$, assert $\mathsf{SMURF\_1.ShareVer}(\vk_i, m, \sigma_i) \equals 1$
 
 {: .warning}
-Also a naive verification here, which we fix in the [succinct construction below](#succinct-smurfs).
+Also a naive verification here, which we fix in the [succinct construction below](#succinct-smurf).
 
 $\mathsf{SMURF\_1.Derive}(\pk, m, \sigma) \rightarrow y$. 
  - Parse $(\sigma_i)_{i \in T} \gets \pi$

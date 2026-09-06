@@ -176,7 +176,7 @@ So the sum equals $(n-2)/2 + 1/2 = (n-1)/2$, same as before.
 
 ## Opening a Lagrange-basis KZG commitment at a root of unity
 
-When using [KZG](/kzg) to commit to polynomials, we often prefer to work in the [Lagrange basis](#preliminaries) (e.g., [Groth16](/groth16), [DeKART](/dekart)).
+When using [KZG](/kzg) to commit to polynomials, we often prefer to work in the [Lagrange basis](#notation) (e.g., [Groth16](/groth16), [DeKART](/dekart)).
 In this setting, we have the $n$ evaluations of a KZG-committed polynomial $\phi(X)$:
 \begin{align}
     \phi(\omega^0),\ldots,\phi(\omega^{n-1})

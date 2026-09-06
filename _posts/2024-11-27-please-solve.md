@@ -57,7 +57,7 @@ In contrast, KZG proofs were efficiently aggregatable[^TABplus20]$^,$[^GRWZ20] b
  1. is homomorphic, both for proofs and commitments
  1. lacks a trusted setup (or has public parameters sublinearly-sized in the max dictionary size)
 
-(Note that this is slightly harder than the [homomorphic Merkle tree](#efficient-homomorphic-merkle-trees) problem, which only requires bullets 1 and 2.)
+(Note that this is slightly harder than the [homomorphic Merkle tree](#efficient-homomorphic-merkle-herkle-trees) problem, which only requires bullets 1 and 2.)
 
 [^allproofs]: At the time, we devised AMTs for another reason: we wanted to compute proofs faster than $O(n^2)$ time and the FK technique[^FK20] for computing $n$ KZG proofs in $n\log{n}$ time was not known yet.
 

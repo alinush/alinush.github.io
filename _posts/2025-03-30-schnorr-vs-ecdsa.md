@@ -102,7 +102,7 @@ The EdDSA RFC[^eddsa-rfc] also argues, albeit without any justification, that Ed
 This is a nuanced topic, but the cryptographic analysis of Schnorr signatures is much more straightforward than ECDSA's.
 
 A few reasons why:
- - ECDSA security reductions typically make non-standard assumptions about the [conversion function](#the-ecdsa-conversion-problem)
+ - ECDSA security reductions typically make non-standard assumptions about the [conversion function](/ecdsa#the-ecdsa-conversion-function)
  - ...or: work in the generic group model (GGM)
  - ...or: introduce strange assumptions like the _semi-discrete logarithm (SDLP)_ problem
  + In fact, algebraic security reduction for ECDSA _"can only exist if the security reduction is allowed to program the conversion function"_[^HK23e]

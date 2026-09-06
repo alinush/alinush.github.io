@@ -73,7 +73,7 @@ Assumptions **may be off** too.
 
 | Scheme | Year | Code | $\rho$ | $\delta$ | CRS size | Prover | Verifier | Proof size | ZK |
 |--------|------|------|--------|----------|-------|--------|----------|------------|:--:|
-| [Ligero](/ligero)[^AHIV17] | 2017 | RS (interleaved) | $\rho$[^rs-param] | $1-\rho$ | $1$ | $n$ | $\lambda\sqrt{n}$ | $\lambda\sqrt{n}$ | |
+| Ligero[^AHIV17] | 2017 | RS (interleaved) | $\rho$[^rs-param] | $1-\rho$ | $1$ | $n$ | $\lambda\sqrt{n}$ | $\lambda\sqrt{n}$ | |
 | Ligero++[^BFHplus20] | 2020 | RS (interleaved) | $\rho$[^rs-param] | $1-\rho$ | $1$ | $n \log n$ | $\lambda\log^2 n$ | $\lambda\log^2 n$ | |
 | Brakedown[^GLSplus21e] | 2021 | Expander (Spielman) | $\approx 0.65$ | $\approx 0.04$ | $1$ | $n$ | $\lambda\sqrt{n}$ | $\lambda\sqrt{n}$ | |
 | Orion[^XZS22e]$^,$[^HS24e] | 2022 | Spielman (tensor) | $1/4$ | $\approx 0.055$ | $1$ | $n$ | $\lambda\log^2 n$ | $\lambda\log^2 n$ | |
@@ -92,7 +92,7 @@ Assumptions **may be off** too.
 [^lt-param]: Depends on the chosen LT code; any code with constant rate $\rho_0$ and constant distance $\delta_0$ suffices.
 [^bolt-rate]: Bolt supports any desired rate $\rho \in (0,1)$; the distance $\delta(\rho) > 0$ is a constant depending on $\rho$.
 
-[Ligero](/ligero)[^AHIV17] encodes evaluations as a matrix and uses interleaved Reed-Solomon proximity tests.
+Ligero[^AHIV17] encodes evaluations as a matrix and uses interleaved Reed-Solomon proximity tests.
 
 Ligero++[^BFHplus20] composes Ligero's interleaved code testing with an inner product argument (from Aurora) to reduce proof size from $O(\sqrt{n})$ to polylogarithmic; combined with GKR for structured polynomial evaluation, it yields a PCS with $O(\log^2 n)$ verifier.
 

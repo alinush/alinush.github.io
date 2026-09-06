@@ -48,7 +48,7 @@ $</div> <!-- $ -->
 
 ## Introduction
 
-In a short blog post[^Borg20], Borgeaud describes a very simple range proof for a single value $z$, which we summarize [here](borgeauds-unbatched-range-proof).
+In a short blog post[^Borg20], Borgeaud describes a very simple range proof for a single value $z$, which we summarize [here](#borgeauds-unbatched-range-proof).
 In the summer of 2024, we observed that Borgeaud's elegant protocol **very efficiently** extends to batch-proving **many values**[^BDFplus25e].
 This ultimately led to a ZK range proof scheme based on [multilinear polynomials](/mle) and [sumcheck](/sumcheck), which is fully described in our academic paper[^BDFplus25e],
 
@@ -214,7 +214,7 @@ Return the public parameters:
 
 ### $\widetilde{\mathsf{Dekart}}^\mathsf{FFT}.\mathsf{Commit}(\mathsf{prk},z_0,\ldots,z_{n-1}; r)\rightarrow C$
 
-The same as [$\dekartUni.\mathsf{Commit}$](#mathsfdekartmathsffftmathsfcommitmathsfprkz_0ldotsz_n-1-rrightarrow-c), but ignores the extra $\ellTwo{i}$ parameters in the $\prk$, of course.
+The same as [$\dekartUni.\mathsf{Commit}$](#widetildemathsfdekartmathsffftmathsfcommitmathsfprkz_0ldotsz_n-1-rrightarrow-c), but ignores the extra $\ellTwo{i}$ parameters in the $\prk$, of course.
 
 ### $\widetilde{\mathsf{Dekart}}^\mathsf{FFT}.\mathsf{Prove}^{\mathcal{FS}(\cdot)}(\mathsf{prk}, C, \ell; z_0,\ldots,z_{n-1}, r)\rightarrow \pi$
 

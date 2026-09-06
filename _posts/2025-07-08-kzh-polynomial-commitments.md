@@ -77,7 +77,7 @@ $</div> <!-- $_ -->
  - We use $\vect{a}\cdot G\bydef (a_0\cdot G,a_1\cdot G,\ldots, a_{n-1}\cdot G)$
  - We use $a\cdot \G\bydef (a\cdot G_0,a\cdot G_1,\ldots, a\cdot G_{n-1})$
  - We use $\vect{a}\cdot \G \bydef \sum_{i\in[n)} a_i\cdot G_i$
- - Recall the definition of $\eq(\boldsymbol{b};\x)$ Lagrange polynomials from [here](/spartan#mathsfeqmathbfxmathbfb-lagrange-polynomials)
+ - Recall the definition of $\eq(\boldsymbol{b};\x)$ Lagrange polynomials from [here](/mle#lagrange-polynomials)
 {% include prelims-time-complexities-pairings.md %}
  - It is useful to understand [Hyrax](/hyrax), which KZH is highly-related to.
 
