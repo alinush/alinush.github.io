@@ -9,29 +9,6 @@
     <p>{{ _locale_statistics | replace: '[POST_COUNT]', _post_count | replace: '[PAGE_COUNT]', _page_count }}</p>
     <div class="pagination__menu">
       <ul class="menu menu--nowrap">
-        {%- assign _max_show = 5 -%}
-        {%- assign _max_show_modulo_two = _max_show | modulo: 2 -%}
-        {%- assign _length = paginator.total_pages -%}
-        {%- assign _length_mimus_one = _length | minus: 1 -%}
-        {%- assign _cur = paginator.page -%}
-        {%- assign _extra = _max_show | minus: 3 -%}
-        {%- assign _extra_half = _extra | divided_by: 2 -%}
-
-        {%- if  _max_show > 4 and _max_show_modulo_two == 1 and paginator.total_pages > _max_show -%}
-          {%- assign _condition0 = _extra | divided_by: 2 | plus: 1 -%}
-          {%- assign _condition1 = _length | minus: _extra_half  -%}
-          {%- if _cur <= _condition0 -%}
-            {%- assign _n0 = 2 -%}
-            {%- assign _n1 = _extra | plus: 2 -%}
-          {%- elsif _cur >= _condition1 -%}
-            {%- assign _n0 = _length | minus: _extra | minus: 1 -%}
-            {%- assign _n1 = _length | minus: 1 -%}
-          {%- else -%}
-            {%- assign _n0 = _cur | minus: _extra_half -%}
-            {%- assign _n1 = _cur | plus: _extra_half -%}
-          {%- endif -%}
-        {%- endif -%}
-
         {%- if paginator.previous_page -%}
           {%- include snippets/prepend-baseurl.html path=paginator.previous_page_path -%}
           {%- assign _href = __return -%}
@@ -44,42 +21,54 @@
           </div></li>
         {%- endif -%}
 
-        {%- for page in (1.._length) -%}
-          {%- if page == _cur -%}
-            <li>
-              <div class="button button--primary button--circle focus"><span>{{ page }}</span></div>
-            </li>
+        {%- comment -%}
+          jekyll-paginate-v2 nests paginated pages under whatever page
+          declared `pagination: enabled: true` (e.g. /history/page2/, not
+          the classic v1 gem's flat /page2/ at the site root) — so page
+          numbers here have to come from paginator.page_trail/
+          first_page_path/last_page_path (all page-aware) rather than from
+          site.paginate_path or site.paths.home, which assume the old flat,
+          index.html-only layout and silently point at the wrong URL on any
+          other paginated page. Trail window size is set via
+          pagination.trail.before/after in _config.yml.
+        {%- endcomment -%}
+        {%- assign _trail = paginator.page_trail -%}
+        {%- assign _first_trail = _trail | first -%}
+        {%- assign _last_trail = _trail | last -%}
 
-          {%- elsif page == 1 -%}
-            {%- assign _home_path = site.paths.home | default: site.data.variables.default.paths.home -%}
-            {%- include snippets/prepend-baseurl.html path=_home_path -%}
-            {%- assign _href = __return -%}
-            <li>
-              <a class="button button--secondary button--circle" href="{{ _href }}"><span>{{ page }}</span></a>
-            </li>
+        {%- if _first_trail.num > 1 -%}
+          {%- include snippets/prepend-baseurl.html path=paginator.first_page_path -%}
+          <li>
+            <a class="button button--secondary button--circle" href="{{ __return }}"><span>1</span></a>
+          </li>
+          {%- if _first_trail.num > 2 -%}
+            <li><span class="pagination__omit"><i class="fas fa-ellipsis-h"></i></span></li>
+          {%- endif -%}
+        {%- endif -%}
 
+        {%- for trail in _trail -%}
+          {%- if trail.num == paginator.page -%}
+            <li>
+              <div class="button button--primary button--circle focus"><span>{{ trail.num }}</span></div>
+            </li>
           {%- else -%}
-            {%- if _n0 and _n1 -%}
-              {%- if page > 1 and page < _n0 -%}
-                {%- if page == 2 -%}<li><span class="pagination__omit"><i class="fas fa-ellipsis-h"></i></span></li>{%- endif -%}
-              {%- elsif page > _n1 and page < _length -%}
-                {%- if page == _length_mimus_one -%}<li><span class="pagination__omit"><i class="fas fa-ellipsis-h"></i></span></li>{%- endif -%}
-              {%- else -%}
-                {%- include snippets/prepend-baseurl.html path=site.paginate_path -%}
-                {%- assign _href = __return -%}
-                <li>
-                  <a class="button button--secondary button--circle" href="{{ _href | replace: ':num', page }}"><span>{{ page }}</span></a>
-                </li>
-              {%- endif -%}
-            {%- else -%}
-              {%- include snippets/prepend-baseurl.html path=site.paginate_path -%}
-              {%- assign _href = __return -%}
-              <li>
-                <a class="button button--secondary button--circle" href="{{ _href | replace: ':num', page }}"><span>{{ page }}</span></a>
-              </li>
-            {%- endif -%}
+            {%- include snippets/prepend-baseurl.html path=trail.path -%}
+            <li>
+              <a class="button button--secondary button--circle" href="{{ __return }}"><span>{{ trail.num }}</span></a>
+            </li>
           {%- endif -%}
         {%- endfor -%}
+
+        {%- if _last_trail.num < paginator.total_pages -%}
+          {%- assign _second_to_last = paginator.total_pages | minus: 1 -%}
+          {%- if _last_trail.num < _second_to_last -%}
+            <li><span class="pagination__omit"><i class="fas fa-ellipsis-h"></i></span></li>
+          {%- endif -%}
+          {%- include snippets/prepend-baseurl.html path=paginator.last_page_path -%}
+          <li>
+            <a class="button button--secondary button--circle" href="{{ __return }}"><span>{{ paginator.total_pages }}</span></a>
+          </li>
+        {%- endif -%}
 
         {%- if paginator.next_page -%}
           {%- include snippets/prepend-baseurl.html path=paginator.next_page_path -%}

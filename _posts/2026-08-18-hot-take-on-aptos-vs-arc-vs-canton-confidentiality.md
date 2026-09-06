@@ -25,7 +25,7 @@ $</div> <!-- $ -->
 
 ## Aptos
 
- - <span style="color:green">**Good**</span>: Encrypts balances under the owning user's encryption key $\Rightarrow$ no one can see the balance, except the owning user; not validators; not full nodes; not attackers who break into them.
+ - <span style="color:green">**Good**</span>: Encrypts balances under the owning user's encryption key $\Rightarrow$ no one can see the balance, except the owning user -- neither validators nor full nodes.
  - <span style="color:green">**Good**</span>: Encrypts transferred amounts under the sending and receiving users' encryption keys $\Rightarrow$ same guarantees
  - <span style="color:red">**Bad**</span>: Auditing functionality is somewhat restricted
     + Although governance-based auditors get full visibility into transferred amounts and encrypted balances[^available-balances], this is only _after_ auditing is enabled.

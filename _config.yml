@@ -108,13 +108,12 @@ pagination:
   collection: posts
   sort_field: date
   sort_reverse: true
-
-# Not read by jekyll-paginate-v2 itself (that's `pagination.permalink`
-# above) — kept as plain config data because the theme's own
-# _includes/paginator.html (page-number links) still reads
-# site.paginate_path directly, unaware of which pagination plugin (if any)
-# populated it. Keep this in sync with pagination.permalink above.
-paginate_path: /page:num/
+  # Page-number window shown by _includes/paginator.html (via
+  # paginator.page_trail): 2 pages before/after the current one, i.e. 5
+  # visible at once, same as the theme's original hardcoded window.
+  trail:
+    before: 2
+    after: 2
 
 
 ## => Sources
