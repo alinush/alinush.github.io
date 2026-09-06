@@ -7,20 +7,42 @@ sandbox_name="alinush-github-io-jekyll"
 # install every time.
 image="ruby:3.2"
 
+usage() {
+    echo "Usage: $0 --internal-only|--external-only|--all"
+    echo
+    echo "Builds the site and checks it for broken links using html-proofer"
+    echo "(internal) and curl (external), inside the same sbx sandbox"
+    echo "'$sandbox_name' that run-server.sh uses (created if it doesn't"
+    echo "exist yet)."
+    echo
+    echo "  --internal-only  skip external link checks: faster, and avoids"
+    echo "                   needing outbound network access to arbitrary"
+    echo "                   external hosts from the sandbox (see the"
+    echo "                   network-policy notes this prints if an"
+    echo "                   external check gets blocked)"
+    echo "  --external-only  skip internal link checks"
+    echo "  --all            run both"
+}
+
 if [ "$1" = "-h" -o "$1" = "--help" ]; then
-    echo "Usage: $0 [--internal-only]"
-    echo
-    echo "Builds the site and checks it for broken links (internal AND"
-    echo "external, by default) using html-proofer, inside the same sbx"
-    echo "sandbox '$sandbox_name' that run-server.sh uses (created if it"
-    echo "doesn't exist yet)."
-    echo
-    echo "--internal-only skips external link checks: faster, and avoids"
-    echo "needing outbound network access to arbitrary external hosts from"
-    echo "the sandbox (see the network-policy notes this prints if an"
-    echo "external check gets blocked)."
+    usage
     exit
 fi
+
+case "$1" in
+    --internal-only | --external-only | --all)
+        ;;
+    "")
+        echo "ERROR: missing argument." >&2
+        usage >&2
+        exit 1
+        ;;
+    *)
+        echo "ERROR: unrecognized argument '$1'." >&2
+        usage >&2
+        exit 1
+        ;;
+esac
 
 mode="$1"
 
