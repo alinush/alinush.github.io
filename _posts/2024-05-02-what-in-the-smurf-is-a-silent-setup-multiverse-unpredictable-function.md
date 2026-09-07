@@ -314,7 +314,7 @@ Unfortunately, if efficient SMURFs exist (or even their weaker, threshold varian
 
 **Acknowledgements:** Thanks to [Valeria Nikolaenko](https://twitter.com/lera_banda), [Joe Bonneau](https://twitter.com/josephbonneau), [Rex Fernando](https://twitter.com/rex1fernando), [Benny Pinkas](https://twitter.com/bennypinkas), [Dan Boneh](https://crypto.stanford.edu/~dabo/) and [Trisha Datta](https://twitter.com/TrishaCDatta) for reading, providing feedback and brainstorming together!
 
-Big thanks to [Guru Vamsi Policharla](https://twitter.com/gvamsip) for pointing out that $t$-out-of-$n$ silent setup VUFs also imply $(n-t+1)$-NIKE.
+Big thanks to [Guru Vamsi Policharla](https://twitter.com/guruvamsip) for pointing out that $t$-out-of-$n$ silent setup VUFs also imply $(n-t+1)$-NIKE.
 
 ## Appendix: Formalizing SMURFs
 
@@ -444,7 +444,7 @@ Such a trivial scheme is excluded by our **unpredictability** definition.
 
 [^drand]: [https://drand.love/](https://drand.love/)
 [^flow]: [Flow's DKG](https://developers.flow.com/networks/staking/qc-dkg)
-[^guru]: Big thanks to [Guru Vamsi Policharla](https://twitter.com/gvamsip) for this observation during the [3rand workshop](https://hub.supra.com/3rand#home3rand)!
+[^guru]: Big thanks to [Guru Vamsi Policharla](https://twitter.com/guruvamsip) for this observation during the [3rand workshop](https://hub.supra.com/3rand#home3rand)!
 [^higher-than-n]: A multilinear map of size $n' > n$ inputs would also work by forcing the last $n' - n$ inputs to be some predetermined values from a common-reference string.
 [^multiverse]: This gets into the recently-introduced notion of a **multiverse signature scheme**, where players can enter and leave as they please, allowing for any subset of the current $N$ players to form a $t$-out-of-$n$ committee (for any $t,n$ with $n \le N$).
 [^roll]: **Roll with Move: Secure, instant randomness on Aptos**, by Alin Tomescu and Zhuolun Xiang, 2024, [URL](https://aptoslabs.medium.com/roll-with-move-secure-instant-randomness-on-aptos-c0e219df3fb1)

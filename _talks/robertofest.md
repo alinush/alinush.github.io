@@ -14,4 +14,4 @@ slides:
 
 ---
 
-A celebration of [Roberto Tamassia](https://cs.brown.edu/people/rtamassa/)'s work on authenticated data structures over the last 40 years, at [RobertoFest](https://cs.gmu.edu/~evgenios/robertofest/).
+A celebration of [Roberto Tamassia](https://en.wikipedia.org/wiki/Roberto_Tamassia)'s work on authenticated data structures over the last 40 years, at [RobertoFest](https://cs.gmu.edu/~evgenios/robertofest/).

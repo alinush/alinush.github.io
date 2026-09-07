@@ -126,9 +126,8 @@ Hopefully, we will update this post over time with:
     + And when it should _not_ be used
  - Instantiating RSA accumulators over class groups
 
-[^Bd93]: **One-Way Accumulators: A Decentralized Alternative to Digital Signatures**, by Benaloh, Josh and de Mare, Michael, *in EUROCRYPT '93*, 1994
-[^BBF18]: **Batching Techniques for Accumulators with Applications to IOPs and Stateless Blockchains**, by Dan Boneh and Benedikt Bünz and Ben Fisch, *in Cryptology ePrint Archive, Report 2018/1188*, 2018, [[URL]](https://eprint.iacr.org/2018/1188)
-[^LLX07]: **Universal Accumulators with Efficient Nonmembership Proofs**, by Li, Jiangtao and Li, Ninghui and Xue, Rui, *in Applied Cryptography and Network Security*, 2007
-[^SSY01]: **Blind, Auditable Membership Proofs**, by Sander, Tomas and Ta-Shma, Amnon and Yung, Moti, *in Financial Cryptography*, 2001
-[^TXN20e]: **Authenticated Dictionaries with Cross-Incremental Proof (Dis)aggregation**, by Alin Tomescu and Yu Xia and Zachary Newman, *in Cryptology ePrint Archive, Report 2020/1239*, 2020, [[URL]](https://eprint.iacr.org/2020/1239)
-[^Tome20]: **How to Keep a Secret and Share a Public Key (Using Polynomial Commitments)**, by Tomescu, Alin, 2020, [[URL]](https://alinush.github.io/pubs/phd-thesis-mit2020.pdf)
+## References
+
+For cited works, see below 👇👇
+
+{% include refs.md %}

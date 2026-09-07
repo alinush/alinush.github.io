@@ -23,7 +23,7 @@ Most people implement threshold BLS naively, using a $O(t^2)$ algorithm to compu
 We show how to use a faster $O(t\log^2{t})$-time algorithm for this.
 This makes aggregating $(t,n)$ BLS threshold signatures much faster, both at small and large scales.
 
-The question of scaling threshold signatures came to us at [VMware Research](https://research.vmware.com) after we finished working on SBFT[^GAGplus19], a scalable Byzantine Fault Tolerance (BFT) protocol that uses BLS threshold signatures[^BLS04].
+The question of scaling threshold signatures came to us at VMware Research, in 2017, after we finished working on SBFT[^GAGplus19], a scalable Byzantine Fault Tolerance (BFT) protocol that uses BLS threshold signatures[^BLS04].
 
 We recently published our work[^TCZplus20] in [IEEE S&P'20](https://www.ieee-security.org/TC/SP2020/).
 Our work also address how to scale the necessary _distributed key generation (DKG)_ protocol needed to bootstrap a BLS threshold signature scheme.

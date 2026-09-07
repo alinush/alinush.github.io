@@ -328,6 +328,34 @@ if [ "$mode" != "--internal-only" ]; then
         done < <(awk -F'\t' -v u="$url" '$2==u {print $1}' "$links_tsv")
     }
 
+    # Same underlying data as markdown_bullets, grouped the other way
+    # round: one "### [page title](local url)" heading per file, with all
+    # of that file's broken links as plain "- [url](url) (HTTP code)"
+    # bullets underneath — matching the internal-link report's per-file
+    # grouping instead of repeating the same file for every URL.
+    markdown_grouped_by_file() {
+        local -n statuses="$1"
+        local url file title code entries_tsv
+        entries_tsv="$(mktemp)"
+        for url in "${!statuses[@]}"; do
+            while IFS= read -r file; do
+                [ -z "$file" ] && continue
+                printf '%s\t%s\t%s\n' "$file" "$url" "${statuses[$url]}" >> "$entries_tsv"
+            done < <(awk -F'\t' -v u="$url" '$2==u {print $1}' "$links_tsv")
+        done
+        while IFS= read -r file; do
+            [ -z "$file" ] && continue
+            title="$(page_title "$file")"
+            printf -- '### [%s](%s)\n\n' "$title" "$(to_local_url "$file")"
+            while IFS=$'\t' read -r f u code; do
+                [ "$f" = "$file" ] || continue
+                printf -- '- [%s](%s) (HTTP %s)\n' "$u" "$u" "$code"
+            done < "$entries_tsv"
+            printf '\n'
+        done < <(cut -f1 "$entries_tsv" | awk '!seen[$0]++')
+        rm -f "$entries_tsv"
+    }
+
     # Built up as Markdown (not printed straight away) so the exact same
     # content can go both to the terminal and, for --external-only, to the
     # log file below — without re-running anything or piping through tee,
@@ -350,9 +378,7 @@ if [ "$mode" != "--internal-only" ]; then
     fi
     if [ "${#broken[@]}" -gt 0 ]; then
         report+=$'\n'"## Broken links"$'\n\n'
-        for url in "${!broken[@]}"; do
-            report+="$(markdown_bullets "$url" "broken" " (HTTP ${broken[$url]})")"$'\n'
-        done
+        report+="$(markdown_grouped_by_file broken)"
     fi
 
     if [ -n "$report" ]; then

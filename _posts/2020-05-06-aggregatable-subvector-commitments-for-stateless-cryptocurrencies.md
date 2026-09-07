@@ -21,7 +21,7 @@ Our scheme is compatible with recent techniques to aggregate subvector proofs ac
 <!--more-->
 
 This is joint work with [Ittai Abraham](https://twitter.com/ittaia), [Vitalik Buterin](https://twitter.com/VitalikButerin), [Justin Drake](https://twitter.com/drakefjustin), [Dankrad Feist](https://twitter.com/dankrad) and [Dmitry Khovratovich](https://twitter.com/khovr).
-Our **full paper** is available online [here](https://eprint.iacr.org/2020/527), has been recently accepted to [SCN'20](https://scn.unisa.it/), and has been presented [here](https://www.youtube.com/watch?v=Yzs6DEVFTLM) (25 minutes) and [here](https://www.youtube.com/watch?v=KGRnpjPjduI&list=PLj80z0cJm8QHm_9BdZ1BqcGbgE-BEn-3Y&index=22&t=0s) (1 hour).
+Our **full paper** is available online [here](https://eprint.iacr.org/2020/527), has been recently accepted to SCN'20, and has been presented [here](https://www.youtube.com/watch?v=Yzs6DEVFTLM) (25 minutes) and [here](https://www.youtube.com/watch?v=KGRnpjPjduI&list=PLj80z0cJm8QHm_9BdZ1BqcGbgE-BEn-3Y&index=22&t=0s) (1 hour).
 You can find the slides in [this GitHub repo](https://github.com/alinush/asvc-talk).
 
 **A little backstory:**

@@ -146,6 +146,8 @@
 
 [^AJJM20e]: **Multi-key Fully-Homomorphic Encryption in the Plain Model**, by Prabhanjan Ananth and Abhishek Jain and ZhengZhong Jin and Giulio Malavolta, *in Cryptology ePrint Archive, Paper 2020/180*, 2020, [[URL]](https://eprint.iacr.org/2020/180)
 
+[^AJMplus21]: **Reaching Consensus for Asynchronous Distributed Key Generation**, by Abraham, Ittai and Jovanovic, Philipp and Maller, Mary and Meiklejohn, Sarah and Stern, Gilad and Tomescu, Alin, *in Proceedings of the 2021 ACM Symposium on Principles of Distributed Computing*, 2021, [[URL]](http://dx.doi.org/10.1145/3465084.3467914)
+
 [^AJMplus22e]: **Bingo:  Adaptively Secure Packed Asynchronous Verifiable Secret Sharing and Asynchronous Distributed Key Generation**, by Ittai Abraham and Philipp Jovanovic and Mary Maller and Sarah Meiklejohn and Gilad Stern, *in Cryptology ePrint Archive, Paper 2022/1759*, 2022, [[URL]](https://eprint.iacr.org/2022/1759)
 
 [^AJOR18]: **Improved (Almost) Tightly-Secure Simulation-Sound QA-NIZK with Applications**, by Abe, Masayuki and Jutla, Charanjit S. and Ohkubo, Miyako and Roy, Arnab, *in Advances in Cryptology -- ASIACRYPT 2018*, 2018
@@ -249,6 +251,8 @@
 [^BBDE19e]: **Updatable Anonymous Credentials and Applications to Incentive Systems**, by Johannes Blömer and Jan Bobolz and Denis Diemert and Fabian Eidens, *in Cryptology ePrint Archive, Paper 2019/169*, 2019, [[URL]](https://eprint.iacr.org/2019/169)
 
 [^BBDP01]: **Key-Privacy in Public-Key Encryption**, by Bellare, Mihir and Boldyreva, Alexandra and Desai, Anand and Pointcheval, David, *in Advances in Cryptology --- ASIACRYPT 2001*, 2001
+
+[^BBFplus25e]: **hax: Verifying Security-Critical Rust Software using Multiple Provers**, by Karthikeyan Bhargavan and Maxime Buyse and Lucas Franceschino and Lasse Letager Hansen and Franziskus Kiefer and Jonas Schneider-Bensch and Bas Spitters, *in Cryptology {ePrint} Archive, Paper 2025/142*, 2025, [[URL]](https://eprint.iacr.org/2025/142)
 
 [^BBF18A]: **A Survey of Two Verifiable Delay Functions**, by Dan Boneh and Benedikt Bünz and Ben Fisch, *in Cryptology ePrint Archive, Report 2018/712*, 2018, [[URL]](https://eprint.iacr.org/2018/712)
 
@@ -1274,6 +1278,8 @@
 
 [^CP93]: **Transferred Cash Grows in Size**, by Chaum, David and Pedersen, Torben Pryds, *in Advances in Cryptology --- EUROCRYPT' 92*, 1993
 
+[^CPDplus24]: **Stealing Part of a Production Language Model**, by Nicholas Carlini and Daniel Paleka and Krishnamurthy Dj Dvijotham and Thomas Steinke and Jonathan Hayase and A. Feder Cooper and Katherine Lee and Matthew Jagielski and Milad Nasr and Arthur Conmy and Itay Yona and Eric Wallace and David Rolnick and Florian Tramèr, 2024, [[URL]](https://arxiv.org/abs/2403.06634)
+
 [^CPKplus18]: **FASTER: A Concurrent Key-Value Store with In-Place Updates**, by Badrish Chandramouli and Guna Prasaad and Donald Kossmann and Justin Levandoski and James Hunter and Mike Barnett, *in Proceedings of the 2018 International Conference on Management of Data*, 2018, [[URL]](https://doi.org/10.1145%2F3183713.3196898)
 
 [^CPP06]: **Encoding-Free ElGamal Encryption Without Random Oracles**, by Chevallier-Mames, Benoît and Paillier, Pascal and Pointcheval, David, *in Public Key Cryptography - PKC 2006*, 2006
@@ -1550,6 +1556,8 @@
 
 [^DPTX24e]: **Distributed Randomness using Weighted VRFs**, by Sourav Das and Benny Pinkas and Alin Tomescu and Zhuolun Xiang, *in Cryptology ePrint Archive, Paper 2024/198*, 2024, [[URL]](https://eprint.iacr.org/2024/198)
 
+[^DPTX25]: **Distributed Randomness Using Weighted VUFs**, by Das, Sourav and Pinkas, Benny and Tomescu, Alin and Xiang, Zhuolun, *in Advances in Cryptology – EUROCRYPT 2025*, 2025, [[URL]](http://dx.doi.org/10.1007/978-3-031-91098-2_12)
+
 [^DPVplus18]: **Aggregation-Based Gossip for Certificate Transparency**, by Rasmus Dahlberg and Tobias Pulls and Jonathan Vestin and Toke Høiland-Jørgensen and Andreas Kassler, *in CoRR*, 2018, [[URL]](http://arxiv.org/abs/1806.08817)
 
 [^DR21]: **Unlinkable Updatable Hiding Databases and Privacy-Preserving Loyalty Programs**, by Aditya Damodaran and Alfredo Rial, *in Proceedings on Privacy Enhancing Technologies*, 2021, [[URL]](https://doi.org/10.2478/popets-2021-0039)
@@ -1595,6 +1603,8 @@
 [^DXR22e]: **Powers of Tau in Asynchrony**, by Sourav Das and Zhuolun Xiang and Ling Ren, *in Cryptology {ePrint} Archive, Paper 2022/1683*, 2022, [[URL]](https://eprint.iacr.org/2022/1683)
 
 [^DXTplus23e]: **A New Paradigm for Verifiable Secret Sharing**, by Sourav Das and Zhuolun Xiang and Alin Tomescu and Alexander Spiegelman and Benny Pinkas and Ling Ren, *in Cryptology ePrint Archive, Paper 2023/1196*, 2023, [[URL]](https://eprint.iacr.org/2023/1196)
+
+[^DXTplus25]: **Verifiable Secret Sharing Simplified**, by Das, Sourav and Xiang, Zhuolun and Tomescu, Alin and Spiegelman, Alexander and Pinkas, Benny and Ren, Ling, *in 2025 IEEE Symposium on Security and Privacy (SP)*, 2025, [[URL]](http://dx.doi.org/10.1109/SP61157.2025.00046)
 
 [^DY05]: **A Verifiable Random Function with Short Proofs and Keys**, by Dodis, Yevgeniy and Yampolskiy, Aleksandr, *in Public Key Cryptography - PKC 2005*, 2005
 
@@ -1696,7 +1706,7 @@
 
 [^Elga85]: **A public key cryptosystem and a signature scheme based on discrete logarithms**, by Elgamal, T., *in IEEE Transactions on Information Theory*, 1985
 
-[^Eric15]: **Static-to-dynamic tranformations**, by Jeff Erickson, 2015, [[URL]](http://jeffe.cs.illinois.edu/teaching/datastructures/notes/01-statictodynamic.pdf)
+[^Eric15]: **Static-to-dynamic tranformations**, by Jeff Erickson, 2015, [[URL]](https://alinush.github.io/mirroring/02-static-to-dynamic.pdf)
 
 [^Esk20]: **Fast Privacy-Preserving Punch Cards**, by Saba Eskandarian, 2020
 
@@ -1865,6 +1875,8 @@
 [^GGPR13]: **Quadratic Span Programs and Succinct NIZKs without PCPs**, by Gennaro, Rosario and Gentry, Craig and Parno, Bryan and Raykova, Mariana, *in Advances in Cryptology -- EUROCRYPT 2013*, 2013
 
 [^GGW23e]: **How to Prove Statements Obliviously?**, by Sanjam Garg and Aarushi Goel and Mingyuan Wang, *in Cryptology {ePrint} Archive, Paper 2023/1609*, 2023, [[URL]](https://eprint.iacr.org/2023/1609)
+
+[^GHAplus21e]: **No-Commit Proofs: Defeating Livelock in {BFT**, by Neil Giridharan and Heidi Howard and Ittai Abraham and Natacha Crooks and Alin Tomescu, *in Cryptology {ePrint} Archive, Paper 2021/1308*, 2021, [[URL]](https://eprint.iacr.org/2021/1308)
 
 [^GHKplus24e]: **VRaaS}: Verifiable Randomness as a Service on Blockchains**, by Jacob Gorman and Lucjan Hanzlik and Aniket Kate and Easwar Vivek Mangipudi and Pratyay Mukherjee and Pratik Sarkar and Sri AravindaKrishnan Thyagarajan, *in Cryptology ePrint Archive, Paper 2024/957*, 2024, [[URL]](https://eprint.iacr.org/2024/957)
 
@@ -3206,7 +3218,7 @@
 
 [^Pall19]: **Sign in with Google to your Identity Contract (for fun and proﬁt)**, by Santiago Palladino, 2019, [[URL]](https://forum.openzeppelin.com/t/sign-in-with-google-to-your-identity-contract-for-fun-and-profit/1631)
 
-[^Papa11]: **Cryptography for Efficiency: New Directions in Authenticated Data Structures**, by Charalampos Papamanthou, 2011, [[URL]](https://user.eng.umd.edu/~cpap/published/theses/cpap-phd.pdf)
+[^Papa11]: **Cryptography for Efficiency: New Directions in Authenticated Data Structures**, by Charalampos Papamanthou, 2011, [[URL]](https://alinush.github.io/mirroring/papamanthou-phd-thesis.pdf)
 
 [^Pass21]: **A Tutorial on Concurrent Zero Knowledge**, by Rafael Pass, *in Cryptology ePrint Archive, Report 2021/615*, 2021, [[URL]](https://eprint.iacr.org/2021/615)
 
@@ -3590,6 +3602,8 @@
 
 [^Spie95]: **Linear-time encodable and decodable error-correcting codes**, by Spielman, Daniel A., *in Proceedings of the twenty-seventh annual ACM symposium on Theory of computing  - STOC ’95*, 1995, [[URL]](http://dx.doi.org/10.1145/225058.225165)
 
+[^Spit26e]: **CatCrypt}: From Rust to Cryptographic Security in Lean**, by Bas Spitters, *in Cryptology {ePrint} Archive, Paper 2026/604*, 2026, [[URL]](https://eprint.iacr.org/2026/604)
+
 [^Srin10]: **New Security Notions for Identity Based Encryption**, by Sriramkrishnan Srinivasan, 2010, [[URL]](https://www.isg.rhul.ac.uk/~kp/theses/SSthesis.pdf)
 
 [^Stad96]: **Publicly Verifiable Secret Sharing**, by Stadler, Markus, *in EUROCRYPT '96*, 1996
@@ -3779,6 +3793,8 @@
 [^WSCplus23e]: **Practical Security Analysis of Zero-Knowledge Proof Circuits**, by Hongbo Wen and Jon Stephens and Yanju Chen and Kostas Ferles and Shankara Pailoor and Kyle Charbonnet and Isil Dillig and Yu Feng, *in Cryptology {ePrint} Archive, Paper 2023/190*, 2023, [[URL]](https://eprint.iacr.org/2023/190)
 
 [^WSRplus15]: **Efficient RAM and control flow in verifiable outsourced computation**, by Wahby, Riad S. and Setty, Srinath and Ren, Zuocheng and Blumberg, Andrew J. and Walfish, Michael, *in Network & Distributed System Security Symposium (NDSS)*, 2015, [[URL]](https://www.microsoft.com/en-us/research/publication/efficient-ram-and-control-flow-in-verifiable-outsourced-computation/)
+
+[^WST12]: **PrivateFS: a parallel oblivious file system**, by Williams, Peter and Sion, Radu and Tomescu, Alin, *in Proceedings of the 2012 ACM conference on Computer and communications security*, 2012, [[URL]](http://dx.doi.org/10.1145/2382196.2382299)
 
 [^WSVZ24e]: **$\mathsf{Cirrus}$: Performant and Accountable Distributed {SNARK**, by Wenhao Wang and Fangyan Shi and Dani Vilardell and Fan Zhang, *in Cryptology {ePrint} Archive, Paper 2024/1873*, 2024, [[URL]](https://eprint.iacr.org/2024/1873)
 

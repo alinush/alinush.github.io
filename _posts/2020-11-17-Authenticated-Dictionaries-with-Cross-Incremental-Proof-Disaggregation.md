@@ -326,7 +326,7 @@ As always, see our full paper for details[^TXN20e].
 [^ct]: **Certificate Transparency**, by Google, [[URL]](https://www.certificate-transparency.org/)
 [^CF13e]: **Vector Commitments and their Applications**, by Dario Catalano and Dario Fiore, *in Cryptology ePrint Archive, Report 2011/495*, 2011, [[URL]](https://eprint.iacr.org/2011/495)
 [^CFGplus20e]: **Vector Commitment Techniques and Applications to Verifiable Decentralized Storage**, by Matteo Campanelli and  Dario Fiore and Nicola Greco and  Dimitris Kolonelos and  Luca Nizzardo, 2020, [[URL]](https://eprint.iacr.org/2020/149)
-[^Feis20Multi]: **Multi-layer hashmaps for state storage**, by Dankrad Feist, 2020, [[URL]](https://ethresear.ch/t/multi-layer-hashmaps-for-state-storage/7211/print)
+[^Feis20Multi]: **Multi-layer hashmaps for state storage**, by Dankrad Feist, 2020, [[URL]](https://ethresear.ch/t/multi-layer-hashmaps-for-state-storage/7211)
 [^FDPplus14]: **Hey, NSA: Stay Away from My Market! Future Proofing App Markets against Powerful Attackers**, by Fahl, Sascha and Dechand, Sergej and Perl, Henning and Fischer, Felix and Smrcek, Jaromir and Smith, Matthew, *in Proceedings of the 2014 ACM SIGSAC Conference on Computer and Communications Security*, 2014, [[URL]](https://doi.org/10.1145/2660267.2660311)
 [^GRWZ20e]: **Pointproofs: Aggregating Proofs for Multiple Vector Commitments**, by Sergey Gorbunov and Leonid Reyzin and Hoeteck Wee and Zhenfei Zhang, 2020, [[URL]](https://eprint.iacr.org/2020/419)
 [^LGGplus20]: **Aardvark: A Concurrent Authenticated Dictionary with Short Proofs**, by Derek Leung and Yossi Gilad and Sergey Gorbunov and Leonid Reyzin and Nickolai Zeldovich, *in Cryptology ePrint Archive, Report 2020/975*, 2020, [[URL]](https://eprint.iacr.org/2020/975)

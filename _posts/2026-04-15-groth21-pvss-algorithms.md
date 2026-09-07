@@ -652,7 +652,7 @@ For DFINITY's parameters ($n=40$, $m=16$, $B=2^{16}$, $E=256$, $\ell=32$, $\lamb
 
 #### Implementation
 
-A working Rust implementation of this attack against the DFINITY parameterization is in [`alinush/groth21`](https://github.com/alinush/groth21) under `src/groth21/malicious.rs`, with a test `malicious_deal_passes_verification` confirming the transcript clears the Groth21 verifier.
+A working Rust implementation of this attack against the DFINITY parameterization is in [`alinush/groth21-rs`](https://github.com/alinush/groth21-rs) under `src/groth21/malicious.rs`, with a test `malicious_deal_passes_verification` confirming the transcript clears the Groth21 verifier.
 
 ### Attack: Inflate $m$ chunks to $\approx 2\ell nB$
 {: #malicious-all-chunk-inflation}
@@ -698,7 +698,7 @@ Applying this to share 1's $m$ chunks:
 
 #### Implementation
 
-This variant is implemented in [`alinush/groth21`](https://github.com/alinush/groth21) as `malicious_deal_full_share` in `src/groth21/malicious.rs`, with a test `malicious_deal_full_share_passes_verification` confirming the transcript clears the Groth21 verifier.
+This variant is implemented in [`alinush/groth21-rs`](https://github.com/alinush/groth21-rs) as `malicious_deal_full_share` in `src/groth21/malicious.rs`, with a test `malicious_deal_full_share_passes_verification` confirming the transcript clears the Groth21 verifier.
 
 ## References
 

@@ -283,7 +283,7 @@ Don't forget to compare to more secure solutions such as [Merkle tries](#probabl
 
 ---
 
-[^alnoki]: Shoutout to [Alnoki](https://github.com/alnoki), the cofounder of [Econia Labs](https://www.econialabs.com/) who brought crit-bit trees to my attention.
+[^alnoki]: Shoutout to [Alnoki](https://github.com/alnoki), the cofounder of Econia Labs, who brought critbit trees to my attention.
 [^bst-def]: Note that a [binary-search tree (BST)](https://en.wikipedia.org/wiki/Binary_search_tree) is a tree where all left descendants of a node are smaller than that node & all right descendants of a node are greater than that node. Importantly, trees with sorted leaves are not conceptualized as binary search trees, since their data is stored in the leaves, not in the internal nodes.
 
 {% include refs.md %}
