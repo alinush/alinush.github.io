@@ -37,11 +37,26 @@ $</div> <!-- $ -->
  - [Aeneas](https://github.com/AeneasVerif/aeneas): translation from Rust's MIR internal language to a pure lambda calculus
     + Often [used to "compile" a subset of Rust to Lean](https://lean-lang.org/use-cases/aeneas/)
 
+## Logic
+
+ - [Propositional logic](https://en.wikipedia.org/wiki/Propositional_logic), $p \wedge \neg p$ type of thing; no quantifiers; no predicates
+ - [First-order logic](https://en.wikipedia.org/wiki/First-order_logic), $\exists y, \forall x, P(x, y)$; quantifiers and predicates
+ - [Second-order logic](https://en.wikipedia.org/wiki/Second-order_logic), $\exists P, \forall x. P(x)$; more expressive than first-order logic (quantifies over predicates too)
+
+## Docs
+
+ - [mathlib4 docs](https://leanprover-community.github.io/mathlib4_docs/)
+ - [LeanSearch](https://leansearch.net/?q=is+sorted+array)
+ - [Loogle](https://loogle.lean-lang.org/?q=sort)
+
 ## Misc
 
  - [CSLib](https://www.cslib.io/)
  - [lean4-skills](https://github.com/cameronfreer/lean4-skills)
  - [Lean game server](https://adam.math.hhu.de/)
+ - [Hitchhiker's guide to formal verification](https://raw.githubusercontent.com/blanchette/logical_verification_2023/main/hitchhikers_guide.pdf) [in Lean]
+ - [Lean metaprogramming](https://leanprover-community.github.io/lean4-metaprogramming-book/)
+ - [Insertion sort in Lean with termination proof](https://lean-lang.org/functional_programming_in_lean/Programming___-Proving___-and-Performance/Insertion-Sort-and-Array-Mutation/)
  - [Tutorial: Introduction to Formal Verification with Lean (Part 1)](https://hashcloak.com/blog/tutorial-introduction-to-formal-verification-with-lean-(part-1))
  - [From Prompts to Protocols: lean4-skills for AI-Assisted Lean Formalization](https://cameronfreer.github.io/slides/202608-aitp/#/title)
 
