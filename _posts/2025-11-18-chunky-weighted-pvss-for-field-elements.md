@@ -895,7 +895,7 @@ cd crates/aptos-crypto/benches/
 ### Chunky v. Golden
 
 This subsection just pulls the **Chunky** and **Golden (miden)** rows out of the full benchmarks table above and puts them next to each other, so Chunky's performance relative to Golden is easier to spot without Groth21, GHL21e and cgVSS rows in between.
-(The percentages next to each Golden number are the same "how many times bigger/slower than Chunky" ratios shown above.)
+(The percentages next to each Golden number are the same "how much better/worse than Chunky" ratios shown above.)
 
 <style>
 #chunky-golden-table tbody tr:nth-child(2n+1) { border-top: 3px solid #555; }
