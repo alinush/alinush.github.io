@@ -861,6 +861,37 @@ cd crates/aptos-crypto/benches/
 ./run-pvss-benches.sh
 ```
 
+### Chunky v. Golden
+
+This subsection just pulls the **Chunky** and **Golden** rows out of the full benchmarks table above and puts them next to each other, so Chunky's performance relative to Golden is easier to spot without Groth21, GHL21e and cgVSS rows in between.
+(The percentages next to each Golden number are the same "how many times bigger/slower than Chunky" ratios shown above.)
+
+<style>
+#chunky-golden-table tbody tr:nth-child(2n+1) { border-top: 3px solid #555; }
+</style>
+
+{: #chunky-golden-table}
+| Scheme | $t$ | $n$ | Transcript size | Deal (ms) | Verify (ms) |
+|--------|-----|-----|-----------------|-----------|-------------|
+| **Chunky ($\ell = 32$)** | 3 | 4 | 8.50 KiB | 12.49 | <span style="color:#15803d; font-weight:700">3.63</span> |
+| Golden | 3 | 4 | <span style="color:#15803d; font-weight:700">2.66 KiB</span> (3.20x) | <span style="color:#dc2626">7,567</span> (606x) | <span style="color:#dc2626">6.00</span> (1.65x) |
+| **Chunky ($\ell = 32$)** | 6 | 8 | 12.90 KiB |     19.99 |        <span style="color:#15803d; font-weight:700">4.73</span> |
+| Golden | 6 | 8 | <span style="color:#15803d; font-weight:700">5.29 KiB</span> (2.44x) | <span style="color:#dc2626">15,031</span> (752x) | <span style="color:#dc2626">11.58</span> (2.45x) |
+| **Chunky ($\ell = 32$)** | 11 | 16 | 21.71 KiB |     34.61 |       <span style="color:#15803d; font-weight:700">6.69</span> |
+| Golden | 11 | 16 | <span style="color:#15803d; font-weight:700">10.50 KiB</span> (2.07x) | <span style="color:#dc2626">30,050</span> (868x) | <span style="color:#dc2626">22.95</span> (3.43x) |
+| **Chunky ($\ell = 32$)** | 22 | 32 | 39.32 KiB |     63.06 |       <span style="color:#15803d; font-weight:700">10.57</span> |
+| Golden | 22 | 32 | <span style="color:#15803d; font-weight:700">20.97 KiB</span> (1.87x) | <span style="color:#dc2626">59,612</span> (945x) | <span style="color:#dc2626">45.70</span> (4.32x) |
+| **Chunky ($\ell = 32$)** | 43 | 64 | 74.54 KiB |    119.46 |       <span style="color:#15803d; font-weight:700">16.90</span> |
+| Golden | 43 | 64 | <span style="color:#15803d; font-weight:700">41.88 KiB</span> (1.78x) | <span style="color:#dc2626">119,360</span> (999x) | <span style="color:#dc2626">93.22</span> (5.52x) |
+| **Chunky ($\ell = 32$)** | 86 | 128 | 144.98 KiB |    232.74 |       <span style="color:#15803d; font-weight:700">29.76</span> |
+| Golden | 86 | 128 | <span style="color:#15803d; font-weight:700">83.72 KiB</span> (1.73x) | <span style="color:#dc2626">243,503</span> (1046x) | <span style="color:#dc2626">181.22</span> (6.09x) |
+| **Chunky ($\ell = 32$)** | 171 | 256 | 285.85 KiB |    471.83 |       <span style="color:#15803d; font-weight:700">51.38</span> |
+| Golden | 171 | 256 | <span style="color:#15803d; font-weight:700">167.38 KiB</span> (1.71x) | <span style="color:#dc2626">447,822</span> (949x) | <span style="color:#dc2626">343.76</span> (6.69x) |
+| **Chunky ($\ell = 32$)** | 342 | 512 | 567.60 KiB | 941.18 | <span style="color:#15803d; font-weight:700">93.72</span> |
+| Golden | 342 | 512 | <span style="color:#15803d; font-weight:700">334.72 KiB</span> (1.70x) | <span style="color:#dc2626">836,448</span> (889x) | <span style="color:#dc2626">676.44</span> (7.22x) |
+| **Chunky ($\ell = 32$)** | 683 | 1024 | 1,131.10 KiB | 1,825.50 | <span style="color:#15803d; font-weight:700">170.23</span> |
+| Golden | 683 | 1024 | <span style="color:#15803d; font-weight:700">669.38 KiB</span> (1.69x) | <span style="color:#dc2626">1,673,056</span> (916x) | <span style="color:#dc2626">1,346.11</span> (7.91x) |
+
 ### Golden notes
 
 To reproduce the **Golden** numbers, clone [`alinush/fy`](https://github.com/alinush/fy) and run:
