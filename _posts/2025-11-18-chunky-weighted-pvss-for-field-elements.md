@@ -782,83 +782,100 @@ See [Golden notes](#golden-notes) for the exact reproduction steps.
 <style>
 /* Thick top border above every Chunky row to visually separate groups */
 #full-benchmarks-table tbody tr:nth-child(8n+1) { border-top: 3px solid #555; }
+/* Rank heatmap. Within each (t,n) group, each column is ranked and coloured
+   .hm1 (smallest/fastest) .. .hm8 (biggest/slowest).
+   Orientation: bright = low value (fast/small), dark = high value (slow/big).
+   Palette: viridis -- perceptually uniform, CVD-safe, monotonic lightness.
+   Best in group is bold, worst is italic; the rest are regular weight. */
+#full-benchmarks-table .hm { display: inline-block; padding: 2px 7px;
+  border-radius: 5px; }
+#full-benchmarks-table .hm1 { font-weight: 700; }
+#full-benchmarks-table .hm8 { font-style: italic; }
+#full-benchmarks-table .hm1 { background: #fde725; color: #1f2328; }
+#full-benchmarks-table .hm2 { background: #a0da39; color: #1f2328; }
+#full-benchmarks-table .hm3 { background: #4ac16d; color: #1f2328; }
+#full-benchmarks-table .hm4 { background: #1fa187; color: #1f2328; }
+#full-benchmarks-table .hm5 { background: #277f8e; color: #ffffff; }
+#full-benchmarks-table .hm6 { background: #365c8d; color: #ffffff; }
+#full-benchmarks-table .hm7 { background: #46327e; color: #ffffff; }
+#full-benchmarks-table .hm8 { background: #440154; color: #ffffff; }
 </style>
 
 {: #full-benchmarks-table}
 | Scheme | $t$ | $n$ | Transcript size | Deal (ms) | Verify (ms) |
 |--------|-----|-----|-----------------|-----------|-------------|
-| **Chunky ($\ell = 32$)** | 3 | 4 | 8.50 KiB | 12.49 | <span style="color:#15803d; font-weight:700">3.63</span> |
-| Groth21 ($\ell = 8$) | 3 | 4 | <span style="color:#dc2626">13.09 KiB</span> (1.54x) | <span style="color:#dc2626">21.5</span> (1.72x) | <span style="color:#dc2626">11.1</span> (3.05x) |
-| Groth21 ($\ell = 16$) | 3 | 4 | <span style="color:#dc2626">9.34 KiB</span> (1.10x) | <span style="color:#dc2626">15.1</span> (1.21x) | <span style="color:#dc2626">10.4</span> (2.86x) |
-| Groth21 ($\ell = 32$) | 3 | 4 | <span style="color:#15803d; font-weight:700">7.46 KiB</span> (0.88x) | <span style="color:#15803d; font-weight:700">11.9</span> (0.95x) | <span style="color:#dc2626">7.9</span> (2.17x) |
-| Golden (miden) | 3 | 4 | <span style="color:#15803d; font-weight:700">2.47 KiB</span> (3.44x) | <span style="color:#dc2626">200.19</span> (16.03x) | <span style="color:#dc2626">27.67</span> (7.62x) |
-| Golden (fy) | 3 | 4 | <span style="color:#15803d; font-weight:700">2.66 KiB</span> (3.20x) | <span style="color:#dc2626">7,567</span> (606x) | <span style="color:#dc2626">6.00</span> (1.65x) |
-| [GHL21e][^GHL21e] | 3 | 4 | <span style="color:#dc2626">176.69 KiB</span> (20.8x) | <span style="color:#dc2626">5,512</span> (441x) | <span style="color:#dc2626">455</span> (125x) |
-| cgVSS[^KMMplus23e] | 3 | 4 | <span style="color:#15803d; font-weight:700">2.95 KiB</span> (2.88x) | <span style="color:#dc2626">44.36</span> (3.55x) | <span style="color:#dc2626">47.46</span> (13.07x) |
-| **Chunky ($\ell = 32$)** | 6 | 8 | 12.90 KiB |     19.99 |        <span style="color:#15803d; font-weight:700">4.73</span> |
-| Groth21 ($\ell = 8$) | 6 | 8 | <span style="color:#dc2626">20.15 KiB</span> (1.56x) | <span style="color:#dc2626">36.4</span> (1.82x) | <span style="color:#dc2626">18.0</span> (3.81x) |
-| Groth21 ($\ell = 16$) | 6 | 8 | <span style="color:#dc2626">13.40 KiB</span> (1.04x) | <span style="color:#dc2626">23.7</span> (1.19x) | <span style="color:#dc2626">16.0</span> (3.38x) |
-| Groth21 ($\ell = 32$) | 6 | 8 | <span style="color:#15803d; font-weight:700">10.02 KiB</span> (0.78x) | <span style="color:#15803d; font-weight:700">17.6</span> (0.88x) | <span style="color:#dc2626">10.9</span> (2.30x) |
-| Golden (miden) | 6 | 8 | <span style="color:#15803d; font-weight:700">3.02 KiB</span> (4.27x) | <span style="color:#dc2626">633.61</span> (31.70x) | <span style="color:#dc2626">83.54</span> (17.66x) |
-| Golden (fy) | 6 | 8 | <span style="color:#15803d; font-weight:700">5.29 KiB</span> (2.44x) | <span style="color:#dc2626">15,031</span> (752x) | <span style="color:#dc2626">11.58</span> (2.45x) |
-| [GHL21e][^GHL21e] | 6 | 8 | <span style="color:#dc2626">178.12 KiB</span> (13.8x) | <span style="color:#dc2626">5,607</span> (280x) | <span style="color:#dc2626">468</span> (98.9x) |
-| cgVSS[^KMMplus23e] | 6 | 8 | <span style="color:#15803d; font-weight:700">5.14 KiB</span> (2.51x) | <span style="color:#dc2626">48.48</span> (2.43x) | <span style="color:#dc2626">56.50</span> (11.95x) |
-| **Chunky ($\ell = 32$)** | 11 | 16 | 21.71 KiB |     34.61 |       <span style="color:#15803d; font-weight:700">6.69</span> |
-| Groth21 ($\ell = 8$) | 11 | 16 | <span style="color:#dc2626">34.27 KiB</span> (1.58x) | <span style="color:#dc2626">64.3</span> (1.86x) | <span style="color:#dc2626">30.7</span> (4.59x) |
-| Groth21 ($\ell = 16$) | 11 | 16 | <span style="color:#15803d; font-weight:700">21.52 KiB</span> (0.99x) | <span style="color:#dc2626">41.0</span> (1.18x) | <span style="color:#dc2626">27.3</span> (4.07x) |
-| Groth21 ($\ell = 32$) | 11 | 16 | <span style="color:#15803d; font-weight:700">15.15 KiB</span> (0.70x) | <span style="color:#15803d; font-weight:700">28.0</span> (0.81x) | <span style="color:#dc2626">17.5</span> (2.61x) |
-| Golden (miden) | 11 | 16 | <span style="color:#15803d; font-weight:700">3.82 KiB</span> (5.69x) | <span style="color:#dc2626">1,266.78</span> (36.60x) | <span style="color:#dc2626">162.93</span> (24.35x) |
-| Golden (fy) | 11 | 16 | <span style="color:#15803d; font-weight:700">10.50 KiB</span> (2.07x) | <span style="color:#dc2626">30,050</span> (868x) | <span style="color:#dc2626">22.95</span> (3.43x) |
-| [GHL21e][^GHL21e] | 11 | 16 | <span style="color:#dc2626">180.94 KiB</span> (8.33x) | <span style="color:#dc2626">6,002</span> (173x) | <span style="color:#dc2626">591</span> (88.3x) |
-| cgVSS[^KMMplus23e] | 11 | 16 | <span style="color:#15803d; font-weight:700">9.49 KiB</span> (2.29x) | <span style="color:#dc2626">57.24</span> (1.65x) | <span style="color:#dc2626">67.85</span> (10.14x) |
-| **Chunky ($\ell = 32$)** | 22 | 32 | 39.32 KiB |     63.06 |       <span style="color:#15803d; font-weight:700">10.57</span> |
-| Groth21 ($\ell = 8$) | 22 | 32 | <span style="color:#dc2626">62.52 KiB</span> (1.59x) | <span style="color:#dc2626">121.8</span> (1.93x) | <span style="color:#dc2626">54.6</span> (5.17x) |
-| Groth21 ($\ell = 16$) | 22 | 32 | <span style="color:#15803d; font-weight:700">37.77 KiB</span> (0.96x) | <span style="color:#dc2626">72.6</span> (1.15x) | <span style="color:#dc2626">48.2</span> (4.56x) |
-| Groth21 ($\ell = 32$) | 22 | 32 | <span style="color:#15803d; font-weight:700">25.40 KiB</span> (0.65x) | <span style="color:#15803d; font-weight:700">48.2</span> (0.76x) | <span style="color:#dc2626">29.1</span> (2.76x) |
-| Golden (miden) | 22 | 32 | <span style="color:#15803d; font-weight:700">5.34 KiB</span> (7.36x) | <span style="color:#dc2626">2,636.35</span> (41.81x) | <span style="color:#dc2626">354.14</span> (33.50x) |
-| Golden (fy) | 22 | 32 | <span style="color:#15803d; font-weight:700">20.97 KiB</span> (1.87x) | <span style="color:#dc2626">59,612</span> (945x) | <span style="color:#dc2626">45.70</span> (4.32x) |
-| [GHL21e][^GHL21e] | 22 | 32 | <span style="color:#dc2626">183.12 KiB</span> (4.66x) | <span style="color:#dc2626">5,735</span> (90.9x) | <span style="color:#dc2626">486</span> (46.0x) |
-| cgVSS[^KMMplus23e] | 22 | 32 | <span style="color:#15803d; font-weight:700">18.23 KiB</span> (2.16x) | <span style="color:#dc2626">76.08</span> (1.21x) | <span style="color:#dc2626">89.30</span> (8.45x) |
-| **Chunky ($\ell = 32$)** | 43 | 64 | 74.54 KiB |    119.46 |       <span style="color:#15803d; font-weight:700">16.90</span> |
-| Groth21 ($\ell = 8$) | 43 | 64 | <span style="color:#dc2626">119.02 KiB</span> (1.60x) | <span style="color:#dc2626">232.2</span> (1.94x) | <span style="color:#dc2626">95.8</span> (5.67x) |
-| Groth21 ($\ell = 16$) | 43 | 64 | <span style="color:#15803d; font-weight:700">70.27 KiB</span> (0.94x) | <span style="color:#dc2626">136.4</span> (1.14x) | <span style="color:#dc2626">88.7</span> (5.25x) |
-| Groth21 ($\ell = 32$) | 43 | 64 | <span style="color:#15803d; font-weight:700">45.90 KiB</span> (0.62x) | <span style="color:#15803d; font-weight:700">89.0</span> (0.74x) | <span style="color:#dc2626">51.8</span> (3.07x) |
-| Golden (miden) | 43 | 64 | <span style="color:#15803d; font-weight:700">8.27 KiB</span> (9.01x) | <span style="color:#dc2626">5,137.45</span> (43.01x) | <span style="color:#dc2626">694.21</span> (41.08x) |
-| Golden (fy) | 43 | 64 | <span style="color:#15803d; font-weight:700">41.88 KiB</span> (1.78x) | <span style="color:#dc2626">119,360</span> (999x) | <span style="color:#dc2626">93.22</span> (5.52x) |
-| [GHL21e][^GHL21e] | 43 | 64 | <span style="color:#dc2626">187.50 KiB</span> (2.52x) | <span style="color:#dc2626">5,896</span> (49.4x) | <span style="color:#dc2626">487</span> (28.8x) |
-| cgVSS[^KMMplus23e] | 43 | 64 | <span style="color:#15803d; font-weight:700">35.66 KiB</span> (2.09x) | <span style="color:#15803d; font-weight:700">108.93</span> (1.10x) | <span style="color:#dc2626">131.16</span> (7.76x) |
-| **Chunky ($\ell = 32$)** | 86 | 128 | 144.98 KiB |    232.74 |       <span style="color:#15803d; font-weight:700">29.76</span> |
-| Groth21 ($\ell = 8$) | 86 | 128 | <span style="color:#dc2626">232.02 KiB</span> (1.60x) | <span style="color:#dc2626">453.6</span> (1.95x) | <span style="color:#dc2626">185.1</span> (6.22x) |
-| Groth21 ($\ell = 16$) | 86 | 128 | <span style="color:#15803d; font-weight:700">135.27 KiB</span> (0.93x) | <span style="color:#dc2626">262.1</span> (1.13x) | <span style="color:#dc2626">164.4</span> (5.53x) |
-| Groth21 ($\ell = 32$) | 86 | 128 | <span style="color:#15803d; font-weight:700">86.90 KiB</span> (0.60x) | <span style="color:#15803d; font-weight:700">172.1</span> (0.74x) | <span style="color:#dc2626">96.1</span> (3.23x) |
-| Golden (miden) | 86 | 128 | <span style="color:#15803d; font-weight:700">14.06 KiB</span> (10.31x) | <span style="color:#dc2626">10,421.11</span> (44.78x) | <span style="color:#dc2626">1,358.36</span> (45.64x) |
-| Golden (fy) | 86 | 128 | <span style="color:#15803d; font-weight:700">83.72 KiB</span> (1.73x) | <span style="color:#dc2626">243,503</span> (1046x) | <span style="color:#dc2626">181.22</span> (6.09x) |
-| [GHL21e][^GHL21e] | 86 | 128 | <span style="color:#dc2626">192.62 KiB</span> (1.33x) | <span style="color:#dc2626">5,965</span> (25.6x) | <span style="color:#dc2626">486</span> (16.3x) |
-| cgVSS[^KMMplus23e] | 86 | 128 | <span style="color:#15803d; font-weight:700">70.57 KiB</span> (2.05x) | <span style="color:#15803d; font-weight:700">176.72</span> (1.32x) | <span style="color:#dc2626">216.53</span> (7.28x) |
-| **Chunky ($\ell = 32$)** | 171 | 256 | 285.85 KiB |    471.83 |       <span style="color:#15803d; font-weight:700">51.38</span> |
-| Groth21 ($\ell = 8$) | 171 | 256 | <span style="color:#dc2626">458.02 KiB</span> (1.60x) | <span style="color:#dc2626">894.1</span> (1.89x) | <span style="color:#dc2626">353.9</span> (6.89x) |
-| Groth21 ($\ell = 16$) | 171 | 256 | <span style="color:#15803d; font-weight:700">265.27 KiB</span> (0.93x) | <span style="color:#dc2626">516.1</span> (1.09x) | <span style="color:#dc2626">320.4</span> (6.24x) |
-| Groth21 ($\ell = 32$) | 171 | 256 | <span style="color:#15803d; font-weight:700">168.90 KiB</span> (0.59x) | <span style="color:#15803d; font-weight:700">333.0</span> (0.71x) | <span style="color:#dc2626">179.2</span> (3.49x) |
-| Golden (miden) | 171 | 256 | <span style="color:#15803d; font-weight:700">25.52 KiB</span> (11.20x) | <span style="color:#dc2626">20,727.46</span> (43.93x) | <span style="color:#dc2626">2,624.26</span> (51.08x) |
-| Golden (fy) | 171 | 256 | <span style="color:#15803d; font-weight:700">167.38 KiB</span> (1.71x) | <span style="color:#dc2626">447,822</span> (949x) | <span style="color:#dc2626">343.76</span> (6.69x) |
-| [GHL21e][^GHL21e] | 171 | 256 | <span style="color:#15803d; font-weight:700">201.81 KiB</span> (1.42x) | <span style="color:#dc2626">6,569</span> (13.9x) | <span style="color:#dc2626">512</span> (9.96x) |
-| cgVSS[^KMMplus23e] | 171 | 256 | <span style="color:#15803d; font-weight:700">140.33 KiB</span> (2.04x) | <span style="color:#15803d; font-weight:700">312.63</span> (1.51x) | <span style="color:#dc2626">390.13</span> (7.59x) |
-| **Chunky ($\ell = 32$)** | 342 | 512 | 567.60 KiB | 941.18 | <span style="color:#15803d; font-weight:700">93.72</span> |
-| Groth21 ($\ell = 8$) | 342 | 512 | <span style="color:#dc2626">910.02 KiB</span> (1.60x) | <span style="color:#dc2626">1,776.7</span> (1.89x) | <span style="color:#dc2626">690.6</span> (7.37x) |
-| Groth21 ($\ell = 16$) | 342 | 512 | <span style="color:#15803d; font-weight:700">525.27 KiB</span> (0.93x) | <span style="color:#dc2626">1,032.5</span> (1.10x) | <span style="color:#dc2626">626.4</span> (6.68x) |
-| Groth21 ($\ell = 32$) | 342 | 512 | <span style="color:#15803d; font-weight:700">332.90 KiB</span> (0.59x) | <span style="color:#15803d; font-weight:700">649.6</span> (0.69x) | <span style="color:#dc2626">347.9</span> (3.71x) |
-| Golden (miden) | 342 | 512 | <span style="color:#15803d; font-weight:700">48.37 KiB</span> (11.73x) | <span style="color:#dc2626">83,642.74</span> (88.87x) | <span style="color:#dc2626">3,805.77</span> (40.61x) |
-| Golden (fy) | 342 | 512 | <span style="color:#15803d; font-weight:700">334.72 KiB</span> (1.70x) | <span style="color:#dc2626">836,448</span> (889x) | <span style="color:#dc2626">676.44</span> (7.22x) |
-| [GHL21e][^GHL21e] | 342 | 512 | <span style="color:#15803d; font-weight:700">220.25 KiB</span> (2.58x) | <span style="color:#dc2626">6,860</span> (7.29x) | <span style="color:#dc2626">522</span> (5.57x) |
-| cgVSS[^KMMplus23e] | 342 | 512 | <span style="color:#15803d; font-weight:700">279.88 KiB</span> (2.03x) | <span style="color:#15803d; font-weight:700">582.25</span> (1.62x) | <span style="color:#dc2626">726.68</span> (7.75x) |
-| **Chunky ($\ell = 32$)** | 683 | 1024 | 1,131.10 KiB | 1,825.50 | <span style="color:#15803d; font-weight:700">170.23</span> |
-| Groth21 ($\ell = 8$) | 683 | 1024 | <span style="color:#dc2626">1,814.02 KiB</span> (1.60x) | <span style="color:#dc2626">3,478.1</span> (1.91x) | <span style="color:#dc2626">1,366.0</span> (8.02x) |
-| Groth21 ($\ell = 16$) | 683 | 1024 | <span style="color:#15803d; font-weight:700">1,045.27 KiB</span> (0.92x) | <span style="color:#dc2626">2,044.7</span> (1.12x) | <span style="color:#dc2626">1,227.3</span> (7.21x) |
-| Groth21 ($\ell = 32$) | 683 | 1024 | <span style="color:#15803d; font-weight:700">660.90 KiB</span> (0.58x) | <span style="color:#15803d; font-weight:700">1,292.5</span> (0.71x) | <span style="color:#dc2626">679.5</span> (3.99x) |
-| Golden (miden) | 683 | 1024 | <span style="color:#15803d; font-weight:700">93.96 KiB</span> (12.04x) | <span style="color:#dc2626">168,513.73</span> (92.31x) | <span style="color:#dc2626">7,642.87</span> (44.90x) |
-| Golden (fy) | 683 | 1024 | <span style="color:#15803d; font-weight:700">669.38 KiB</span> (1.69x) | <span style="color:#dc2626">1,673,056</span> (916x) | <span style="color:#dc2626">1,346.11</span> (7.91x) |
-| [GHL21e][^GHL21e] | 683 | 1024 | <span style="color:#15803d; font-weight:700">253.38 KiB</span> (4.46x) | <span style="color:#dc2626">7,879</span> (4.32x) | <span style="color:#dc2626">562</span> (3.30x) |
-| cgVSS[^KMMplus23e] | 683 | 1024 | <span style="color:#15803d; font-weight:700">558.96 KiB</span> (2.02x) | <span style="color:#15803d; font-weight:700">1,170.40</span> (1.56x) | <span style="color:#dc2626">1,418.00</span> (8.33x) |
+| **Chunky ($\ell = 32$)** | 3 | 4 | <span class="hm hm5">8.50 KiB</span> | <span class="hm hm2">12.49</span> | <span class="hm hm1">3.63</span> |
+| Groth21 ($\ell = 8$) | 3 | 4 | <span class="hm hm7">13.09 KiB</span> (1.54x) | <span class="hm hm4">21.5</span> (1.72x) | <span class="hm hm5">11.1</span> (3.05x) |
+| Groth21 ($\ell = 16$) | 3 | 4 | <span class="hm hm6">9.34 KiB</span> (1.10x) | <span class="hm hm3">15.1</span> (1.21x) | <span class="hm hm4">10.4</span> (2.86x) |
+| Groth21 ($\ell = 32$) | 3 | 4 | <span class="hm hm4">7.46 KiB</span> (0.88x) | <span class="hm hm1">11.9</span> (0.95x) | <span class="hm hm3">7.9</span> (2.17x) |
+| Golden (miden) | 3 | 4 | <span class="hm hm1">2.47 KiB</span> (3.44x) | <span class="hm hm6">200.19</span> (16.03x) | <span class="hm hm6">27.67</span> (7.62x) |
+| Golden (fy) | 3 | 4 | <span class="hm hm2">2.66 KiB</span> (3.20x) | <span class="hm hm8">7,567</span> (606x) | <span class="hm hm2">6.00</span> (1.65x) |
+| [GHL21e][^GHL21e] | 3 | 4 | <span class="hm hm8">176.69 KiB</span> (20.8x) | <span class="hm hm7">5,512</span> (441x) | <span class="hm hm8">455</span> (125x) |
+| cgVSS[^KMMplus23e] | 3 | 4 | <span class="hm hm3">2.95 KiB</span> (2.88x) | <span class="hm hm5">44.36</span> (3.55x) | <span class="hm hm7">47.46</span> (13.07x) |
+| **Chunky ($\ell = 32$)** | 6 | 8 | <span class="hm hm5">12.90 KiB</span> | <span class="hm hm2">19.99</span> | <span class="hm hm1">4.73</span> |
+| Groth21 ($\ell = 8$) | 6 | 8 | <span class="hm hm7">20.15 KiB</span> (1.56x) | <span class="hm hm4">36.4</span> (1.82x) | <span class="hm hm5">18.0</span> (3.81x) |
+| Groth21 ($\ell = 16$) | 6 | 8 | <span class="hm hm6">13.40 KiB</span> (1.04x) | <span class="hm hm3">23.7</span> (1.19x) | <span class="hm hm4">16.0</span> (3.38x) |
+| Groth21 ($\ell = 32$) | 6 | 8 | <span class="hm hm4">10.02 KiB</span> (0.78x) | <span class="hm hm1">17.6</span> (0.88x) | <span class="hm hm2">10.9</span> (2.30x) |
+| Golden (miden) | 6 | 8 | <span class="hm hm1">3.02 KiB</span> (4.27x) | <span class="hm hm6">633.61</span> (31.70x) | <span class="hm hm7">83.54</span> (17.66x) |
+| Golden (fy) | 6 | 8 | <span class="hm hm3">5.29 KiB</span> (2.44x) | <span class="hm hm8">15,031</span> (752x) | <span class="hm hm3">11.58</span> (2.45x) |
+| [GHL21e][^GHL21e] | 6 | 8 | <span class="hm hm8">178.12 KiB</span> (13.8x) | <span class="hm hm7">5,607</span> (280x) | <span class="hm hm8">468</span> (98.9x) |
+| cgVSS[^KMMplus23e] | 6 | 8 | <span class="hm hm2">5.14 KiB</span> (2.51x) | <span class="hm hm5">48.48</span> (2.43x) | <span class="hm hm6">56.50</span> (11.95x) |
+| **Chunky ($\ell = 32$)** | 11 | 16 | <span class="hm hm6">21.71 KiB</span> | <span class="hm hm2">34.61</span> | <span class="hm hm1">6.69</span> |
+| Groth21 ($\ell = 8$) | 11 | 16 | <span class="hm hm7">34.27 KiB</span> (1.58x) | <span class="hm hm5">64.3</span> (1.86x) | <span class="hm hm5">30.7</span> (4.59x) |
+| Groth21 ($\ell = 16$) | 11 | 16 | <span class="hm hm5">21.52 KiB</span> (0.99x) | <span class="hm hm3">41.0</span> (1.18x) | <span class="hm hm4">27.3</span> (4.07x) |
+| Groth21 ($\ell = 32$) | 11 | 16 | <span class="hm hm4">15.15 KiB</span> (0.70x) | <span class="hm hm1">28.0</span> (0.81x) | <span class="hm hm2">17.5</span> (2.61x) |
+| Golden (miden) | 11 | 16 | <span class="hm hm1">3.82 KiB</span> (5.69x) | <span class="hm hm6">1,266.78</span> (36.60x) | <span class="hm hm7">162.93</span> (24.35x) |
+| Golden (fy) | 11 | 16 | <span class="hm hm3">10.50 KiB</span> (2.07x) | <span class="hm hm8">30,050</span> (868x) | <span class="hm hm3">22.95</span> (3.43x) |
+| [GHL21e][^GHL21e] | 11 | 16 | <span class="hm hm8">180.94 KiB</span> (8.33x) | <span class="hm hm7">6,002</span> (173x) | <span class="hm hm8">591</span> (88.3x) |
+| cgVSS[^KMMplus23e] | 11 | 16 | <span class="hm hm2">9.49 KiB</span> (2.29x) | <span class="hm hm4">57.24</span> (1.65x) | <span class="hm hm6">67.85</span> (10.14x) |
+| **Chunky ($\ell = 32$)** | 22 | 32 | <span class="hm hm6">39.32 KiB</span> | <span class="hm hm2">63.06</span> | <span class="hm hm1">10.57</span> |
+| Groth21 ($\ell = 8$) | 22 | 32 | <span class="hm hm7">62.52 KiB</span> (1.59x) | <span class="hm hm5">121.8</span> (1.93x) | <span class="hm hm5">54.6</span> (5.17x) |
+| Groth21 ($\ell = 16$) | 22 | 32 | <span class="hm hm5">37.77 KiB</span> (0.96x) | <span class="hm hm3">72.6</span> (1.15x) | <span class="hm hm4">48.2</span> (4.56x) |
+| Groth21 ($\ell = 32$) | 22 | 32 | <span class="hm hm4">25.40 KiB</span> (0.65x) | <span class="hm hm1">48.2</span> (0.76x) | <span class="hm hm2">29.1</span> (2.76x) |
+| Golden (miden) | 22 | 32 | <span class="hm hm1">5.34 KiB</span> (7.36x) | <span class="hm hm6">2,636.35</span> (41.81x) | <span class="hm hm7">354.14</span> (33.50x) |
+| Golden (fy) | 22 | 32 | <span class="hm hm3">20.97 KiB</span> (1.87x) | <span class="hm hm8">59,612</span> (945x) | <span class="hm hm3">45.70</span> (4.32x) |
+| [GHL21e][^GHL21e] | 22 | 32 | <span class="hm hm8">183.12 KiB</span> (4.66x) | <span class="hm hm7">5,735</span> (90.9x) | <span class="hm hm8">486</span> (46.0x) |
+| cgVSS[^KMMplus23e] | 22 | 32 | <span class="hm hm2">18.23 KiB</span> (2.16x) | <span class="hm hm4">76.08</span> (1.21x) | <span class="hm hm6">89.30</span> (8.45x) |
+| **Chunky ($\ell = 32$)** | 43 | 64 | <span class="hm hm6">74.54 KiB</span> | <span class="hm hm3">119.46</span> | <span class="hm hm1">16.90</span> |
+| Groth21 ($\ell = 8$) | 43 | 64 | <span class="hm hm7">119.02 KiB</span> (1.60x) | <span class="hm hm5">232.2</span> (1.94x) | <span class="hm hm5">95.8</span> (5.67x) |
+| Groth21 ($\ell = 16$) | 43 | 64 | <span class="hm hm5">70.27 KiB</span> (0.94x) | <span class="hm hm4">136.4</span> (1.14x) | <span class="hm hm3">88.7</span> (5.25x) |
+| Groth21 ($\ell = 32$) | 43 | 64 | <span class="hm hm4">45.90 KiB</span> (0.62x) | <span class="hm hm1">89.0</span> (0.74x) | <span class="hm hm2">51.8</span> (3.07x) |
+| Golden (miden) | 43 | 64 | <span class="hm hm1">8.27 KiB</span> (9.01x) | <span class="hm hm6">5,137.45</span> (43.01x) | <span class="hm hm8">694.21</span> (41.08x) |
+| Golden (fy) | 43 | 64 | <span class="hm hm3">41.88 KiB</span> (1.78x) | <span class="hm hm8">119,360</span> (999x) | <span class="hm hm4">93.22</span> (5.52x) |
+| [GHL21e][^GHL21e] | 43 | 64 | <span class="hm hm8">187.50 KiB</span> (2.52x) | <span class="hm hm7">5,896</span> (49.4x) | <span class="hm hm7">487</span> (28.8x) |
+| cgVSS[^KMMplus23e] | 43 | 64 | <span class="hm hm2">35.66 KiB</span> (2.09x) | <span class="hm hm2">108.93</span> (1.10x) | <span class="hm hm6">131.16</span> (7.76x) |
+| **Chunky ($\ell = 32$)** | 86 | 128 | <span class="hm hm6">144.98 KiB</span> | <span class="hm hm3">232.74</span> | <span class="hm hm1">29.76</span> |
+| Groth21 ($\ell = 8$) | 86 | 128 | <span class="hm hm8">232.02 KiB</span> (1.60x) | <span class="hm hm5">453.6</span> (1.95x) | <span class="hm hm5">185.1</span> (6.22x) |
+| Groth21 ($\ell = 16$) | 86 | 128 | <span class="hm hm5">135.27 KiB</span> (0.93x) | <span class="hm hm4">262.1</span> (1.13x) | <span class="hm hm3">164.4</span> (5.53x) |
+| Groth21 ($\ell = 32$) | 86 | 128 | <span class="hm hm4">86.90 KiB</span> (0.60x) | <span class="hm hm1">172.1</span> (0.74x) | <span class="hm hm2">96.1</span> (3.23x) |
+| Golden (miden) | 86 | 128 | <span class="hm hm1">14.06 KiB</span> (10.31x) | <span class="hm hm7">10,421.11</span> (44.78x) | <span class="hm hm8">1,358.36</span> (45.64x) |
+| Golden (fy) | 86 | 128 | <span class="hm hm3">83.72 KiB</span> (1.73x) | <span class="hm hm8">243,503</span> (1046x) | <span class="hm hm4">181.22</span> (6.09x) |
+| [GHL21e][^GHL21e] | 86 | 128 | <span class="hm hm7">192.62 KiB</span> (1.33x) | <span class="hm hm6">5,965</span> (25.6x) | <span class="hm hm7">486</span> (16.3x) |
+| cgVSS[^KMMplus23e] | 86 | 128 | <span class="hm hm2">70.57 KiB</span> (2.05x) | <span class="hm hm2">176.72</span> (1.32x) | <span class="hm hm6">216.53</span> (7.28x) |
+| **Chunky ($\ell = 32$)** | 171 | 256 | <span class="hm hm7">285.85 KiB</span> | <span class="hm hm3">471.83</span> | <span class="hm hm1">51.38</span> |
+| Groth21 ($\ell = 8$) | 171 | 256 | <span class="hm hm8">458.02 KiB</span> (1.60x) | <span class="hm hm5">894.1</span> (1.89x) | <span class="hm hm5">353.9</span> (6.89x) |
+| Groth21 ($\ell = 16$) | 171 | 256 | <span class="hm hm6">265.27 KiB</span> (0.93x) | <span class="hm hm4">516.1</span> (1.09x) | <span class="hm hm3">320.4</span> (6.24x) |
+| Groth21 ($\ell = 32$) | 171 | 256 | <span class="hm hm4">168.90 KiB</span> (0.59x) | <span class="hm hm2">333.0</span> (0.71x) | <span class="hm hm2">179.2</span> (3.49x) |
+| Golden (miden) | 171 | 256 | <span class="hm hm1">25.52 KiB</span> (11.20x) | <span class="hm hm7">20,727.46</span> (43.93x) | <span class="hm hm8">2,624.26</span> (51.08x) |
+| Golden (fy) | 171 | 256 | <span class="hm hm3">167.38 KiB</span> (1.71x) | <span class="hm hm8">447,822</span> (949x) | <span class="hm hm4">343.76</span> (6.69x) |
+| [GHL21e][^GHL21e] | 171 | 256 | <span class="hm hm5">201.81 KiB</span> (1.42x) | <span class="hm hm6">6,569</span> (13.9x) | <span class="hm hm7">512</span> (9.96x) |
+| cgVSS[^KMMplus23e] | 171 | 256 | <span class="hm hm2">140.33 KiB</span> (2.04x) | <span class="hm hm1">312.63</span> (1.51x) | <span class="hm hm6">390.13</span> (7.59x) |
+| **Chunky ($\ell = 32$)** | 342 | 512 | <span class="hm hm7">567.60 KiB</span> | <span class="hm hm3">941.18</span> | <span class="hm hm1">93.72</span> |
+| Groth21 ($\ell = 8$) | 342 | 512 | <span class="hm hm8">910.02 KiB</span> (1.60x) | <span class="hm hm5">1,776.7</span> (1.89x) | <span class="hm hm6">690.6</span> (7.37x) |
+| Groth21 ($\ell = 16$) | 342 | 512 | <span class="hm hm6">525.27 KiB</span> (0.93x) | <span class="hm hm4">1,032.5</span> (1.10x) | <span class="hm hm4">626.4</span> (6.68x) |
+| Groth21 ($\ell = 32$) | 342 | 512 | <span class="hm hm4">332.90 KiB</span> (0.59x) | <span class="hm hm2">649.6</span> (0.69x) | <span class="hm hm2">347.9</span> (3.71x) |
+| Golden (miden) | 342 | 512 | <span class="hm hm1">48.37 KiB</span> (11.73x) | <span class="hm hm7">83,642.74</span> (88.87x) | <span class="hm hm8">3,805.77</span> (40.61x) |
+| Golden (fy) | 342 | 512 | <span class="hm hm5">334.72 KiB</span> (1.70x) | <span class="hm hm8">836,448</span> (889x) | <span class="hm hm5">676.44</span> (7.22x) |
+| [GHL21e][^GHL21e] | 342 | 512 | <span class="hm hm2">220.25 KiB</span> (2.58x) | <span class="hm hm6">6,860</span> (7.29x) | <span class="hm hm3">522</span> (5.57x) |
+| cgVSS[^KMMplus23e] | 342 | 512 | <span class="hm hm3">279.88 KiB</span> (2.03x) | <span class="hm hm1">582.25</span> (1.62x) | <span class="hm hm7">726.68</span> (7.75x) |
+| **Chunky ($\ell = 32$)** | 683 | 1024 | <span class="hm hm7">1,131.10 KiB</span> | <span class="hm hm3">1,825.50</span> | <span class="hm hm1">170.23</span> |
+| Groth21 ($\ell = 8$) | 683 | 1024 | <span class="hm hm8">1,814.02 KiB</span> (1.60x) | <span class="hm hm5">3,478.1</span> (1.91x) | <span class="hm hm6">1,366.0</span> (8.02x) |
+| Groth21 ($\ell = 16$) | 683 | 1024 | <span class="hm hm6">1,045.27 KiB</span> (0.92x) | <span class="hm hm4">2,044.7</span> (1.12x) | <span class="hm hm4">1,227.3</span> (7.21x) |
+| Groth21 ($\ell = 32$) | 683 | 1024 | <span class="hm hm4">660.90 KiB</span> (0.58x) | <span class="hm hm2">1,292.5</span> (0.71x) | <span class="hm hm3">679.5</span> (3.99x) |
+| Golden (miden) | 683 | 1024 | <span class="hm hm1">93.96 KiB</span> (12.04x) | <span class="hm hm7">168,513.73</span> (92.31x) | <span class="hm hm8">7,642.87</span> (44.90x) |
+| Golden (fy) | 683 | 1024 | <span class="hm hm5">669.38 KiB</span> (1.69x) | <span class="hm hm8">1,673,056</span> (916x) | <span class="hm hm5">1,346.11</span> (7.91x) |
+| [GHL21e][^GHL21e] | 683 | 1024 | <span class="hm hm2">253.38 KiB</span> (4.46x) | <span class="hm hm6">7,879</span> (4.32x) | <span class="hm hm2">562</span> (3.30x) |
+| cgVSS[^KMMplus23e] | 683 | 1024 | <span class="hm hm3">558.96 KiB</span> (2.02x) | <span class="hm hm1">1,170.40</span> (1.56x) | <span class="hm hm7">1,418.00</span> (8.33x) |
 
 
 To reproduce the **Chunky** numbers:
