@@ -16,6 +16,12 @@ permalink: lean
 {: .info}
 **tl;dr:** A bunch of resources I hope to get to.
 
+<!--more-->
+
+<!-- Here you can define LaTeX macros -->
+<div style="display: none;">$
+$</div> <!-- $ -->
+
 ## Cryptography
 
  - [Verified-zkEVM](https://github.com/Verified-zkEVM)
@@ -24,11 +30,18 @@ permalink: lean
      - [clean zkDSL](https://github.com/Verified-zkEVM/clean)
  - [zkLean: A DSL for ZK statement verification](https://www.galois.com/articles/zklean-a-dsl-for-zk-statement-verification)
 
-<!--more-->
+## Software engineering in Lean
 
-<!-- Here you can define LaTeX macros -->
-<div style="display: none;">$
-$</div> <!-- $ -->
+ - [Why lean is faster than Rust](https://kim-em.github.io/blog/2026-7-24-why-lean-is-faster-than-rust/)
+    + [Lean proved this program was correct; then I found a bug.](https://kirancodes.me/posts/log-who-watches-the-watchers.html)
+ - [Just Lean: a verified, fast sort](https://just-lean.mitscha-baude.at/)
+ - [Sort in Rust, prove in Lean example](https://github.com/alinush/sort-in-rust-prove-in-lean-example)
+ - [Lean-ing into Software Engineering](https://paulbutcher.com/lean1.html)
+ - [A (somewhat) formally verified implementation of Markdown](https://paulbutcher.com/lean-markdown.html)
+ - [Formally verified CRUD](https://paulbutcher.com/lean2.html)
+ - [Formally Verified [zkVM] Autoprecompiles](https://powdr.org/blog/formally-verified-autoprecompiles)
+ - [A new software engineering paradigm](https://georgwiese.github.io/posts/formal-verification-ai/)
+
 
 ## Rust (Non-Lean)
 
