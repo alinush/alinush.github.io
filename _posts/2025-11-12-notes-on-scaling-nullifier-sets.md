@@ -35,7 +35,18 @@ High-level:
  - Importantly, when a leaf $i$ changes by $\delta_i$ every PSN can locally update its portion of the path w/o waiting for other nodes or communicating with them $\Rightarrow$ extremely simple sharding
  - Proof serving nodes can be incentivized to serve proofs (see Hyperproofs[^SCPplus22])
 
-## Approach 2: Tachyon
+## Approach 2: Sharded BCB-based nullifier sets
+
+This is the approach of our UTT[^TBAplus22e] paper:
+
+ - Shard the nullifier set (e.g., separate shards for each 0x0, 0x1, 0x2, $\ldots$, 0xf prefix)
+ - Decentralize the shards via Byzantine-consistent broadcast (BCB)
+ - Spending a coin requires a quorum signature from the expected shard that the coin's nullifier is not in the list
+
+
+<div align="center"><img style="width:85%" src="/pictures/utt-sharding.png" /></div>
+
+## Approach 3: Tachyon
 
 Just some loose notes for now (will go into more depth as I understand later) from a few resources:
 
