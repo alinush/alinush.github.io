@@ -79,6 +79,7 @@ And that’s what the wallet can prove recursively!
  - Stateless validation: removes the validation state but introduces PSNs and needs [the right approach](#approach-1-sharded-herkle-trees)
  - [Epoch-based nullifiers](https://github.com/0xMiden/miden-vm/discussions/356): freezes old nullifier sets
  - Mutator sets [1](https://neptune.cash/blog/mutator-sets/) and [2](https://www.youtube.com/watch?v=Fjh1PxrgwQo): need to investigate
+ - [Account-based partial anonymity: leaks when an account spends](https://x.com/_patrickogrady/status/2098786819227984322)
 
 ## References
 
