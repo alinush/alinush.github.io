@@ -6,11 +6,14 @@ sandbox_name="alinush-github-io-jekyll"
 # startup. Jekyll itself comes from the Gemfile via "bundle install".
 image="ruby:3.2"
 
-if [ "$1" = "-h" -o "$1" = "--help" ]; then
-    echo "Usage: $0 [port]"
+usage() {
+    echo "Usage: $0 [-s|--skip-urls] [port]"
     echo
     echo "Launches the website in an sbx sandbox at http://localhost:<port>"
     echo "<port> defaults to 4000"
+    echo
+    echo "  -s, --skip-urls   Skip the broken-link check and start the server"
+    echo "                    right away"
     echo
     echo "Reuses the sandbox named '$sandbox_name' (built from the"
     echo "'$image' image) across runs, so the gems installed by the first"
@@ -20,10 +23,38 @@ if [ "$1" = "-h" -o "$1" = "--help" ]; then
     echo
     echo "Note: the image and the published port are both fixed when the sandbox"
     echo "is created, so changing <port> also requires deleting it first."
-    exit
-fi
+}
 
-port="${1:-4000}"
+port=""
+skip_urls=false
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -h|--help)
+            usage
+            exit
+            ;;
+        -s|--skip-urls)
+            skip_urls=true
+            ;;
+        -*)
+            echo "ERROR: unknown option '$1'" >&2
+            echo >&2
+            usage >&2
+            exit 1
+            ;;
+        *)
+            if [ -n "$port" ]; then
+                echo "ERROR: too many arguments ('$1'); only one <port> is accepted." >&2
+                exit 1
+            fi
+            port="$1"
+            ;;
+    esac
+    shift
+done
+
+port="${port:-4000}"
 
 if ! command -v sbx >/dev/null 2>&1; then
     echo "ERROR: 'sbx' not found on PATH. This script runs the Jekyll server inside an sbx sandbox." >&2
@@ -49,9 +80,15 @@ fi
 # The link check runs first (internal-only: fast, no network dependency) as
 # a warning, not a gate — its exit code is deliberately ignored (plain ";",
 # not "&&") so a broken anchor somewhere never blocks starting the dev
-# server, it just prints ahead of it.
-#
+# server, it just prints ahead of it. --skip-urls drops it entirely, for
+# when even that wait is more than you want between edit and reload.
+serve_cmd="exec bash ./sandbox-serve.sh '$port' '$JEKYLL_TRACE' '$sandbox_name'"
+if [ "$skip_urls" = false ]; then
+    serve_cmd="bash ./sandbox-check-links.sh --internal-only; $serve_cmd"
+else
+    echo ">>> Skipping the broken-link check (--skip-urls)."
+fi
+
 # NOTE: args after "--" are arguments to the agent itself, and the "shell" agent
 # already is bash, so this runs "bash -c <cmd>". Do NOT prepend another "bash".
-exec sbx run "$@" -- \
-    -c "bash ./sandbox-check-links.sh --internal-only; exec bash ./sandbox-serve.sh '$port' '$JEKYLL_TRACE' '$sandbox_name'"
+exec sbx run "$@" -- -c "$serve_cmd"

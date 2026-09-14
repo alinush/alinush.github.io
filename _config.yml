@@ -226,6 +226,20 @@ exclude:
   - files/chunky/CLAUDE.md
   - files/chunky/compile.sh
   - files/chunky/run.sh
+  # LaTeX leaves .aux/.log/... next to the source it builds, and `make clean`
+  # then deletes them. With the dev server watching, that churn crashed a
+  # regeneration mid-flight ("No such file or directory @ rb_file_s_stat"):
+  # jekyll had seen the file and went to stat it after make had removed it.
+  # The PDF is excluded too — the copy the site serves is files/<name>.pdf,
+  # installed there by the Makefile, so the one in the build directory is just
+  # a duplicate URL. The .tex/.bib/Makefile themselves stay published.
+  - files/tex/**/*.aux
+  - files/tex/**/*.bbl
+  - files/tex/**/*.blg
+  - files/tex/**/*.log
+  - files/tex/**/*.out
+  - files/tex/**/*.pdf
+  - files/tex/**/*.synctex.gz
 
 collections:
   papers:

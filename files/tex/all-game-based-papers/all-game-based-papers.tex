@@ -1,0 +1,987 @@
+% A chronological reading list for game-based security proofs.
+%
+% Companion to files/all-uc-papers.pdf, which does the same thing for
+% universally-composable security: there, each entry's sub-bullets name the
+% ideal functionalities (F_com, F_zk, ...) the paper introduces or uses; here,
+% they name the games, lemmas and transformations it introduces.
+%
+% Selection rule: representative papers that introduce a game-based security
+% definition *formally* and prove something *formally* against it, chosen so
+% that reading them in order shows how the style evolved. Not exhaustive, and
+% not meant to be.
+%
+% Bibliographic data lives in refs.bib; every paper is \cite'd, so the body
+% stays short and the References section carries the venues, DOIs and ePrint
+% links. Build with `make` (see the Makefile in this directory).
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}   % \lvert, \rvert in the Difference/Fundamental Lemma statements
+\usepackage{newtxtext}
+\usepackage[margin=1in]{geometry}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{microtype}
+\usepackage[colorlinks=true,urlcolor=RoyalBlue,linkcolor=RoyalBlue,
+            citecolor=RoyalBlue]{hyperref}
+\usepackage{doi}       % turns the doi= field of a bib entry into a link
+
+% Year headings, in the same washed-out grey as the "Crypto 2001" headings in
+% all-uc-papers.pdf.
+\definecolor{yearcolor}{gray}{0.40}
+\titleformat{\section}{\Large\color{yearcolor}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{1.3\baselineskip}{0.4\baselineskip}
+
+% Papers are numbered 1., 2., ...; what each one contributes is lettered
+% a., b., ...; sub-points under those are i., ii., ... — same nesting as the UC
+% list.
+\setlist[enumerate,1]{label=\arabic*., leftmargin=2em, itemsep=2pt, topsep=3pt}
+\setlist[enumerate,2]{label=\alph*., leftmargin=1.8em, itemsep=1pt, topsep=2pt}
+\setlist[enumerate,3]{label=\roman*., leftmargin=1.8em, itemsep=1pt, topsep=2pt}
+
+% What each paper contributes. A paper can carry more than one tag.
+\newcommand{\kind}[1]{{\footnotesize\textsc{\textcolor{yearcolor}{[#1]}}}\ }
+\newcommand{\defn}{\kind{defn}}
+\newcommand{\method}{\kind{method}}
+\newcommand{\tool}{\kind{tool}}
+\newcommand{\turn}{\kind{turn}}
+\newcommand{\case}{\kind{case}}
+
+% Each numbered entry opens with the authors, the (short) title and the
+% citation; the venue, year, DOI/ePrint link all come from refs.bib via the
+% References section at the end.
+\newcommand{\paper}[3]{#1, \emph{#2}~\cite{#3}.}
+
+\title{\vspace{-2.5em}Game-Based Security Proofs\\[.2em]
+       \large A chronological reading list}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\vspace{-3.5em}
+
+\noindent
+Companion to \texttt{all-uc-papers.pdf}. That list walks the
+universally-composable literature and, under each paper, names the ideal
+functionalities it introduces or uses. This one walks the \emph{game-based}
+literature and, under each paper, names the games, lemmas and transformations
+it introduces.
+
+\medskip\noindent
+These are \emph{representative} papers, not all of them. A paper earns a place
+here if it states a security notion as a formal game and proves something
+formally about it --- and if reading it in sequence with the others shows how
+the style got from one place to the next. It starts in 1982, with the first
+security definition written as an experiment between an adversary and a
+challenger, and ends with proofs of deployed protocols that no single game
+sequence could hold. Full bibliographic data, with DOI and ePrint links, is in
+the References at the end.
+
+\medskip\noindent
+Each entry is tagged:
+
+\begin{itemize}[leftmargin=2em, itemsep=1pt, topsep=3pt]
+  \item \defn states a new security notion as a formal game;
+  \item \method a proof technique or framework for chaining games;
+  \item \tool mechanizes that methodology (computer-aided / machine-checked);
+  \item \turn a turning point --- a proof that broke or a definition shown
+    inadequate, which changed how games were written afterwards;
+  \item \case a landmark formal proof of a real primitive or protocol.
+\end{itemize}
+
+\medskip\noindent
+\textbf{If you read only five.} \cite{GM82} (where the experiment comes from);
+\cite{BDJR97} (what a fully formal, concrete game-based treatment of one
+primitive looks like); \cite{Shou04} and \cite{BR04} (the method itself, in
+prose and in a formal system); and \cite{SSP18} (how it is done at protocol
+scale today).
+
+\section{1982 --- the experiment appears}
+
+\begin{enumerate}
+  \item \defn \paper{Goldwasser \& Micali}{Probabilistic Encryption \& How to
+    Play Mental Poker Keeping Secret All Partial Information}{GM82,GM84}
+    \begin{enumerate}
+      \item \textbf{Polynomial security}: the adversary names two messages,
+        receives an encryption of one of them, and must say which --- the first
+        security definition phrased as an \emph{experiment} between a
+        challenger and an adversary. Renamed IND-CPA later.
+      \item \textbf{Semantic security}: whatever is efficiently computable
+        about the plaintext from the ciphertext is computable without it.
+      \item The proof that the two are equivalent is arguably the first
+        \textbf{game hop} in the literature: a security experiment rewritten
+        step by step into a different one.
+      \item The \textbf{hybrid argument}, used to go from single-bit to
+        multi-bit messages. Every later multi-step game chain is this argument
+        generalized.
+    \end{enumerate}
+
+  \item \defn \paper{Yao}{Theory and Application of Trapdoor Functions}{Yao82}
+    \begin{enumerate}
+      \item \textbf{Computational indistinguishability} of distribution
+        ensembles: the relation that every ``these two games are close'' step
+        is ultimately an instance of.
+      \item Next-bit unpredictability $\Longleftrightarrow$ indistinguishability
+        (with \cite{BM84}) --- an early proof that two differently-shaped games
+        define the same thing.
+    \end{enumerate}
+
+  \item \defn \paper{Blum \& Micali}{How to Generate Cryptographically Strong
+    Sequences of Pseudorandom Bits}{BM84}
+    \begin{enumerate}
+      \item The \textbf{next-bit test}: a \emph{prediction} game rather than a
+        distinguishing game. The two shapes --- guess a hidden bit vs.\ produce
+        a winning object --- are still the only two shapes in use.
+    \end{enumerate}
+\end{enumerate}
+
+\section{1984 --- oracles enter the game}
+
+\begin{enumerate}
+  \item \defn \paper{Goldreich, Goldwasser \& Micali}{How to Construct Random
+    Functions}{GGM84}
+    \begin{enumerate}
+      \item \textbf{PRF game}: distinguish oracle access to $F_k(\cdot)$ from
+        oracle access to a uniformly random function. The first widely-used
+        game in which the adversary \emph{queries an oracle adaptively} rather
+        than receiving a fixed challenge.
+      \item The GGM tree's analysis is the canonical multi-hop chain: one hybrid
+        per level, each neighboring pair indistinguishable by the PRG game.
+    \end{enumerate}
+
+  \item \defn \paper{Goldwasser, Micali \& Rivest}{A Digital Signature Scheme
+    Secure Against Adaptive Chosen-Message Attacks}{GMR88}
+    \begin{enumerate}
+      \item \textbf{EUF-CMA}: the adversary gets a signing oracle and wins by
+        forging on any message it did not query. The template for every
+        ``win condition + oracle'' game since.
+      \item The \textbf{attack/break taxonomy} --- key-only, known-message,
+        generic and adaptive chosen-message attacks, crossed with total break,
+        universal/selective/existential forgery --- the first systematic grid
+        of games for a single primitive.
+    \end{enumerate}
+\end{enumerate}
+
+\section{1985 --- the road forks}
+
+\begin{enumerate}
+  \item \turn \paper{Goldwasser, Micali \& Rackoff}{The Knowledge Complexity of
+    Interactive Proof Systems}{GMR89}
+    \begin{enumerate}
+      \item Zero knowledge is defined by exhibiting a \textbf{simulator}, not by
+        bounding an adversary's advantage in a game. This is the branch that
+        leads to UC~\cite{Can01} and to \texttt{all-uc-papers.pdf}.
+      \item Included as the fork in the road: read next to \cite{GM82} to watch
+        the two proof styles separate. Everything below is the game branch.
+    \end{enumerate}
+\end{enumerate}
+
+\section{1988}
+
+\begin{enumerate}
+  \item \defn\method \paper{Luby \& Rackoff}{How to Construct Pseudorandom
+    Permutations from Pseudorandom Functions}{LR88}
+    \begin{enumerate}
+      \item \textbf{PRP game} and \textbf{strong-PRP game} (the latter also
+        gives the adversary the inverse oracle).
+      \item The Feistel analysis proceeds through a sequence of idealized
+        experiments, bounding the probability of a collision event that makes
+        them differ --- game playing with a bad event, about fifteen years
+        before it was named in \cite{BR04}.
+    \end{enumerate}
+\end{enumerate}
+
+\section{1990--1991 --- the CCA ladder}
+
+\begin{enumerate}
+  \item \defn \paper{Naor \& Yung}{Public-Key Cryptosystems Provably Secure
+    Against Chosen Ciphertext Attacks}{NY90}
+    \begin{enumerate}
+      \item \textbf{IND-CCA1} (``lunchtime''): a decryption oracle, available
+        only \emph{before} the challenge ciphertext is handed over.
+    \end{enumerate}
+
+  \item \defn \paper{Rackoff \& Simon}{Non-Interactive Zero-Knowledge Proof of
+    Knowledge and Chosen Ciphertext Attack}{RS91}
+    \begin{enumerate}
+      \item \textbf{IND-CCA2}: the decryption oracle stays available after the
+        challenge, with the challenge ciphertext itself excluded. That exclusion
+        clause is the single most-revisited line in any security game ---
+        see~\cite{BHK09}.
+    \end{enumerate}
+
+  \item \defn \paper{Dolev, Dwork \& Naor}{Non-Malleable Cryptography}{DDN91}
+    \begin{enumerate}
+      \item \textbf{NM-CPA / NM-CCA}, defined by comparing the real adversary
+        against a simulator that never sees the ciphertext --- a definition
+        deliberately straddling the game and simulation styles, later also
+        given a purely game-based (comparison-free) form.
+    \end{enumerate}
+\end{enumerate}
+
+\section{1993 --- concrete security, and the first protocol games}
+
+\begin{enumerate}
+  \item \defn\method \paper{Bellare \& Rogaway}{Random Oracles are Practical: A
+    Paradigm for Designing Efficient Protocols}{BR93rom}
+    \begin{enumerate}
+      \item The \textbf{random oracle model}: the hash function becomes an
+        oracle \emph{inside} the game, which the reduction may observe and
+        program. Hugely enabling --- and the source of most later disputes
+        about what a game-based theorem means (\cite{CGH04}, \cite{BHK13}).
+      \item \textbf{Concrete security}: theorems stated as explicit
+        $(t, q, \epsilon)$ relations rather than asymptotics, which is what
+        makes a game's advantage function the deliverable.
+    \end{enumerate}
+
+  \item \defn \paper{Bellare \& Rogaway}{Entity Authentication and Key
+    Distribution}{BR93ke}
+    \begin{enumerate}
+      \item The \textbf{BR key-exchange game}: sessions modeled as oracles
+        $\Pi_{i,j}^s$, with \textbf{Send}, \textbf{Reveal} and \textbf{Corrupt}
+        queries, plus a single \textbf{Test} query answered with either the real
+        session key or a random one.
+      \item \textbf{Matching conversations} as the partnering predicate --- the
+        bookkeeping that says which sessions are supposed to share a key.
+      \item Directly ancestral to \cite{CK01}, \cite{JKSS12} and \cite{FG14}.
+        If you want to see where protocol security games come from, this is the
+        paper.
+    \end{enumerate}
+\end{enumerate}
+
+\section{1994--1997 --- the concrete-security school}
+
+\begin{enumerate}
+  \item \method\case \paper{Bellare, Kilian \& Rogaway}{The Security of Cipher
+    Block Chaining}{BKR94}
+    \begin{enumerate}
+      \item PRF-security of CBC-MAC with an explicit birthday bound
+        ($\approx q^2\ell^2/2^n$): the first influential proof whose \emph{point}
+        is the shape of the advantage function, not merely that it is negligible.
+    \end{enumerate}
+
+  \item \defn\turn \paper{Bellare \& Rogaway}{Optimal Asymmetric Encryption}
+    {BR94}
+    \begin{enumerate}
+      \item \textbf{Plaintext awareness}: an adversary that produces a valid
+        ciphertext must ``know'' the plaintext, formalized via an extractor
+        reading its random-oracle queries.
+      \item The claimed IND-CCA2 implication is the famous one that did not
+        hold --- see \cite{Shou01}.
+    \end{enumerate}
+
+  \item \defn\case \paper{Bellare, Canetti \& Krawczyk}{Keying Hash Functions
+    for Message Authentication}{BCK96}
+    \begin{enumerate}
+      \item MAC security as a formal game, and the reduction of HMAC to two
+        assumptions on the compression function (PRF-ness, weak collision
+        resistance) --- rather than to an unanalyzed ``hash is good'' wish.
+      \item The paper that made the whole concrete-security style credible to
+        practitioners, because the object it analyzed shipped everywhere.
+    \end{enumerate}
+
+  \item \method \paper{Kilian \& Rogaway}{How to Protect DES Against Exhaustive
+    Key Search}{KR96}
+    \begin{enumerate}
+      \item A proof built as a sequence of games that are \textbf{identical
+        until a flag is set}, with the whole difference charged to that flag.
+        \cite{BR04} points at this paper as where their framework came from.
+    \end{enumerate}
+
+  \item \method \paper{Pointcheval \& Stern}{Security Proofs for Signature
+    Schemes}{PS96}
+    \begin{enumerate}
+      \item The \textbf{forking lemma}: run the adversary twice on the same
+        random tape with divergent oracle answers. Rewinding as a reusable game
+        transformation; generalized in \cite{BN06}.
+      \item The \textbf{splitting lemma}, the probability bookkeeping that makes
+        the forking argument go through.
+    \end{enumerate}
+
+  \item \method \paper{Bellare \& Rogaway}{The Exact Security of Digital
+    Signatures --- How to Sign with RSA and Rabin}{BR96}
+    \begin{enumerate}
+      \item \textbf{Tightness} promoted to a design goal: the scheme is chosen
+        so that the game hop loses as little as possible. Sharpened
+        in~\cite{Cor00}, bounded from below in \cite{BJLS16}.
+    \end{enumerate}
+
+  \item \defn \paper{Bellare, Desai, Jokipii \& Rogaway}{A Concrete Security
+    Treatment of Symmetric Encryption}{BDJR97}
+    \begin{enumerate}
+      \item Four formalizations of chosen-plaintext security ---
+        \textbf{find-then-guess}, \textbf{left-or-right},
+        \textbf{real-or-random} and \textbf{semantic} --- each a precisely
+        written game, with the reductions between them and their exact advantage
+        losses.
+      \item Concrete PRF-based analyses of ECB, CBC, CTR and friends in one
+        common framework.
+      \item The single best specimen of what a complete, formal, game-based
+        treatment of one primitive looks like; still the template modern papers
+        copy.
+    \end{enumerate}
+
+  \item \defn\method \paper{Shoup}{Lower Bounds for Discrete Logarithms and
+    Related Problems}{Shou97}
+    \begin{enumerate}
+      \item The \textbf{generic group model}: group elements become opaque
+        handles served by an oracle, so an adversary's whole interaction is a
+        game the analysis can control.
+      \item Lower bounds proved by exactly the bad-event argument later
+        formalized in \cite{BR04} --- two group elements' encodings collide.
+    \end{enumerate}
+\end{enumerate}
+
+\section{1998 --- mapping the space of games}
+
+\begin{enumerate}
+  \item \method \paper{Bellare}{Practice-Oriented Provable-Security}{Bell98}
+    \begin{enumerate}
+      \item The manifesto for the style the rest of this list assumes: explicit
+        games, explicit reductions, explicit constants. Short; read it first if
+        you want the philosophy before the mathematics.
+    \end{enumerate}
+
+  \item \defn \paper{Bellare, Desai, Pointcheval \& Rogaway}{Relations Among
+    Notions of Security for Public-Key Encryption Schemes}{BDPR98}
+    \begin{enumerate}
+      \item The $\{\mathrm{IND}, \mathrm{NM}\} \times
+        \{\mathrm{CPA}, \mathrm{CCA1}, \mathrm{CCA2}\}$ lattice: every
+        implication proved by a game transformation, every non-implication by a
+        separating counterexample.
+      \item Establishes the genre of ``relations among notions'' papers ---
+        papers whose entire content is the formal relationship between games.
+    \end{enumerate}
+
+  \item \turn \paper{Canetti, Goldreich \& Halevi}{The Random Oracle
+    Methodology, Revisited}{CGH04}
+    \begin{enumerate}
+      \item A scheme provably secure in the random-oracle game and insecure for
+        \emph{every} concrete instantiation of the oracle. The first hard limit
+        on what winning a ROM game buys you; made concrete for a natural scheme
+        in \cite{BBP03}.
+    \end{enumerate}
+
+  \item \case \paper{Cramer \& Shoup}{A Practical Public Key Cryptosystem
+    Provably Secure Against Adaptive Chosen Ciphertext Attack}{CS98}
+    \begin{enumerate}
+      \item First efficient IND-CCA2 scheme in the standard model; the proof is
+        organized as a sequence of experiments with one explicit bad event (the
+        simulator wrongly rejecting a ciphertext). Shoup's house style, six
+        years before he wrote the method down in \cite{Shou04}.
+    \end{enumerate}
+\end{enumerate}
+
+\section{2000 --- more users, more oracles}
+
+\begin{enumerate}
+  \item \defn \paper{Bellare, Boldyreva \& Micali}{Public-Key Encryption in a
+    Multi-user Setting: Security Proofs and Improvements}{BBM00}
+    \begin{enumerate}
+      \item \textbf{Multi-user IND-CPA/CCA}: many keys, many challenges, one
+        game. The generic hybrid costs a factor of $n \cdot q_e$; the paper
+        identifies when you can avoid paying it. Sixteen years later this
+        decides a standard --- see \cite{BT16}.
+    \end{enumerate}
+
+  \item \defn \paper{Bellare \& Namprempre}{Authenticated Encryption: Relations
+    among Notions and Analysis of the Generic Composition Paradigm}{BN00}
+    \begin{enumerate}
+      \item \textbf{INT-PTXT} and \textbf{INT-CTXT} games, crossed with
+        IND-CPA/CCA.
+      \item The verdict on Encrypt-and-MAC / MAC-then-Encrypt /
+        Encrypt-then-MAC, each settled by a game argument or a counterexample.
+        A definitional paper that changed what implementations do.
+    \end{enumerate}
+
+  \item \method \paper{Coron}{On the Exact Security of Full Domain Hash}{Cor00}
+    \begin{enumerate}
+      \item A sharper reduction for FDH: the security loss drops from the
+        number of \emph{hash} queries $q_h$ (as in \cite{BR96}) to the number of
+        \emph{signature} queries $q_s$, orders of magnitude smaller in practice.
+      \item A \textbf{meta-reduction} showing the remaining $q_s$ loss cannot be
+        removed by any reduction of that shape --- the technique behind every
+        tightness lower bound in this list.
+    \end{enumerate}
+
+  \item \defn \paper{Bellare, Pointcheval \& Rogaway}{Authenticated Key Exchange
+    Secure against Dictionary Attacks}{BPR00}
+    \begin{enumerate}
+      \item The \textbf{PAKE game}: \cite{BR93ke} plus a small password
+        dictionary, where the adversary's advantage must be bounded by its
+        number of \emph{online} guesses rather than made negligible. A game
+        whose \emph{shape} had to change to match the primitive.
+    \end{enumerate}
+\end{enumerate}
+
+\section{2001 --- a famous proof breaks}
+
+\begin{enumerate}
+  \item \turn \paper{Shoup}{OAEP Reconsidered}{Shou01}
+    \begin{enumerate}
+      \item The proof in \cite{BR94} is \emph{wrong}: plaintext awareness does
+        not yield IND-CCA2 for a general one-way trapdoor function. One game hop
+        did not hold.
+      \item The most-cited cautionary tale in the field, and the strongest
+        argument for writing proofs as checkable game sequences --- and,
+        eventually, for machine-checking them \cite{CertiCrypt09}.
+    \end{enumerate}
+
+  \item \case \paper{Fujisaki, Okamoto, Pointcheval \& Stern}{RSA-OAEP is Secure
+    under the RSA Assumption}{FOPS04}
+    \begin{enumerate}
+      \item The repair: a valid but much lossier chain, exploiting RSA's
+        specific structure rather than generic one-wayness.
+    \end{enumerate}
+
+  \item \defn\case \paper{Boneh \& Franklin}{Identity-Based Encryption from the
+    Weil Pairing}{BF03}
+    \begin{enumerate}
+      \item \textbf{IND-ID-CCA}: the IND-CCA game extended with an adaptive
+        \emph{key-extraction} oracle for identities other than the challenge
+        one. A clean example of adding one oracle to an existing game to define
+        a new primitive.
+      \item The proof is a textbook ROM game chain, and it is what made a whole
+        decade of pairing-based definitions follow the same recipe.
+    \end{enumerate}
+
+  \item \defn\method \paper{Canetti \& Krawczyk}{Analysis of Key-Exchange
+    Protocols and Their Use for Building Secure Channels}{CK01}
+    \begin{enumerate}
+      \item The \textbf{CK model}: a game-based key-exchange definition
+        packaged with a modular composition theorem (authenticators / the
+        AM-to-UM compiler).
+      \item The clearest early attempt to get composition --- UC's selling
+        point --- while staying inside a game.
+    \end{enumerate}
+
+  \item \paper{Canetti}{Universally Composable Security: A New Paradigm for
+    Cryptographic Protocols}{Can01}
+    \begin{enumerate}
+      \item Listed only as the pointer to the other document: from here on the
+        simulation branch is tracked in \texttt{all-uc-papers.pdf}. Much of the
+        game-side work below is a response to what UC offers and games do not
+        --- composition.
+    \end{enumerate}
+\end{enumerate}
+
+\section{2002--2003 --- new primitives get formal games}
+
+\begin{enumerate}
+  \item \method \paper{Maurer}{Indistinguishability of Random Systems}{Mau02}
+    \begin{enumerate}
+      \item \textbf{Random systems} and \textbf{monotone conditions}: an
+        abstract, code-free alternative to game playing, where
+        ``identical-until-bad'' becomes conditional equivalence of two systems.
+      \item Reaches the same bounds as code-based games by a different route;
+        worth reading precisely because it is the road not taken.
+        See also \cite{MPR07}.
+    \end{enumerate}
+
+  \item \defn \paper{Rogaway}{Authenticated-Encryption with Associated-Data}
+    {Rog02}
+    \begin{enumerate}
+      \item The \textbf{AEAD game}, nonce-based: privacy and authenticity of a
+        message plus unencrypted-but-authenticated headers. The game essentially
+        every deployed cipher suite is now proved against.
+    \end{enumerate}
+
+  \item \method\case \paper{Cramer \& Shoup}{Design and Analysis of Practical
+    Public-Key Encryption Schemes Secure against Adaptive Chosen Ciphertext
+    Attack}{CS03}
+    \begin{enumerate}
+      \item Hash proof systems, and a long proof written as an explicit,
+        numbered sequence of games --- the immediate precursor to \cite{Shou04}.
+    \end{enumerate}
+
+  \item \defn \paper{Bellare, Micciancio \& Warinschi}{Foundations of Group
+    Signatures: Formal Definitions, Simplified Requirements, and a Construction
+    Based on General Assumptions}{BMW03}
+    \begin{enumerate}
+      \item \textbf{Full-anonymity} and \textbf{full-traceability}: two games
+        that provably subsume the dozen informal requirements the group
+        signature literature had accumulated.
+      \item The clearest demonstration of what formalizing as games buys you:
+        a folklore list of properties collapses to two definitions, and the
+        collapse is a theorem. Compare \cite{BSZ05} for the dynamic case.
+    \end{enumerate}
+
+  \item \defn \paper{Bellare, Namprempre, Pointcheval \& Semanko}{The
+    One-More-RSA-Inversion Problems and the Security of Chaum's Blind Signature
+    Scheme}{BNPS03}
+    \begin{enumerate}
+      \item \textbf{One-more-RSA-inversion}: a new \emph{assumption} stated as
+        a game (invert $n+1$ targets given $n$ oracle inversions), because no
+        standard assumption could support the proof.
+      \item \textbf{Blindness} and \textbf{one-more-unforgeability} for blind
+        signatures. Shows the move of pushing the interactive difficulty out of
+        the proof and into a formally-stated game assumption --- now routine.
+    \end{enumerate}
+\end{enumerate}
+
+\section{2004 --- the year games were formalized}
+
+\begin{enumerate}
+  \item \method \paper{Shoup}{Sequences of Games: A Tool for Taming Complexity
+    in Security Proofs}{Shou04}
+    \begin{enumerate}
+      \item \textbf{Transitions based on indistinguishability}: replace a
+        distribution with a computationally close one; the hop costs one
+        assumption.
+      \item \textbf{Transitions based on failure events}, justified by the
+        \textbf{Difference Lemma}: if $G_i$ and $G_{i+1}$ proceed identically
+        unless event $F$ occurs, then
+        $\lvert \Pr[S_i] - \Pr[S_{i+1}] \rvert \le \Pr[F]$.
+      \item \textbf{Bridging steps}: purely syntactic rewrites that change
+        nothing but make the next real step visible. Naming these is half the
+        contribution --- they are where informal proofs hide their mistakes.
+      \item Worked end-to-end examples: hashed ElGamal, Cramer--Shoup, PSS.
+    \end{enumerate}
+
+  \item \method \paper{Bellare \& Rogaway}{Code-Based Game-Playing Proofs and
+    the Security of Triple Encryption}{BR04,BR06}
+    \begin{enumerate}
+      \item \textbf{Games as pseudocode}: a game is a program with
+        \texttt{Initialize}, oracle procedures and \texttt{Finalize}; the
+        adversary is linked against it. Proof steps become \emph{program}
+        rewrites, which is what later makes mechanization possible.
+      \item The \textbf{bad flag} discipline: games are written to be
+        syntactically \textbf{identical-until-bad}.
+      \item The \textbf{Fundamental Lemma of game playing}: if $G$ and $H$ are
+        identical-until-bad, then
+        $\lvert \Pr[G^A \Rightarrow 1] - \Pr[H^A \Rightarrow 1] \rvert
+        \le \Pr[G^A \text{ sets } \mathsf{bad}]$.
+      \item \textbf{Lazy vs.\ eager sampling}, coin-fixing and resampling: the
+        standard library of bridging rewrites, each proved once.
+      \item Application: triple encryption's $\approx 2^{78}$ security bound.
+      \item This and \cite{Shou04} are the two documents the phrase
+        ``game-based proof'' refers to. Read both: Shoup's is the prose method,
+        this one is the formal system.
+    \end{enumerate}
+
+  \item \defn\method \paper{Maurer, Renner \& Holenstein}{Indifferentiability,
+    Impossibility Results on Reductions, and Applications to the Random Oracle
+    Methodology}{MRH04}
+    \begin{enumerate}
+      \item The \textbf{indifferentiability} game, plus the composition theorem
+        that ordinary game-based definitions lack: a construction
+        indifferentiable from a random oracle can replace one in any
+        single-stage game.
+      \item The standard tool for hash-function domain extension
+        (Merkle--Damg\aa{}rd, sponges) --- and, later, a cautionary tale of its
+        own \cite{RSS11}.
+    \end{enumerate}
+
+  \item \defn \paper{Rogaway \& Shrimpton}{Cryptographic Hash-Function Basics}
+    {RS04}
+    \begin{enumerate}
+      \item Seven games for hash functions --- \textbf{Coll}, \textbf{Pre},
+        \textbf{ePre}, \textbf{aPre}, \textbf{Sec}, \textbf{eSec},
+        \textbf{aSec} --- with the complete implication/separation map between
+        them.
+      \item A model of definitional hygiene: the differences between these games
+        are exactly the differences practitioners get wrong.
+    \end{enumerate}
+
+  \item \defn \paper{Rogaway}{Nonce-Based Symmetric Encryption}{Rog04}
+    \begin{enumerate}
+      \item Replaces the random IV of \cite{BDJR97} with a \textbf{nonce} the
+        adversary picks (subject to non-repetition), which is what real APIs
+        expose.
+      \item Read as a pair with \cite{BDJR97}: the same primitive, re-formalized
+        a second time because the first game's interface did not match how the
+        primitive is used.
+    \end{enumerate}
+\end{enumerate}
+
+\section{2005--2007 --- mechanize it, and keep defining}
+
+\begin{enumerate}
+  \item \tool \paper{Halevi}{A Plausible Approach to Computer-Aided
+    Cryptographic Proofs}{Hal05}
+    \begin{enumerate}
+      \item The founding document of computer-aided game-based cryptography:
+        since a game sequence is a sequence of \emph{program} rewrites, a tool
+        should check them.
+      \item Proposes exactly the architecture --- a game-transformation engine
+        plus a proof checker --- that \cite{CryptoVerif06},
+        \cite{CertiCrypt09} and \cite{EasyCrypt11} went on to build.
+    \end{enumerate}
+
+  \item \tool \paper{Blanchet}{A Computationally Sound Mechanized Prover for
+    Security Protocols}{CryptoVerif06}
+    \begin{enumerate}
+      \item First tool to \emph{find} game sequences automatically in the
+        computational model (as opposed to the symbolic/Dolev--Yao model).
+      \item Games as processes; hops as observational-equivalence-preserving
+        process rewrites.
+    \end{enumerate}
+
+  \item \defn \paper{Rogaway \& Shrimpton}{A Provable-Security Treatment of the
+    Key-Wrap Problem}{RS06}
+    \begin{enumerate}
+      \item \textbf{Deterministic authenticated encryption (DAE)}: a game for a
+        primitive that had shipped for years (key wrapping) with no definition
+        at all.
+      \item The cleanest case study in reverse-engineering a formal game from
+        deployed practice, rather than designing practice to fit a game.
+    \end{enumerate}
+
+  \item \defn\turn \paper{Rogaway}{Formalizing Human Ignorance:
+    Collision-Resistant Hashing without the Keys}{Rog06}
+    \begin{enumerate}
+      \item Why there is no sensible collision-resistance \emph{game} for a
+        fixed, unkeyed hash like SHA-256 --- a collision exists, so some
+        adversary has it hardwired.
+      \item The \textbf{explicit-reduction} workaround: state theorems as
+        constructive transformations of adversaries rather than as advantage
+        inequalities. A rare case of the game formalism being replaced rather
+        than patched.
+    \end{enumerate}
+
+  \item \method \paper{Bellare \& Neven}{Multi-Signatures in the Plain
+    Public-Key Model and a General Forking Lemma}{BN06}
+    \begin{enumerate}
+      \item The \textbf{general forking lemma}: \cite{PS96}'s forking stated as
+        a self-contained probabilistic lemma about algorithms, decoupled from
+        signatures, so it can be dropped into any game chain.
+    \end{enumerate}
+
+  \item \defn \paper{Bellare, Boldyreva \& O'Neill}{Deterministic and
+    Efficiently Searchable Encryption}{BBO07}
+    \begin{enumerate}
+      \item \textbf{PRIV}: the best achievable privacy game once encryption must
+        be deterministic --- security only for messages of high min-entropy,
+        which requires the game to quantify over message distributions rather
+        than message pairs.
+      \item Shows how to write a formal game for a primitive that cannot meet
+        the standard one, instead of declaring it insecure and moving on. (It
+        is also one of the multi-stage games \cite{RSS11} later singles out.)
+    \end{enumerate}
+
+  \item \method \paper{Maurer, Pietrzak \& Renner}{Indistinguishability
+    Amplification}{MPR07}
+    \begin{enumerate}
+      \item Composing several ``somewhat indistinguishable'' systems into a very
+        indistinguishable one: the amplification counterpart to the Fundamental
+        Lemma, in \cite{Mau02}'s random-systems framework.
+    \end{enumerate}
+\end{enumerate}
+
+\section{2009--2012 --- machine checking, and definitional hygiene}
+
+\begin{enumerate}
+  \item \tool \paper{Barthe, Grégoire \& Zanella Béguelin}{Formal Certification
+    of Code-Based Cryptographic Proofs}{CertiCrypt09}
+    \begin{enumerate}
+      \item \cite{BR04}'s code-based games formalized in Coq: a game is a
+        program in a probabilistic imperative language, a hop is a certified
+        program transformation.
+      \item \textbf{Probabilistic relational Hoare logic (pRHL)}, the logic in
+        which ``these two games behave identically unless bad'' becomes a
+        checkable judgment. Still the technical core of EasyCrypt today.
+      \item First fully machine-checked proofs of OAEP and of the Fundamental
+        Lemma itself.
+    \end{enumerate}
+
+  \item \turn\defn \paper{Bellare, Hofheinz \& Kiltz}{Subtleties in the
+    Definition of IND-CCA: When and How Should Challenge-Decryption be
+    Disallowed?}{BHK09}
+    \begin{enumerate}
+      \item Four different formalizations of ``the adversary may not decrypt the
+        challenge'' that the literature had treated as interchangeable, with
+        separations showing they are not.
+      \item The cleanest evidence that a game's small print is load-bearing.
+    \end{enumerate}
+
+  \item \tool \paper{Barthe, Grégoire, Heraud \& Zanella Béguelin}{Computer-Aided
+    Security Proofs for the Working Cryptographer}{EasyCrypt11}
+    \begin{enumerate}
+      \item \cite{CertiCrypt09}'s ideas behind a proof assistant a cryptographer
+        can actually drive: the game sequence is written in something close to
+        the paper's own pseudocode, with SMT discharging the routine steps.
+      \item The tool most current game-based mechanization is built on.
+    \end{enumerate}
+
+  \item \defn \paper{Boneh, Dagdelen, Fischlin, Lehmann, Schaffner \& Zhandry}
+    {Random Oracles in a Quantum World}{QROM11}
+    \begin{enumerate}
+      \item The \textbf{quantum random oracle model (QROM)}: the adversary
+        queries the oracle in superposition, which invalidates the two moves
+        every \cite{BR93rom} proof relies on --- observing queries and
+        programming answers.
+      \item Re-proves classical results in the new game where possible, and
+        separates where not. The starting point for essentially all post-quantum
+        security proofs, including \cite{HHK17}.
+    \end{enumerate}
+
+  \item \turn \paper{Ristenpart, Shacham \& Shrimpton}{Careful with Composition:
+    Limitations of Indifferentiability and Universal Composability}{RSS11}
+    \begin{enumerate}
+      \item \textbf{Single-stage vs.\ multi-stage games}: \cite{MRH04}'s
+        composition theorem only applies to the former, and several important
+        games (deterministic/hedged encryption, related-key attacks, proofs of
+        storage) are multi-stage.
+      \item The one composition theorem the game world had turns out to be
+        narrower than everyone assumed --- a direct motivation for
+        \cite{SSP18}.
+    \end{enumerate}
+
+  \item \defn \paper{Bellare, Ristenpart \& Tessaro}{Multi-Instance Security and
+    its Application to Password-Based Cryptography}{BRT12}
+    \begin{enumerate}
+      \item \textbf{$m$-out-of-$n$ multi-instance games}: the adversary must
+        break \emph{all} $m$ instances, which is the right question for password
+        hashing and salting, and is not implied by single-instance security.
+    \end{enumerate}
+
+  \item \defn \paper{Bellare, Hoang \& Rogaway}{Foundations of Garbled Circuits}
+    {BHR12}
+    \begin{enumerate}
+      \item Garbling promoted from a technique inside other protocols' proofs to
+        a \emph{primitive} with its own games: \textbf{privacy},
+        \textbf{obliviousness} and \textbf{authenticity}, in both
+        indistinguishability and simulation flavors.
+      \item The best example of the general move of this era: take something
+        everyone proved ad hoc inside larger simulation arguments, give it
+        standalone formal games, and let the rest of the literature reduce to
+        them.
+    \end{enumerate}
+
+  \item \defn\case \paper{Jager, Kohlar, Schäge \& Schwenk}{On the Security of
+    TLS-DHE in the Standard Model}{JKSS12}
+    \begin{enumerate}
+      \item The \textbf{ACCE game}: authenticated key exchange and stateful
+        authenticated encryption fused into a single game, because TLS's
+        handshake and record layer cannot be separated (the finished messages
+        are encrypted under the key being established).
+      \item The canonical example of the game being reshaped to fit a deployed
+        protocol rather than the reverse.
+    \end{enumerate}
+\end{enumerate}
+
+\section{2013--2016 --- new definitional idioms}
+
+\begin{enumerate}
+  \item \case \paper{Krawczyk, Paterson \& Wee}{On the Security of the TLS
+    Protocol: A Systematic Analysis}{KPW13}
+    \begin{enumerate}
+      \item Constrained-CCA / ACCE-style treatment covering TLS's actual
+        ciphersuites, including RSA key transport.
+    \end{enumerate}
+
+  \item \defn \paper{Bellare, Hoang \& Keelveedhi}{Instantiating Random Oracles
+    via UCEs}{BHK13}
+    \begin{enumerate}
+      \item \textbf{UCE (universal computational extractor)}: a family of
+        standard-model games for hash functions, strong enough to replace the
+        random oracle in many proofs, defined via a two-stage
+        source/distinguisher game.
+      \item The most ambitious attempt to answer \cite{CGH04} with a definition
+        rather than a disclaimer --- and a good illustration of how delicate a
+        new game is: several UCE variants were shown too strong soon after.
+    \end{enumerate}
+
+  \item \defn\case \paper{Fischlin \& Günther}{Multi-Stage Key Exchange and the
+    Case of Google's QUIC Protocol}{FG14}
+    \begin{enumerate}
+      \item The \textbf{multi-stage key-exchange game}: several keys per
+        session, established at different times with different security levels,
+        each testable. The model TLS 1.3 is analyzed in \cite{DFGS21}.
+    \end{enumerate}
+
+  \item \tool \paper{Petcher \& Morrisett}{The Foundational Cryptography
+    Framework}{FCF15}
+    \begin{enumerate}
+      \item Another Coq embedding of code-based games, aimed at extracting
+        verified implementations alongside the proof.
+    \end{enumerate}
+
+  \item \turn \paper{Bader, Jager, Li \& Schäge}{On the Impossibility of Tight
+    Cryptographic Reductions}{BJLS16}
+    \begin{enumerate}
+      \item A general \textbf{meta-reduction} framework, in \cite{Cor00}'s
+        lineage: for a broad class of schemes with unique signatures/keys,
+        \emph{no} tight reduction from a non-interactive assumption exists.
+      \item Turns tightness from a proof-quality question into a theorem about
+        the game itself.
+    \end{enumerate}
+
+  \item \defn\case \paper{Bellare \& Tackmann}{The Multi-User Security of
+    Authenticated Encryption: AES-GCM in TLS 1.3}{BT16}
+    \begin{enumerate}
+      \item \textbf{Multi-user AE} with concrete bounds, applied to the exact
+        nonce-randomization construction TLS 1.3 was choosing at the time.
+      \item \cite{BBM00}'s multi-user idea, sixteen years later, deciding a
+        standard --- a good closing argument for why the constants in a game
+        matter.
+    \end{enumerate}
+
+  \item \paper{Lindell}{How To Simulate It --- A Tutorial on the Simulation
+    Proof Technique}{Lin16}
+    \begin{enumerate}
+      \item Not game-based --- included as the companion tutorial for the other
+        branch, and the fastest way to see which problems each style suits.
+    \end{enumerate}
+\end{enumerate}
+
+\section{2017--2019 --- modularity}
+
+\begin{enumerate}
+  \item \defn\method \paper{Hofheinz, Hövelmanns \& Kiltz}{A Modular Analysis of
+    the Fujisaki--Okamoto Transformation}{HHK17}
+    \begin{enumerate}
+      \item The FO transform decomposed into small steps with a named game
+        between each: IND-CPA $\to$ OW-PCVA $\to$ IND-CCA KEM, each hop proved
+        separately and reusable.
+      \item The modern standard for how to write a reduction: modular, with
+        explicit intermediate notions. Every NIST post-quantum KEM's proof is
+        built out of these pieces.
+    \end{enumerate}
+
+  \item \tool \paper{Basin, Lochbihler \& Sefidgar}{CryptHOL: Game-based Proofs
+    in Higher-order Logic}{CryptHOL17}
+    \begin{enumerate}
+      \item Games as terms in Isabelle/HOL's probability monad, so game hops are
+        equational rewriting rather than a bespoke program logic.
+    \end{enumerate}
+
+  \item \method \paper{Brzuska, Delignat-Lavaud, Fournet, Kohbrok \& Kohlweiss}
+    {State Separation for Code-Based Game-Playing Proofs}{SSP18}
+    \begin{enumerate}
+      \item \textbf{Packages}: games split into stateful components with
+        disjoint state and typed interfaces, composed sequentially ($\circ$) and
+        in parallel ($\otimes$).
+      \item \textbf{Interchange / composition lemmas} letting a sub-package be
+        replaced by an indistinguishable one \emph{inside} a larger game ---
+        the modularity that UC had and plain game-based proofs did not.
+      \item The main structural advance in game-based proving since
+        \cite{BR04}, and what makes proofs of protocol-scale objects
+        (\cite{BDEFKK22}) tractable.
+    \end{enumerate}
+
+  \item \turn \paper{Drijvers, Edalatnejad, Ford, Kiltz, Loss, Neven \&
+    Stepanovs}{On the Security of Two-Round Multi-Signatures}{DEFKLNS19}
+    \begin{enumerate}
+      \item Several published two-round Schnorr multi-signature proofs are
+        broken, by a concurrent (Wagner/ROS) attack their games' rewinding
+        arguments could not see.
+      \item The modern counterpart to \cite{Shou01}: the reason the
+        multi-signature literature now insists on fully formal games. See
+        \cite{NRS21} for the repair.
+    \end{enumerate}
+
+  \item \tool \paper{Canetti, Stoughton \& Varia}{EasyUC: Using EasyCrypt to
+    Mechanize Proofs of Universally Composable Security}{EasyUC19}
+    \begin{enumerate}
+      \item The two branches meet in one tool: UC simulation proofs carried out
+        in the game-based prover. Useful for seeing exactly where the styles
+        differ formally.
+    \end{enumerate}
+\end{enumerate}
+
+\section{2019--2021 --- tooling consolidates}
+
+\begin{enumerate}
+  \item \tool \paper{Barbosa, Barthe, Bhargavan, Blanchet, Cremers, Liao \&
+    Parno}{SoK: Computer-Aided Cryptography}{SoKCAC21}
+    \begin{enumerate}
+      \item The survey to read before picking a tool: design-level (game-based)
+        provers, symbolic provers, and verified implementations, with what each
+        can and cannot do.
+    \end{enumerate}
+
+  \item \tool \paper{Haselwarter et al.}{SSProve: A Foundational Framework for
+    Modular Cryptographic Proofs in Coq}{SSProve21}
+    \begin{enumerate}
+      \item \cite{SSP18}'s state-separating proofs, mechanized: packages and
+        their composition laws as a Coq library with a relational program logic
+        underneath.
+      \item Closes the loop \cite{Hal05} opened in 2005 --- modular \emph{and}
+        machine-checked.
+    \end{enumerate}
+
+  \item \tool \paper{Baelde, Delaune, Jacomme, Koutsos \& Moreau}{An Interactive
+    Prover for Protocol Verification in the Computational Model}{Squirrel21}
+    \begin{enumerate}
+      \item A different bet: a logic for computational indistinguishability
+        (after Bana--Comon) instead of explicit game rewriting.
+    \end{enumerate}
+
+  \item \defn\case \paper{Nick, Ruffing \& Seurin}{MuSig2: Simple Two-Round
+    Schnorr Multi-Signatures}{NRS21}
+    \begin{enumerate}
+      \item A two-round scheme with a full game-based proof that survives the
+        attack of \cite{DEFKLNS19}, in the ROM (plus a tighter argument in the
+        algebraic group model).
+      \item Worth reading immediately after \cite{DEFKLNS19}: the same game, one
+        broken proof and one repaired one, a decade of technique apart.
+    \end{enumerate}
+
+  \item \case \paper{Dowling, Fischlin, Günther \& Stebila}{A Cryptographic
+    Analysis of the TLS 1.3 Handshake Protocol}{DFGS21}
+    \begin{enumerate}
+      \item \cite{FG14}'s full multi-stage game applied to the shipped TLS 1.3
+        handshake --- and an example of a game-based analysis that shaped a
+        standard while it was being written.
+    \end{enumerate}
+\end{enumerate}
+
+\section{2022 and after --- games at protocol scale}
+
+\begin{enumerate}
+  \item \case\method \paper{Brzuska, Delignat-Lavaud, Egger, Fournet, Kohbrok \&
+    Kohlweiss}{Key-schedule Security for the TLS 1.3 Standard}{BDEFKK22}
+    \begin{enumerate}
+      \item \cite{SSP18} applied at full scale: the TLS 1.3 key schedule proved
+        as a composition of packages, at a size no monolithic game sequence
+        would survive.
+      \item The current answer to ``can game-based proofs handle real
+        protocols?'' --- yes, but only modularly.
+    \end{enumerate}
+\end{enumerate}
+
+\section{Appendix: the standing critiques}
+
+\noindent
+Not definitional papers, but the arguments about what a game-based theorem
+actually claims. Useful once the rest of the list makes sense.
+
+\begin{enumerate}
+  \item \paper{Koblitz \& Menezes}{Another Look at ``Provable Security''}{KM04}
+    Non-tight reductions read as meaningful, and the gap between a model's
+    oracles and reality.
+  \item \paper{Bellare, Boldyreva \& Palacio}{An Uninstantiable
+    Random-Oracle-Model Scheme for a Hybrid Encryption Problem}{BBP03}
+    \cite{CGH04}'s separation, for a natural scheme rather than a contrived one.
+  \item \paper{Dent}{Fundamental problems in provable security and
+    cryptography}{Dent06} A survey of what the enterprise cannot deliver,
+    written from inside it.
+  \item \paper{Bernstein \& Lange}{Non-uniform Cracks in the Concrete: The Power
+    of Free Precomputation}{BL13} Adversaries with free preprocessing beat many
+    concrete bounds as stated, so the quantifiers in a game matter as much as
+    its shape.
+\end{enumerate}
+
+\vspace{1em}
+\noindent\rule{\linewidth}{0.4pt}
+
+\medskip\noindent
+\textbf{The list in one line.} Games were how definitions got written from 1982
+\cite{GM82}, and how primitives got \emph{fully} formalized from 1997
+\cite{BDJR97}, but they were not themselves an object of study until 2004, when
+\cite{Shou04} and \cite{BR04} gave the sequence-of-games proof a grammar. What
+follows splits in two: mechanizing that grammar (\cite{Hal05} $\to$
+\cite{CryptoVerif06} $\to$ \cite{CertiCrypt09} $\to$ \cite{EasyCrypt11} $\to$
+\cite{CryptHOL17,SSProve21}), and buying back the composability the style gave
+up when it declined to use simulators (\cite{CK01} $\to$ \cite{MRH04} $\to$ its
+limits in \cite{RSS11} $\to$ state separation in \cite{SSP18} $\to$
+\cite{BDEFKK22}).
+
+\bibliographystyle{alpha}
+\bibliography{refs}
+
+\end{document}

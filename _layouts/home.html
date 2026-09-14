@@ -29,7 +29,13 @@ show_title: false
       {%- for entry in _updates -%}
         {%- case entry.collection -%}
         {%- when "posts" -%}
-          {%- include papers-talks/teaser.html title=entry.title url=entry.url date=entry.date kind="Post" -%}
+          {%- comment -%} A `type: note` post is a note (🌱), everything else is an article (🌲) — same split as /history's post-type filter, but the article label is clipped to "Arti" to keep the badge short. {%- endcomment -%}
+          {%- if entry.type == 'note' -%}
+            {%- assign _kind = "Note" -%}
+          {%- else -%}
+            {%- assign _kind = "Arti" -%}
+          {%- endif -%}
+          {%- include papers-talks/teaser.html title=entry.title url=entry.url date=entry.date kind=_kind -%}
         {%- when "papers" -%}
           {%- assign _url = "/papers#" | append: entry.card_id -%}
           {%- include papers-talks/teaser.html title=entry.title url=_url date=entry.date subtitle=entry.paper_venue kind="Paper" -%}

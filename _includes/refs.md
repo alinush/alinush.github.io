@@ -428,7 +428,7 @@
 
 [^BDET21]: **Anonymous Transactions with Revocation and Auditing in Hyperledger Fabric**, by Dmytro Bogatov and Angelo De Caro and Kaoutar Elkhiyaoui and Björn Tackmann, 2021
 
-[^BDFplus18e]: **State Separation for Code-Based Game-Playing Proofs**, by Chris Brzuska and Antoine Delignat-Lavaud and Cedric Fournet and Konrad Kohbrok and Markulf Kohlweiss, *in Cryptology ePrint Archive, Paper 2018/306*, 2018, [[URL]](https://eprint.iacr.org/2018/306)
+[^BDFplus18e]: **State Separation for Code-Based Game-Playing Proofs**, by Chris Brzuska and Antoine Delignat-Lavaud and Cedric Fournet and Konrad Kohbrok and Markulf Kohlweiss, *in Cryptology {ePrint} Archive, Paper 2018/306*, 2018, [[URL]](https://eprint.iacr.org/2018/306)
 
 [^BDFplus25e]: **DekartProof: Efficient Vector Range Proofs and Their Applications**, by Dan Boneh and Trisha Datta and Rex Fernando and Kamilla Nazirkhanova and Alin Tomescu, *in Cryptology {ePrint} Archive, Paper 2025/1159*, 2025, [[URL]](https://eprint.iacr.org/2025/1159)
 
@@ -712,6 +712,8 @@
 
 [^BM23e]: **Formalizing Soundness Proofs of SNARKs**, by Bolton Bailey and Andrew Miller, *in Cryptology ePrint Archive, Paper 2023/656*, 2023, [[URL]](https://eprint.iacr.org/2023/656)
 
+[^BM24]: **Formalizing Soundness Proofs of Linear {PCP} {SNARKs**, by Bolton Bailey and Andrew Miller, *in 33rd USENIX Security Symposium (USENIX Security 24)*, 2024, [[URL]](https://www.usenix.org/conference/usenixsecurity24/presentation/bailey)
+
 [^BM25e]: **A Note on Notes: Towards Scalable Anonymous Payments via Evolving Nullifiers and Oblivious Synchronization**, by Sean Bowe and Ian Miers, *in Cryptology {ePrint} Archive, Paper 2025/2031*, 2025, [[URL]](https://eprint.iacr.org/2025/2031)
 
 [^BM97]: **A New Paradigm for Collision-Free Hashing: Incrementality at Reduced Cost**, by Bellare, Mihir and Micciancio, Daniele, *in EUROCRYPT '97*, 1997
@@ -968,6 +970,8 @@
 
 [^CCLplus21]: **HashWires: Hyperefficient Credential-Based Range Proofs**, by Konstantinos Chalkias and Shir Cohen and Kevin Lewi and Fredric Moezinia and Yolan Romailler, *in Cryptology ePrint Archive, Report 2021/297*, 2021, [[URL]](https://eprint.iacr.org/2021/297)
 
+[^CCL14e]: **A Simpler Variant of Universally Composable Security for Standard Multiparty Computation**, by Ran Canetti and Asaf Cohen and Yehuda Lindell, *in Cryptology {ePrint} Archive, Paper 2014/553*, 2014, [[URL]](https://eprint.iacr.org/2014/553)
+
 [^CCNplus23e]: **vetKeys: How a Blockchain Can Keep Many Secrets**, by Andrea Cerulli and Aisling Connolly and Gregory Neven and Franz-Stefan Preiss and Victor Shoup, *in Cryptology ePrint Archive, Paper 2023/616*, 2023, [[URL]](https://eprint.iacr.org/2023/616)
 
 [^CCN21e]: **Homomorphic decryption in blockchains via compressed discrete-log lookup tables**, by Panagiotis Chatzigiannis and Konstantinos Chalkias and Valeria Nikolaenko, *in Cryptology {ePrint} Archive, Paper 2021/899*, 2021, [[URL]](https://eprint.iacr.org/2021/899)
@@ -1168,6 +1172,8 @@
 
 [^CKKplus25e]: **On the Adaptive Security of {FROST**, by Elizabeth Crites and Jonathan Katz and Chelsea Komlo and Stefano Tessaro and Chenzhi Zhu, *in Cryptology {ePrint} Archive, Paper 2025/1061*, 2025, [[URL]](https://eprint.iacr.org/2025/1061)
 
+[^CKKR19e]: **iUC}: Flexible Universal Composability Made Simple**, by Jan Camenisch and Stephan Krenn and Ralf Kuesters and Daniel Rausch, *in Cryptology {ePrint} Archive, Paper 2019/1073*, 2019, [[URL]](https://eprint.iacr.org/2019/1073)
+
 [^CKKS16e]: **Homomorphic Encryption for Arithmetic of Approximate Numbers**, by Jung Hee Cheon and Andrey Kim and Miran Kim and Yongsoo Song, *in Cryptology ePrint Archive, Paper 2016/421*, 2016, [[URL]](https://eprint.iacr.org/2016/421)
 
 [^CKLM13]: **Succinct Malleable NIZKs and an Application to Compact Shuffles**, by Chase, Melissa and Kohlweiss, Markulf and Lysyanskaya, Anna and Meiklejohn, Sarah, *in Theory of Cryptography*, 2013
@@ -1308,6 +1314,8 @@
 
 [^CS25e]: **On Reed–Solomon Proximity Gaps Conjectures**, by Elizabeth Crites and Alistair Stewart, *in Cryptology {ePrint} Archive, Paper 2025/2046*, 2025, [[URL]](https://eprint.iacr.org/2025/2046)
 
+[^CS25eUC]: **Diving Deep Into {UC}: Uncovering and Resolving Issues in Universal Composability**, by Céline Chevalier and Éric Sageloli, *in Cryptology {ePrint} Archive, Paper 2025/934*, 2025, [[URL]](https://eprint.iacr.org/2025/934)
+
 [^CS97]: **Proof Systems for General Statements about Discrete Logarithms**, by Jan Camenisch and Markus Stadler, 1997
 
 [^CS98]: **A practical public key cryptosystem provably secure against adaptive chosen ciphertext attack**, by Cramer, Ronald and Shoup, Victor, *in Advances in Cryptology --- CRYPTO '98*, 1998
@@ -1319,6 +1327,8 @@
 [^CSS19]: **Homomorphic Encryption Random Beacon**, by Alisa Cherniaeva and Ilia Shirobokov and Omer Shlomovits, *in Cryptology ePrint Archive, Report 2019/1320*, 2019, [[URL]](https://eprint.iacr.org/2019/1320)
 
 [^CSS19e]: **Homomorphic Encryption Random Beacon**, by Alisa Cherniaeva and Ilia Shirobokov and Omer Shlomovits, *in Cryptology ePrint Archive, Paper 2019/1320*, 2019, [[URL]](https://eprint.iacr.org/2019/1320)
+
+[^CSV19e]: **EasyUC}: Using {EasyCrypt} to Mechanize Proofs of Universally Composable Security**, by Ran Canetti and Alley Stoughton and Mayank Varia, *in Cryptology {ePrint} Archive, Paper 2019/582*, 2019, [[URL]](https://eprint.iacr.org/2019/582)
 
 [^CT02]: **Distributed Key Generation as a Component of an Integrated Protocol**, by Chu, Cheng-Kang and Tzeng, Wen-Guey, *in Information and Communications Security*, 2002
 
@@ -2734,6 +2744,8 @@
 
 [^LNWX17e]: **Lattice-Based Group Signatures: Achieving Full Dynamicity with Ease**, by San Ling and Khoa Nguyen and Huaxiong Wang and Yanhong Xu, *in Cryptology ePrint Archive, Report 2017/353*, 2017, [[URL]](https://eprint.iacr.org/2017/353)
 
+[^LOB24]: **zkPi: Proving Lean Theorems in Zero-Knowledge**, by Laufer, Evan and Ozdemir, Alex and Boneh, Dan, *in Proceedings of the 2024 on ACM SIGSAC Conference on Computer and Communications Security*, 2024, [[URL]](http://dx.doi.org/10.1145/3658644.3670322)
+
 [^LOSplus06]: **Sequential Aggregate Signatures, Multisignatures, and Verifiably Encrypted Signatures Without Random Oracles**, by Steve Lu and Rafail Ostrovsky and Amit Sahai and Hovav Shacham and Brent Waters, 2006, [[URL]](https://hovav.net/ucsd/dist/agg-sig.pdf)
 
 [^LP01]: **Adaptive Security in the Threshold Setting: From Cryptosystems to Signature Schemes**, by Lysyanskaya, Anna and Peikert, Chris, *in Advances in Cryptology --- ASIACRYPT 2001*, 2001
@@ -2950,6 +2962,8 @@
 
 [^MSJP22e]: **Nirvana: Instant and Anonymous Payment-Guarantees**, by Akash Madhusudan and Mahdi Sedaghat and Philipp Jovanovic and Bart Preneel, *in Cryptology ePrint Archive, Paper 2022/872*, 2022, [[URL]](https://eprint.iacr.org/2022/872)
 
+[^MSSplus21e]: **IPDL}: A Simple Framework for Formally Verifying Distributed Cryptographic Protocols**, by Greg Morrisett and Elaine Shi and Kristina Sojakova and Xiong Fan and Joshua Gancher, *in Cryptology {ePrint} Archive, Paper 2021/147*, 2021, [[URL]](https://eprint.iacr.org/2021/147)
+
 [^MTA16]: **Elliptic Curve Multiset Hash**, by Jeremy Maitin-Shepard and Mehdi Tibouchi and Diego Aranha, 2016
 
 [^MV19]: **Aggregatable Signatures from an Inner Pairing Product Argument**, by Mary Maller and Noah Vesely, *in Cryptology ePrint Archive, Report 2019/1177*, 2019, [[URL]](https://eprint.iacr.org/2019/1177)
@@ -2963,6 +2977,8 @@
 [^MW99]: **The Relationship Between Breaking the Diffie--Hellman Protocol and Computing Discrete Logarithms**, by Maurer, Ueli M. and Wolf, Stefan, *in SIAM Journal on Computing*, 1999, [[URL]](https://doi.org/10.1137/S0097539796302749)
 
 [^MZCN25]: **Quantum Disruption: An SOK of How Post-Quantum Attackers Reshape Blockchain Security and Performance**, by Tushin Mallick and Maya Zeldin and Murat Cenk and Cristina Nita-Rotaru, 2025, [[URL]](https://arxiv.org/abs/2512.13333)
+
+[^MZK20]: **Baby SNARK (do do dodo dodo)**, by Andrew Miller and Ye Zhang and Sanket Kanjalkar, 2020, [[URL]](https://github.com/initc3/babySNARK/blob/master/babysnark.pdf)
 
 [^MZWplus19]: **CHURP: Dynamic-Committee Proactive Secret Sharing**, by Sai Krishna Deepak Maram and Fan Zhang and Lun Wang and Andrew Low and Yupeng Zhang and Ari Juels and Dawn Song, *in Cryptology ePrint Archive, Report 2019/017*, 2019, [[URL]](https://eprint.iacr.org/2019/017)
 
@@ -3518,6 +3534,8 @@
 
 [^SW08e]: **Compact Proofs of Retrievability**, by Hovav Shacham and Brent Waters, *in Cryptology ePrint Archive, Paper 2008/073*, 2008, [[URL]](https://eprint.iacr.org/2008/073)
 
+[^SW26e]: **HAWK}-$n$ Key Recovery Reduces to {SVP} in Dimension $n/2 + 1$**, by Zygimantas Straznickas and Stephen A. Weis, *in Cryptology {ePrint} Archive, Paper 2026/1593*, 2026, [[URL]](https://eprint.iacr.org/2026/1593)
+
 [^SZ20e]: **Polynomial IOPs for Linear Algebra Relations**, by Alan Szepieniec and Yuncong Zhang, *in Cryptology ePrint Archive, Paper 2020/1022*, 2020, [[URL]](https://eprint.iacr.org/2020/1022)
 
 [^SZ23e]: **FREPack}: Improved {SNARK} Frontend for Highly Repetitive Computations**, by Sriram Sridhar and Yinuo Zhang, *in Cryptology {ePrint} Archive, Paper 2023/1240*
@@ -3859,6 +3877,8 @@
 [^XZZplus19]: **Libra: Succinct Zero-Knowledge Proofs with Optimal Prover Computation**, by Xie, Tiacheng and Zhang, Jiaheng and Zhang, Yupeng and Papamanthou, Charalampos and Song, Dawn, *in Advances in Cryptology -- CRYPTO 2019*, 2019
 
 [^XZZplus19e]: **Libra: Succinct Zero-Knowledge Proofs with Optimal Prover Computation**, by Tiancheng Xie and Jiaheng Zhang and Yupeng Zhang and Charalampos Papamanthou and Dawn Song, *in Cryptology {ePrint} Archive, Paper 2019/317*, 2019, [[URL]](https://eprint.iacr.org/2019/317)
+
+[^Xu25e]: **UC}-Security of Encrypted Key Exchange: A Tutorial**, by Jiayu Xu, *in Cryptology {ePrint} Archive, Paper 2025/237*, 2025, [[URL]](https://eprint.iacr.org/2025/237)
 
 [^YCCplus24]: **Multiple time servers timed-release encryption based on Shamir secret sharing for EHR cloud system**, by Yuan, Ke and Cheng, Ziwei and Chen, Keyan and Wang, Bozhen and Sun, Junyang and Zhou, Sufang and Jia, Chunfu, *in Journal of Cloud Computing*, 2024, [[URL]](https://doi.org/10.1186/s13677-024-00676-y)
 

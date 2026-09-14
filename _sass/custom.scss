@@ -619,6 +619,13 @@ $bottom-row-scale: .85;
   font-weight: map-get($base, font-weight-bold);
   text-transform: uppercase;
   letter-spacing: .04em;
+  // All the badges are the same width, so the titles next to them line up
+  // and a longer label (ARTICLE, PROJECT) doesn't push its title further
+  // right than a short one (NOTE, TALK). 6em fits the widest label:
+  // PROJECT measures ~5.1em bold + uppercase + this letter-spacing, plus
+  // the .5rem (~.7em at this font-size) of horizontal padding, which counts
+  // here because of the global border-box.
+  text-align: center;
 }
 
 // Tint each "Updates" entry's kind badge to match its own highlight
@@ -630,8 +637,16 @@ $bottom-row-scale: .85;
   background-color: rgba($color, .15);
   color: mix($color, $text-color, 65%);
 }
-.teaser-kind--post {
+// "Arti" — the class comes from the label, which is deliberately clipped
+// short (see home.html) rather than spelled out "Article".
+.teaser-kind--arti {
   @include teaser-kind-tint($main-color-2);
+}
+.teaser-kind--note {
+  // Notes live in the Posts column too, so keep --arti's hue but mute
+  // it: same family, visibly lighter-weight, without stealing another
+  // column's color.
+  @include teaser-kind-tint(mix($main-color-2, $text-color-3, 55%));
 }
 .teaser-kind--paper {
   @include teaser-kind-tint($main-color-1);
