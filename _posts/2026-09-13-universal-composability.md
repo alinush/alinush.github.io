@@ -37,7 +37,8 @@ $</div> <!-- $ -->
  - "simpler" UC for MPC[^CCL14e]
  - "simpler" iUC paper[^CKKR19e]: still [not very simplified](https://x.com/alinush/status/2098805745533809030), IMO.
  - A very formally worked-out example of a UC proof for PAKE[^Xu25e]
- - EasyUC paper[^CSV19e]: UC proofs in EasyCrypt 
+ - EasyUC paper[^CSV19e]: UC proofs in EasyCrypt
+ - IPDL paper[^MSSplus21e]: also mechanizes UC proofs, AFAICT
 
 ## References
 
