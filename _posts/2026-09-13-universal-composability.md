@@ -33,12 +33,19 @@ $</div> <!-- $ -->
 
 ## Papers
 
+### Historical
+
  - first UC paper[^Canetti00]
  - "simpler" UC for MPC[^CCL14e]
  - "simpler" iUC paper[^CKKR19e]: still [not very simplified](https://x.com/alinush/status/2098805745533809030), IMO.
  - A very formally worked-out example of a UC proof for PAKE[^Xu25e]
  - EasyUC paper[^CSV19e]: UC proofs in EasyCrypt
  - IPDL paper[^MSSplus21e]: also mechanizes UC proofs, AFAICT
+
+### Negative results
+
+ - UC is not as modular as one may want: e.g., cannot compose $$\mathcal{F}_\mathsf{ZK}$$ with $$\mathcal{F}_\mathsf{Sig}$$ to get a ZKPoK of a signature for anonymous credentials, say[^CDT19e].
+ - Also, it seems like UC functionalities are not really reused in practice: most papers redefine them (citation needed)
 
 ## References
 
