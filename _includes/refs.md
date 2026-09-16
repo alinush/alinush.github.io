@@ -230,6 +230,8 @@
 
 [^BBBplus18e]: **Bulletproofs: Short Proofs for Confidential Transactions and More**, by Benedikt Bünz and Jonathan Bootle and Dan Boneh and Andrew Poelstra and Pieter Wuille and Greg Maxwell, *in Cryptology ePrint Archive, Report 2017/1066*, 2017, [[URL]](https://eprint.iacr.org/2017/1066)
 
+[^BBBplus19e]: **SoK}: Computer-Aided Cryptography**, by Manuel Barbosa and Gilles Barthe and Karthik Bhargavan and Bruno Blanchet and Cas Cremers and Kevin Liao and Bryan Parno, *in Cryptology {ePrint} Archive, Paper 2019/1393*, 2019, [[URL]](https://eprint.iacr.org/2019/1393)
+
 [^BBBF18e]: **Verifiable Delay Functions**, by Dan Boneh and Joseph Bonneau and Benedikt Bünz and Ben Fisch, *in Cryptology ePrint Archive, Paper 2018/601*, 2018, [[URL]](https://eprint.iacr.org/2018/601)
 
 [^BBCplus22e]: **New Design Techniques for Efficient Arithmetization-Oriented Hash Functions:Anemoi Permutations and Jive Compression Mode**, by Clémence Bouvier and Pierre Briaud and Pyrros Chaidos and Léo Perrin and Robin Salen and Vesselin Velichkov and Danny Willems, *in Cryptology {ePrint} Archive, Paper 2022/840*, 2022, [[URL]](https://eprint.iacr.org/2022/840)
@@ -1456,6 +1458,8 @@
 
 [^DGIplus19e]: **Trapdoor Hash Functions and Their Applications**, by Nico Döttling and Sanjam Garg and Yuval Ishai and Giulio Malavolta and Tamer Mour and Rafail Ostrovsky, *in Cryptology {ePrint} Archive, Paper 2019/639*, 2019, [[URL]](https://eprint.iacr.org/2019/639)
 
+[^DGJplus26]: **DDRop}: Active Memory Interposer Attacks on Confidential {VMs} by Dropping {DDR5} Writes**, by De Meulemeester, Jesse and Gloor, Stefan and Jattke, Patrick and Moghimi, Daniel and Oswald, David and Thompson, Martin and Razavi, Kaveh and Verbauwhede, Ingrid and Van Bulck, Jo, *in Proceedings of the 2026 {ACM} {SIGSAC} Conference on Computer and Communications Security ({CCS} '26)*, 2026
+
 [^DGKplus20]: **Balancing Privacy and Accountability in Blockchain Transactions**, by Ivan Damgård and Chaya Ganesh and Hamidreza Khoshakhlagh and Claudio Orlandi and Luisa Siniscalchi, *in Cryptology ePrint Archive, Report 2020/1511*, 2020, [[URL]](https://eprint.iacr.org/2020/1511)
 
 [^DGKplus25]: **Walrus: An Efficient Decentralized Storage Network**, by George Danezis and Giacomo Giuliari and Eleftherios Kokoris Kogias and Markus Legner and Jean-Pierre Smith and Alberto Sonnino and Karl Wüst, 2025
@@ -1755,6 +1759,8 @@
 [^FK20]: **Fast amortized Kate proofs**, by Dankrad Feist and Dmitry Khovratovich, 2020, [[URL]](https://github.com/khovratovich/Kate)
 
 [^FK23e]: **Fast amortized KZG proofs**, by Dankrad Feist and Dmitry Khovratovich, *in Cryptology ePrint Archive, Paper 2023/033*, 2023, [[URL]](https://eprint.iacr.org/2023/033)
+
+[^FKKplus26e]: **UC}, Categorically: Rigorous Diagrammatic Proofs**, by Pooya Farshim and Martti Karvonen and Andre Knispel and Markulf Kohlweiss and Philip Wadler, *in Cryptology {ePrint} Archive, Paper 2026/1605*, 2026, [[URL]](https://eprint.iacr.org/2026/1605)
 
 [^FKLplus21]: **Constant-Overhead Zero-Knowledge for RAM Programs**, by Nicholas Franzese and Jonathan Katz and Steve Lu and Rafail Ostrovsky and Xiao Wang and Chenkai Weng, *in Cryptology ePrint Archive, Report 2021/979*, 2021, [[URL]](https://eprint.iacr.org/2021/979)
 
@@ -2292,6 +2298,8 @@
 
 [^HR22e]: **Faster Sounder Succinct Arguments and IOPs**, by Justin Holmgren and Ron Rothblum, *in Cryptology ePrint Archive, Paper 2022/994*, 2022, [[URL]](https://eprint.iacr.org/2022/994)
 
+[^HRMplus21e]: **SSProve}: A Foundational Framework for Modular Cryptographic Proofs in Coq**, by Philipp G.  Haselwarter and Exequiel Rivas and Antoine Van Muylder and Théo Winterhalter and Carmine Abate and Nikolaj Sidorenco and Catalin Hritcu and Kenji Maillard and Bas Spitters, *in Cryptology {ePrint} Archive, Paper 2021/397*, 2021, [[URL]](https://eprint.iacr.org/2021/397)
+
 [^HS21]: **With a Little Help from My Friends: Constructing Practical Anonymous Credentials**, by Lucjan Hanzlik and Daniel Slamanig, *in Cryptology ePrint Archive, Report 2021/1419*, 2021, [[URL]](https://ia.cr/2021/1419)
 
 [^HS24e]: **A Crack in the Firmament: Restoring Soundness of the Orion Proof System and More**, by Thomas den Hollander and Daniel Slamanig, *in Cryptology {ePrint} Archive, Paper 2024/1164*, 2024, [[URL]](https://eprint.iacr.org/2024/1164)
@@ -2331,6 +2339,8 @@
 [^Habo22e]: **Multivariate lookups based on logarithmic derivatives**, by Ulrich Haböck, *in Cryptology ePrint Archive, Paper 2022/1530*, 2022, [[URL]](https://eprint.iacr.org/2022/1530)
 
 [^Hagh21]: **A lattice-based vector commitment and key-value commitment with homomorphic properties**, by Haghighi Arman, 2021, [[URL]](https://repository.ust.hk/ir/Record/1783.1-115228)
+
+[^Hale05e]: **A plausible approach to computer-aided cryptographic proofs**, by Shai Halevi, *in Cryptology {ePrint} Archive, Paper 2005/181*, 2005, [[URL]](https://eprint.iacr.org/2005/181)
 
 [^Hamb15]: **Decaf: Eliminating Cofactors Through Point Compression**, by Hamburg, Mike, *in Advances in Cryptology -- CRYPTO 2015*, 2015
 
@@ -2568,6 +2578,8 @@
 
 [^KP19]: **Towards Instantiating the Algebraic Group Model**, by Julia Kastner and Jiaxin Pan, *in Cryptology ePrint Archive, Report 2019/1018*, 2019, [[URL]](https://eprint.iacr.org/2019/1018)
 
+[^KPC24]: **Computationally Bounded Robust Compilation and Universally Composable Security**, by Robert Künnemann and Marco Patrignani and Ethan Cecchetti, 2024, [[URL]](https://arxiv.org/abs/2401.15041)
+
 [^KPPS20]: **MIRAGE: Succinct Arguments for Randomized Algorithms with Applications to Universal zk-SNARKs**, by Ahmed Kosba and Dimitrios Papadopoulos and Charalampos Papamanthou and Dawn Song, *in Cryptology ePrint Archive, Report 2020/278*, 2020, [[URL]](https://eprint.iacr.org/2020/278)
 
 [^KPS18]: **xJsnark: A Framework for Efficient Verifiable Computation**, by A. Kosba and C. Papamanthou and E. Shi, *in 2018 IEEE Symposium on Security and Privacy (SP)*, 2018
@@ -2793,6 +2805,8 @@
 [^LW15e]: **A random zoo: sloth, unicorn, and trx**, by Arjen K.  Lenstra and Benjamin Wesolowski, *in Cryptology ePrint Archive, Paper 2015/366*, 2015, [[URL]](https://eprint.iacr.org/2015/366)
 
 [^LWY20]: **An Improvement of Multi-Exponentiation with Encrypted Bases Argument: Smaller and Faster**, by Yi Liu and Qi Wang and Siu-Ming Yiu, *in Cryptology ePrint Archive, Report 2020/567*, 2020, [[URL]](https://eprint.iacr.org/2020/567)
+
+[^LWZ26e]: **Beasley: Efficient Zero-Knowledge Proofs for Lattice-based Round-Optimal Oblivious Pseudorandom Functions**, by Baiyu Li and Ting-Yuan Wang and Jiapeng Zhang, *in Cryptology {ePrint} Archive, Paper 2026/2010*, 2026, [[URL]](https://eprint.iacr.org/2026/2010)
 
 [^LXZplus23e]: **Pianist: Scalable {zkRollups} via Fully Distributed Zero-Knowledge Proofs**, by Tianyi Liu and Tiancheng Xie and Jiaheng Zhang and Dawn Song and Yupeng Zhang, *in Cryptology {ePrint} Archive, Paper 2023/1271*, 2023, [[URL]](https://eprint.iacr.org/2023/1271)
 

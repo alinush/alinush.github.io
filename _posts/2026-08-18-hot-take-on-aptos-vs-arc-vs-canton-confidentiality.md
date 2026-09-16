@@ -84,7 +84,7 @@ Thus, operator visibility is viewed not as a bug but a feature for compliance.
 
 One reasonable objection to _"trusted hardware keeps being broken into"_ is that such Intel SGX attacks[^signal-sgx] will not transfer to other trusted hardware platforms. 
 
-I doubt it[^ZGWplus24]$^,$[^DWOplus25]$^,$[^MHHW18]$^,$[^TSS17].
+I doubt it[^DGJplus26]$^,$[^DWOplus25]$^,$[^ZGWplus24]$^,$[^MHHW18]$^,$[^TSS17].
 
 Although there are ways to reduce the attack surface of trusted hardware (e.g., see Sanctum[^CLD15e] from my group at MIT back in the day), in practice, they tend to come with lower performance and/or less functionality.
 And it so happens that trusted hardware companies mainly compete on performance, functionality and (I hope) developer-friendliness.
