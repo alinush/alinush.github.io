@@ -66,7 +66,7 @@ Thus, operator visibility is viewed not as a bug but a feature for compliance.
 ## Arc[^BGGplus26]
 
  - <span style="color:red">**Bad**</span>: Leverages **trusted hardware** to encrypt blockchain state on validators under a **master secret key (MSK)**
-    - _Unfortunately_, trusted hardware is much easier to break **in practice** than _in theory_ 
+    - _Unfortunately_, trusted hardware is much [easier to break **in practice**](#tee-attacks) than _in theory_ 
     - It has been fully (and partially) broken several times in the past. See just a few recent attacks:
         - [batteringram.eu/batteringram.pdf](https://batteringram.eu/batteringram.pdf): _"arbitrary plaintext read/write access and extracting SGX's platform provisioning key, thereby dismantling trust in remote attestation"_
         - [tee.fail/files/paper.pdf](https://tee.fail/files/paper.pdf): _"extract secret key material (such as attestation keys in some cases) from machines in fully trusted status"_
@@ -81,6 +81,7 @@ Thus, operator visibility is viewed not as a bug but a feature for compliance.
  - <span style="color:green">**Good**</span>: Very flexible auditing
 
 ### But $\exists$ secure trusted hardware!
+{: #tee-attacks}
 
 One reasonable objection to _"trusted hardware keeps being broken into"_ is that such Intel SGX attacks[^signal-sgx] will not transfer to other trusted hardware platforms. 
 
