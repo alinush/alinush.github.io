@@ -44,6 +44,7 @@ $</div> <!-- $ -->
  - [ ] [Formally verified CRUD](https://paulbutcher.com/lean2.html)
  - [x] [Formally Verified [zkVM] Autoprecompiles](https://powdr.org/blog/formally-verified-autoprecompiles)
  - [x] [A new software engineering paradigm](https://georgwiese.github.io/posts/formal-verification-ai/)
+ - [x] [evm.asm](https://github.com/Verified-zkEVM/evm-asm): EVM implemented in RISC-V assembly and proved against a Lean spec of RISC-V and a Lean spec of the EVM.
 
 
 ## Rust (Non-Lean)

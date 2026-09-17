@@ -998,6 +998,8 @@
 
 [^CDDplus15e]: **Linear Secret Sharing Schemes from Error Correcting Codes and Universal Hash Functions**, by Ronald Cramer and Ivan Bjerre Damgård and Nico Döttling and Serge Fehr and Gabriele Spini, *in Cryptology {ePrint} Archive, Paper 2015/1089*, 2015, [[URL]](https://eprint.iacr.org/2015/1089)
 
+[^CDE08]: **KLEE: unassisted and automatic generation of high-coverage tests for complex systems programs**, by Cadar, Cristian and Dunbar, Daniel and Engler, Dawson, *in Proceedings of the 8th USENIX Conference on Operating Systems Design and Implementation*, 2008
+
 [^CDGplus17e]: **Laconic Oblivious Transfer and its Applications**, by Chongwon Cho and Nico Döttling and Sanjam Garg and Divya Gupta and Peihan Miao and Antigoni Polychroniadou, *in Cryptology {ePrint} Archive, Paper 2017/491*, 2017, [[URL]](https://eprint.iacr.org/2017/491)
 
 [^CDGplus18]: **The Wonderful World of Global Random Oracles**, by Jan Camenisch and Manu Drijvers and Tommaso Gagliardoni and Anja Lehmann and Gregory Neven, *in Cryptology ePrint Archive, Report 2018/165*, 2018, [[URL]](https://eprint.iacr.org/2018/165)
@@ -2973,6 +2975,8 @@
 [^MSBM22e]: **Practical Delegatable Anonymous Credentials From Equivalence Class Signatures**, by Omid Mir and Daniel Slamanig and Balthazar Bauer and René Mayrhofer, *in Cryptology ePrint Archive, Paper 2022/680*, 2022, [[URL]](https://eprint.iacr.org/2022/680)
 
 [^MSGJ23e]: **Arke: Scalable and Byzantine Fault Tolerant Privacy-Preserving Contact Discovery**, by Nicolas Mohnblatt and Alberto Sonnino and Kobi Gurkan and Philipp Jovanovic, *in Cryptology ePrint Archive, Paper 2023/1218*, 2023, [[URL]](https://eprint.iacr.org/2023/1218)
+
+[^MSJ99]: **How to misuse code coverage**, by Marick, Brian and Smith, John and Jones, Mark, *in Proceedings of the 16th Interational Conference on Testing Computer Software*, 1999
 
 [^MSJP22e]: **Nirvana: Instant and Anonymous Payment-Guarantees**, by Akash Madhusudan and Mahdi Sedaghat and Philipp Jovanovic and Bart Preneel, *in Cryptology ePrint Archive, Paper 2022/872*, 2022, [[URL]](https://eprint.iacr.org/2022/872)
 
