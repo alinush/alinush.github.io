@@ -146,7 +146,7 @@ layout: base
                   {%- if _full_width == false -%}
                     <div class ="main">
                   {%- endif -%}
-                    {%- include article-info.html article=page semantic=false -%}
+                    {%- include article-info.html article=page show_read_time=true semantic=false -%}
                     {%- include article-header.html article=page semantic=false -%}
                     {%- if page.excerpt -%}
                       <p class="overlay__excerpt">{{ page.excerpt | strip_html | strip_newlines | strip | truncate: _article_header_excerpt_truncate }}</p>
@@ -206,7 +206,7 @@ layout: base
                   {%- include article-info.html article=page html=false -%}
                 {%- else -%}
                   {%- include article-header.html article=page -%}
-                  {%- include article-info.html article=page -%}
+                  {%- include article-info.html article=page show_read_time=true -%}
                 {%- endif -%}
 
                     <div class="js-article-content">{{ content }}</div>

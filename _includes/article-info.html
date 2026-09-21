@@ -24,6 +24,15 @@
 
   {%- assign _show_author = include.article.author -%}
 
+  {%- assign _show_read_time = false -%}
+  {%- if include.show_read_time and _show_date and include.article.content -%}
+    {%- assign _show_read_time = true -%}
+    {%- comment -%} Exclude the footnotes/references section, then estimate at 200 words per minute, rounding up. {%- endcomment -%}
+    {%- assign _words = include.article.content | split: '<div class="footnotes"' | first | strip_html | number_of_words -%}
+    {%- assign _read_time = _words | plus: 199 | divided_by: 200 -%}
+    {%- if _read_time < 1 -%}{%- assign _read_time = 1 -%}{%- endif -%}
+  {%- endif -%}
+
   {%- include snippets/assign.html target=site.data.variables.default.page.pageview
     source0=layout.pageview source1=page.pageview -%}
   {%- assign _pageview = __return -%}
@@ -58,6 +67,10 @@
         <ul class="right-col menu">
           {%- if _show_author  -%}
             <li><i class="fas fa-user"></i> <span>{{ _author.name }}</span></li>
+          {%- endif -%}
+
+          {%- if _show_read_time -%}
+            <li title="{{ _words }} words"><i class="far fa-clock"></i> <span>{{ _read_time }} min read</span></li>
           {%- endif -%}
 
           {%- if _show_date -%}

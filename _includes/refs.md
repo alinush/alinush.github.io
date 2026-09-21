@@ -248,6 +248,8 @@
 
 [^BBCT12]: **OpenSSLNTRU}: Faster post-quantum {TLS} key exchange**, by Daniel J. Bernstein and Billy Bob Brumley and Ming-Shing Chen and Nicola Tuveri, *in 31st USENIX Security Symposium (USENIX Security 22)*, 2022, [[URL]](https://www.usenix.org/conference/usenixsecurity22/presentation/bernstein)
 
+[^BBDplus17]: **Everest: Towards a Verified, Drop-In Replacement of HTTPS**, by Bhargavan, Karthikeyan and Bond, Barry and Delignat-Lavaud, Antoine and Fournet, Cédric and Hawblitzel, Chris and Hritcu, Catalin and Ishtiaq, Samin and Kohlweiss, Markulf and Leino, Rustan and Lorch, Jay and Maillard, Kenji and Pang, Jinyang and Parno, Bryan and Protzenko, Jonathan and Ramananandro, Tahina and Rane, Ashay and Rastogi, Aseem and Swamy, Nikhil and Thompson, Laure and Wang, Peng and Zanella-Béguelin, Santiago and Zinzindohoué, Jean-Karim, *in SNAPL 2017 - 2nd Summit on Advances in Programming Languages*, 2017, [[URL]](https://www.microsoft.com/en-us/research/publication/everest-towards-verified-drop-replacement-https/)
+
 [^BBD19]: **Polynomials Whose Secret Shares Multiplication Preserves Degree for 2-CNF Circuits Over a Dynamic Set of Secrets**, by Daniel Berend and Dor Bitan and Shlomi Dolev, *in Cryptology ePrint Archive, Report 2019/1192*, 2019, [[URL]](https://eprint.iacr.org/2019/1192)
 
 [^BBDE19e]: **Updatable Anonymous Credentials and Applications to Incentive Systems**, by Johannes Blömer and Jan Bobolz and Denis Diemert and Fabian Eidens, *in Cryptology ePrint Archive, Paper 2019/169*, 2019, [[URL]](https://eprint.iacr.org/2019/169)
@@ -1105,6 +1107,8 @@
 [^CGKS22e]: **Impossibilities in Succinct Arguments: Black-box Extraction and More**, by Matteo Campanelli and Chaya Ganesh and Hamidreza Khoshakhlagh and Janno Siim, *in Cryptology ePrint Archive, Paper 2022/638*, 2022, [[URL]](https://eprint.iacr.org/2022/638)
 
 [^CGMA85]: **Verifiable secret sharing and achieving simultaneity in the presence of faults**, by B. Chor and S. Goldwasser and S. Micali and B. Awerbuch, *in FOCS'85*, 1985
+
+[^CGMH14]: **The Last Mile: An Empirical Study of Timing Channels on seL4**, by Cock, David and Ge, Qian and Murray, Toby and Heiser, Gernot, *in Proceedings of the 2014 ACM SIGSAC Conference on Computer and Communications Security*, 2014, [[URL]](http://dx.doi.org/10.1145/2660267.2660294)
 
 [^CGN20e]: **Taming the many EdDSAs**, by Konstantinos Chalkias and François Garillot and Valeria Nikolaenko, *in Cryptology ePrint Archive, Report 2020/1244*, 2020, [[URL]](https://ia.cr/2020/1244)
 
@@ -2230,6 +2234,8 @@
 
 [^HGP22e]: **Co-factor clearing and subgroup membership testing on pairing-friendly curves**, by Youssef El Housni and Aurore Guillevic and Thomas Piellard, *in Cryptology ePrint Archive, Paper 2022/352*, 2022, [[URL]](https://eprint.iacr.org/2022/352)
 
+[^HHKplus15]: **IronFleet: proving practical distributed systems correct**, by Hawblitzel, Chris and Howell, Jon and Kapritsos, Manos and Lorch, Jacob R. and Parno, Bryan and Roberts, Michael L. and Setty, Srinath and Zill, Brian, *in Proceedings of the 25th Symposium on Operating Systems Principles*, 2015, [[URL]](http://dx.doi.org/10.1145/2815400.2815428)
+
 [^HHKplus21]: **Merkle^2: A Low-Latency Transparency Log System**, by Yuncong Hu and Kian Hooshmand and Harika Kalidhindi and Seung Jin Yang and Raluca Ada Popa, *in Cryptology ePrint Archive, Report 2021/453*, 2021, [[URL]](https://eprint.iacr.org/2021/453)
 
 [^HHT20]: **Efficient Final Exponentiation via Cyclotomic Structure for Pairings over Families of Elliptic Curves**, by Daiki Hayashida and Kenichiro Hayasaka and Tadanori Teruya, *in Cryptology ePrint Archive, Report 2020/875*, 2020, [[URL]](https://eprint.iacr.org/2020/875)
@@ -2459,6 +2465,8 @@
 [^KCLM21]: **Aggregating hash-based signatures using STARKs**, by Irakliy Khaburzaniya and Konstantinos Chalkias and Kevin Lewi and Harjasleen Malvai, *in Cryptology ePrint Archive, Report 2021/1048*, 2021, [[URL]](https://ia.cr/2021/1048)
 
 [^KDT24e]: **Verifying Jolt {zkVM} Lookup Semantics**, by Carl Kwan and Quang Dao and Justin Thaler, *in Cryptology {ePrint} Archive, Paper 2024/1841*, 2024, [[URL]](https://eprint.iacr.org/2024/1841)
+
+[^KEHplus09]: **seL4: formal verification of an OS kernel**, by Klein, Gerwin and Elphinstone, Kevin and Heiser, Gernot and Andronick, June and Cock, David and Derrin, Philip and Elkaduwe, Dhammika and Engelhardt, Kai and Kolanski, Rafal and Norrish, Michael and Sewell, Thomas and Tuch, Harvey and Winwood, Simon, *in Proceedings of the ACM SIGOPS 22nd symposium on Operating systems principles*, 2009, [[URL]](http://dx.doi.org/10.1145/1629575.1629596)
 
 [^KF20]: **Getting Rid of Linear Algebra in Number Theory Problems**, by Paul Kirchner and Pierre-Alain Fouque, *in Cryptology ePrint Archive, Report 2020/1619*, 2020, [[URL]](https://eprint.iacr.org/2020/1619)
 
@@ -2846,6 +2854,8 @@
 
 [^Lei05]: **LDPC Codes -- a brief Tutorial**, by Bernhard M.J. Leiner, 2005, [[URL]](http://www.bernh.net/media/download/papers/ldpc.pdf)
 
+[^Lero09]: **Formal verification of a realistic compiler**, by Leroy, Xavier, *in Communications of the ACM*, 2009, [[URL]](http://dx.doi.org/10.1145/1538788.1538814)
+
 [^Levy26]: **Quantum-Safe Bitcoin Transactions Without Softforks**, by Avihu Levy, 2026, [[URL]](\url{https://github.com/avihu28/Quantum-Safe-Bitcoin-Transactions/blob/main/paper/QSB.pdf})
 
 [^Libe15]: **Applications of Structure-Preserving Cryptography and Pairing-Based NIZK Proofs**, by Libert, Benoît, 2015, [[URL]](https://hal.inria.fr/tel-02151157)
@@ -3097,6 +3107,8 @@
 [^NRS25e]: **DahLIAS}: Discrete Logarithm-Based Interactive Aggregate Signatures**, by Jonas Nick and Tim Ruffing and Yannick Seurin, *in Cryptology {ePrint} Archive, Paper 2025/692*, 2025, [[URL]](https://eprint.iacr.org/2025/692)
 
 [^NRSW20]: **MuSig-DN: Schnorr Multi-Signatures with Verifiably Deterministic Nonces**, by Jonas Nick and Tim Ruffing and Yannick Seurin and Pieter Wuille, *in Cryptology ePrint Archive, Report 2020/1057*, 2020, [[URL]](https://eprint.iacr.org/2020/1057)
+
+[^NRZplus15]: **How Amazon Web Services uses formal methods**, by Chris Newcombe and Tim Rath and Fan Zhang and  Bogdan Munteanu and Marc Brooker and Michael Deardeuff, *in Communications of the ACM*, 2015, [[URL]](https://www.amazon.science/publications/how-amazon-web-services-uses-formal-methods)
 
 [^NS22]: **Multi-Factor Key Derivation Function (MFKDF) for Fast, Flexible, Secure, & Practical Key Management**, by Vivek Nair and Dawn Song, *in 32nd USENIX Security Symposium (2023) 2097-2114*, 2022
 
@@ -3899,6 +3911,8 @@
 [^Xu25e]: **UC}-Security of Encrypted Key Exchange: A Tutorial**, by Jiayu Xu, *in Cryptology {ePrint} Archive, Paper 2025/237*, 2025, [[URL]](https://eprint.iacr.org/2025/237)
 
 [^YCCplus24]: **Multiple time servers timed-release encryption based on Shamir secret sharing for EHR cloud system**, by Yuan, Ke and Cheng, Ziwei and Chen, Keyan and Wang, Bozhen and Sun, Junyang and Zhou, Sufang and Jia, Chunfu, *in Journal of Cloud Computing*, 2024, [[URL]](https://doi.org/10.1186/s13677-024-00676-y)
+
+[^YCER11]: **Finding and understanding bugs in C compilers**, by Yang, Xuejun and Chen, Yang and Eide, Eric and Regehr, John, *in ACM SIGPLAN Notices*, 2011, [[URL]](http://dx.doi.org/10.1145/1993316.1993532)
 
 [^YCR14]: **DTKI: a new formalized PKI with no trusted parties**, by Jiangshan Yu and Vincent Cheval and Mark Ryan, *in The computer journal. Vol. 59 No. 11, pp. 1695-1713, 2016*, 2014
 
