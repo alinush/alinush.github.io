@@ -1176,6 +1176,8 @@
 
 [^CJLplus24e]: **Improved Polynomial Division in Cryptography**, by Kostas Kryptos Chalkias and Charanjit Jutla and Jonas Lindstrom and Varun Madathil and Arnab Roy, *in Cryptology {ePrint} Archive, Paper 2024/1279*, 2024, [[URL]](https://eprint.iacr.org/2024/1279)
 
+[^CK02e]: **Universally Composable Notions of Key Exchange and Secure Channels**, by Ran Canetti and Hugo Krawczyk, *in Cryptology {ePrint} Archive, Paper 2002/059*, 2002, [[URL]](https://eprint.iacr.org/2002/059)
+
 [^CK17]: **The Discrete-Logarithm Problem with Preprocessing**, by Henry Corrigan-Gibbs and Dmitry Kogan, *in Cryptology ePrint Archive, Report 2017/1113*, 2017, [[URL]](https://ia.cr/2017/1113)
 
 [^CK19]: **Private Information Retrieval with Sublinear Online Time**, by Henry Corrigan-Gibbs and Dmitry Kogan, *in Cryptology ePrint Archive, Report 2019/1075*, 2019, [[URL]](https://eprint.iacr.org/2019/1075)
