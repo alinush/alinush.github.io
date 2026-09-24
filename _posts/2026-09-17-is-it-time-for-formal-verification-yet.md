@@ -50,9 +50,9 @@ _"This binary (only) zips."_[^lean-zip]
 _"This is a EUF-CMA signature scheme with no timing side-channels."_
 Kind of how a bridge engineer can reasonably assume that he's been pouring concrete and not mud, you know?
 
-As our collective formal verification expertise expands, we will be able to tackle more complex systems.
+Then, as our collective formal verification expertise expands, we can move on to more complex systems.
 _"This query optimizer produces a plan semantically equivalent to the unoptimized query."_
-_"This consensus protocol satisfies safety and liveness under $$f < n/3$$ Byzantine faults."_[^HHKplus15]
+_"This consensus protocol satisfies safety and liveness under $$f < n/3$$ Byzantine faults."_[^HHKplus15]$^,$[^etheorem]
 _"This C compiler preserves program semantics from source to assembly"_.[^Lero09]$^,$[^compcert-bugs]
 
 Indeed, there is plenty of formal verification work that predates the LLM age.
@@ -93,6 +93,17 @@ Even worse, the formal verification language may itself have soundness or comple
 
 But, assuming you too are a carpenter who's tired of your chairs always breaking, what other options do you have?
 
+**PS:** As fate would have it, one day after drafting this post, [an Anthropic employee tweeted](https://x.com/bcherny/status/2102543349102338309) that he _"used Opus 5.5 to formally verify the Claude Agent SDK using Lean"_.
+He _"sometimes combine[s] Lean and TLA+"_ but admits he _"do[es]n't know either language well, but [that] Claude is excellent at both."_
+He clearly does not understand the specs that Claude generated.
+(Forget about auditing them.)
+Is what he did useless?
+From a carpentry perspective, not at all.
+He'll probably find some bugs -- business as usual.
+Good for him.
+Good for Antrhopic.
+The price paid though: confusing formal verification for _abysmal_ verification[^lol].
+
 **Acknowledgements:** Thanks to Vineeth Kashyap for his feedback on a draft version of this post.
 
 ## References
@@ -100,6 +111,8 @@ But, assuming you too are a carpenter who's tired of your chairs always breaking
 For cited works, see below 👇👇
 
 {% include refs.md %}
+
+[^lol]: Kind of reminds me of the ["It's closer to a British carbonara" meme](https://www.youtube.com/watch?v=8fgNixllFJg).
 
 [^not-trivial]: Not a trivial assumption: we are finding Lean kernel bugs lately[^lean-kernel-bug], for example.
 
@@ -138,3 +151,5 @@ For cited works, see below 👇👇
 [^amd-rdrand]: ["Some AMD Processors Have a Hardware RNG Bug, Losing Randomness After Suspend Resume"](https://www.techpowerup.com/255294/some-amd-processors-have-a-hardware-rng-bug-losing-randomness-after-suspend-resume), TechPowerUp, May 2019
 
 [^arm-aes-errata]: ["crypto: arm/aes-ce - work around Cortex-A57/A72 silicon errata"](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=f3456b9fd269c6d0c973b136c5449d46b2510f4b), by Ard Biesheuvel, Linux kernel commit, 2019
+
+[^etheorem]: [_Etheorem_](https://github.com/etheorem/etheorem): a Lean 4 implementation of the Ethereum consensus specification
