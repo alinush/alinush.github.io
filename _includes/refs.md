@@ -68,6 +68,8 @@
 
 [^ACGplus21]: **FastVer: Making Data Integrity a Commodity**, by Arvind Arasu and Badrish Chandramouli and Johannes Gehrke and Esha Ghosh and Donald Kossmann and Jonathan Protzenko and Ravi Ramamurthy and Tahina Ramananandro and Aseem Rastogi and Srinath Setty and Nikhil Swamy and Alexander van Renen and Min Xu, *in Proceedings of the 2021 International Conference on Management of Data*, 2021, [[URL]](https://doi.org/10.1145%2F3448016.3457312)
 
+[^ACGplus25e]: **Are ideal functionalities really ideal?**, by Myrto Arapinis and Véronique Cortier and Hubert de Groote and Charlie Jacomme and Steve Kremer, *in Cryptology {ePrint} Archive, Paper 2025/2125*, 2025, [[URL]](https://eprint.iacr.org/2025/2125)
+
 [^ACHM05e]: **Practical Group Signatures without Random Oracles**, by Giuseppe Ateniese and Jan Camenisch and Susan Hohenberger and Breno de Medeiros, *in Cryptology ePrint Archive, Paper 2005/385*, 2005, [[URL]](https://eprint.iacr.org/2005/385)
 
 [^ACKplus24e]: **Secure and Privacy-preserving {CBDC} Offline Payments using a Secure Element**, by Elli Androulaki and Angelo De Caro and Kaoutar El Khiyaoui and Romain Gay and Rebekah Mercer and Alessandro Sorniotti, *in Cryptology {ePrint} Archive, Paper 2024/1746*, 2024, [[URL]](https://eprint.iacr.org/2024/1746)
@@ -598,6 +600,8 @@
 
 [^BH01]: **A Survey on IQ Cryptography**, by Johannes Buchmann and Safuat Hamdy, *in In Proceedings of Public Key Cryptography and Computational Number Theory*, 2001
 
+[^BH03e]: **How to Break and Repair a Universally Composable Signature Functionality**, by Michael Backes and Dennis Hofheinz, *in Cryptology {ePrint} Archive, Paper 2003/240*, 2003, [[URL]](https://eprint.iacr.org/2003/240)
+
 [^BH08]: **Perfectly-Secure MPC with Linear Communication Complexity**, by Beerliová-Trubíniová, Zuzana and Hirt, Martin, *in Theory of Cryptography*, 2008
 
 [^BH19e]: **Biased Nonce Sense: Lattice Attacks against Weak ECDSA Signatures in Cryptocurrencies**, by Joachim Breitner and Nadia Heninger, *in Cryptology ePrint Archive, Paper 2019/023*, 2019, [[URL]](https://eprint.iacr.org/2019/023)
@@ -740,6 +744,8 @@
 
 [^BMSS25e]: **DewTwo}: a transparent {PCS} with quasi-linear prover, logarithmic verifier and 4.{5KB} proofs from falsifiable assumptions**, by Benedikt Bünz and Tushar Mopuri and Alireza Shirzad and Sriram Sridhar, *in Cryptology {ePrint} Archive, Paper 2025/129*, 2025, [[URL]](https://eprint.iacr.org/2025/129)
 
+[^BMT18e]: **On Composable Security for Digital Signatures**, by Christian Badertscher and Ueli Maurer and Björn Tackmann, *in Cryptology {ePrint} Archive, Paper 2018/015*, 2018, [[URL]](https://eprint.iacr.org/2018/015)
+
 [^BMW21e]: **Policy-Compliant Signatures**, by Christian Badertscher and Christian Matt and Hendrik Waldner, *in Cryptology ePrint Archive, Report 2021/1234*, 2021, [[URL]](https://ia.cr/2021/1234)
 
 [^BN06]: **Multi-signatures in the plain public-Key model and a general forking lemma**, by Mihir Bellare and Gregory Neven, *in ACM CCS '06*, 2006, [[URL]](https://doi.org/10.1145%2F1180405.1180453)
@@ -791,6 +797,8 @@
 [^BPR24e]: **Traceable Secret Sharing: Strong Security and Efficient Constructions**, by Dan Boneh and Aditi Partap and Lior Rotem, *in Cryptology ePrint Archive, Paper 2024/405*, 2024, [[URL]](https://eprint.iacr.org/2024/405)
 
 [^BPR25e]: **Traceable Verifiable Random Functions**, by Dan Boneh and Aditi Partap and Lior Rotem, *in Cryptology {ePrint} Archive, Paper 2025/312*, 2025, [[URL]](https://eprint.iacr.org/2025/312)
+
+[^BPW03]: **A Composable Cryptographic Library with Nested Operations**, by Michael Backes and Birgit Pfitzmann and Michael Waidner, *in Proceedings of the 10th {ACM} Conference on Computer and Communications Security, {CCS} 2003*, 2003
 
 [^BPW23e]: **Accountable Multi-Signatures with Constant Size Public Keys**, by Dan Boneh and Aditi Partap and Brent Waters, *in Cryptology ePrint Archive, Paper 2023/1793*, 2023, [[URL]](https://eprint.iacr.org/2023/1793)
 
@@ -1304,6 +1312,8 @@
 
 [^CPZ18]: **Edrax: A Cryptocurrency with Stateless Transaction Validation**, by Alexander Chepurnoy and Charalampos Papamanthou and Yupeng Zhang, 2018, [[URL]](https://eprint.iacr.org/2018/968)
 
+[^CR03e]: **Universal Composition with Joint State**, by Ran Canetti and Tal Rabin, *in Cryptology {ePrint} Archive, Paper 2002/047*, 2002, [[URL]](https://eprint.iacr.org/2002/047)
+
 [^CR93]: **Fast Asynchronous Byzantine Agreement with Optimal Resilience**, by Canetti, Ran and Rabin, Tal, *in Proceedings of the Twenty-Fifth Annual ACM Symposium on Theory of Computing*, 1993, [[URL]](https://doi.org/10.1145/167088.167105)
 
 [^CRSplus21]: **Updatable Signatures and Message Authentication Codes**, by Valerio Cini and Sebastian Ramacher and Daniel Slamanig and Christoph Striecks and Erkan Tairi, *in Cryptology ePrint Archive, Report 2021/365*, 2021, [[URL]](https://eprint.iacr.org/2021/365)
@@ -1335,6 +1345,8 @@
 [^CSS19]: **Homomorphic Encryption Random Beacon**, by Alisa Cherniaeva and Ilia Shirobokov and Omer Shlomovits, *in Cryptology ePrint Archive, Report 2019/1320*, 2019, [[URL]](https://eprint.iacr.org/2019/1320)
 
 [^CSS19e]: **Homomorphic Encryption Random Beacon**, by Alisa Cherniaeva and Ilia Shirobokov and Omer Shlomovits, *in Cryptology ePrint Archive, Paper 2019/1320*, 2019, [[URL]](https://eprint.iacr.org/2019/1320)
+
+[^CSV14e]: **Universally Composable Authentication and Key-exchange with Global {PKI**, by Ran Canetti and Daniel Shahaf and Margarita Vald, *in Cryptology {ePrint} Archive, Paper 2014/432*, 2014, [[URL]](https://eprint.iacr.org/2014/432)
 
 [^CSV19e]: **EasyUC}: Using {EasyCrypt} to Mechanize Proofs of Universally Composable Security**, by Ran Canetti and Alley Stoughton and Mayank Varia, *in Cryptology {ePrint} Archive, Paper 2019/582*, 2019, [[URL]](https://eprint.iacr.org/2019/582)
 
@@ -1377,6 +1389,8 @@
 [^Camacho09]: **On the Impossibility of Batch Update for Cryptographic Accumulators**, by Philippe Camacho, *in Cryptology ePrint Archive, Report 2009/612*, 2009, [[URL]](https://eprint.iacr.org/2009/612)
 
 [^Camp26e]: **Practical Subvector Commitments with Optimal Opening Complexity**, by Matteo Campanelli, *in Cryptology {ePrint} Archive, Paper 2026/118*, 2026, [[URL]](https://eprint.iacr.org/2026/118)
+
+[^Cane03e]: **Universally Composable Signatures, Certification and Authentication**, by Ran Canetti, *in Cryptology {ePrint} Archive, Paper 2003/239*, 2003, [[URL]](https://eprint.iacr.org/2003/239)
 
 [^Canetti00]: **Universally Composable Security: A New Paradigm for Cryptographic Protocols**, by Ran Canetti, *in Cryptology ePrint Archive, Report 2000/067*, 2000, [[URL]](https://eprint.iacr.org/2000/067)
 
@@ -1985,6 +1999,8 @@
 [^GKR08]: **Delegating Computation: Interactive Proofs for Muggles**, by Goldwasser, Shafi and Kalai, Yael Tauman and Rothblum, Guy N., *in Proceedings of the Fortieth Annual ACM Symposium on Theory of Computing*, 2008, [[URL]](http://doi.acm.org/10.1145/1374376.1374396)
 
 [^GKSS20]: **Threshold ECDSA for Decentralized Asset Custody**, by Adam Gągol and Jędrzej Kula and Damian Straszak and Michał Świętek, *in Cryptology ePrint Archive, Report 2020/498*, 2020, [[URL]](https://eprint.iacr.org/2020/498)
+
+[^GKZ08e]: **A Framework for the Sound Specification of Cryptographic Tasks**, by Juan A.  Garay and Aggelos Kiayias and Hong-Sheng Zhou, *in Cryptology {ePrint} Archive, Paper 2008/132*, 2008, [[URL]](https://eprint.iacr.org/2008/132)
 
 [^GL20]: **Robust Subgroup Multi-Signatures for Consensus**, by David Galindo and Jia Liu, *in Cryptology ePrint Archive, Report 2020/1478*, 2020, [[URL]](https://eprint.iacr.org/2020/1478)
 
@@ -2631,6 +2647,10 @@
 [^KST21]: **Nova: Recursive Zero-Knowledge Arguments from Folding Schemes**, by Abhiram Kothapalli and Srinath Setty and Ioanna Tzialla, *in Cryptology ePrint Archive, Report 2021/370*, 2021, [[URL]](https://eprint.iacr.org/2021/370)
 
 [^KST21e]: **Nova: Recursive Zero-Knowledge Arguments from Folding Schemes**, by Abhiram Kothapalli and Srinath Setty and Ioanna Tzialla, *in Cryptology {ePrint} Archive, Paper 2021/370*, 2021, [[URL]](https://eprint.iacr.org/2021/370)
+
+[^KT08e]: **Joint State Theorems for Public-Key Encryption and Digital Signature Functionalities with Local Computation**, by Ralf Kuesters and Max Tuengerthal, *in Cryptology {ePrint} Archive, Paper 2008/006*, 2008, [[URL]](https://eprint.iacr.org/2008/006)
+
+[^KT11]: **Composition Theorems Without Pre-Established Session Identifiers**, by Ralf Küsters and Max Tuengerthal, *in Proceedings of the 18th {ACM} Conference on Computer and Communications Security, {CCS} 2011*, 2011
 
 [^KT23e]: **Zeromorph: Zero-Knowledge Multilinear-Evaluation Proofs from Homomorphic Univariate Commitments**, by Tohru Kohrita and Patrick Towa, *in Cryptology ePrint Archive, Paper 2023/917*, 2023, [[URL]](https://eprint.iacr.org/2023/917)
 

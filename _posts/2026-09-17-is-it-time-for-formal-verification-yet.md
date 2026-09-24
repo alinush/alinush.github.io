@@ -104,7 +104,7 @@ Good for him.
 Good for Antrhopic.
 The price paid though: confusing formal verification for _abysmal_ verification[^lol].
 
-**Acknowledgements:** Thanks to Vineeth Kashyap for his feedback on a draft version of this post.
+**Acknowledgements:** Thanks to Vineeth Kashyap and Victor Gao for their feedback on a draft version of this post.
 
 ## References
 
