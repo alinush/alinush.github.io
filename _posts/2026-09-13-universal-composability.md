@@ -75,7 +75,7 @@ To wrap your head around the UC framework, there are several concepts you must u
     + [^BMT18e]
  - UC ideal functionalities are easy to get wrong $\Rightarrow$ should still formalize game-based security properties for them and prove them[^ACGplus25e]
     + Same could be said about non-UC ones too, arguably.
- - UC is not as modular as one may want: e.g., cannot compose $$\mathcal{F}_\mathsf{ZK}$$ with $$\mathcal{F}_\mathsf{Sig}$$ to get a ZKPoK of a signature for anonymous credentials, say[^CDT19e].
+ - The composability you get is not always the composability you want: e.g., cannot compose $$\mathcal{F}_\mathsf{ZK}$$ with $$\mathcal{F}_\mathsf{Sig}$$ to get a ZKPoK of a signature for anonymous credentials, say[^CDT19e].
  - UC functionalities are not stable, nor often reused in practice: papers frequently redefine them[^GKZ08e].
 
 ## Appendix: Universal composition with joint state (JUC, or "juicy")
