@@ -29,8 +29,9 @@ $</div> <!-- $ -->
       - [ ] [ArkLib](https://github.com/Verified-zkEVM/ArkLib)
       - [ ] [clean zkDSL](https://github.com/Verified-zkEVM/clean)
  - [ ] [zkLean: A DSL for ZK statement verification](https://www.galois.com/articles/zklean-a-dsl-for-zk-statement-verification)
- - [ ] Paper: [SoK: Computer-aided cryptography](https://eprint.iacr.org/2019/1393)
- - [ ] Paper: [SSProve: A foundational framework for modular cryptographic proofs in Coq](https://eprint.iacr.org/2021/397)
+ - [ ] Paper: [SoK: Computer-aided cryptography](https://eprint.iacr.org/2019/1393)[^BBB+19e]
+ - [ ] Paper: [SSProve: A foundational framework for modular cryptographic proofs in Coq](https://eprint.iacr.org/2021/397)[^HRM+21e]
+ - [ ] Paper: [Computationally-Sound Symbolic Cryptography in Lean](https://eprint.iacr.org/2025/1700)[^DFMS25e]
  - [ ] [AICR](https://aicr.info/): A living, AI-native record of open cryptographic problems, attempts, partial progress, and verification
 
 ## Software engineering in Lean

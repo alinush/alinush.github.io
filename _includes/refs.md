@@ -882,6 +882,8 @@
 
 [^Bara01]: **How to go beyond the black-box simulation barrier**, by Barak, B., *in Proceedings 42nd IEEE Symposium on Foundations of Computer Science*, 2001
 
+[^Bart26]: **Formalization of security**, by Gilles Barthe, 2026, [[URL]](https://arxiv.org/abs/2607.28551)
+
 [^Bd93]: **One-Way Accumulators: A Decentralized Alternative to Digital Signatures**, by Benaloh, Josh and de Mare, Michael, *in EUROCRYPT '93*, 1994
 
 [^Beav92]: **Efficient Multiparty Protocols Using Circuit Randomization**, by Beaver, Donald, *in Advances in Cryptology --- CRYPTO '91*, 1992
@@ -1414,6 +1416,8 @@
 
 [^Chev05]: **An Efficient CDH-Based Signature Scheme with a Tight Security Reduction**, by Chevallier-Mames, Benoît, *in Advances in Cryptology -- CRYPTO 2005*, 2005
 
+[^Chri26e]: **A Survey of Pseudorandom Codes**, by Miranda Christ, *in Cryptology {ePrint} Archive, Paper 2026/2162*, 2026, [[URL]](https://eprint.iacr.org/2026/2162)
+
 [^Cohe07]: **Number Theory: Volume I: Tools and Diophantine Equations**, by Cohen, H., 2007, [[URL]](https://books.google.com/books?id=8zC8VPQV8psC)
 
 [^Cohe10]: **A Course in Computational Algebraic Number Theory**, by Cohen, Henri, 2010
@@ -1469,6 +1473,8 @@
 [^DFMS21e]: **Online-Extractability in the Quantum Random-Oracle Model**, by Jelle Don and Serge Fehr and Christian Majenz and Christian Schaffner, *in Cryptology {ePrint} Archive, Paper 2021/280*, 2021, [[URL]](https://eprint.iacr.org/2021/280)
 
 [^DFMS22e]: **Efficient {NIZKs} and Signatures from Commit-and-Open Protocols in the {QROM**, by Jelle Don and Serge Fehr and Christian Majenz and Christian Schaffner, *in Cryptology {ePrint} Archive, Paper 2022/270*, 2022, [[URL]](https://eprint.iacr.org/2022/270)
+
+[^DFMS25e]: **Computationally-Sound Symbolic Cryptography in Lean**, by Stefan Dziembowski and Grzegorz Fabiański and Daniele Micciancio and Rafał Stefański, *in Cryptology {ePrint} Archive, Paper 2025/1700*, 2025, [[URL]](https://eprint.iacr.org/2025/1700)
 
 [^DG06]: **Hidden Pairings and Trapdoor DDH Groups**, by Dent, Alexander W. and Galbraith, Steven D., *in Algorithmic Number Theory*, 2006
 
@@ -2652,7 +2658,7 @@
 
 [^KT08e]: **Joint State Theorems for Public-Key Encryption and Digital Signature Functionalities with Local Computation**, by Ralf Kuesters and Max Tuengerthal, *in Cryptology {ePrint} Archive, Paper 2008/006*, 2008, [[URL]](https://eprint.iacr.org/2008/006)
 
-[^KT11]: **Composition Theorems Without Pre-Established Session Identifiers**, by Ralf Küsters and Max Tuengerthal, *in Proceedings of the 18th {ACM} Conference on Computer and Communications Security, {CCS} 2011*, 2011
+[^KT11e]: **Composition Theorems Without Pre-Established Session Identifiers**, by Ralf Kuesters and Max Tuengerthal, *in Cryptology {ePrint} Archive, Paper 2011/406*, 2011, [[URL]](https://eprint.iacr.org/2011/406)
 
 [^KT23e]: **Zeromorph: Zero-Knowledge Multilinear-Evaluation Proofs from Homomorphic Univariate Commitments**, by Tohru Kohrita and Patrick Towa, *in Cryptology ePrint Archive, Paper 2023/917*, 2023, [[URL]](https://eprint.iacr.org/2023/917)
 
@@ -3312,6 +3318,8 @@
 
 [^Poin05]: **Provable Security for Public Key Schemes**, by Pointcheval, David, *in Contemporary Cryptology*, 2005, [[URL]](https://doi.org/10.1007/3-7643-7394-6_4)
 
+[^Poli26]: **DKG Is All You Need**, by Guru-Vamsi Policharla, 2026, [[URL]](https://commonware.xyz/artifacts/dkg-is-all-you-need.pdf)
+
 [^Poll71]: **The fast Fourier transform in a finite field**, by Pollard, John M, *in Mathematics of computation*, 1971, [[URL]](https://www.ams.org/journals/mcom/1971-25-114/S0025-5718-1971-0301966-0/S0025-5718-1971-0301966-0.pdf)
 
 [^Poll78]: **Monte Carlo methods for index computation (𝑚𝑜𝑑𝑝)**, by Pollard, John M, *in Mathematics of computation*, 1978
@@ -3721,6 +3729,8 @@
 [^TD17]: **Catena: Efficient Non-equivocation via Bitcoin**, by A. Tomescu and S. Devadas, *in 2017 IEEE Symposium on Security and Privacy (SP)*, 2017
 
 [^TDSC25]: **Blockchain Address Poisoning**, by Taro Tsuchiya and Jin-Dong Dong and Kyle Soska and Nicolas Christin, 2025
+
+[^TDWplus26e]: **VCVio}: Verified Cryptography in Lean via Oracle Effects and Handlers**, by Devon Tuma and Quang Dao and James Waters and Alexander Hicks and Nicholas Hopper, *in Cryptology {ePrint} Archive, Paper 2026/899*, 2026, [[URL]](https://eprint.iacr.org/2026/899)
 
 [^TFBT21]: **Client-Auditable Verifiable Registries**, by Nirvan Tyagi and Ben Fisch and Joseph Bonneau and Stefano Tessaro, *in Cryptology ePrint Archive, Report 2021/627*, 2021, [[URL]](https://eprint.iacr.org/2021/627)
 
