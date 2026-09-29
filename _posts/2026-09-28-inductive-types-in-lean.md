@@ -1,6 +1,9 @@
 ---
 type: note
 tags:
+ - Lean
+ - programming languages
+ - formal verification
 title: Inductive types in Lean
 #date: 2020-11-05 20:45:59
 #published: false

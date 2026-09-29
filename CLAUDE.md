@@ -1,3 +1,8 @@
+## Writing style
+
+Each sentence on a separate line in the text file, for easier git diff'ing.
+Define often used notation as LaTeX macros.
+
 ## Citing, adding and searching for papers
 
 All papers that can be cited are in `_includes/refs.md`.
