@@ -37,10 +37,18 @@ A software "engineer" just ships the code.
 What is the net result of our "engineering" practice?
 Years later, when our code leaks your phone number, home address and the names of all your family members, our "engineering" company is "deeply sorry."
 This happens several times per year now[^public-discourse].
+If your cryptocurrency is stolen due to a hack, this is only because _"we are seeing an increasing wave of sophisticated 'cyber attacks'"_[^sophie-attacks].
+We are sorry.
+Don't ask us about our historical disregard for security.
+Shipping is more important.
+_"Done is better than perfect"_, says our PM, TPM, EM and even the CEO.
 
 A more honest name for our practice should be **software carpentry.**
 It recognizes that, while we do have a skilled craft, safety calculations hardly enter into it.
 My thesis is simple and, I gather, hardly controversial by now: to graduate from _"software carpentry"_ to _"software engineering"_, it would be sufficient for us to embrace **formal verification**[^sufficient-maybe-not-necessary].
+Not because it's bulletproof.
+Not because it will patch all holes in our software.
+But because it will force us to think carefully about the properties of the software we put out.
 
 Luckily, in the LLM age, formal verification is becoming easier to apply at larger scales[^kleppmann25].
 Our first step should be to apply formal verification to our less complex software, software with _clean_ interfaces that admits _small_ specifications.
@@ -93,24 +101,48 @@ Even worse, the formal verification language may itself have soundness or comple
 
 But, assuming you too are a carpenter who's tired of your chairs always breaking, what other options do you have?
 
-**PS:** As fate would have it, one day after drafting this post, [an Anthropic employee tweeted](https://x.com/bcherny/status/2102543349102338309) that he _"used Opus 5.5 to formally verify the Claude Agent SDK using Lean"_.
+## Postscript
+
+After writing this post, I keep running into evidence that the future is bleak.
+
+### On vibe spec'ing
+
+As fate would have it, one day after drafting this post, _Boris Cherny_, the creator of Claude Code, [tweeted](https://x.com/bcherny/status/2102543349102338309) that he _"used Opus 5.5 to formally verify the Claude Agent SDK using Lean"_.
+
 He _"sometimes combine[s] Lean and TLA+"_ but admits he _"do[es]n't know either language well, but [that] Claude is excellent at both."_
 He clearly does not understand the specs that Claude generated.
 (Forget about auditing them.)
 Is what he did useless?
+
 From a carpentry perspective, not at all.
 He'll probably find some bugs -- business as usual.
 Good for him.
-Good for Antrhopic.
+Good for Anthropic.
+
 The price paid though: confusing formal verification for _abysmal_ verification[^lol].
 
-**Acknowledgements:** Thanks to Vineeth Kashyap and Victor Gao for their feedback on a draft version of this post.
+How insane would it sound if a nuclear reactor engineer [adopted this philosophy](https://x.com/alinush/status/2103128386260386184)?
+
+You might object: our software infrastructure should not be equated to our energy infrastructure.
+But this ignores how pervasive and critical (sloppy) software has become: remember [CrowdStrike in July 2024](https://en.wikipedia.org/wiki/2024_CrowdStrike-related_IT_outages)?
+
+### Doubling down on software carpentry
+
+It's disheartening to see David Heinemeier Hansson, the creator of Ruby on Rails, [doubling down](https://x.com/dhh/status/2104542267281146357) on [software carpentry](https://x.com/alinush/status/2104593002836464063).
+
+Reality has a way of [fighting back](https://x.com/37signals/status/2104909820352729104) though.
+
+## Acknowledgements
+
+Thanks to Vineeth Kashyap and Victor Gao for their feedback on a draft version of this post.
 
 ## References
 
 For cited works, see below 👇👇
 
 {% include refs.md %}
+
+[^sophie-attacks]: _"Our space is seeing increasingly sophisticated cyber security attacks"_ is utter and complete misdirection. The truth is every company has several employees who cry out about poor security hygiene. The truth is closer to this: _"We've been writing sloppy code. As quickly as we can. Our architecture? Perpetually-optimistic about the adversary. We've been treating security as a paranoid afterthought, rather than as a mandatory engineering practice. And now we're reaping what we've sown."_
 
 [^lol]: Kind of reminds me of the ["It's closer to a British carbonara" meme](https://www.youtube.com/watch?v=8fgNixllFJg).
 
