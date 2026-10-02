@@ -93,7 +93,7 @@ Lastly, I am not arguing that formal verification will be **a panacea.**
 There are many challenges.
 To start, some software can be as complex to specify as it is to implement (e.g., EC2 cloud architectures come to mind).
 Plus, all software evolves, not just in its implementation, but also in its specification.
-Generally, formal verification rarely covers the full system.
+Moreover, formal verification rarely covers the full system.
 So, naturally, bugs will creep in the uncovered parts.
 For example, the compiler may still be unverified.
 Or, even if your software is bulletproof, the execution environment may not offer formal guarantees and let you down: e.g., your operating system may kill your process, your file system may lose your writes, your CPU may not execute instructions correctly[^skylake-bug]$^,$[^amd-rdrand]$^,$[^arm-aes-errata].

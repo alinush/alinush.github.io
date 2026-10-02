@@ -33,6 +33,7 @@ $</div> <!-- $ -->
  - [ ] Paper: [SSProve: A foundational framework for modular cryptographic proofs in Coq](https://eprint.iacr.org/2021/397)[^HRM+21e]
  - [ ] Paper: [Computationally-Sound Symbolic Cryptography in Lean](https://eprint.iacr.org/2025/1700)[^DFMS25e]
  - [ ] [AICR](https://aicr.info/): A living, AI-native record of open cryptographic problems, attempts, partial progress, and verification
+ - [ ] Kopis KEM: [Lean spec](https://github.com/rozbb/kopis-rs/blob/main/lean/Spec/Kopis/Spec.lean), [Rust impl](https://github.com/rozbb/kopis-rs) and [Aenease-based Rust-to-Lean proof](https://github.com/rozbb/kopis-rs/blob/main/lean/TopLevelTheoremsSerial.lean)
 
 ## Software engineering in Lean
 
