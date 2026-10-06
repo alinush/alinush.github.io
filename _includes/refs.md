@@ -3182,6 +3182,8 @@
 
 [^OCGO96]: **The log-structured merge-tree (LSM-tree)**, by O'Neil, Patrick and Cheng, Edward and Gawlick, Dieter and O'Neil, Elizabeth, *in Acta Informatica*, 1996, [[URL]](https://doi.org/10.1007/s002360050048)
 
+[^OGS08]: **Real World Haskell**, by O'Sullivan, Bryan and Goerzen, John and Stewart, Don, 2008
+
 [^OKMZ24e]: **Beyond the circuit: How to Minimize Foreign Arithmetic in ZKP Circuits**, by Michele Orrù and George Kadianakis and Mary Maller and Greg Zaverucha, *in Cryptology ePrint Archive, Paper 2024/265*, 2024, [[URL]](https://eprint.iacr.org/2024/265)
 
 [^OL81]: **Worst-case optimal insertion and deletion methods for decomposable searching problems**, by Mark H. Overmars and Jan van Leeuwen, *in Information Processing Letters*, 1981, [[URL]](http://www.sciencedirect.com/science/article/pii/0020019081900934)
