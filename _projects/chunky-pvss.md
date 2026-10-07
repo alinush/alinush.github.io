@@ -10,9 +10,8 @@ thumbnail: /pictures/projects/chunky-pvss.png
 pdf:
   - url: /papers#dekart
 
-slides:
-  - url: /files/chunky/texas-crypto-day-2026
-    title: "Texas Crypto Day"
+video:
+  - url: /talks#chunky
 
 blogpost:
   - url: /chunky
