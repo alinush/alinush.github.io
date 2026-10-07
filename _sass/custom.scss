@@ -712,3 +712,9 @@ $bottom-row-scale: .85;
     max-height: 85vh;
   }
 }
+
+// "(1.60x)"-style comparison multipliers in benchmark tables (e.g., the
+// /chunky post): green when that number beats the baseline, red when it's
+// worse. Same green/red as the post's inline-colored numbers.
+.x-better { color: #15803d; }
+.x-worse  { color: #dc2626; }
