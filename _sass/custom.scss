@@ -669,3 +669,14 @@ $bottom-row-scale: .85;
 }
 
 /* end custom scss snippet */
+
+// Wikipedia-style "[citation needed]" marker, emitted by
+// _plugins/citation_needed.rb for `[^citation-needed]` in a post's Markdown.
+// Muted and italic so it reads as a TODO rather than a real footnote ref;
+// `help` cursor hints at the optional note shown in the title tooltip.
+.citation-needed {
+  color: $text-color-l;
+  font-size: 0.7em;
+  white-space: nowrap;
+  cursor: help;
+}

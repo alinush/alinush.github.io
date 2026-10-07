@@ -57,3 +57,5 @@ When writing blog posts, do NOT redefine LaTeX macros that are already defined g
 ## Citing papers
 
 When citing papers whose citation key contains `+` (e.g., `GLS+21e`), replace `+` with `plus` in the footnote reference (e.g., `[^GLSplus21e]`). This is because Jekyll/kramdown does not support `+` in footnote IDs.
+
+To defer a citation, Wikipedia-style, put `[^citation-needed]` (or `[^citation-needed: note on what to cite]`) after the sentence; see `_plugins/citation_needed.rb`.

@@ -1,6 +1,7 @@
 ---
 type: note
 tags:
+ - security definitions
  - universal composability (UC)
 title: Universal composability (UC)
 #date: 2020-11-05 20:45:59

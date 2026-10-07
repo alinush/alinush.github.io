@@ -1278,8 +1278,6 @@
 
 [^CMT12]: **Practical Verified Computation with Streaming Interactive Proofs**, by Cormode, Graham and Mitzenmacher, Michael and Thaler, Justin, *in Proceedings of the 3rd Innovations in Theoretical Computer Science Conference*, 2012, [[URL]](http://doi.acm.org/10.1145/2090236.2090245)
 
-[^CMTA19e]: **PGC: Pretty Good Decentralized Confidential Payment System with Auditability**, by Yu Chen and Xuecheng Ma and Cong Tang and Man Ho Au, *in Cryptology ePrint Archive, Report 2019/319*, 2019, [[URL]](https://eprint.iacr.org/2019/319)
-
 [^CMTA20]: **PGC: Decentralized Confidential Payment System with Auditability**, by Chen, Yu and Ma, Xuecheng and Tang, Cong and Au, Man Ho, *in Computer Security -- ESORICS 2020*, 2020
 
 [^CMTW05]: **Generic On-Line/Off-Line Threshold Signatures**, by Chris Crutchfield  and David Molnar and David Turner and David Wagner, *in Cryptology ePrint Archive, Report 2005/418*, 2005, [[URL]](https://eprint.iacr.org/2005/418)
@@ -2986,6 +2984,8 @@
 
 [^MQR22e]: **Lower Bounds for the Number of Decryption Updates in Registration-Based Encryption**, by Mohammad Mahmoody and Wei Qi and Ahmadreza Rahimi, *in Cryptology ePrint Archive, Paper 2022/1285*, 2022, [[URL]](https://eprint.iacr.org/2022/1285)
 
+[^MR11]: **Abstract Cryptography**, by Ueli Maurer and Renato Renner, *in The Second Symposium on Innovations in Computer Science (ICS 2011)*, 2011
+
 [^MRK03]: **Zero-knowledge sets**, by S. Micali and M. Rabin and J. Kilian, *in 44th Annual IEEE Symposium on Foundations of Computer Science, 2003. Proceedings.*, 2003, [[URL]](https://people.csail.mit.edu/silvio/Selected%20Scientific%20Papers/Zero%20Knowledge/Zero-Knowledge_Sets.pdf)
 
 [^MRR25e]: **Tree {PCPs**, by Tamer Mour and Alon Rosen and Ron Rothblum, *in Cryptology {ePrint} Archive, Paper 2025/1252*, 2025, [[URL]](https://eprint.iacr.org/2025/1252)
@@ -3051,6 +3051,8 @@
 [^Maur05]: **Abstract Models of Computation in Cryptography**, by Ueli Maurer, *in Cryptography and Coding 2005*, 2005
 
 [^Maur09]: **Unifying Zero-Knowledge Proofs of Knowledge**, by Maurer, Ueli, *in Progress in Cryptology -- AFRICACRYPT 2009*, 2009
+
+[^Maur12]: **Constructive Cryptography -- A New Paradigm for Security Definitions and Proofs**, by Maurer, Ueli, *in Theory of Security and Applications*, 2012
 
 [^Maur15]: **Zero-knowledge proofs of knowledge for group homomorphisms**, by Maurer, Ueli, *in Designs, Codes and Cryptography*, 2015, [[URL]](https://doi.org/10.1007/s10623-015-0103-5)
 
