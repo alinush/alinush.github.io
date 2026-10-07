@@ -680,3 +680,35 @@ $bottom-row-scale: .85;
   white-space: nowrap;
   cursor: help;
 }
+
+// Sticky table headers: as you scroll down a long Markdown table, its header
+// row stays pinned to the top of the viewport.
+// The theme gives tables `overflow: auto` (_article-content.scss) so wide
+// ones scroll sideways, but that makes every table its own scroll container,
+// which pins `position: sticky` to the table rather than the page (i.e., it
+// never sticks). So table-scroll.js measures each table and adds:
+//  - .table--fits: no horizontal overflow, so drop `overflow` and let the
+//    header stick to the page as you scroll past the table.
+//  - .table--scrolls: too wide for the column, so keep sideways scrolling and
+//    cap the height instead; the header then sticks inside the table's own
+//    vertical scroll box (only noticeable for tables taller than that cap).
+// Without JS, tables behave exactly as before.
+.article__content table {
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2; // above MathJax / positioned cell content
+    // Must be opaque, or rows show through while it's pinned. Same tint as the
+    // theme's translucent $text-background-color thead, pre-mixed onto the page.
+    background-color: mix(#000, $background-color, 5%);
+    // With border-collapse the cell borders belong to the table and don't
+    // travel with a pinned header, so redraw its bottom edge as a shadow.
+    box-shadow: inset 0 -1px 0 $border-color-l;
+  }
+  &.table--fits {
+    overflow: visible;
+  }
+  &.table--scrolls {
+    max-height: 85vh;
+  }
+}
