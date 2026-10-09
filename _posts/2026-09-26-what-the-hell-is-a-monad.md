@@ -189,6 +189,9 @@ Wikipedia gives a [nice example](https://en.wikipedia.org/wiki/Monad_(functional
 
 ## References
 
-For cited works, and other relevant but uncited ones[^OGS08], see below 👇👇
+A good resource to learn about monads is the "Real World Haskell" book[^OGS08].
+I left off at page 335.
+
+For cited works in the blog, see below 👇👇
 
 {% include refs.md %}
