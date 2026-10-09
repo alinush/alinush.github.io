@@ -134,7 +134,7 @@ Reality has a way of [fighting back](https://x.com/37signals/status/210490982035
 
 ## Acknowledgements
 
-Thanks to Vineeth Kashyap and Victor Gao for their feedback on a draft version of this post.
+Thanks to Vineeth Kashyap, Victor Gao, Ittai Abraham and Kobi Gurkan for their feedback on a draft version of this post.
 
 ## References
 
