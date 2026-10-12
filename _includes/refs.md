@@ -28,6 +28,8 @@
 
 [^ABGplus06]: **Accelerated Verification of ECDSA Signatures**, by Antipa, Adrian and Brown, Daniel and Gallant, Robert and Lambert, Rob and Struik, René and Vanstone, Scott, *in Selected Areas in Cryptography*, 2006
 
+[^ABGR12]: **On the (In)security of Fischlin's Paradigm**, by Prabhanjan Ananth and Raghav Bhaskar and Vipul Goyal and Vanishree Rao, *in Cryptology {ePrint} Archive, Paper 2012/721*, 2012, [[URL]](https://eprint.iacr.org/2012/721)
+
 [^ABKplus21]: **Algebraic Adversaries in the Universal Composability Framework**, by Michel Abdalla and Manuel Barbosa and Jonathan Katz and Julian Loss and Jiayu Xu, *in Cryptology ePrint Archive, Report 2021/1218*, 2021, [[URL]](https://ia.cr/2021/1218)
 
 [^ABLplus19]: **DL-Extractable UC-Commitment Schemes**, by Behzad Abdolmaleki and Karim Baghery and Helger Lipmaa and Janno Siim and Michał Zając, *in Cryptology ePrint Archive, Report 2019/201*, 2019, [[URL]](https://eprint.iacr.org/2019/201)
@@ -1342,6 +1344,8 @@
 
 [^CS99]: **Signature Schemes Based on the Strong RSA Assumption**, by Cramer, Ronald and Shoup, Victor, *in Proceedings of the 6th ACM Conference on Computer and Communications Security*, 1999, [[URL]](https://doi.org/10.1145/319709.319716)
 
+[^CSBplus26]: **TEE.fail: Breaking Trusted Execution Environments via DDR5 Memory Bus Interposition**, by Jalen Chuang and Alex Seto and Nicolas Berrios and Stephan van Schaik and Christina Garman and Daniel Genkin, *in 47th IEEE Symposium on Security and Privacy (IEEE S\&P '26)*, 2026, [[URL]](https://tee.fail)
+
 [^CSPplus15]: **Efficient gossip protocols for verifying the consistency of certificate logs**, by L. Chuat and P. Szalachowski and A. Perrig and B. Laurie and E. Messeri, *in 2015 IEEE Conference on Communications and Network Security (CNS)*, 2015
 
 [^CSS19]: **Homomorphic Encryption Random Beacon**, by Alisa Cherniaeva and Ilia Shirobokov and Omer Shlomovits, *in Cryptology ePrint Archive, Report 2019/1320*, 2019, [[URL]](https://eprint.iacr.org/2019/1320)
@@ -2636,6 +2640,8 @@
 
 [^KRT17]: **SWiM: Secure Wildcard Pattern Matching From OT Extension**, by Vladimir Kolesnikov and Mike Rosulek and Ni Trieu, *in Cryptology ePrint Archive, Report 2017/1150*, 2017, [[URL]](https://ia.cr/2017/1150)
 
+[^KS22]: **Improved Straight-Line Extraction in the Random Oracle Model With Applications to Signature Aggregation**, by Yashvanth Kondi and abhi shelat, *in Cryptology {ePrint} Archive, Paper 2022/393*, 2022, [[URL]](https://eprint.iacr.org/2022/393)
+
 [^KS23e]: **HyperNova: Recursive arguments for customizable constraint systems**, by Abhiram Kothapalli and Srinath Setty, *in Cryptology ePrint Archive, Paper 2023/573*, 2023, [[URL]](https://eprint.iacr.org/2023/573)
 
 [^KS23eCycleFold]: **CycleFold: Folding-scheme-based recursive arguments over a cycle of elliptic curves**, by Abhiram Kothapalli and Srinath Setty, *in Cryptology ePrint Archive, Paper 2023/1192*, 2023, [[URL]](https://eprint.iacr.org/2023/1192)
@@ -3478,6 +3484,8 @@
 
 [^SCPplus22]: **Hyperproofs: Aggregating and Maintaining Proofs in Vector Commitments**, by Shravan Srinivasan and Alexander Chepurnoy and Charalampos Papamanthou and Alin Tomescu and Yupeng Zhang, *in 31st USENIX Security Symposium (USENIX Security 22)*, 2022, [[URL]](https://www.usenix.org/conference/usenixsecurity22/presentation/srinivasan)
 
+[^SDAplus25]: **WireTap: Breaking Server SGX via DRAM Bus Interposition**, by Alex Seto and Oytun Kuday Duran and Samy Amer and Jalen Chuang and Stephan van Schaik and Daniel Genkin and Christina Garman, *in 2025 SIGSAC Conference on Computer and Communications Security (CCS '25)*, 2025, [[URL]](https://wiretap.fail)
+
 [^SDS20]: **Let's Revoke: Scalable Global Certificate Revocation**, by Smith, Trevor and Dickinson, Luke and Seamons, Kent, *in {NDSS 2020}*, 2020
 
 [^SFLL24]: **Clap: a Semantic-Preserving Optimizing eDSL for Plonkish Proof Systems**, by Marco Stronati and Denis Firsov and Antonio Locascio and Benjamin Livshits, 2024
@@ -3807,6 +3815,8 @@
 [^VSBplus01]: **Experimental realization of Shor's quantum factoring algorithm using nuclear magnetic resonance**, by Lieven M. K. Vandersypen and Matthias Steffen and Gregory Breyta and Costantino S. Yannoni and Mark H. Sherwood and Isaac L. Chuang, 2001, [[URL]](https://arxiv.org/abs/quant-ph/0112176)
 
 [^VSBW13]: **A Hybrid Architecture for Interactive Verifiable Computation**, by Vu, Victor and Setty, Srinath and Blumberg, Andrew J. and Walfish, Michael, *in Proceedings of the 2013 IEEE Symposium on Security and Privacy*, 2013, [[URL]](https://doi.org/10.1109/SP.2013.48)
+
+[^VSYplus22]: **SoK}: {SGX.Fail}: How Stuff Get e{X}posed**, by van Schaik, Stephan and Seto, Alex and Yurek, Thomas and Batori, Adam and AlBassam, Bader and Garman, Christina and Genkin, Daniel and Miller, Andrew and Ronen, Eyal and Yarom, Yuval, 2022, [[URL]](https://sgx.fail)
 
 [^VW99]: **Parallel Collision Search with Cryptanalytic Applications**, by van Oorschot, Paul C. and Wiener, Michael J., *in Journal of Cryptology*, 1999, [[URL]](https://doi.org/10.1007/PL00003816)
 

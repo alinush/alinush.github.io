@@ -1,9 +1,9 @@
 ---
-#type: note
+type: note
 tags:
 title: insert-title-here
 #date: 2020-11-05 20:45:59
-published: false
+#published: false
 permalink: TODO
 #sidebar:
 #    nav: cryptomat
