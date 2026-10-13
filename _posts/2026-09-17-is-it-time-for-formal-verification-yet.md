@@ -125,6 +125,7 @@ How insane would it sound if a nuclear reactor engineer [adopted this philosophy
 
 You might object: our software infrastructure should not be equated to our energy infrastructure.
 But this ignores how pervasive and critical (sloppy) software has become: remember [CrowdStrike in July 2024](https://en.wikipedia.org/wiki/2024_CrowdStrike-related_IT_outages)?
+This is going to keep happening[^fridges].
 
 ### Doubling down on software carpentry
 
@@ -185,3 +186,5 @@ For cited works, see below 👇👇
 [^arm-aes-errata]: ["crypto: arm/aes-ce - work around Cortex-A57/A72 silicon errata"](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=f3456b9fd269c6d0c973b136c5449d46b2510f4b), by Ard Biesheuvel, Linux kernel commit, 2019
 
 [^etheorem]: [_Etheorem_](https://github.com/etheorem/etheorem): a Lean 4 implementation of the Ethereum consensus specification
+
+[^fridges]: You may think your food supply is not affected by software carpentry. [It turns out, it is](https://x.com/insidergeo/status/2109587148315722110?s=12).
