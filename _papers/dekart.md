@@ -29,6 +29,9 @@ blogpost:
     title: "Blog"
 
 project:
+  - url: /projects#dekart
+    title: "DeKART"
   - url: /projects#chunky-pvss
+    title: "Chunky"
 
 ---
