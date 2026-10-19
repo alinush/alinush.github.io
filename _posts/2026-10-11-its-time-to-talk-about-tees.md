@@ -24,7 +24,7 @@ The goal is to persuade you to re-consider how you deploy TEE-based applications
 
 Trusted hardware companies (Intel, AMD, etc.) mainly compete on performance, functionality and (one hopes) developer-friendliness.
 They may try to compete on security, but this is hard, in my opinion: there's always someone else who can (mis)claim more security and such claims are hard to adjudicate by the market.
-Furthermore, the complexity of modern CPU architectures and the pervasiveness of side-channels makes TEE security claims tenuous.
+Furthermore, the complexity of modern CPU architectures, the pervasiveness of side-channels and the centralization of attestation services all make TEE security claims tenuous.
 
 In any case, (some of) the TEE attacks follow below.
 
@@ -60,12 +60,13 @@ A break of one is a break of all, unless...
 Unless: you pin your verifier to only accept your own PCK certificates[^epid], which implicitly excludes the attacker’s CPU.
 This works for so-called [scalable SGX](https://www.intel.com/content/www/us/en/content-details/843058/supporting-intel-sgx-on-multisocket-platforms.html) (the only flavor left) and requires you to carefully manage a PKI.
 So, effectively requires you to wield a footgun.
-Good luck!
+
+Good luck.
 
 ## TEE liveness bugs
 
 DoS is explicitly outside the threat model of SGX, TDX, SEV-SNP and Nitro (b.c. the host can simply refuse to schedule the enclave).
-So, here, we focus on liveness issues due to issues with the TEE platform itself.
+So, here, we focus on liveness issues due to unexpected problems in the TEE platform itself.
 
  - 2018, [Revocation of SGX credentials in light of Spectre/Meltdown left TEE enclaves paralyzed](https://community.intel.com/t5/Intel-Confidential-Computing/GROUP-OUT-OF-DATE-what-is-the-most-recent-microcode-version/m-p/1139549?countrylabel=Latin%25252520America&profile.language=en)
  - 2022, [SGX.fail](https://sgx.fail)[^VSYplus22] details how slowly TCB recoveries roll out and how platforms can be left "out of date" for long stretches
@@ -77,12 +78,21 @@ So, here, we focus on liveness issues due to issues with the TEE platform itself
 So many[^VSYplus22]$^,$[^ZGWplus24]$^,$[^MHHW18]$^,$[^TSS17].
 
 In theory, there are ways to reduce the attack surface of trusted hardware.
-For example, see Sanctum[^CLD15e] from my group at MIT back in the day (shameless plug). 
+For example, see Sanctum[^CLD15e] from my group at MIT back in the day (`#shameless-plug`). 
 Unfortunately, in practice, these more principled designs tend to come with lower performance and/or less functionality.
 
 ## Conclusion
 
-Don't put valuable secrets in your TEEs, or they're likely to become public, especially if physical attacks are in your threat model[^nuance].
+There is much to be said about the **safe** use of TEEs[^debunking-tee-fud].
+This blog doesn't say it.
+It only touches on the threat model of, and past attacks on, TEEs.
+Still, I am not trying to argue there is no way to leverage TEEs for security.
+
+**tl;dr?** don't put valuable secrets in your TEEs, or they're likely to become public, especially if physical attacks are in your threat model.
+
+But, since you're likely going to ignore all of this, at least use TEEs carefully?[^miller]$^,$[^tob]$^,$[^tob-aws]
+
+In general, TEEs can be used for defense-in-depth: e.g., put your MPC nodes in TEEs, or build low-stakes confidential apps with shared state whose privacy is provided by TEEs but whose integrity is assured via ZKPs.
 
 ## References
 
@@ -90,6 +100,9 @@ For cited works, see below 👇👇
 
 {% include refs.md %}
 
+[^debunking-tee-fud]: [Debunking TEE FUD: A Brief Defense of The Use of TEEs in Crypto](https://collective.flashbots.net/t/debunking-tee-fud-a-brief-defense-of-the-use-of-tees-in-crypto/2931), by Quintus Kilbourn, January 2025
 [^signal-sgx]: [Signal's SGX-based contact discovery gets broken](https://x.com/v12sec/status/2092664320547254388)
-[^nuance]: For a more nuanced take, see [Andrew Miller's post](https://medium.com/initc3org/tee-based-smart-contracts-and-sealing-pitfalls-eccd5d751329).
+[^miller]: [TEE-based Smart Contracts and Sealing Pitfalls](https://medium.com/initc3org/tee-based-smart-contracts-and-sealing-pitfalls-eccd5d751329), by Andrew Miller
+[^tob]: [Don't let TEEs break your MPC](https://blog.trailofbits.com/2026/09/25/dont-let-tees-break-your-mpc/), by Paul Bottinelli
+[^tob-aws]: [A few notes on AWS Nitro Enclaves: Attack surface](https://blog.trailofbits.com/2024/09/24/notes-on-aws-nitro-enclaves-attack-surface/), by Paweł Płatek
 [^epid]: It is my understanding that the "old" 2015 SGX architecture based on EPID is now retired.
