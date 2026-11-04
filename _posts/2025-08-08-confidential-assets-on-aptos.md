@@ -378,6 +378,20 @@ Because we can nonetheless achieve competitively-small TXN sizes and cheap verif
 
 ## Integration with Petra
 
+### Ed25519-only accounts without key rotation
+
+The current plan is to support confidential assets for Ed25519 accounts in Petra by having them derive their decryption key via deterministic signing of the following 32-byte message:
+
+```
+signing_message = sha3_256("APTOS_CONFIDENTIAL_ASSETS::DK_DERIVATION::" || chain_name)
+```
+
+where `chain_name` can be either `testnet`, `devnet` or `mainnet`.
+
+{: .warning}
+This **assumes** no key rotation in Petra.
+If we later implement key rotation, we must remember to also rotate the confidential asset DK or we will lock users out of their accounts!
+
 ### Keyless accounts
 {: #supporting-keyless-confidential-accounts}
 
@@ -549,7 +563,7 @@ Slides:
 Documentation & articles:
  - [aptos.dev docs](https://aptos.dev/build/smart-contracts/confidential-asset) (stale!)
  - [Build with Confidential Transactions on Aptos](https://medium.com/aptoslabs/build-with-confidential-transactions-on-aptos-1e99f78aa181) (stale!)
- - [Aptos Improvement Proposal (AIP) 143: Confidential APT](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-143.md) (will be updated with more nuance)
+ - [Aptos Improvement Proposal (AIP) 143: Confidential APT](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-143-confidential-apt.md) (will be updated with more nuance)
 
 Repositories:
  - [Ristretto255 discrete logarithm algorithms](https://github.com/aptos-labs/ristretto255-dlog)
