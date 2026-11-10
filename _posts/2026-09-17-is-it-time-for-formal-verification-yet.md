@@ -2,7 +2,7 @@
 #type: note
 tags:
  - formal verification
-title: On software carpentry
+title: "To hell with software carpentry!"
 #date: 2020-11-05 20:45:59
 #published: false
 permalink: fv 
@@ -29,7 +29,7 @@ We're mostly duct-taping things.
 Before building a bridge, a **bridge engineer**[^ada] computes stress, strain and deflection in their beams[^beams].
 A software "engineer" just starts writing code.
 A bridge engineer operates with a safety margin: the bridge should resist 2x to 4x the maximum expected load. A software "engineer" continues writing more code.
-Some of this code may be tested, for some of its input values, on some of its execution branches.
+Some of this code may be tested, for some of its input values, on some of its execution paths.
 But that's about it.
 A bridge engineer signs off on their design[^tex-occ-1001-401] and is subject to professional negligence lawsuits if they seriously mess up[^tex-cprc-150]$^,$[^carlson-brigance].
 A software "engineer" just ships the code.
@@ -67,7 +67,7 @@ Indeed, there is plenty of formal verification work that predates the LLM age.
 In 2009, work on _seL4_ started: an OS microkernel proven functionally correct[^KEHplus09].
 Sure, a few years later, we found out seL4's specification did not account for _timing channels_[^CGMH14].
 Nonetheless, this is great progress: so timing channels are the only thing we have to worry about now? Fantastic!
-In 2015, AWS wrote a short paper explaining how they used TLA+ to model some of their system designs (e.g., DynamoDB and S3)[^NRZplus15].
+In 2015, AWS wrote a short paper explaining how they used TLA+ to model some of their system designs such as DynamoDB and S3[^NRZplus15].
 Their paper insightfully points out how _"in order to find subtle bugs in a system design, it is necessary to have a precise description of that design."_
 Absolutely!
 In 2017, we saw progress towards a formally verified TLS implementation that covered the full protocol state machine.[^BBDplus17].
@@ -78,7 +78,7 @@ First, we could safely unleash AI to generate and optimize our code.
 Given that "engineers" are barely reviewing their AI-generated code anyway, why not actually enable them to safely (not) do so?
 It will take a bit more work.
 For example, we would need compiled (say) Lean programs to execute fast.
-But, if that doesn't work out, we could give the _"final form of software development"_[^end-coding] a try.
+But, if that doesn't work out, we could give the _"final form of software development"_[^end-coding] a try: vibe code directly in assembly and prove against a machine-level spec that the assembly does what you need it to do (e.g., sort)[^tricky].
 
 Second, insted of testing our code, which never covers _all_ executions with _all_ values[^MSJ99], we could prove all executions perform what we expect them to.
 Furthermore, instead of doing repeated, error-prone (LLM/manual) audits on our ever-changing, humongous codebases, we could reduce our audit surface to just the specs.
@@ -188,3 +188,5 @@ For cited works, see below 👇👇
 [^etheorem]: [_Etheorem_](https://github.com/etheorem/etheorem): a Lean 4 implementation of the Ethereum consensus specification
 
 [^fridges]: You may think your food supply is not affected by software carpentry. [It turns out, it is](https://x.com/insidergeo/status/2109587148315722110?s=12).
+
+[^tricky]: This comes with its own set of challenges: we will need different implementations for each CPU architecture. But then, what about the underlying operating system? Now we have different implementations for each combinations of CPU architecture and operating system.

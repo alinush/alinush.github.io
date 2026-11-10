@@ -320,6 +320,8 @@
 
 [^BCDV88]: **Gradual and Verifiable Release of a Secret (Extended Abstract)**, by Brickell, Ernest F. and Chaum, David and Damgård, Ivan B. and van de Graaf, Jeroen, *in Advances in Cryptology --- CRYPTO '87*, 1988
 
+[^BCEplus26]: **Quorus: Efficient, Scalable Threshold {ML-DSA} Signatures from {MPC**, by Alexander Bienstock and Leo de Castro and Daniel Escudero and Antigoni Polychroniadou and Akira Takahashi, *in 35th USENIX Security Symposium (USENIX Security 26)*, 2026, [[URL]](https://www.usenix.org/conference/usenixsecurity26/presentation/bienstock)
+
 [^BCFplus21]: **Zero-Knowledge Proofs for Set Membership: Efficient, Succinct, Modular**, by Benarroch, Daniel and Campanelli, Matteo and Fiore, Dario and Gurkan, Kobi and Kolonelos, Dimitris, *in Financial Cryptography and Data Security*, 2021
 
 [^BCFplus24e]: **Blaze: Fast {SNARKs} from Interleaved {RAA} Codes**, by Martijn Brehm and Binyi Chen and Ben Fisch and Nicolas Resch and Ron D. Rothblum and Hadas Zeilberger, *in Cryptology {ePrint} Archive, Paper 2024/1609*, 2024, [[URL]](https://eprint.iacr.org/2024/1609)
@@ -1306,6 +1308,8 @@
 
 [^CPDplus24]: **Stealing Part of a Production Language Model**, by Nicholas Carlini and Daniel Paleka and Krishnamurthy Dj Dvijotham and Thomas Steinke and Jonathan Hayase and A. Feder Cooper and Katherine Lee and Matthew Jagielski and Milad Nasr and Arthur Conmy and Itay Yona and Eric Wallace and David Rolnick and Florian Tramèr, 2024, [[URL]](https://arxiv.org/abs/2403.06634)
 
+[^CPEplus26]: **Efficient Threshold {ML}-{DSA**, by Sofía Celi and Rafaël del Pino and Thomas Espitau and Guilhem Niot and Thomas Prest, *in Cryptology {ePrint} Archive, Paper 2026/013*, 2026, [[URL]](https://eprint.iacr.org/2026/013)
+
 [^CPKplus18]: **FASTER: A Concurrent Key-Value Store with In-Place Updates**, by Badrish Chandramouli and Guna Prasaad and Donald Kossmann and Justin Levandoski and James Hunter and Mike Barnett, *in Proceedings of the 2018 International Conference on Management of Data*, 2018, [[URL]](https://doi.org/10.1145%2F3183713.3196898)
 
 [^CPP06]: **Encoding-Free ElGamal Encryption Without Random Oracles**, by Chevallier-Mames, Benoît and Paillier, Pascal and Pointcheval, David, *in Public Key Cryptography - PKC 2006*, 2006
@@ -1719,6 +1723,8 @@
 [^EH19]: **A Revocable Group Signature Scheme with Scalability from Simple Assumptions and Its Application to Identity Management**, by Keita Emura and Takuya Hayashi, *in Cryptology ePrint Archive, Report 2019/064*, 2019, [[URL]](https://eprint.iacr.org/2019/064)
 
 [^EHMP25e]: **Fast elliptic curve scalar multiplications in {SN}(T){ARK} circuits**, by Liam Eagen and Youssef El Housni and Simon Masson and Thomas Piellard, *in Cryptology {ePrint} Archive, Paper 2025/933*, 2025, [[URL]](https://eprint.iacr.org/2025/933)
+
+[^EKKV22]: **Zswap: zk-{SNARK} Based Non-Interactive Multi-Asset Swaps**, by Felix Engelmann and Thomas Kerber and Markulf Kohlweiss and Mikhail Volkhov, *in Cryptology {ePrint} Archive, Paper 2022/1002*, 2022, [[URL]](https://eprint.iacr.org/2022/1002)
 
 [^EKKV22e]: **Zswap: zk-{SNARK} Based Non-Interactive Multi-Asset Swaps**, by Felix Engelmann and Thomas Kerber and Markulf Kohlweiss and Mikhail Volkhov, *in Cryptology {ePrint} Archive, Paper 2022/1002*, 2022, [[URL]](https://eprint.iacr.org/2022/1002)
 
@@ -2456,6 +2462,8 @@
 
 [^JNT07e]: **When e-th Roots Become Easier Than Factoring**, by Antoine Joux and David Naccache and Emmanuel Thomé, *in Cryptology {ePrint} Archive, Paper 2007/424*, 2007, [[URL]](https://eprint.iacr.org/2007/424)
 
+[^JR26]: **Symplex: Improved Pairing-Based {zkSNARK} using Partial Fraction Techniques**, by Charanjit S. Jutla and Arnab Roy, *in Cryptology {ePrint} Archive, Paper 2026/1886*, 2026, [[URL]](https://eprint.iacr.org/2026/1886)
+
 [^JS08]: **On the Equivalence of Generic Group Models**, by Jager, Tibor and Schwenk, Jörg, *in Provable Security*, 2008
 
 [^JS14]: **Compact Accumulator using Lattices**, by Mahabir Prasad Jhanwar and Reihaneh Safavi-Naini, *in Cryptology ePrint Archive, Report 2014/1015*, 2014, [[URL]](https://eprint.iacr.org/2014/1015)
@@ -2687,6 +2695,8 @@
 [^KZMplus15]: **C$\emptyset$C$\emptyset$: A Framework for Building Composable Zero-Knowledge Proofs**, by Ahmed Kosba and Zhichao Zhao and Andrew Miller and Yi Qian and Hubert Chan and Charalampos Papamanthou and Rafael Pass and abhi shelat and Elaine Shi, *in Cryptology ePrint Archive, Report 2015/1093*, 2015, [[URL]](https://eprint.iacr.org/2015/1093)
 
 [^KZZ22e]: **An Analysis of the Algebraic Group Model**, by Jonathan Katz and Cong Zhang and Hong-Sheng Zhou, *in Cryptology ePrint Archive, Report 2022/210*, 2022, [[URL]](https://ia.cr/2022/210)
+
+[^Kao26]: **TALUS: Threshold ML-DSA with One-Round Online Signing via Boundary Clearance and Carry Elimination**, by Leo Kao, 2026, [[URL]](https://arxiv.org/abs/2603.22109)
 
 [^Kate10]: **Distributed Key Generation and Its Applications**, by Kate, Aniket, 2010
 
@@ -3175,6 +3185,8 @@
 [^Neff01]: **A Verifiable Secret Shuffle and Its Application to E-Voting**, by Neff, C. Andrew, *in Proceedings of the 8th ACM Conference on Computer and Communications Security*, 2001, [[URL]](https://doi.org/10.1145/501983.502000)
 
 [^Nguyen05]: **Accumulators from Bilinear Pairings and Applications**, by Nguyen, Lan, *in CT-RSA '05*, 2005
+
+[^Niel02]: **Separating Random Oracle Proofs from Complexity Theoretic Proofs: The Non-committing Encryption Case**, by Nielsen, Jesper Buus, *in Advances in Cryptology --- CRYPTO 2002*, 2002
 
 [^Nitu19]: **zk-SNARKs: A Gentle Introduction**, by zk-SNARKs: A Gentle Introduction, 2019, [[URL]](https://www.di.ens.fr/~nitulesc/files/Survey-SNARKs.pdf)
 
@@ -3896,6 +3908,8 @@
 
 [^WSVZ24e]: **$\mathsf{Cirrus}$: Performant and Accountable Distributed {SNARK**, by Wenhao Wang and Fangyan Shi and Dani Vilardell and Fan Zhang, *in Cryptology {ePrint} Archive, Paper 2024/1873*, 2024, [[URL]](https://eprint.iacr.org/2024/1873)
 
+[^WTFP26]: **Couplet: Multivariate Polynomial Commitments with Two-Group-Element Openings**, by Weijie Wang and Alin Tomescu and Rex Fernando and Charalampos Papamanthou, *in Cryptology {ePrint} Archive, Paper 2026/2106*, 2026, [[URL]](https://eprint.iacr.org/2026/2106)
+
 [^WTSplus18]: **Doubly-Efficient zkSNARKs Without Trusted Setup**, by R. S. Wahby and I. Tzialla and A. Shelat and J. Thaler and M. Walfish, *in 2018 IEEE Symposium on Security and Privacy (SP)*, 2018
 
 [^WUP22e]: **BalanceProofs: Maintainable Vector Commitments with Fast Aggregation**, by Weijie Wang and Annie Ulichney and Charalampos Papamanthou, *in Cryptology ePrint Archive, Paper 2022/864*, 2022, [[URL]](https://eprint.iacr.org/2022/864)
@@ -4037,6 +4051,8 @@
 [^ZMMplus20]: **DECO}: Liberating Web Data Using Decentralized Oracles for {TLS**, by Fan Zhang and Deepak Maram and Harjasleen Malvai and Steven Goldfeder and Ari Juels, *in Proceedings of the 2020 {ACM} {SIGSAC} Conference on Computer and Communications Security*, 2020, [[URL]](https://doi.org/10.1145%2F3372297.3417239)
 
 [^ZMQplus23]: **F3B: A Low-Overhead Blockchain Architecture with Per-Transaction Front-Running Protection**, by Haoqian Zhang and Louis-Henri Merino and Ziyan Qu and Mahsa Bastankhah and Vero Estrada-Galinanes and Bryan Ford, 2023, [[URL]](https://arxiv.org/abs/2205.08529)
+
+[^ZOZ25]: **Dynark: Making Groth16 Dynamic**, by Tianyu Zhang and Yupeng Ouyang and Yupeng Zhang, *in Cryptology {ePrint} Archive, Paper 2025/1897*, 2025, [[URL]](https://eprint.iacr.org/2025/1897)
 
 [^ZPK14]: **ALITHEIA: Towards Practical Verifiable Graph Processing**, by Zhang, Yupeng and Papamanthou, Charalampos and Katz, Jonathan, *in ACM CCS'14*, 2014, [[URL]](https://doi.org/10.1145/2660267.2660354)
 
