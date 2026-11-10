@@ -91,8 +91,10 @@ The _"only"_ part seems tricky, but doable?[^LV95]
 
 Lastly, I am not arguing that formal verification will be **a panacea.**
 There are many challenges.
-To start, some software can be as complex to specify as it is to implement (e.g., EC2 cloud architectures come to mind).
+To start, specs can be wrong too.
+This is rare, if we can keep specs simple but, unfortunately, some software can be as complex to specify as it is to implement (e.g., EC2 cloud architectures come to mind).
 Plus, all software evolves, not just in its implementation, but also in its specification.
+Thus, more opportunity to introduce bugs as the spec is refined.
 Moreover, formal verification rarely covers the full system.
 So, naturally, bugs will creep in the uncovered parts.
 For example, the compiler may still be unverified.
