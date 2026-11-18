@@ -44,7 +44,7 @@ I was always fascinated with computers. First, I was playing games. Soon, I was 
 I like to read and write.
 In fact, you can see some of [my writing](/posts.html) on this website and on [Decentralized Thoughts](https://decentralizedthoughts.github.io/about-alin).
 
-I am currently the _Head of Cryptography_ at [Aptos Labs](https://aptoslabs.com).
+I am currently a founding team member and the _Head of Cryptography_ at [Aptos Labs](https://aptoslabs.com).
 
 Before Aptos Labs, I was a Postdoctoral Researcher and then a Research Scientist at VMware Research.
 

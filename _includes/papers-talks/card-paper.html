@@ -4,9 +4,12 @@
 {%- capture _title -%}{% include papers-talks/md-inline.html text=entry.title %}{%- endcapture -%}
 {%- capture _authors -%}{% include papers-talks/md-inline.html text=entry.authors %}{%- endcapture -%}
 {%- capture _paper_venue -%}{% include papers-talks/md-inline.html text=entry.paper_venue %}{%- endcapture -%}
-<div class="card" id="{{ entry.card_id }}">
-<strong class="card-title">{{ _title | strip }}</strong><br>
-{{ _authors | strip }}, {{ _paper_venue | strip }}<br>
+<div class="card{% if entry.status == 'upcoming' %} card--upcoming{% endif %}" id="{{ entry.card_id }}">
+<strong class="card-title">{{ _title | strip }}</strong>
+{%- if entry.status == 'upcoming' %} <span class="status-pill status-pill--upcoming"><i class="fas fa-hourglass-half"></i>Coming soon</span>{% endif %}<br>
+{%- if entry.authors or entry.paper_venue %}
+{{ _authors | strip }}{% if entry.authors and entry.paper_venue %}, {% endif %}{{ _paper_venue | strip }}<br>
+{%- endif -%}
 {%- for item in entry.pdf %}
 {%- include papers-talks/link-badge.html kind="pdf" url=item.url title=item.title -%}
 {% endfor -%}

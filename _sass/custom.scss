@@ -167,6 +167,38 @@
   @include cards-grid($title-color: mix($main-color-1, $text-color, 75%));
 }
 
+// A paper that's still in the works (`status: upcoming` in _papers/,
+// see card-paper.html): a dashed outline and a slightly faded body, so it
+// reads as a placeholder next to the published cards, plus an amber
+// "Coming soon" pill next to its title.
+.papers-columns .card.card--upcoming {
+  border: 2px dashed rgba(#d97706, .55);
+  background-color: rgba(#d97706, .04);
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .22rem;
+  padding: .1rem .5rem;
+  margin-left: .3rem;
+  border-radius: 999px;
+  font-size: .7rem;
+  font-weight: map-get($base, font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  vertical-align: middle;
+
+  i {
+    font-size: .7rem;
+  }
+}
+
+.status-pill--upcoming {
+  background-color: rgba(#d97706, .14);
+  color: #b45309;
+}
+
 .talks-columns {
   // $title-color explicit, at a lighter mix ratio than the 45% default:
   // 45% (mostly dark text) read too dark for the title; a hardcoded pure

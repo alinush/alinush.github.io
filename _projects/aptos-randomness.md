@@ -1,6 +1,7 @@
 ---
 card_id: aptos-randomness
 date: 2024-02-01
+pin_order: 3
 
 title: >-
   Aptos distributed randomness
@@ -23,6 +24,10 @@ link:
 code:
   - url: https://github.com/aptos-labs/aptos-core/tree/893d1ffea49dcfa933f0421b19fc6e31a9c808ab/crates/aptos-dkg
     title: "aptos-dkg crate"
+
+blogpost:
+  - url: https://medium.com/aptoslabs/roll-with-move-secure-instant-randomness-on-aptos-c0e219df3fb1
+    title: "Roll with Move"
 ---
 
 Cryptographic infrastructure that enables Move developers to obtain unbiasable and unpredictable randomness as long as [no more than 50% of Aptos stake colludes](https://github.com/aptos-foundation/AIPs/blob/main/aips/aip-079-implementation-of-instant-on-chain-randomness.md#randomness-generation-using-vufs).

@@ -37,10 +37,6 @@ slides:
 code:
   - url: https://github.com/aptos-labs/aptos-core/tree/2f2eb623a4fcb50801af1336aab5d4e7b04c40d7/crates/aptos-dkg
 
-blogpost:
-  - url: https://medium.com/aptoslabs/roll-with-move-secure-instant-randomness-on-aptos-c0e219df3fb1
-    title: "Blog"
-
 project:
   - url: /projects#aptos-randomness
 

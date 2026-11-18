@@ -25,7 +25,8 @@ show_title: false
 
     <section class="home-highlights__col home-highlights__col--updates">
       <h2>What's new? 🆕</h2>
-      {%- assign _updates = site.posts | concat: site.papers | concat: site.projects | concat: site.talks | sort: "date" | reverse | slice: 0, 5 -%}
+      {%- assign _published_papers = site.papers | where_exp: "e", "e.status != 'upcoming'" -%}
+      {%- assign _updates = site.posts | concat: _published_papers | concat: site.projects | concat: site.talks | sort: "date" | reverse | slice: 0, 5 -%}
       {%- for entry in _updates -%}
         {%- case entry.collection -%}
         {%- when "posts" -%}

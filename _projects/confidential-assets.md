@@ -1,6 +1,7 @@
 ---
 card_id: confidential-assets
 date: 2026-03-24
+pin_order: 1
 
 title: >-
   Aptos confidential assets

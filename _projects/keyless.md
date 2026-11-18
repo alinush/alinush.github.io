@@ -1,6 +1,7 @@
 ---
 card_id: keyless
 date: 2024-06-13
+pin_order: 2
 highlighted: true
 
 title: >-
